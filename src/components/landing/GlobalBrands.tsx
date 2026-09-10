@@ -1,19 +1,21 @@
 "use client"
 
 import * as React from "react"
+
 import Link from "next/link"
+
 import { motion } from "framer-motion"
 import {
-  Globe2,
-  Sparkles,
-  Plane,
-  Car,
-  Utensils,
-  ShoppingBag,
-  Ticket,
-  ShieldCheck,
   ArrowRight,
+  Car,
+  Globe2,
+  Plane,
+  ShieldCheck,
+  ShoppingBag,
+  Sparkles,
+  Ticket,
   TrendingUp,
+  Utensils,
 } from "lucide-react"
 
 import { Button } from "@/src/components/ui/button/button"
@@ -22,37 +24,43 @@ const segments = [
   {
     icon: Utensils,
     title: "Gastronomia & Vinhos",
-    description: "Descontos especiais em restaurantes premiados, bistrôs e cartas de vinhos exclusivas.",
+    description:
+      "Descontos especiais em restaurantes premiados, bistrôs e cartas de vinhos exclusivas.",
     perk: "Até 30% OFF",
   },
   {
     icon: Car,
     title: "Locação de Veículos",
-    description: "Tarifas corporativas com as principais locadoras do Brasil e do mundo (Movida, Localiza, Hertz, Avis).",
+    description:
+      "Tarifas corporativas com as principais locadoras do Brasil e do mundo (Movida, Localiza, Hertz, Avis).",
     perk: "Até 40% OFF",
   },
   {
     icon: Plane,
     title: "Salas VIP & Experiências",
-    description: "Acesso a lounges em aeroportos internacionais e experiências personalizadas de viagem.",
+    description:
+      "Acesso a lounges em aeroportos internacionais e experiências personalizadas de viagem.",
     perk: "Acesso VIP",
   },
   {
     icon: ShoppingBag,
     title: "Moda, Beleza & Lifestyle",
-    description: "Parcerias com marcas premium de varejo, tecnologia e artigos de viagem.",
+    description:
+      "Parcerias com marcas premium de varejo, tecnologia e artigos de viagem.",
     perk: "Cashback & Descontos",
   },
   {
     icon: Ticket,
     title: "Entretenimento & Lazer",
-    description: "Ingressos para parques temáticos, shows, espetáculos e passeios náuticos.",
+    description:
+      "Ingressos para parques temáticos, shows, espetáculos e passeios náuticos.",
     perk: "Tarifas Membro",
   },
   {
     icon: ShieldCheck,
     title: "Seguro & Assistência Global",
-    description: "Condições diferenciadas para seguros de viagem e assistência médica internacional.",
+    description:
+      "Condições diferenciadas para seguros de viagem e assistência médica internacional.",
     perk: "Proteção Total",
   },
 ]
@@ -77,9 +85,11 @@ const brandNames = [
 
 export function GlobalBrands(): React.JSX.Element {
   return (
-    <section id="beneficios" className="py-24 relative overflow-hidden bg-card/60">
+    <section
+      id="beneficios"
+      className="py-24 relative overflow-hidden bg-card/60"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
           <motion.div
             initial={{ opacity: 0, y: 15 }}
@@ -112,11 +122,11 @@ export function GlobalBrands(): React.JSX.Element {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="mt-4 text-base sm:text-lg text-muted-foreground"
           >
-            Sua Club Key não se limita a hotéis: ela abre portas para mais de 35.000 marcas parceiras em mais de 150 países ao redor do mundo.
+            Sua Club Key não se limita a hotéis: ela abre portas para mais de
+            35.000 marcas parceiras em mais de 150 países ao redor do mundo.
           </motion.p>
         </div>
 
-        {/* Brands Logo Ticker */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -136,7 +146,6 @@ export function GlobalBrands(): React.JSX.Element {
           </div>
         </motion.div>
 
-        {/* Segment Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {segments.map((seg, idx) => (
             <motion.div
@@ -167,7 +176,6 @@ export function GlobalBrands(): React.JSX.Element {
           ))}
         </div>
 
-        {/* Callout box */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -180,7 +188,8 @@ export function GlobalBrands(): React.JSX.Element {
               Economia inteligente e amplo acesso em um só passe
             </h4>
             <p className="text-sm text-muted-foreground">
-              Garanta benefícios que se pagam já na primeira viagem ou compra parceira.
+              Garanta benefícios que se pagam já na primeira viagem ou compra
+              parceira.
             </p>
           </div>
 

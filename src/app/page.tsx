@@ -7,7 +7,11 @@ import { Navbar } from "@/src/components/landing/Navbar"
 import { Hero } from "@/src/components/landing/Hero"
 import { WhatIsClubKey } from "@/src/components/landing/WhatIsClubKey"
 import { PartnersMarquee } from "@/src/components/landing/PartnersMarquee"
+import { ExperienceBanner } from "@/src/components/landing/ExperienceBanner"
+import { HowItWorksCatalog } from "@/src/components/landing/HowItWorksCatalog"
+import { FaqSection } from "@/src/components/landing/FaqSection"
 import { Footer } from "@/src/components/landing/Footer"
+import { FloatingCta } from "@/src/components/landing/FloatingCta"
 
 export default function Page(): React.JSX.Element {
   return (
@@ -17,7 +21,11 @@ export default function Page(): React.JSX.Element {
       <Hero />
       <WhatIsClubKey />
       <PartnersMarquee />
+      <ExperienceBanner />
+      <HowItWorksCatalog />
+      <FaqSection />
       <Footer />
+      <FloatingCta />
     </main>
   )
 }

@@ -1,20 +1,23 @@
 "use client"
 
 import * as React from "react"
+
 import Link from "next/link"
+
 import { motion } from "framer-motion"
 import {
-  Calculator,
-  Sparkles,
-  TrendingDown,
   ArrowRight,
-  ShieldCheck,
+  Calculator,
   CheckCircle2,
   DollarSign,
   Hotel,
+  ShieldCheck,
+  Sparkles,
+  TrendingDown,
 } from "lucide-react"
 
 import { Button } from "@/src/components/ui/button/button"
+
 import { cn } from "@/src/lib/utils/utils"
 
 interface DestinationOption {
@@ -33,7 +36,8 @@ const destinations: DestinationOption[] = [
     state: "Bahia",
     regularDaily: 2200,
     clubKeyDaily: 980,
-    image: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=500&q=80",
+    image:
+      "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=500&q=80",
   },
   {
     id: "noronha",
@@ -41,7 +45,8 @@ const destinations: DestinationOption[] = [
     state: "Pernambuco",
     regularDaily: 3800,
     clubKeyDaily: 1590,
-    image: "https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?auto=format&fit=crop&w=500&q=80",
+    image:
+      "https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?auto=format&fit=crop&w=500&q=80",
   },
   {
     id: "gramado",
@@ -49,7 +54,8 @@ const destinations: DestinationOption[] = [
     state: "Rio Grande do Sul",
     regularDaily: 1650,
     clubKeyDaily: 720,
-    image: "https://images.unsplash.com/photo-1510798831971-661eb04b3739?auto=format&fit=crop&w=500&q=80",
+    image:
+      "https://images.unsplash.com/photo-1510798831971-661eb04b3739?auto=format&fit=crop&w=500&q=80",
   },
   {
     id: "angra",
@@ -57,7 +63,8 @@ const destinations: DestinationOption[] = [
     state: "Rio de Janeiro",
     regularDaily: 5200,
     clubKeyDaily: 2190,
-    image: "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=500&q=80",
+    image:
+      "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=500&q=80",
   },
   {
     id: "paris",
@@ -65,14 +72,17 @@ const destinations: DestinationOption[] = [
     state: "França",
     regularDaily: 4200,
     clubKeyDaily: 1790,
-    image: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=500&q=80",
+    image:
+      "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=500&q=80",
   },
 ]
 
 const nightOptions = [3, 5, 7, 10]
 
 export function SavingsSimulator(): React.JSX.Element {
-  const [selectedDest, setSelectedDest] = React.useState<DestinationOption>(destinations[0])
+  const [selectedDest, setSelectedDest] = React.useState<DestinationOption>(
+    destinations[0]
+  )
   const [nights, setNights] = React.useState<number>(5)
 
   const regularTotal = selectedDest.regularDaily * nights
@@ -81,7 +91,10 @@ export function SavingsSimulator(): React.JSX.Element {
   const discountPercentage = Math.round((totalSavings / regularTotal) * 100)
 
   return (
-    <section id="simulador" className="py-24 relative overflow-hidden bg-muted/20">
+    <section
+      id="simulador"
+      className="py-24 relative overflow-hidden bg-muted/20"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <motion.div
@@ -115,13 +128,12 @@ export function SavingsSimulator(): React.JSX.Element {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="mt-4 text-base sm:text-lg text-muted-foreground"
           >
-            Compare o valor cobrado em plataformas públicas tradicionais contra o valor com desconto exclusivo de membro.
+            Compare o valor cobrado em plataformas públicas tradicionais contra
+            o valor com desconto exclusivo de membro.
           </motion.p>
         </div>
 
-        {/* Simulator Interactive Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch max-w-6xl mx-auto">
-          {/* Controls Column */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -130,7 +142,6 @@ export function SavingsSimulator(): React.JSX.Element {
             className="lg:col-span-6 p-6 sm:p-8 rounded-3xl bg-card border border-border/80 shadow-xl flex flex-col justify-between"
           >
             <div className="space-y-6">
-              {/* Destination Selector */}
               <div>
                 <label className="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-3">
                   1. Escolha o Destino
@@ -148,7 +159,6 @@ export function SavingsSimulator(): React.JSX.Element {
                           : "bg-muted/40 border-border/60 hover:bg-muted text-muted-foreground hover:text-foreground"
                       )}
                     >
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={dest.image}
                         alt={dest.name}
@@ -167,7 +177,6 @@ export function SavingsSimulator(): React.JSX.Element {
                 </div>
               </div>
 
-              {/* Number of Nights */}
               <div>
                 <label className="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-3">
                   2. Quantidade de Noites
@@ -194,11 +203,13 @@ export function SavingsSimulator(): React.JSX.Element {
 
             <div className="pt-6 border-t border-border/40 mt-6 text-xs text-muted-foreground flex items-center gap-2">
               <ShieldCheck className="w-4 h-4 text-emerald-500 shrink-0" />
-              <span>Simulação baseada em tarifas médias de alta temporada pesquisadas em 2026.</span>
+              <span>
+                Simulação baseada em tarifas médias de alta temporada
+                pesquisadas em 2026.
+              </span>
             </div>
           </motion.div>
 
-          {/* Results Comparison Column */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -206,7 +217,6 @@ export function SavingsSimulator(): React.JSX.Element {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="lg:col-span-6 p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-card via-card to-amber-500/10 border border-amber-500/30 shadow-2xl flex flex-col justify-between relative overflow-hidden"
           >
-            {/* Top Badge */}
             <div className="flex items-center justify-between mb-6">
               <span className="text-xs font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400">
                 Resultado Comparativo
@@ -217,14 +227,14 @@ export function SavingsSimulator(): React.JSX.Element {
             </div>
 
             <div className="space-y-4 my-auto">
-              {/* Regular Market price */}
               <div className="p-4 rounded-2xl bg-background/80 border border-border/60 flex items-center justify-between">
                 <div>
                   <div className="text-xs text-muted-foreground">
                     Plataformas Convencionais (OTAs):
                   </div>
                   <div className="text-sm font-medium text-foreground/80">
-                    {nights} noites @ R$ {selectedDest.regularDaily.toLocaleString("pt-BR")}/noite
+                    {nights} noites @ R${" "}
+                    {selectedDest.regularDaily.toLocaleString("pt-BR")}/noite
                   </div>
                 </div>
                 <div className="text-lg font-bold text-muted-foreground line-through">
@@ -232,7 +242,6 @@ export function SavingsSimulator(): React.JSX.Element {
                 </div>
               </div>
 
-              {/* ClubKey Member Price */}
               <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/40 flex items-center justify-between">
                 <div>
                   <div className="text-xs font-bold text-amber-600 dark:text-amber-400 flex items-center gap-1">
@@ -240,7 +249,8 @@ export function SavingsSimulator(): React.JSX.Element {
                     Com sua Club Key VIP:
                   </div>
                   <div className="text-sm font-medium text-foreground">
-                    {nights} noites @ R$ {selectedDest.clubKeyDaily.toLocaleString("pt-BR")}/noite
+                    {nights} noites @ R${" "}
+                    {selectedDest.clubKeyDaily.toLocaleString("pt-BR")}/noite
                   </div>
                 </div>
                 <div className="text-2xl font-black text-foreground">
@@ -248,7 +258,6 @@ export function SavingsSimulator(): React.JSX.Element {
                 </div>
               </div>
 
-              {/* Total Savings Highlight */}
               <div className="p-5 rounded-2xl bg-gradient-to-r from-emerald-500/20 to-teal-500/20 border border-emerald-500/40 text-center">
                 <div className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">
                   Dinheiro que fica no seu bolso:
@@ -262,7 +271,6 @@ export function SavingsSimulator(): React.JSX.Element {
               </div>
             </div>
 
-            {/* Action CTA */}
             <div className="pt-6 mt-6 border-t border-border/40">
               <Link
                 href="https://clubkey.io/subscription"

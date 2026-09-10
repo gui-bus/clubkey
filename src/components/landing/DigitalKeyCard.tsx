@@ -1,18 +1,20 @@
 "use client"
 
 import * as React from "react"
+
 import Link from "next/link"
+
 import { motion } from "framer-motion"
 import {
-  Key,
-  Sparkles,
-  ShieldCheck,
-  QrCode,
-  Cpu,
   ArrowRight,
-  Wifi,
-  Layers,
   CheckCircle2,
+  Cpu,
+  Key,
+  Layers,
+  QrCode,
+  ShieldCheck,
+  Sparkles,
+  Wifi,
 } from "lucide-react"
 
 import { Button } from "@/src/components/ui/button/button"
@@ -20,12 +22,10 @@ import { Button } from "@/src/components/ui/button/button"
 export function DigitalKeyCard(): React.JSX.Element {
   return (
     <section className="py-24 relative overflow-hidden bg-background">
-      {/* Decorative ambient background */}
       <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none -z-10" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          {/* Left Column: 3D Holographic VIP Key Card */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
@@ -34,16 +34,12 @@ export function DigitalKeyCard(): React.JSX.Element {
             className="lg:col-span-6 flex justify-center"
           >
             <div className="relative group w-full max-w-md perspective-1000">
-              {/* Glowing Aura under the card */}
               <div className="absolute -inset-1.5 bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 rounded-[32px] blur-xl opacity-30 group-hover:opacity-70 transition duration-1000 group-hover:duration-200 animate-tilt" />
 
-              {/* The Physical/Digital Card */}
               <div className="relative aspect-[1.586/1] rounded-3xl p-6 sm:p-8 bg-gradient-to-br from-stone-900 via-stone-950 to-neutral-900 border border-amber-500/40 text-white shadow-2xl flex flex-col justify-between overflow-hidden">
-                {/* Metallic holographic shimmer lines */}
                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-amber-500/20 via-transparent to-transparent pointer-events-none" />
                 <div className="absolute -right-20 -bottom-20 w-60 h-60 bg-amber-500/15 rounded-full blur-2xl pointer-events-none" />
 
-                {/* Card Top Row */}
                 <div className="flex items-center justify-between relative z-10">
                   <div className="flex items-center gap-2.5">
                     <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-600 to-yellow-400 flex items-center justify-center text-stone-950 shadow-md">
@@ -64,9 +60,7 @@ export function DigitalKeyCard(): React.JSX.Element {
                   </div>
                 </div>
 
-                {/* Card Center: EMV Chip & QR Code */}
                 <div className="flex items-center justify-between my-auto relative z-10">
-                  {/* EMV Chip Representation */}
                   <div className="w-12 h-9 rounded-lg bg-gradient-to-br from-amber-300 via-yellow-400 to-amber-600 border border-amber-200/50 flex flex-col justify-center px-1.5 shadow-inner">
                     <div className="h-0.5 bg-amber-800/40 rounded-full my-0.5" />
                     <div className="h-0.5 bg-amber-800/40 rounded-full my-0.5" />
@@ -78,7 +72,6 @@ export function DigitalKeyCard(): React.JSX.Element {
                   </div>
                 </div>
 
-                {/* Card Bottom Row: Member ID, Slogan & Ribus */}
                 <div className="relative z-10 pt-2 border-t border-white/10 flex items-end justify-between">
                   <div>
                     <div className="text-[10px] text-stone-400 tracking-wider uppercase font-mono">
@@ -102,7 +95,6 @@ export function DigitalKeyCard(): React.JSX.Element {
             </div>
           </motion.div>
 
-          {/* Right Column: Narrative & Blockchain/Digital Pass Perks */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -123,7 +115,9 @@ export function DigitalKeyCard(): React.JSX.Element {
             </h2>
 
             <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
-              Mais do que uma assinatura de viagens: a Club Key é seu passaporte de acesso a um clube exclusivo de hospitalidade global com curadoria rigorosa.
+              Mais do que uma assinatura de viagens: a Club Key é seu passaporte
+              de acesso a um clube exclusivo de hospitalidade global com
+              curadoria rigorosa.
             </p>
 
             <div className="space-y-4 pt-2">
@@ -136,7 +130,8 @@ export function DigitalKeyCard(): React.JSX.Element {
                     Autenticação Digital Instantânea
                   </div>
                   <div className="text-xs text-muted-foreground mt-0.5">
-                    Acesso direto à plataforma com sua chave digital, sem burocracias ou senhas complexas.
+                    Acesso direto à plataforma com sua chave digital, sem
+                    burocracias ou senhas complexas.
                   </div>
                 </div>
               </div>
@@ -150,7 +145,8 @@ export function DigitalKeyCard(): React.JSX.Element {
                     Garantia & Propriedade do Benefício
                   </div>
                   <div className="text-xs text-muted-foreground mt-0.5">
-                    Benefícios verificáveis e garantidos com tarifa preferencial de associado.
+                    Benefícios verificáveis e garantidos com tarifa preferencial
+                    de associado.
                   </div>
                 </div>
               </div>
@@ -164,7 +160,8 @@ export function DigitalKeyCard(): React.JSX.Element {
                     Acesso a Lançamentos & Oportunidades
                   </div>
                   <div className="text-xs text-muted-foreground mt-0.5">
-                    Prioridade no anúncio de novas propriedades, resorts parceiros e eventos fechados.
+                    Prioridade no anúncio de novas propriedades, resorts
+                    parceiros e eventos fechados.
                   </div>
                 </div>
               </div>

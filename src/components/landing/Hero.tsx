@@ -23,7 +23,6 @@ export function Hero(): React.JSX.Element {
       id="hero"
       className="relative w-full overflow-hidden bg-[#0D0D0D] text-white min-h-[640px] flex flex-col justify-between"
     >
-      {/* Background Image */}
       <div className="absolute inset-0 z-0 pointer-events-none select-none">
         <Image
           src="/utils/banners/img_01.png"
@@ -32,14 +31,12 @@ export function Hero(): React.JSX.Element {
           priority
           className="object-cover object-right md:object-center"
         />
-        {/* Dark Overlays: Left to Right & Top to Bottom */}
+
         <div className="absolute inset-0 bg-gradient-to-r from-[#161616]/90 via-[#161616]/60 to-transparent z-10" />
         <div className="absolute inset-0 bg-gradient-to-b from-[#161616]/80 via-[#161616]/30 to-transparent z-10" />
       </div>
 
-      {/* Main Content Area (Text & CTAs on the Left) */}
       <div className="relative z-20 w-full max-w-440 mx-auto px-6 md:px-12 pt-36 pb-16 md:pt-44 md:pb-24 lg:pt-48 lg:pb-28 flex-1 flex items-center">
-        {/* Top Key Icon */}
         <motion.div
           initial={{ opacity: 0, y: -15 }}
           animate={{ opacity: 1, y: 0 }}
@@ -55,18 +52,15 @@ export function Hero(): React.JSX.Element {
           />
         </motion.div>
         <div className="max-w-4xl flex flex-col items-start">
-          {/* Giant Bold Headline */}
           <h1 className="text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-black uppercase tracking-tight text-white leading-[1.04] mb-6 font-heading drop-shadow-md">
             Ative sua Key e pague menos para viajar
           </h1>
 
-          {/* Subheadline Copy */}
           <p className="text-lg sm:text-xl md:text-2xl text-zinc-200 font-light mb-8 leading-relaxed drop-shadow-sm">
             Tenha acesso a milhares de hospedagens e aproveite benefícios de
             membro direto na reserva.
           </p>
 
-          {/* CTA Buttons */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -79,7 +73,6 @@ export function Hero(): React.JSX.Element {
               rel="noreferrer"
               className="group relative inline-flex items-center justify-center px-8 py-4 overflow-hidden rounded-none bg-[#FF6847] text-white font-bold text-sm uppercase tracking-wider shadow-md cursor-pointer transition-all duration-300"
             >
-              {/* White slide background on hover */}
               <span className="absolute inset-0 w-full h-full bg-white -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out" />
               <span className="relative z-10 inline-flex items-center text-white group-hover:text-zinc-950 transition-colors duration-300">
                 Solicite agora
@@ -96,7 +89,6 @@ export function Hero(): React.JSX.Element {
         </div>
       </div>
 
-      {/* Bottom Infinite Marquee Ticker */}
       <div className="relative z-20 w-full bg-zinc-100 dark:bg-[#161616] border-t border-b border-zinc-300 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 py-3.5 overflow-hidden transition-colors">
         <div className="flex items-center">
           <motion.div

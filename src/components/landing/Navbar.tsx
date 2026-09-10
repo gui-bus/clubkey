@@ -1,11 +1,14 @@
 "use client"
 
 import * as React from "react"
-import Link from "next/link"
+
 import Image from "next/image"
-import { Menu, X, User } from "lucide-react"
+import Link from "next/link"
+
+import { Menu, User, X } from "lucide-react"
 
 import { ThemeToggle } from "@/src/components/common/themeToggle"
+
 import { cn } from "@/src/lib/utils/utils"
 
 const navLinks = [
@@ -57,10 +60,8 @@ export function Navbar(): React.JSX.Element {
 
   return (
     <div className="absolute top-0 left-0 right-0 z-40 bg-transparent pt-20 sm:pt-14 md:pt-12">
-      {/* Main Header (Transparent background, static at top of page, scrolls with page) */}
       <header className="w-full bg-transparent border-b border-white/10 py-3 sm:py-5">
         <div className="w-full max-w-440 mx-auto px-6 md:px-12 flex items-center justify-between gap-4">
-          {/* Logo Brand */}
           <div className="flex items-center gap-3 sm:gap-4 flex-shrink-0">
             <Link
               href="#"
@@ -79,7 +80,6 @@ export function Navbar(): React.JSX.Element {
             </Link>
           </div>
 
-          {/* Desktop Navigation Links */}
           <nav className="hidden xl:flex items-center gap-1">
             {navLinks.map((link) => {
               const isActive = activeSection === link.href
@@ -98,7 +98,9 @@ export function Navbar(): React.JSX.Element {
                   <span
                     className={cn(
                       "absolute bottom-0 left-3.5 right-3.5 h-0.5 transition-transform duration-300 origin-center bg-[#FF6847]",
-                      isActive ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+                      isActive
+                        ? "scale-x-100"
+                        : "scale-x-0 group-hover:scale-x-100"
                     )}
                   />
                 </Link>
@@ -106,7 +108,6 @@ export function Navbar(): React.JSX.Element {
             })}
           </nav>
 
-          {/* Actions: Theme Toggle & Já sou associado */}
           <div className="flex items-center gap-4 sm:gap-5 flex-shrink-0">
             <ThemeToggle />
 
@@ -120,7 +121,6 @@ export function Navbar(): React.JSX.Element {
               <span>Já sou associado</span>
             </a>
 
-            {/* Mobile menu trigger button */}
             <div className="flex xl:hidden">
               <button
                 type="button"
@@ -128,14 +128,17 @@ export function Navbar(): React.JSX.Element {
                 className="p-2 rounded-full transition-all cursor-pointer flex items-center justify-center bg-white/10 hover:bg-white/20 text-white"
                 aria-label="Abrir Menu"
               >
-                {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+                {mobileMenuOpen ? (
+                  <X className="w-5 h-5" />
+                ) : (
+                  <Menu className="w-5 h-5" />
+                )}
               </button>
             </div>
           </div>
         </div>
       </header>
 
-      {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
         <div className="w-full bg-[#161616]/95 backdrop-blur-md border-b border-zinc-800 p-6 xl:hidden shadow-2xl transition-all">
           <div className="flex flex-col gap-3">
@@ -170,4 +173,3 @@ export function Navbar(): React.JSX.Element {
     </div>
   )
 }
-
