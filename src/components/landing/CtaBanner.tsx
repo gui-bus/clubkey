@@ -5,13 +5,7 @@ import * as React from "react"
 import Link from "next/link"
 
 import { motion } from "framer-motion"
-import {
-  ArrowRight,
-  CheckCircle2,
-  Key,
-  ShieldCheck,
-  Sparkles,
-} from "lucide-react"
+import { ArrowRight, CheckCircle2, Key, Sparkles } from "lucide-react"
 
 import { Button } from "@/src/components/ui/button/button"
 

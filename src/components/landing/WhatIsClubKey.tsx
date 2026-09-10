@@ -3,16 +3,18 @@
 import * as React from "react"
 
 import Image from "next/image"
+import Link from "next/link"
 
 import { motion } from "framer-motion"
-import { ArrowRight, Key } from "lucide-react"
+import { Key } from "lucide-react"
 
 export function WhatIsClubKey(): React.JSX.Element {
   return (
     <section
-      id="o-que-e"
+      id="sobre-a-club-key"
       className="w-full py-16 md:py-24 bg-transparent text-zinc-900 dark:text-zinc-100 transition-colors overflow-hidden relative"
     >
+      <span id="o-que-e" className="sr-only" />
       <div className="w-full px-6 md:px-12">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-20 w-full">
           <motion.div
@@ -155,7 +157,7 @@ export function WhatIsClubKey(): React.JSX.Element {
             </div>
 
             <div>
-              <a
+              <Link
                 href="https://clubkey.io/subscription"
                 target="_blank"
                 rel="noreferrer"
@@ -165,7 +167,7 @@ export function WhatIsClubKey(): React.JSX.Element {
                 <span className="relative z-10 inline-flex items-center text-white group-hover:text-zinc-950 transition-colors duration-300">
                   Conheça a Club Key
                 </span>
-              </a>
+              </Link>
             </div>
           </motion.div>
         </div>

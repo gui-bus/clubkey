@@ -7,8 +7,6 @@ import Link from "next/link"
 import { motion } from "framer-motion"
 import {
   ArrowRight,
-  CheckCircle2,
-  Cpu,
   Key,
   Layers,
   QrCode,

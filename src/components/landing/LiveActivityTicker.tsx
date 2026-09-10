@@ -2,8 +2,7 @@
 
 import * as React from "react"
 
-import { motion } from "framer-motion"
-import { CheckCircle2, MapPin } from "lucide-react"
+import { CheckCircle2 } from "lucide-react"
 
 interface BookingItem {
   id: string

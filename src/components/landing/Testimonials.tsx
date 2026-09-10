@@ -2,8 +2,10 @@
 
 import * as React from "react"
 
+import Image from "next/image"
+
 import { motion } from "framer-motion"
-import { CheckCircle2, Quote, ShieldCheck, Star } from "lucide-react"
+import { CheckCircle2, Star } from "lucide-react"
 
 const testimonials = [
   {
@@ -113,9 +115,11 @@ export function Testimonials(): React.JSX.Element {
               </div>
 
               <div className="pt-6 border-t border-border/50 flex items-center gap-3.5">
-                <img
+                <Image
                   src={item.avatar}
                   alt={item.name}
+                  width={48}
+                  height={48}
                   className="w-12 h-12 rounded-full object-cover border-2 border-amber-500/30"
                 />
                 <div>

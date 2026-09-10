@@ -12,9 +12,7 @@ import {
   Plane,
   ShieldCheck,
   ShoppingBag,
-  Sparkles,
   Ticket,
-  TrendingUp,
   Utensils,
 } from "lucide-react"
 

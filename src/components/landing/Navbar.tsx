@@ -4,7 +4,7 @@ import * as React from "react"
 
 import Image from "next/image"
 import Link from "next/link"
-import { useQueryState, parseAsString } from "nuqs"
+import { usePathname } from "next/navigation"
 
 import { Menu, User, X } from "lucide-react"
 
@@ -13,25 +13,32 @@ import { ThemeToggle } from "@/src/components/common/themeToggle"
 import { cn } from "@/src/lib/utils/utils"
 
 const navLinks = [
-  { name: "O que é", href: "#o-que-e" },
-  { name: "Parceiros", href: "#parceiros" },
-  { name: "Experiência", href: "#experiencia" },
-  { name: "Como Funciona", href: "#como-funciona" },
-  { name: "Catálogo", href: "#catalogo" },
-  { name: "FAQ", href: "#faq" },
+  { name: "Sobre a Club Key", href: "/#sobre-a-club-key" },
+  { name: "Parceiros", href: "/#parceiros" },
+  { name: "Experiência", href: "/#experiencia" },
+  { name: "Como Funciona", href: "/#como-funciona" },
+  { name: "Catálogo", href: "/rooms" },
+  { name: "FAQ", href: "/#faq" },
 ]
 
-export function Navbar(): React.JSX.Element {
+export function Navbar({
+  isTransparent,
+}: {
+  isTransparent?: boolean
+} = {}): React.JSX.Element {
+  const pathname = usePathname()
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false)
   const [activeSection, setActiveSection] = React.useState<string>("")
-  const [, setSectionQuery] = useQueryState(
-    "section",
-    parseAsString.withOptions({ shallow: true, history: "replace" })
+
+  const isDetailRoute = Boolean(
+    pathname?.startsWith("/rooms/") && pathname !== "/rooms"
   )
+  const transparent =
+    isTransparent !== undefined ? isTransparent : !isDetailRoute
 
   React.useEffect(() => {
     const sectionIds = [
-      "o-que-e",
+      "sobre-a-club-key",
       "parceiros",
       "experiencia",
       "como-funciona",
@@ -68,15 +75,17 @@ export function Navbar(): React.JSX.Element {
         if (currentId) {
           const hashVal = `#${currentId}`
           setActiveSection(hashVal)
-          if (window.location.hash !== hashVal) {
-            window.history.replaceState(null, "", hashVal)
-            setSectionQuery(currentId)
+          if (window.location.hash !== hashVal || window.location.search) {
+            window.history.replaceState(
+              null,
+              "",
+              window.location.pathname + hashVal
+            )
           }
         } else {
           setActiveSection("")
-          if (window.location.hash) {
+          if (window.location.hash || window.location.search) {
             window.history.replaceState(null, "", window.location.pathname)
-            setSectionQuery(null)
           }
         }
 
@@ -87,15 +96,22 @@ export function Navbar(): React.JSX.Element {
     handleScrollSpy()
     window.addEventListener("scroll", handleScrollSpy, { passive: true })
     return () => window.removeEventListener("scroll", handleScrollSpy)
-  }, [setSectionQuery])
+  }, [])
 
   return (
-    <div className="absolute top-0 left-0 right-0 z-40 bg-transparent pt-20 sm:pt-14 md:pt-12">
-      <header className="w-full bg-transparent border-b border-white/10 py-3 sm:py-5">
-        <div className="w-full max-w-440 mx-auto px-6 md:px-12 flex items-center justify-between gap-4">
+    <div
+      className={cn(
+        "z-40 w-full transition-colors",
+        transparent
+          ? "absolute top-0 left-0 right-0 bg-transparent pt-20 sm:pt-14 md:pt-12"
+          : "relative bg-[#0c0c0c] border-b border-white/10 pt-20 sm:pt-14 md:pt-12"
+      )}
+    >
+      <header className="w-full bg-transparent py-3 sm:py-4">
+        <div className="w-full max-w-[1720px] mx-auto px-6 md:px-12 flex items-center justify-between gap-4">
           <div className="flex items-center gap-3 sm:gap-4 flex-shrink-0">
             <Link
-              href="#"
+              href="/"
               className="flex items-center transition-opacity hover:opacity-90"
               aria-label="ClubKey - Início"
             >
@@ -113,7 +129,13 @@ export function Navbar(): React.JSX.Element {
 
           <nav className="hidden xl:flex items-center gap-1">
             {navLinks.map((link) => {
-              const isActive = activeSection === link.href
+              const linkHash = link.href.startsWith("/#")
+                ? link.href.replace("/", "")
+                : link.href
+              const isActive =
+                pathname === "/rooms"
+                  ? link.href === "/rooms"
+                  : activeSection === linkHash || activeSection === link.href
               return (
                 <Link
                   key={link.name}
@@ -142,7 +164,7 @@ export function Navbar(): React.JSX.Element {
           <div className="flex items-center gap-4 sm:gap-5 flex-shrink-0">
             <ThemeToggle />
 
-            <a
+            <Link
               href="https://clubkey.io/login"
               target="_blank"
               rel="noreferrer"
@@ -150,7 +172,7 @@ export function Navbar(): React.JSX.Element {
             >
               <User className="w-3.5 h-3.5" />
               <span>Já sou associado</span>
-            </a>
+            </Link>
 
             <div className="flex xl:hidden">
               <button
@@ -187,7 +209,7 @@ export function Navbar(): React.JSX.Element {
             <div className="h-px bg-zinc-800 my-2" />
 
             <div className="flex flex-col gap-3 pt-2">
-              <a
+              <Link
                 href="https://clubkey.io/login"
                 target="_blank"
                 rel="noreferrer"
@@ -196,7 +218,7 @@ export function Navbar(): React.JSX.Element {
               >
                 <User className="w-4 h-4" />
                 <span>Já sou associado (Login)</span>
-              </a>
+              </Link>
             </div>
           </div>
         </div>

@@ -1,7 +1,9 @@
 "use client"
 
 import * as React from "react"
+
 import Link from "next/link"
+
 import { motion } from "framer-motion"
 
 export function ExperienceBanner(): React.JSX.Element {
@@ -40,7 +42,7 @@ export function ExperienceBanner(): React.JSX.Element {
           </p>
 
           <div className="flex flex-wrap items-center gap-4">
-            <a
+            <Link
               href="https://clubkey.io/subscription"
               target="_blank"
               rel="noreferrer"
@@ -50,7 +52,7 @@ export function ExperienceBanner(): React.JSX.Element {
               <span className="relative z-10 inline-flex items-center text-white group-hover:text-zinc-950 transition-colors duration-300">
                 Solicite agora
               </span>
-            </a>
+            </Link>
 
             <Link
               href="/rooms"

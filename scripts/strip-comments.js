@@ -23,6 +23,7 @@ function stripComments(content) {
   let cleaned = content.replace(/\/\*[\s\S]*?\*\//g, '');
   cleaned = cleaned.replace(/\{\/\*[\s\S]*?\*\/\}/g, '');
   cleaned = cleaned.replace(/^\s*\/\/.*$/gm, '');
+  cleaned = cleaned.replace(/(?<!https?:)\s*\/\/[^\r\n]*/g, '');
   return cleaned;
 }
 

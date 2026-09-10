@@ -3,6 +3,7 @@
 import * as React from "react"
 
 import Image from "next/image"
+import Link from "next/link"
 
 import { motion } from "framer-motion"
 
@@ -25,7 +26,7 @@ export function FloatingCta(): React.JSX.Element {
           alt=""
           className="w-8 sm:w-12 dark:invert dark:brightness-0 shrink-0 select-none pointer-events-none"
         />
-        <a
+        <Link
           href="https://clubkey.io/subscription"
           target="_blank"
           rel="noreferrer"
@@ -35,7 +36,7 @@ export function FloatingCta(): React.JSX.Element {
           <span className="relative z-10 inline-flex items-center text-white group-hover:text-zinc-950 transition-colors duration-300">
             Quero ser associado
           </span>
-        </a>
+        </Link>
       </motion.div>
     </aside>
   )

@@ -67,7 +67,7 @@ export function Hero(): React.JSX.Element {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full sm:w-auto"
           >
-            <a
+            <Link
               href="https://clubkey.io/subscription"
               target="_blank"
               rel="noreferrer"
@@ -77,7 +77,7 @@ export function Hero(): React.JSX.Element {
               <span className="relative z-10 inline-flex items-center text-white group-hover:text-zinc-950 transition-colors duration-300">
                 Solicite agora
               </span>
-            </a>
+            </Link>
 
             <Link
               href="/rooms"

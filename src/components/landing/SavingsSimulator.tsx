@@ -2,19 +2,11 @@
 
 import * as React from "react"
 
+import Image from "next/image"
 import Link from "next/link"
 
 import { motion } from "framer-motion"
-import {
-  ArrowRight,
-  Calculator,
-  CheckCircle2,
-  DollarSign,
-  Hotel,
-  ShieldCheck,
-  Sparkles,
-  TrendingDown,
-} from "lucide-react"
+import { ArrowRight, Calculator, ShieldCheck, Sparkles } from "lucide-react"
 
 import { Button } from "@/src/components/ui/button/button"
 
@@ -159,9 +151,11 @@ export function SavingsSimulator(): React.JSX.Element {
                           : "bg-muted/40 border-border/60 hover:bg-muted text-muted-foreground hover:text-foreground"
                       )}
                     >
-                      <img
+                      <Image
                         src={dest.image}
                         alt={dest.name}
+                        width={40}
+                        height={40}
                         className="w-10 h-10 rounded-xl object-cover shrink-0"
                       />
                       <div className="min-w-0">

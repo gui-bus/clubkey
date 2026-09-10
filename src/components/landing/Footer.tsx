@@ -5,7 +5,7 @@ import * as React from "react"
 import Image from "next/image"
 import Link from "next/link"
 
-import { ArrowUp, ExternalLink, Mail, ShieldCheck } from "lucide-react"
+import { ArrowUp, Mail, ShieldCheck } from "lucide-react"
 
 export function Footer(): React.JSX.Element {
   const scrollToTop = () => {
@@ -30,7 +30,7 @@ export function Footer(): React.JSX.Element {
           </div>
 
           <div className="flex items-center gap-4">
-            <a
+            <Link
               href="https://clubkey.io/subscription"
               target="_blank"
               rel="noreferrer"
@@ -38,12 +38,15 @@ export function Footer(): React.JSX.Element {
             >
               <span>Quero ser associado</span>
 
-              <img
+              <Image
                 src="/utils/gifs/arrow_right.gif"
                 alt=""
+                width={16}
+                height={16}
+                unoptimized
                 className="w-4 h-4 invert brightness-0"
               />
-            </a>
+            </Link>
           </div>
         </div>
 
@@ -132,42 +135,42 @@ export function Footer(): React.JSX.Element {
             </h4>
             <ul className="space-y-2.5 text-xs text-zinc-400">
               <li>
-                <a
+                <Link
                   href="https://clubkey.io/login"
                   target="_blank"
                   rel="noreferrer"
                   className="hover:text-white transition-colors"
                 >
                   Já sou associado (Login)
-                </a>
+                </Link>
               </li>
               <li>
-                <a
+                <Link
                   href="https://clubkey.io/subscription"
                   target="_blank"
                   rel="noreferrer"
                   className="hover:text-white transition-colors"
                 >
                   Quero ser associado
-                </a>
+                </Link>
               </li>
               <li>
-                <a
+                <Link
                   href="https://clubkey.io/rooms"
                   target="_blank"
                   rel="noreferrer"
                   className="hover:text-white transition-colors"
                 >
                   Explorar Hospedagens
-                </a>
+                </Link>
               </li>
               <li>
-                <a
+                <Link
                   href="mailto:contato@clubkey.io"
                   className="hover:text-white transition-colors"
                 >
                   Suporte & Concierge
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -178,13 +181,13 @@ export function Footer(): React.JSX.Element {
             </h4>
             <ul className="space-y-2.5 text-xs text-zinc-400">
               <li>
-                <a
+                <Link
                   href="mailto:contato@clubkey.io"
                   className="hover:text-[#FF6847] transition-colors flex items-center gap-2"
                 >
                   <Mail className="w-3.5 h-3.5 text-[#FF6847]" />
                   <span>contato@clubkey.io</span>
-                </a>
+                </Link>
               </li>
               <li className="pt-2">
                 <span className="text-zinc-500 text-[11px] leading-relaxed block font-light">
@@ -202,22 +205,22 @@ export function Footer(): React.JSX.Element {
           </div>
 
           <div className="flex items-center gap-6">
-            <a
+            <Link
               href="https://clubkey.io/rooms"
               target="_blank"
               rel="noreferrer"
               className="hover:text-white transition-colors"
             >
               Hospedagens
-            </a>
-            <a
+            </Link>
+            <Link
               href="https://clubkey.io/subscription"
               target="_blank"
               rel="noreferrer"
               className="hover:text-white transition-colors"
             >
               Assinatura
-            </a>
+            </Link>
             <button
               type="button"
               onClick={scrollToTop}

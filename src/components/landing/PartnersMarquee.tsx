@@ -3,9 +3,9 @@
 import * as React from "react"
 
 import Image from "next/image"
+import Link from "next/link"
 
 import { motion } from "framer-motion"
-import { ArrowRight, Check } from "lucide-react"
 
 interface PartnerLogo {
   name: string
@@ -126,7 +126,6 @@ export function PartnersMarquee(): React.JSX.Element {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-10 w-full">
             {partnerHighlights.map((item, idx) => (
               <div key={idx} className="flex items-start gap-4">
-                
                 <div>
                   <h4 className="text-base sm:text-lg font-bold text-zinc-900 dark:text-white mb-1.5">
                     {item.title}
@@ -140,7 +139,7 @@ export function PartnersMarquee(): React.JSX.Element {
           </div>
 
           <div>
-            <a
+            <Link
               href="https://clubkey.io/"
               target="_blank"
               rel="noreferrer"
@@ -150,7 +149,7 @@ export function PartnersMarquee(): React.JSX.Element {
               <span className="relative z-10 inline-flex items-center text-white group-hover:text-zinc-950 transition-colors duration-300">
                 Solicite agora
               </span>
-            </a>
+            </Link>
           </div>
         </motion.div>
       </div>

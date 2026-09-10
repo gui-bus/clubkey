@@ -5,7 +5,7 @@ import * as React from "react"
 import Link from "next/link"
 
 import { motion } from "framer-motion"
-import { ArrowRight, Check } from "lucide-react"
+import { Check } from "lucide-react"
 
 const steps = [
   {
