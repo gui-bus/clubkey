@@ -8,6 +8,7 @@ import { usePathname } from "next/navigation"
 
 import { Menu, User, X } from "lucide-react"
 
+import { Container } from "@/src/components/common/container"
 import { ThemeToggle } from "@/src/components/common/themeToggle"
 
 import { cn } from "@/src/lib/utils/utils"
@@ -108,7 +109,7 @@ export function Navbar({
       )}
     >
       <header className="w-full bg-transparent py-3 sm:py-4">
-        <div className="w-full max-w-[1720px] mx-auto px-6 md:px-12 flex items-center justify-between gap-4">
+        <Container className="flex items-center justify-between gap-4">
           <div className="flex items-center gap-3 sm:gap-4 flex-shrink-0">
             <Link
               href="/"
@@ -189,7 +190,7 @@ export function Navbar({
               </button>
             </div>
           </div>
-        </div>
+        </Container>
       </header>
 
       {mobileMenuOpen && (

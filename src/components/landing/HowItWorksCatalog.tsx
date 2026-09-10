@@ -7,6 +7,8 @@ import Link from "next/link"
 import { motion } from "framer-motion"
 import { Check } from "lucide-react"
 
+import { Container } from "@/src/components/common/container"
+
 const steps = [
   {
     number: "01",
@@ -34,7 +36,7 @@ export function HowItWorksCatalog(): React.JSX.Element {
       id="como-funciona"
       className="w-full py-20 md:py-28 bg-transparent text-zinc-900 dark:text-zinc-100 transition-colors overflow-hidden"
     >
-      <div className="w-full px-6 md:px-12">
+      <Container>
         <div className="mb-20 md:mb-28">
           <motion.div
             initial={{ opacity: 0, y: 25 }}
@@ -121,7 +123,7 @@ export function HowItWorksCatalog(): React.JSX.Element {
             <div>
               <Link
                 href="/rooms"
-                className="group relative inline-flex items-center justify-center px-8 py-4 overflow-hidden rounded-none bg-[#FF6847] text-white font-bold text-sm uppercase tracking-wider shadow-md cursor-pointer transition-all duration-300"
+                className="group relative inline-flex items-center justify-center px-8 py-4 overflow-hidden rounded-sm bg-[#FF6847] text-white font-bold text-sm uppercase tracking-wider shadow-md cursor-pointer transition-all duration-300"
               >
                 <span className="absolute inset-0 w-full h-full bg-white -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out" />
                 <span className="relative z-10 inline-flex items-center text-white group-hover:text-zinc-950 transition-colors duration-300">
@@ -174,7 +176,7 @@ export function HowItWorksCatalog(): React.JSX.Element {
             </div>
           </div>
         </motion.div>
-      </div>
+      </Container>
     </section>
   )
 }

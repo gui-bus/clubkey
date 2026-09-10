@@ -176,7 +176,7 @@ export const designSizes = {
 }
 
 export const designRadius = {
-  none: "rounded-none",
+  none: "rounded-sm",
   xs: "rounded-xs",
   sm: "rounded-sm",
   md: "rounded-md",

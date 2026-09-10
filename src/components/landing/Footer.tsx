@@ -7,50 +7,17 @@ import Link from "next/link"
 
 import { ArrowUp, Mail, ShieldCheck } from "lucide-react"
 
+import { Container } from "@/src/components/common/container"
+
 export function Footer(): React.JSX.Element {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" })
   }
 
   return (
-    <footer className="bg-[#161616] text-zinc-400 pt-20 pb-12 border-t border-zinc-800 w-full relative overflow-hidden">
-      <div className="w-full max-w-440 mx-auto px-6 md:px-12 relative z-10">
-        <div className="flex flex-col md:flex-row md:items-center justify-between pb-16 border-b border-zinc-800 gap-8">
-          <div className="max-w-2xl">
-            <div className="w-fit inline-flex items-center justify-center py-1 rounded-tr-full rounded-bl-full px-6 bg-[#FF6847] text-white text-[10px] font-bold uppercase tracking-wider mb-3">
-              Membro ClubKey
-            </div>
-            <h3 className="text-2xl sm:text-4xl font-black uppercase text-white tracking-tight leading-tight">
-              ATIVE SUA KEY HOJE E PAGUE MENOS PARA VIAJAR
-            </h3>
-            <p className="text-zinc-400 text-sm mt-2 font-light">
-              Descontos reais de até 60% e benefícios exclusivos em mais de 150
-              países.
-            </p>
-          </div>
-
-          <div className="flex items-center gap-4">
-            <Link
-              href="https://clubkey.io/subscription"
-              target="_blank"
-              rel="noreferrer"
-              className="shrink-0 inline-flex items-center justify-center gap-3 px-9 py-4.5 rounded-none bg-[#FF6847] hover:bg-[#E85535] text-white font-black text-xs uppercase tracking-wider transition-colors duration-200 shadow-xl cursor-pointer"
-            >
-              <span>Quero ser associado</span>
-
-              <Image
-                src="/utils/gifs/arrow_right.gif"
-                alt=""
-                width={16}
-                height={16}
-                unoptimized
-                className="w-4 h-4 invert brightness-0"
-              />
-            </Link>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 py-16">
+    <footer className="bg-[#161616] text-zinc-400 pt-16 pb-12 border-t border-zinc-800 w-full relative overflow-hidden">
+      <Container className="relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-16">
           <div className="lg:col-span-2 space-y-4">
             <div className="relative h-10 w-40">
               <Image
@@ -80,15 +47,31 @@ export function Footer(): React.JSX.Element {
             <ul className="space-y-2.5 text-xs text-zinc-400">
               <li>
                 <Link
-                  href="#o-que-e"
+                  href="/#sobre-a-club-key"
                   className="hover:text-white transition-colors"
                 >
-                  O que é ClubKey
+                  Sobre a ClubKey
                 </Link>
               </li>
               <li>
                 <Link
-                  href="#como-funciona"
+                  href="/#parceiros"
+                  className="hover:text-white transition-colors"
+                >
+                  Parceiros
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/#experiencia"
+                  className="hover:text-white transition-colors"
+                >
+                  Experiência
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/#como-funciona"
                   className="hover:text-white transition-colors"
                 >
                   Como Funciona
@@ -96,31 +79,15 @@ export function Footer(): React.JSX.Element {
               </li>
               <li>
                 <Link
-                  href="#catalogo"
+                  href="/rooms"
                   className="hover:text-white transition-colors"
                 >
-                  Catálogo Selecionado
+                  Catálogo
                 </Link>
               </li>
               <li>
                 <Link
-                  href="#beneficios"
-                  className="hover:text-white transition-colors"
-                >
-                  Grandes Marcas & Benefícios
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#planos"
-                  className="hover:text-white transition-colors"
-                >
-                  Planos de Membro
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#faq"
+                  href="/#faq"
                   className="hover:text-white transition-colors"
                 >
                   Perguntas Frequentes
@@ -156,9 +123,7 @@ export function Footer(): React.JSX.Element {
               </li>
               <li>
                 <Link
-                  href="https://clubkey.io/rooms"
-                  target="_blank"
-                  rel="noreferrer"
+                  href="/rooms"
                   className="hover:text-white transition-colors"
                 >
                   Explorar Hospedagens
@@ -206,9 +171,7 @@ export function Footer(): React.JSX.Element {
 
           <div className="flex items-center gap-6">
             <Link
-              href="https://clubkey.io/rooms"
-              target="_blank"
-              rel="noreferrer"
+              href="/rooms"
               className="hover:text-white transition-colors"
             >
               Hospedagens
@@ -237,7 +200,7 @@ export function Footer(): React.JSX.Element {
             CLUBKEY
           </div>
         </div>
-      </div>
+      </Container>
     </footer>
   )
 }

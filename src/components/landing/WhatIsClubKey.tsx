@@ -8,6 +8,8 @@ import Link from "next/link"
 import { motion } from "framer-motion"
 import { Key } from "lucide-react"
 
+import { Container } from "@/src/components/common/container"
+
 export function WhatIsClubKey(): React.JSX.Element {
   return (
     <section
@@ -15,7 +17,7 @@ export function WhatIsClubKey(): React.JSX.Element {
       className="w-full py-16 md:py-24 bg-transparent text-zinc-900 dark:text-zinc-100 transition-colors overflow-hidden relative"
     >
       <span id="o-que-e" className="sr-only" />
-      <div className="w-full px-6 md:px-12">
+      <Container>
         <div className="flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-20 w-full">
           <motion.div
             initial={{ opacity: 0, x: -30 }}
@@ -161,7 +163,7 @@ export function WhatIsClubKey(): React.JSX.Element {
                 href="https://clubkey.io/subscription"
                 target="_blank"
                 rel="noreferrer"
-                className="group relative inline-flex items-center justify-center px-8 py-4 overflow-hidden rounded-none bg-[#FF6847] text-white font-bold text-sm uppercase tracking-wider shadow-md cursor-pointer transition-all duration-300"
+                className="group relative inline-flex items-center justify-center px-8 py-4 overflow-hidden rounded-sm bg-[#FF6847] text-white font-bold text-sm uppercase tracking-wider shadow-md cursor-pointer transition-all duration-300"
               >
                 <span className="absolute inset-0 w-full h-full bg-white -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out" />
                 <span className="relative z-10 inline-flex items-center text-white group-hover:text-zinc-950 transition-colors duration-300">
@@ -171,7 +173,7 @@ export function WhatIsClubKey(): React.JSX.Element {
             </div>
           </motion.div>
         </div>
-      </div>
+      </Container>
     </section>
   )
 }

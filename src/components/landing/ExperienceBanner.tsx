@@ -6,6 +6,8 @@ import Link from "next/link"
 
 import { motion } from "framer-motion"
 
+import { Container } from "@/src/components/common/container"
+
 export function ExperienceBanner(): React.JSX.Element {
   return (
     <section
@@ -16,7 +18,7 @@ export function ExperienceBanner(): React.JSX.Element {
       <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-black/35 pointer-events-none" />
       <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/60 pointer-events-none" />
 
-      <div className="relative z-10 w-full px-6 md:px-12 py-20 flex flex-col items-start justify-center">
+      <Container className="relative z-10 py-20 flex flex-col items-start justify-center">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -46,7 +48,7 @@ export function ExperienceBanner(): React.JSX.Element {
               href="https://clubkey.io/subscription"
               target="_blank"
               rel="noreferrer"
-              className="group relative inline-flex items-center justify-center px-8 py-4 overflow-hidden rounded-none bg-[#FF6847] text-white font-bold text-sm uppercase tracking-wider shadow-md cursor-pointer transition-all duration-300"
+              className="group relative inline-flex items-center justify-center px-8 py-4 overflow-hidden rounded-sm bg-[#FF6847] text-white font-bold text-sm uppercase tracking-wider shadow-md cursor-pointer transition-all duration-300"
             >
               <span className="absolute inset-0 w-full h-full bg-white -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out" />
               <span className="relative z-10 inline-flex items-center text-white group-hover:text-zinc-950 transition-colors duration-300">
@@ -56,13 +58,13 @@ export function ExperienceBanner(): React.JSX.Element {
 
             <Link
               href="/rooms"
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-none bg-zinc-900/80 hover:bg-zinc-800 border border-white/20 text-white font-bold text-sm uppercase tracking-wider transition-all duration-200 shadow-xs cursor-pointer text-center backdrop-blur-xs"
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-sm bg-zinc-900/80 hover:bg-zinc-800 border border-white/20 text-white font-bold text-sm uppercase tracking-wider transition-all duration-200 shadow-xs cursor-pointer text-center backdrop-blur-xs"
             >
               <span>Explorar Acomodações (+4.500)</span>
             </Link>
           </div>
         </motion.div>
-      </div>
+      </Container>
     </section>
   )
 }

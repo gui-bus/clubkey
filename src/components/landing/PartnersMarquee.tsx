@@ -7,9 +7,13 @@ import Link from "next/link"
 
 import { motion } from "framer-motion"
 
+import { Container } from "@/src/components/common/container"
+import { cn } from "@/src/lib/utils/utils"
+
 interface PartnerLogo {
   name: string
   src: string
+  darkSrc?: string
   width: number
   height: number
   invertInDark?: boolean
@@ -35,6 +39,7 @@ const partners: PartnerLogo[] = [
   {
     name: "Drogaria São Paulo",
     src: "/utils/icons/partners/drogaria_sao_paulo.svg",
+    darkSrc: "/utils/icons/partners/drogaria_sao_paulo_white_text.svg",
     width: 500,
     height: 90,
     className: "h-8 sm:h-9 w-auto",
@@ -42,6 +47,7 @@ const partners: PartnerLogo[] = [
   {
     name: "Movida",
     src: "/utils/icons/partners/movida.svg",
+    darkSrc: "/utils/icons/partners/movida_white_text.svg",
     width: 500,
     height: 153,
     className: "h-7 sm:h-8 w-auto",
@@ -49,6 +55,7 @@ const partners: PartnerLogo[] = [
   {
     name: "Sem Parar",
     src: "/utils/icons/partners/sem_parar.svg",
+    darkSrc: "/utils/icons/partners/sem_parar_white_text.svg",
     width: 500,
     height: 455,
     className: "h-9 sm:h-11 w-auto",
@@ -94,7 +101,7 @@ export function PartnersMarquee(): React.JSX.Element {
       id="parceiros"
       className="w-full pt-16 md:pt-24 bg-transparent text-zinc-900 dark:text-zinc-100 transition-colors overflow-hidden relative"
     >
-      <div className="w-full px-6 md:px-12">
+      <Container>
         <motion.div
           initial={{ opacity: 0, y: 25 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -143,7 +150,7 @@ export function PartnersMarquee(): React.JSX.Element {
               href="https://clubkey.io/"
               target="_blank"
               rel="noreferrer"
-              className="group relative inline-flex items-center justify-center px-8 py-4 overflow-hidden rounded-none bg-[#FF6847] text-white font-bold text-sm uppercase tracking-wider shadow-md cursor-pointer transition-all duration-300"
+              className="group relative inline-flex items-center justify-center px-8 py-4 overflow-hidden rounded-sm bg-[#FF6847] text-white font-bold text-sm uppercase tracking-wider shadow-md cursor-pointer transition-all duration-300"
             >
               <span className="absolute inset-0 w-full h-full bg-white -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out" />
               <span className="relative z-10 inline-flex items-center text-white group-hover:text-zinc-950 transition-colors duration-300">
@@ -152,16 +159,16 @@ export function PartnersMarquee(): React.JSX.Element {
             </Link>
           </div>
         </motion.div>
-      </div>
+      </Container>
 
-      <div className="w-full px-6 md:px-12 mt-16 mb-6 flex items-center justify-between">
+      <Container className="mt-16 mb-6 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="h-2 w-2 rounded-full bg-[#FF6847] animate-pulse" />
           <span className="text-xs font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400">
             Marcas parceiras em destaque
           </span>
         </div>
-      </div>
+      </Container>
 
       <div className="relative w-full overflow-hidden py-6">
         <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-36 md:w-48 z-20 pointer-events-none bg-gradient-to-r from-[#F1F1F1] dark:from-[#161616] to-transparent" />
@@ -182,17 +189,42 @@ export function PartnersMarquee(): React.JSX.Element {
                 key={`${partner.name}-${index}`}
                 className="shrink-0 flex items-center justify-center transition-transform duration-300 hover:scale-110 select-none cursor-pointer"
               >
-                <Image
-                  src={partner.src}
-                  alt={partner.name}
-                  width={partner.width}
-                  height={partner.height}
-                  className={`object-contain transition-all duration-300 opacity-80 hover:opacity-100 ${
-                    partner.invertInDark
-                      ? "dark:invert dark:brightness-125"
-                      : ""
-                  } ${partner.className ?? "h-8 w-auto"}`}
-                />
+                {partner.darkSrc ? (
+                  <>
+                    <Image
+                      src={partner.src}
+                      alt={partner.name}
+                      width={partner.width}
+                      height={partner.height}
+                      className={cn(
+                        "object-contain transition-all duration-300 opacity-80 hover:opacity-100 dark:hidden",
+                        partner.className ?? "h-8 w-auto"
+                      )}
+                    />
+                    <Image
+                      src={partner.darkSrc}
+                      alt={partner.name}
+                      width={partner.width}
+                      height={partner.height}
+                      className={cn(
+                        "object-contain transition-all duration-300 opacity-80 hover:opacity-100 hidden dark:block",
+                        partner.className ?? "h-8 w-auto"
+                      )}
+                    />
+                  </>
+                ) : (
+                  <Image
+                    src={partner.src}
+                    alt={partner.name}
+                    width={partner.width}
+                    height={partner.height}
+                    className={cn(
+                      "object-contain transition-all duration-300 opacity-80 hover:opacity-100",
+                      partner.invertInDark && "dark:invert dark:brightness-125",
+                      partner.className ?? "h-8 w-auto"
+                    )}
+                  />
+                )}
               </div>
             ))}
           </motion.div>

@@ -33,6 +33,7 @@ import {
   X,
 } from "lucide-react"
 
+import { Container } from "@/src/components/common/container"
 import { FloatingCta } from "@/src/components/landing/FloatingCta"
 import { Footer } from "@/src/components/landing/Footer"
 import { Navbar } from "@/src/components/landing/Navbar"
@@ -866,7 +867,7 @@ export default function RoomsPage(): React.JSX.Element {
                   isCheckIn || isCheckOut
                     ? "font-bold text-white bg-[#FF6847] shadow-xs"
                     : inRange
-                      ? "font-semibold text-[#FF6847] bg-[#FF6847]/15 rounded-none"
+                      ? "font-semibold text-[#FF6847] bg-[#FF6847]/15 rounded-sm"
                       : "text-zinc-800 dark:text-zinc-200 hover:bg-[#FF6847]/10 hover:text-[#FF6847]"
                 )}
               >
@@ -914,7 +915,7 @@ export default function RoomsPage(): React.JSX.Element {
           <div className="absolute inset-0 bg-gradient-to-b from-[#161616]/85 via-[#161616]/65 to-[#161616]/95 z-10" />
         </div>
 
-        <div className="relative z-20 w-full max-w-440 mx-auto px-6 md:px-12 pt-36 pb-20 md:pt-44 md:pb-24 flex flex-col justify-center items-center text-center">
+        <Container className="relative z-20 pt-36 pb-20 md:pt-44 md:pb-24 flex flex-col justify-center items-center text-center">
           <div className="max-w-6xl flex flex-col items-center text-center w-full">
             <h1 className="text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-black uppercase tracking-tight text-white leading-[1.04] mb-4 font-heading drop-shadow-md">
               Viva momentos únicos em{" "}
@@ -1175,11 +1176,11 @@ export default function RoomsPage(): React.JSX.Element {
               )}
             </motion.div>
           </div>
-        </div>
+        </Container>
       </section>
 
-      <div className="relative z-10 w-full flex-1 py-10 px-4 sm:px-8 md:px-12">
-        <div className="w-full max-w-440 mx-auto flex flex-col gap-12 sm:gap-16">
+      <Container className="relative z-10 flex-1 py-10">
+        <div className="w-full flex flex-col gap-12 sm:gap-16">
           {hasActiveFilters && (
             <div className="flex flex-wrap items-center justify-between gap-3 bg-white dark:bg-[#1a1a1a] px-4 py-3 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-xs">
               <div className="flex flex-wrap items-center gap-2 text-xs text-zinc-600 dark:text-zinc-300">
@@ -1274,7 +1275,7 @@ export default function RoomsPage(): React.JSX.Element {
             </div>
           )}
         </div>
-      </div>
+      </Container>
 
       <Footer />
       <FloatingCta />

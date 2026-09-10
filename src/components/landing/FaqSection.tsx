@@ -3,6 +3,8 @@
 import * as React from "react"
 import { motion, AnimatePresence } from "framer-motion"
 
+import { Container } from "@/src/components/common/container"
+
 interface FaqItem {
   id: string
   category: string
@@ -65,7 +67,7 @@ export function FaqSection(): React.JSX.Element {
       id="faq"
       className="w-full py-20 md:py-28 bg-transparent text-zinc-900 dark:text-zinc-100 transition-colors overflow-hidden"
     >
-      <div className="w-full px-6 md:px-12">
+      <Container>
         <div className="w-full border-t border-b border-zinc-300 dark:border-zinc-800 py-3.5 flex flex-wrap items-center justify-between gap-4 text-xs font-mono uppercase tracking-widest text-zinc-500 dark:text-zinc-400 mb-12 sm:mb-16">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-[#FF6847]" />
@@ -183,7 +185,7 @@ export function FaqSection(): React.JSX.Element {
             )
           })}
         </div>
-      </div>
+      </Container>
     </section>
   )
 }

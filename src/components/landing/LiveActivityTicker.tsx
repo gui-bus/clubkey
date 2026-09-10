@@ -4,6 +4,8 @@ import * as React from "react"
 
 import { CheckCircle2 } from "lucide-react"
 
+import { Container } from "@/src/components/common/container"
+
 interface BookingItem {
   id: string
   name: string
@@ -53,7 +55,7 @@ const liveBookings: BookingItem[] = [
 export function LiveActivityTicker(): React.JSX.Element {
   return (
     <div className="w-full bg-[#EBEBEB] dark:bg-[#1A1A1D] border-b border-zinc-300 dark:border-zinc-800 py-3 overflow-hidden transition-colors">
-      <div className="w-full max-w-440 mx-auto px-6 md:px-12 flex items-center gap-4">
+      <Container className="flex items-center gap-4">
         <div className="hidden sm:flex items-center gap-2 pr-4 shrink-0 border-r border-zinc-300 dark:border-zinc-800 text-xs font-bold uppercase tracking-wider text-[#FF6847]">
           <span className="w-2 h-2 rounded-full bg-[#FF6847] animate-ping" />
           <span>Atividade Recente:</span>
@@ -63,7 +65,7 @@ export function LiveActivityTicker(): React.JSX.Element {
           {liveBookings.concat(liveBookings).map((booking, idx) => (
             <div
               key={`${booking.id}-${idx}`}
-              className="inline-flex items-center gap-2 bg-white dark:bg-[#222226] border border-zinc-300 dark:border-zinc-700/60 px-3.5 py-1.5 rounded-none text-zinc-800 dark:text-zinc-300 shadow-xs"
+              className="inline-flex items-center gap-2 bg-white dark:bg-[#222226] border border-zinc-300 dark:border-zinc-700/60 px-3.5 py-1.5 rounded-sm text-zinc-800 dark:text-zinc-300 shadow-xs"
             >
               <CheckCircle2 className="w-3.5 h-3.5 text-[#FF6847] shrink-0" />
               <span className="font-bold text-zinc-900 dark:text-white">
@@ -82,7 +84,7 @@ export function LiveActivityTicker(): React.JSX.Element {
             </div>
           ))}
         </div>
-      </div>
+      </Container>
     </div>
   )
 }

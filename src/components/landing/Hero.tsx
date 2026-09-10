@@ -7,6 +7,8 @@ import Link from "next/link"
 
 import { motion } from "framer-motion"
 
+import { Container } from "@/src/components/common/container"
+
 const marqueePhrases = [
   { prefix: "ATÉ 60% OFF REAL", suffix: "TARIFAS PREFERENCIAIS & LAST MINUTE" },
   { prefix: "+4.500 ACOMODAÇÕES", suffix: "VILAS, RESORTS & HOTÉIS BOUTIQUE" },
@@ -36,7 +38,7 @@ export function Hero(): React.JSX.Element {
         <div className="absolute inset-0 bg-gradient-to-b from-[#161616]/80 via-[#161616]/30 to-transparent z-10" />
       </div>
 
-      <div className="relative z-20 w-full max-w-440 mx-auto px-6 md:px-12 pt-36 pb-16 md:pt-44 md:pb-24 lg:pt-48 lg:pb-28 flex-1 flex items-center">
+      <Container className="relative z-20 pt-36 pb-16 md:pt-44 md:pb-24 lg:pt-48 lg:pb-28 flex-1 flex items-center">
         <motion.div
           initial={{ opacity: 0, y: -15 }}
           animate={{ opacity: 1, y: 0 }}
@@ -71,7 +73,7 @@ export function Hero(): React.JSX.Element {
               href="https://clubkey.io/subscription"
               target="_blank"
               rel="noreferrer"
-              className="group relative inline-flex items-center justify-center px-8 py-4 overflow-hidden rounded-none bg-[#FF6847] text-white font-bold text-sm uppercase tracking-wider shadow-md cursor-pointer transition-all duration-300"
+              className="group relative inline-flex items-center justify-center px-8 py-4 overflow-hidden rounded-sm bg-[#FF6847] text-white font-bold text-sm uppercase tracking-wider shadow-md cursor-pointer transition-all duration-300"
             >
               <span className="absolute inset-0 w-full h-full bg-white -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out" />
               <span className="relative z-10 inline-flex items-center text-white group-hover:text-zinc-950 transition-colors duration-300">
@@ -81,13 +83,13 @@ export function Hero(): React.JSX.Element {
 
             <Link
               href="/rooms"
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-none bg-zinc-900/80 hover:bg-zinc-800 border border-white/20 text-white font-bold text-sm uppercase tracking-wider transition-all duration-200 shadow-xs cursor-pointer text-center backdrop-blur-xs"
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-sm bg-zinc-900/80 hover:bg-zinc-800 border border-white/20 text-white font-bold text-sm uppercase tracking-wider transition-all duration-200 shadow-xs cursor-pointer text-center backdrop-blur-xs"
             >
               <span>Explorar Catálogo (+4.500)</span>
             </Link>
           </motion.div>
         </div>
-      </div>
+      </Container>
 
       <div className="relative z-20 w-full bg-zinc-100 dark:bg-[#161616] border-t border-b border-zinc-300 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 py-3.5 overflow-hidden transition-colors">
         <div className="flex items-center">
