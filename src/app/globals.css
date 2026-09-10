@@ -1,0 +1,239 @@
+@import "tailwindcss";
+
+@source "../node_modules/@bloomui-react/components";
+@custom-variant dark (&:is(.dark *));
+
+:root {
+    --background: #F1F1F1;
+    --foreground: #111111;
+    --card: #FFFFFF;
+    --card-foreground: #111111;
+    --popover: #FFFFFF;
+    --popover-foreground: #111111;
+    --primary: #FF6847;
+    --primary-foreground: #FFFFFF;
+    --secondary: #E8E8E8;
+    --secondary-foreground: #111111;
+    --muted: #E5E5E5;
+    --muted-foreground: #666666;
+    --accent: #EAEAEA;
+    --accent-foreground: #111111;
+    --destructive: #EF4444;
+    --border: rgba(0, 0, 0, 0.1);
+    --input: rgba(0, 0, 0, 0.12);
+    --ring: #FF6847;
+    --chart-1: #FF6847;
+    --chart-2: #38BDF8;
+    --chart-3: #34D399;
+    --chart-4: #FBBF24;
+    --chart-5: #A78BFA;
+    --radius: 0.625rem;
+    --sidebar: #FFFFFF;
+    --sidebar-foreground: #111111;
+    --sidebar-primary: #FF6847;
+    --sidebar-primary-foreground: #FFFFFF;
+    --sidebar-accent: #F4F4F5;
+    --sidebar-accent-foreground: #111111;
+    --sidebar-border: rgba(0, 0, 0, 0.1);
+    --sidebar-ring: #FF6847;
+
+    --brand-primary: #FF6847;
+    --brand-primary-hover: #E85535;
+    --brand-primary-light: #FFF0ED;
+    --brand-secondary: #141416;
+}
+
+.dark {
+    --background: #161616;
+    --foreground: #F4F4F5;
+    --card: #1C1C1E;
+    --card-foreground: #F4F4F5;
+    --popover: #1C1C1E;
+    --popover-foreground: #F4F4F5;
+    --primary: #FF6847;
+    --primary-foreground: #FFFFFF;
+    --secondary: #222226;
+    --secondary-foreground: #F4F4F5;
+    --muted: #242428;
+    --muted-foreground: #A1A1AA;
+    --accent: #242428;
+    --accent-foreground: #F4F4F5;
+    --destructive: #EF4444;
+    --border: rgba(255, 255, 255, 0.1);
+    --input: rgba(255, 255, 255, 0.15);
+    --ring: #FF6847;
+    --chart-1: #FF6847;
+    --chart-2: #38BDF8;
+    --chart-3: #34D399;
+    --chart-4: #FBBF24;
+    --chart-5: #A78BFA;
+    --sidebar: #1C1C1E;
+    --sidebar-foreground: #F4F4F5;
+    --sidebar-primary: #FF6847;
+    --sidebar-primary-foreground: #FFFFFF;
+    --sidebar-accent: #242428;
+    --sidebar-accent-foreground: #F4F4F5;
+    --sidebar-border: rgba(255, 255, 255, 0.1);
+    --sidebar-ring: #FF6847;
+
+    --brand-primary: #FF6847;
+    --brand-primary-hover: #FF7D5F;
+    --brand-primary-light: #241410;
+    --brand-secondary: #161616;
+}
+
+@theme inline {
+    --font-sans: var(--font-sans);
+    --font-heading: var(--font-heading);
+    --color-brand-primary: var(--brand-primary);
+    --color-brand-primary-hover: var(--brand-primary-hover);
+    --color-brand-primary-light: var(--brand-primary-light);
+    --color-sidebar-ring: var(--sidebar-ring);
+    --color-sidebar-border: var(--sidebar-border);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar: var(--sidebar);
+    --color-chart-5: var(--chart-5);
+    --color-chart-4: var(--chart-4);
+    --color-chart-3: var(--chart-3);
+    --color-chart-2: var(--chart-2);
+    --color-chart-1: var(--chart-1);
+    --color-ring: var(--ring);
+    --color-input: var(--input);
+    --color-border: var(--border);
+    --color-destructive: var(--destructive);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-accent: var(--accent);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-muted: var(--muted);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-secondary: var(--secondary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-primary: var(--primary);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-popover: var(--popover);
+    --color-card-foreground: var(--card-foreground);
+    --color-card: var(--card);
+    --color-foreground: var(--foreground);
+    --color-background: var(--background);
+    --radius-sm: calc(var(--radius) * 0.6);
+    --radius-md: calc(var(--radius) * 0.8);
+    --radius-lg: var(--radius);
+    --radius-xl: calc(var(--radius) * 1.4);
+    --radius-2xl: calc(var(--radius) * 1.8);
+    --radius-3xl: calc(var(--radius) * 2.2);
+    --radius-4xl: calc(var(--radius) * 2.6);
+
+    --color-brand-primary: var(--brand-primary);
+    --color-brand-secondary: var(--brand-secondary);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  .tabs-custom {
+    &[data-state="active"] {
+      background-color: var(--tabs-active-bg);
+      border-color: var(--tabs-active-border);
+      color: var(--tabs-active-text);
+    }
+  }
+}
+
+@keyframes ripple {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+.ripple {
+  position: absolute;
+  border-radius: 9999px;
+  transform: scale(0);
+  animation: ripple 600ms ease-out;
+  background-color: currentColor;
+  opacity: 0.25;
+  pointer-events: none;
+}
+
+@keyframes growY {
+  0%,
+  100% {
+    transform: scaleY(0.4);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+.animate-growY {
+  animation: growY 1s ease-in-out infinite;
+}
+
+@keyframes spin-reverse {
+  100% {
+    transform: rotate(-360deg);
+  }
+}
+.animate-spin-reverse {
+  animation: spin-reverse 1s linear infinite;
+}
+
+@keyframes orbit {
+  0% {
+    transform: rotate(0deg) translateX(10px) rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg) translateX(10px) rotate(-360deg);
+  }
+}
+.animate-orbit {
+  animation: orbit 1s linear infinite;
+  transform-origin: center center;
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+.animate-shimmer {
+  animation: shimmer 1.8s infinite;
+}
+
+@keyframes progress-indeterminate {
+  0% {
+    transform: translateX(-100%) scaleX(0.2);
+  }
+  50% {
+    transform: translateX(-10%) scaleX(0.8);
+  }
+  100% {
+    transform: translateX(100%) scaleX(0.2);
+  }
+}
+.animate-progress-indeterminate {
+  animation: progress-indeterminate 1.5s infinite linear;
+}
+
+@keyframes stripe-move {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 1rem 0;
+  }
+}
+.animate-stripe-move {
+  animation: stripe-move 1s linear infinite;
+}
