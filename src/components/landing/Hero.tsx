@@ -21,7 +21,7 @@ export function Hero(): React.JSX.Element {
   return (
     <section
       id="hero"
-      className="relative w-full overflow-hidden bg-[#0D0D0D] text-white min-h-[640px] flex flex-col justify-between"
+      className="relative w-full overflow-hidden bg-[#0D0D0D] text-white min-h-180 flex flex-col justify-between"
     >
       <div className="absolute inset-0 z-0 pointer-events-none select-none">
         <Image
@@ -41,7 +41,7 @@ export function Hero(): React.JSX.Element {
           initial={{ opacity: 0, y: -15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="relative h-12 w-48 sm:h-14 sm:w-56 mb-6 drop-shadow-2xl"
+          className="relative h-12 w-48 sm:h-14 sm:w-56 mb-6 drop-shadow-2xl hidden md:flex"
         >
           <Image
             src="/utils/icons/icon_key.webp"

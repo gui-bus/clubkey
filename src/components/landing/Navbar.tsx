@@ -4,6 +4,7 @@ import * as React from "react"
 
 import Image from "next/image"
 import Link from "next/link"
+import { useQueryState, parseAsString } from "nuqs"
 
 import { Menu, User, X } from "lucide-react"
 
@@ -13,50 +14,80 @@ import { cn } from "@/src/lib/utils/utils"
 
 const navLinks = [
   { name: "O que é", href: "#o-que-e" },
+  { name: "Parceiros", href: "#parceiros" },
+  { name: "Experiência", href: "#experiencia" },
   { name: "Como Funciona", href: "#como-funciona" },
   { name: "Catálogo", href: "#catalogo" },
-  { name: "Calculadora", href: "#calculadora" },
-  { name: "Benefícios", href: "#beneficios" },
-  { name: "Planos", href: "#planos" },
   { name: "FAQ", href: "#faq" },
 ]
 
 export function Navbar(): React.JSX.Element {
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false)
   const [activeSection, setActiveSection] = React.useState<string>("")
+  const [, setSectionQuery] = useQueryState(
+    "section",
+    parseAsString.withOptions({ shallow: true, history: "replace" })
+  )
 
   React.useEffect(() => {
     const sectionIds = [
       "o-que-e",
+      "parceiros",
+      "experiencia",
       "como-funciona",
       "catalogo",
-      "calculadora",
-      "beneficios",
-      "planos",
       "faq",
     ]
+
+    let ticking = false
+
     const handleScrollSpy = () => {
-      const scrollPosition = window.scrollY + 200
-      for (const id of sectionIds) {
-        const el = document.getElementById(id)
-        if (el) {
-          const top = el.offsetTop
-          const height = el.offsetHeight
-          if (scrollPosition >= top && scrollPosition < top + height) {
-            setActiveSection(`#${id}`)
-            return
+      if (ticking) return
+      ticking = true
+
+      window.requestAnimationFrame(() => {
+        const scrollPosition = window.scrollY + 250
+        let currentId = ""
+
+        for (let i = sectionIds.length - 1; i >= 0; i--) {
+          const id = sectionIds[i]
+          const el = document.getElementById(id)
+          if (el) {
+            const top = el.offsetTop
+            if (scrollPosition >= top) {
+              currentId = id
+              break
+            }
           }
         }
-      }
-      if (window.scrollY < 200) {
-        setActiveSection("")
-      }
+
+        if (window.scrollY < 150) {
+          currentId = ""
+        }
+
+        if (currentId) {
+          const hashVal = `#${currentId}`
+          setActiveSection(hashVal)
+          if (window.location.hash !== hashVal) {
+            window.history.replaceState(null, "", hashVal)
+            setSectionQuery(currentId)
+          }
+        } else {
+          setActiveSection("")
+          if (window.location.hash) {
+            window.history.replaceState(null, "", window.location.pathname)
+            setSectionQuery(null)
+          }
+        }
+
+        ticking = false
+      })
     }
 
     handleScrollSpy()
     window.addEventListener("scroll", handleScrollSpy, { passive: true })
     return () => window.removeEventListener("scroll", handleScrollSpy)
-  }, [])
+  }, [setSectionQuery])
 
   return (
     <div className="absolute top-0 left-0 right-0 z-40 bg-transparent pt-20 sm:pt-14 md:pt-12">

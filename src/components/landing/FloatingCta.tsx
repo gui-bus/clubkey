@@ -29,9 +29,12 @@ export function FloatingCta(): React.JSX.Element {
           href="https://clubkey.io/subscription"
           target="_blank"
           rel="noreferrer"
-          className="inline-flex items-center justify-center px-4 py-2 sm:px-5 sm:py-2.5 bg-[#FF6847] hover:bg-[#E85535] text-white text-xs sm:text-sm font-bold uppercase tracking-wider transition-all duration-200 shadow-md whitespace-nowrap cursor-pointer"
+          className="group relative inline-flex items-center justify-center px-4 py-2 sm:px-5 sm:py-2.5 overflow-hidden rounded-none bg-[#FF6847] text-white text-xs sm:text-sm font-bold uppercase tracking-wider shadow-md whitespace-nowrap cursor-pointer transition-all duration-300"
         >
-          Quero ser associado
+          <span className="absolute inset-0 w-full h-full bg-white -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out" />
+          <span className="relative z-10 inline-flex items-center text-white group-hover:text-zinc-950 transition-colors duration-300">
+            Quero ser associado
+          </span>
         </a>
       </motion.div>
     </aside>

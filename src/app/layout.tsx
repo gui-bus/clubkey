@@ -9,6 +9,7 @@ import { cn } from "@/src/lib/utils/utils"
 import { fontVariables } from "@/src/config/fonts"
 import { siteConfig } from "@/src/config/site"
 
+import { NuqsAdapter } from "nuqs/adapters/next/app"
 import "@/src/app/globals.css"
 
 export const viewport: Viewport = {
@@ -80,7 +81,9 @@ export default async function RootLayout({
       className={cn("antialiased scroll-smooth", fontVariables)}
     >
       <body className="mx-auto w-full max-w-440 bg-background text-foreground selection:bg-[#FF6847]/20 selection:text-[#FF6847]">
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          <NuqsAdapter>{children}</NuqsAdapter>
+        </ThemeProvider>
         {siteConfig.analytics.google && (
           <GoogleAnalytics gaId={siteConfig.analytics.google} />
         )}

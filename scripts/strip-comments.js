@@ -22,7 +22,7 @@ function getFiles(dir, files = []) {
 function stripComments(content) {
   let cleaned = content.replace(/\/\*[\s\S]*?\*\//g, '');
   cleaned = cleaned.replace(/\{\/\*[\s\S]*?\*\/\}/g, '');
-  cleaned = cleaned.replace(/(?<!:|https:|http:)\/\/.*$/gm, '');
+  cleaned = cleaned.replace(/^\s*\/\/.*$/gm, '');
   return cleaned;
 }
 

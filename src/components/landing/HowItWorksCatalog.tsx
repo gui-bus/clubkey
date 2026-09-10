@@ -92,6 +92,7 @@ export function HowItWorksCatalog(): React.JSX.Element {
         <div className="w-full border-t border-zinc-300/80 dark:border-zinc-800 my-16 md:my-24" />
 
         <motion.div
+          id="catalogo"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-50px" }}
