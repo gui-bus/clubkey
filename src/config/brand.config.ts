@@ -83,8 +83,8 @@ export const brandPresets: Record<string, BrandConfig> = {
       ogImage: "/og.png",
     },
     links: {
-      subscription: "https://clubkey.io/subscription",
-      rooms: "https://clubkey.io/rooms",
+      subscription: "/subscription",
+      rooms: "/rooms",
       login: "/sign-in",
       instagram: "https://instagram.com/clubkey.io",
       contactEmail: "contato@clubkey.io",
@@ -129,8 +129,8 @@ export const brandPresets: Record<string, BrandConfig> = {
       ogImage: "/og.png",
     },
     links: {
-      subscription: "https://oceanclub.io/subscription",
-      rooms: "https://oceanclub.io/rooms",
+      subscription: "/subscription",
+      rooms: "/rooms",
       login: "/sign-in",
       instagram: "https://oceanclub.io",
       contactEmail: "contato@oceanclub.io",

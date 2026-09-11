@@ -277,8 +277,6 @@ export function Navbar({
 
                       <Link
                         href={brandConfig.links.subscription}
-                        target="_blank"
-                        rel="noreferrer"
                         onClick={() => setMobileMenuOpen(false)}
                         className="flex items-center justify-center gap-2 w-full py-3.5 rounded-sm bg-brand-primary hover:bg-brand-primary-hover text-xs font-bold uppercase tracking-wider text-white transition-all shadow-md shadow-brand-primary/20"
                       >

@@ -29,7 +29,6 @@ import {
   ShieldAlert,
   ShieldCheck,
   Shirt,
-  Sparkles,
   Tv,
   Umbrella,
   Utensils,
@@ -64,7 +63,7 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Tv,
   Laptop,
   Zap,
-  Sparkles,
+  Sparkles: Zap,
   BedDouble,
   ShieldCheck,
 }

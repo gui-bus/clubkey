@@ -6,7 +6,7 @@ import Image from "next/image"
 import Link from "next/link"
 
 import { motion } from "framer-motion"
-import { ArrowRight, Calculator, ShieldCheck, Sparkles } from "lucide-react"
+import { ArrowRight, Calculator, ShieldCheck } from "lucide-react"
 
 import { Button } from "@/src/components/ui/button/button"
 
@@ -239,7 +239,7 @@ export function SavingsSimulator(): React.JSX.Element {
               <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/40 flex items-center justify-between">
                 <div>
                   <div className="text-xs font-bold text-amber-600 dark:text-amber-400 flex items-center gap-1">
-                    <Sparkles className="w-3.5 h-3.5" />
+                    <ShieldCheck className="w-3.5 h-3.5" />
                     Com sua Club Key VIP:
                   </div>
                   <div className="text-sm font-medium text-foreground">

@@ -72,8 +72,6 @@ export function Hero(): React.JSX.Element {
           >
             <CtaButton
               href={brandConfig.links.subscription}
-              target="_blank"
-              rel="noreferrer"
               size="lg"
             >
               Solicite agora

@@ -68,8 +68,6 @@ export function TopBanner(): React.JSX.Element {
         <div className="flex items-center gap-2.5 shrink-0">
           <CtaButton
             href={brandConfig.links.subscription}
-            target="_blank"
-            rel="noreferrer"
             size="xs"
             className="shadow-xs whitespace-nowrap"
           >

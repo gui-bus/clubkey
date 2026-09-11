@@ -149,8 +149,6 @@ export function PartnersMarquee(): React.JSX.Element {
           <div>
             <CtaButton
               href={brandConfig.links.subscription}
-              target="_blank"
-              rel="noreferrer"
               size="lg"
             >
               Solicite agora

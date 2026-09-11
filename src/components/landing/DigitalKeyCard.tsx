@@ -11,7 +11,6 @@ import {
   Layers,
   QrCode,
   ShieldCheck,
-  Sparkles,
   Wifi,
 } from "lucide-react"
 
@@ -151,7 +150,7 @@ export function DigitalKeyCard(): React.JSX.Element {
 
               <div className="flex items-start gap-3">
                 <div className="p-1.5 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 mt-0.5">
-                  <Sparkles className="w-4 h-4" />
+                  <Key className="w-4 h-4" />
                 </div>
                 <div>
                   <div className="text-sm font-bold text-foreground">

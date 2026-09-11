@@ -48,8 +48,6 @@ export function ExperienceBanner(): React.JSX.Element {
           <div className="flex flex-wrap items-center gap-4">
             <CtaButton
               href={brandConfig.links.subscription}
-              target="_blank"
-              rel="noreferrer"
               size="lg"
             >
               Solicite agora

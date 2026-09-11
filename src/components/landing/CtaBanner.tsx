@@ -5,7 +5,7 @@ import * as React from "react"
 import Link from "next/link"
 
 import { motion } from "framer-motion"
-import { ArrowRight, CheckCircle2, Key, Sparkles } from "lucide-react"
+import { ArrowRight, CheckCircle2, Key } from "lucide-react"
 
 import { Button } from "@/src/components/ui/button/button"
 
@@ -25,7 +25,7 @@ export function CtaBanner(): React.JSX.Element {
 
           <div className="relative z-10 max-w-3xl mx-auto space-y-6">
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-amber-300 text-xs font-bold">
-              <Sparkles className="w-3.5 h-3.5" />
+              <Key className="w-3.5 h-3.5" />
               Sua Próxima Viagem Começa Aqui
             </div>
 

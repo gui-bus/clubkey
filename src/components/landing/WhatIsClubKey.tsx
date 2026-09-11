@@ -162,8 +162,6 @@ export function WhatIsClubKey(): React.JSX.Element {
             <div>
               <CtaButton
                 href={brandConfig.links.subscription}
-                target="_blank"
-                rel="noreferrer"
                 size="lg"
               >
                 Conheça a {brandConfig.name}

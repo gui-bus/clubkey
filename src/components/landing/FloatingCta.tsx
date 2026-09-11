@@ -32,8 +32,6 @@ export function FloatingCta(): React.JSX.Element {
         />
         <CtaButton
           href={brandConfig.links.subscription}
-          target="_blank"
-          rel="noreferrer"
           size="sm"
           className="whitespace-nowrap"
         >

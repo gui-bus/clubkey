@@ -123,8 +123,6 @@ export function Footer(): React.JSX.Element {
                   <li>
                     <Link
                       href={brandConfig.links.subscription}
-                      target="_blank"
-                      rel="noreferrer"
                       className="hover:text-white transition-colors"
                     >
                       Assinatura
@@ -159,8 +157,6 @@ export function Footer(): React.JSX.Element {
               <li>
                 <Link
                   href={brandConfig.links.subscription}
-                  target="_blank"
-                  rel="noreferrer"
                   className="hover:text-white transition-colors"
                 >
                   Quero ser associado
@@ -223,8 +219,6 @@ export function Footer(): React.JSX.Element {
             </Link>
             <Link
               href={brandConfig.links.subscription}
-              target="_blank"
-              rel="noreferrer"
               className="hover:text-white transition-colors"
             >
               Assinatura
