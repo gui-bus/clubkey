@@ -2,7 +2,13 @@
 
 import type * as React from "react"
 
-import { Icon } from "@iconify/react"
+import {
+  AlertCircle,
+  AlertTriangle,
+  Bell,
+  CheckCircle2,
+  Info,
+} from "lucide-react"
 import { Toaster as SonnerToaster, toast as sonnerToast } from "sonner"
 
 import { designRadius } from "@/src/lib/design-system"
@@ -132,44 +138,44 @@ const createCustomToast = (
 
   const iconMap = {
     success: {
-      icon: "hugeicons:checkmark-circle-02",
-      bg: "bg-success/10 text-success border-success/20",
-      bar: "bg-success",
-      richBg: "bg-success text-white border-transparent",
-      borderClass: "border-success",
+      icon: CheckCircle2,
+      bg: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20",
+      bar: "bg-emerald-500",
+      richBg: "bg-emerald-600 text-white border-transparent",
+      borderClass: "border-emerald-500",
     },
     error: {
-      icon: "hugeicons:alert-circle",
-      bg: "bg-danger/10 text-danger border-danger/20",
-      bar: "bg-danger",
-      richBg: "bg-danger text-white border-transparent",
-      borderClass: "border-danger",
+      icon: AlertCircle,
+      bg: "bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20",
+      bar: "bg-rose-500",
+      richBg: "bg-rose-600 text-white border-transparent",
+      borderClass: "border-rose-500",
     },
     warning: {
-      icon: "hugeicons:alert-02",
-      bg: "bg-warning/10 text-warning border-warning/20",
-      bar: "bg-warning",
-      richBg: "bg-warning text-white border-transparent",
-      borderClass: "border-warning",
+      icon: AlertTriangle,
+      bg: "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20",
+      bar: "bg-amber-500",
+      richBg: "bg-amber-500 text-white border-transparent",
+      borderClass: "border-amber-500",
     },
     info: {
-      icon: "hugeicons:information-circle",
-      bg: "bg-primary/10 text-primary border-primary/20",
-      bar: "bg-primary",
-      richBg: "bg-primary text-white border-transparent",
-      borderClass: "border-primary",
+      icon: Info,
+      bg: "bg-brand-primary/10 text-brand-primary border-brand-primary/20",
+      bar: "bg-brand-primary",
+      richBg: "bg-brand-primary text-white border-transparent",
+      borderClass: "border-brand-primary",
     },
     loading: {
       icon: null,
-      bg: "bg-primary/10 text-primary border-primary/20",
-      bar: "bg-primary",
-      richBg: "bg-primary text-white border-transparent",
-      borderClass: "border-primary",
+      bg: "bg-brand-primary/10 text-brand-primary border-brand-primary/20",
+      bar: "bg-brand-primary",
+      richBg: "bg-brand-primary text-white border-transparent",
+      borderClass: "border-brand-primary",
     },
     default: {
-      icon: "hugeicons:notification-01",
-      bg: "bg-zinc-100 dark:bg-zinc-800 text-zinc-650 dark:text-zinc-350 border-zinc-200 dark:border-zinc-700",
-      bar: "bg-zinc-400 dark:bg-zinc-650",
+      icon: Bell,
+      bg: "bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700",
+      bar: "bg-zinc-400 dark:bg-zinc-600",
       richBg:
         "bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 border-transparent",
       borderClass: "border-zinc-300 dark:border-zinc-700",
@@ -258,10 +264,7 @@ const createCustomToast = (
         )}
       >
         {options?.showBgIcon && style.icon && (
-          <Icon
-            icon={style.icon}
-            className="absolute -right-4 -bottom-4 size-24 opacity-[0.08] pointer-events-none rotate-12 text-current"
-          />
+          <style.icon className="absolute -right-4 -bottom-4 size-24 opacity-[0.08] pointer-events-none rotate-12 text-current" />
         )}
 
         {leftBarVisible && !options?.richColors && (
@@ -286,9 +289,9 @@ const createCustomToast = (
                 color={options?.richColors ? "default" : "primary"}
                 size="sm"
               />
-            ) : (
-              <Icon icon={style.icon || ""} className={sStyle.iconSize} />
-            )}
+            ) : style.icon ? (
+              <style.icon className={sStyle.iconSize} />
+            ) : null}
           </div>
         )}
 

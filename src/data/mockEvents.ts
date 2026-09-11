@@ -26,7 +26,7 @@ export const eventSectionsData: EventSectionData[] = [
     cityDisplay: "São Paulo (SP)",
     stateUf: "SP",
     primaryCityId: 163,
-    eventBadge: "BGS +1",
+    eventBadge: "BGS",
     moreEventsCount: 1,
     upcomingEvents: [
       {

@@ -13,6 +13,7 @@ import { Navbar } from "@/src/components/landing/Navbar"
 import { TopBanner } from "@/src/components/landing/TopBanner"
 import { destinationOptions } from "@/src/data/mockDestinations"
 import { catalogSections } from "@/src/data/mockRooms"
+import { toast } from "@/src/components/ui/toast/toast"
 
 export default function RoomsPage(): React.JSX.Element {
   const [searchDestination, setSearchDestination] = React.useState("")
@@ -24,7 +25,29 @@ export default function RoomsPage(): React.JSX.Element {
   const toggleFavorite = (id: string, e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
-    setFavorites((prev) => ({ ...prev, [id]: !prev[id] }))
+
+    const willBeFav = !favorites[id]
+
+    let roomTitle = "Acomodação"
+    for (const s of catalogSections) {
+      const found = s.rooms.find((r) => r.id === id)
+      if (found) {
+        roomTitle = found.title
+        break
+      }
+    }
+
+    if (willBeFav) {
+      toast.success("Acomodação salva!", {
+        description: `${roomTitle} foi adicionada aos seus salvos.`,
+      })
+    } else {
+      toast.info("Acomodação removida", {
+        description: `${roomTitle} foi removida dos seus salvos.`,
+      })
+    }
+
+    setFavorites((prev) => ({ ...prev, [id]: willBeFav }))
   }
 
   const filteredSections = React.useMemo(() => {

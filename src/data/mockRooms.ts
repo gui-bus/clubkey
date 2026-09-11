@@ -1682,7 +1682,7 @@ export const catalogSections: RoomSection[] = [
     id: "event-sp",
     title: "SP - São Paulo",
     isEvent: true,
-    eventBadge: "BGS +1",
+    eventBadge: "BGS",
     upcomingEvents: [
       {
         id: "bgs-2026",
