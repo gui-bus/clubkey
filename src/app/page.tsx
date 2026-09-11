@@ -1,7 +1,9 @@
 "use client"
 
 import * as React from "react"
+import { redirect } from "next/navigation"
 
+import { brandConfig } from "@/src/config/brand.config"
 import { TopBanner } from "@/src/components/landing/TopBanner"
 import { Navbar } from "@/src/components/landing/Navbar"
 import { Hero } from "@/src/components/landing/Hero"
@@ -14,8 +16,12 @@ import { Footer } from "@/src/components/landing/Footer"
 import { FloatingCta } from "@/src/components/landing/FloatingCta"
 
 export default function Page(): React.JSX.Element {
+  if (brandConfig.id !== "clubkey") {
+    redirect("/rooms")
+  }
+
   return (
-    <main className="w-full bg-[#F1F1F1] dark:bg-[#161616] text-[#111111] dark:text-white flex flex-col font-sans selection:bg-[#FF6847]/20 selection:text-[#FF6847]">
+    <main className="w-full bg-[#F1F1F1] dark:bg-[#161616] text-[#111111] dark:text-white flex flex-col font-sans selection:bg-brand-primary/20 selection:text-brand-primary">
       <TopBanner />
       <Navbar />
       <Hero />

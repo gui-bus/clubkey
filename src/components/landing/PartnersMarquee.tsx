@@ -3,11 +3,12 @@
 import * as React from "react"
 
 import Image from "next/image"
-import Link from "next/link"
 
 import { motion } from "framer-motion"
 
 import { Container } from "@/src/components/common/container"
+import { CtaButton } from "@/src/components/common/ctaButton"
+import { brandConfig } from "@/src/config/brand.config"
 import { cn } from "@/src/lib/utils/utils"
 
 interface PartnerLogo {
@@ -110,7 +111,7 @@ export function PartnersMarquee(): React.JSX.Element {
           className="w-full"
         >
           <div className="flex items-center gap-2 mb-4">
-            <span className="w-2 h-2 rounded-full bg-[#FF6847]" />
+            <span className="w-2 h-2 rounded-full bg-brand-primary" />
             <span className="text-xs font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400 font-heading">
               REDE DE BENEFÍCIOS GLOBAIS
             </span>
@@ -123,7 +124,7 @@ export function PartnersMarquee(): React.JSX.Element {
           <p className="text-base sm:text-lg text-zinc-600 dark:text-zinc-400 font-light leading-relaxed mb-10 max-w-4xl">
             A sua assinatura{" "}
             <strong className="font-semibold text-zinc-900 dark:text-white">
-              Club Key
+              {brandConfig.name}
             </strong>{" "}
             expande seu poder de compra para muito além das hospedagens.
             Conectamos você às maiores marcas do país e do mundo para garantir
@@ -146,24 +147,21 @@ export function PartnersMarquee(): React.JSX.Element {
           </div>
 
           <div>
-            <Link
-              href="https://clubkey.io/"
+            <CtaButton
+              href={brandConfig.links.subscription}
               target="_blank"
               rel="noreferrer"
-              className="group relative inline-flex items-center justify-center px-8 py-4 overflow-hidden rounded-sm bg-[#FF6847] text-white font-bold text-sm uppercase tracking-wider shadow-md cursor-pointer transition-all duration-300"
+              size="lg"
             >
-              <span className="absolute inset-0 w-full h-full bg-white -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out" />
-              <span className="relative z-10 inline-flex items-center text-white group-hover:text-zinc-950 transition-colors duration-300">
-                Solicite agora
-              </span>
-            </Link>
+              Solicite agora
+            </CtaButton>
           </div>
         </motion.div>
       </Container>
 
       <Container className="mt-16 mb-6 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="h-2 w-2 rounded-full bg-[#FF6847] animate-pulse" />
+          <div className="h-2 w-2 rounded-full bg-brand-primary animate-pulse" />
           <span className="text-xs font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400">
             Marcas parceiras em destaque
           </span>

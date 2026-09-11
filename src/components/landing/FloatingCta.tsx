@@ -3,11 +3,12 @@
 import * as React from "react"
 
 import Image from "next/image"
-import Link from "next/link"
 
 import { motion } from "framer-motion"
 
 import { Container } from "@/src/components/common/container"
+import { CtaButton } from "@/src/components/common/ctaButton"
+import { brandConfig } from "@/src/config/brand.config"
 
 export function FloatingCta(): React.JSX.Element {
   return (
@@ -29,17 +30,15 @@ export function FloatingCta(): React.JSX.Element {
           alt=""
           className="w-8 sm:w-12 dark:invert dark:brightness-0 shrink-0 select-none pointer-events-none"
         />
-        <Link
-          href="https://clubkey.io/subscription"
+        <CtaButton
+          href={brandConfig.links.subscription}
           target="_blank"
           rel="noreferrer"
-          className="group relative inline-flex items-center justify-center px-4 py-2 sm:px-5 sm:py-2.5 overflow-hidden rounded-sm bg-[#FF6847] text-white text-xs sm:text-sm font-bold uppercase tracking-wider shadow-md whitespace-nowrap cursor-pointer transition-all duration-300"
+          size="sm"
+          className="whitespace-nowrap"
         >
-          <span className="absolute inset-0 w-full h-full bg-white -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out" />
-          <span className="relative z-10 inline-flex items-center text-white group-hover:text-zinc-950 transition-colors duration-300">
-            Quero ser associado
-          </span>
-        </Link>
+          Quero ser associado
+        </CtaButton>
       </motion.div>
     </Container>
   )

@@ -3,12 +3,13 @@
 import * as React from "react"
 
 import Image from "next/image"
-import Link from "next/link"
 
 import { motion } from "framer-motion"
 import { Key } from "lucide-react"
 
 import { Container } from "@/src/components/common/container"
+import { CtaButton } from "@/src/components/common/ctaButton"
+import { brandConfig } from "@/src/config/brand.config"
 
 export function WhatIsClubKey(): React.JSX.Element {
   return (
@@ -49,7 +50,7 @@ export function WhatIsClubKey(): React.JSX.Element {
                 />
               </div>
 
-              <div className="absolute -bottom-4 -left-4 sm:-bottom-6 sm:-left-6 z-20 w-32 h-32 sm:w-36 sm:h-36 md:w-40 md:h-40 rounded-full bg-[#FF6847] text-white flex items-center justify-center shadow-2xl shadow-[#FF6847]/30 select-none">
+              <div className="absolute -bottom-4 -left-4 sm:-bottom-6 sm:-left-6 z-20 w-32 h-32 sm:w-36 sm:h-36 md:w-40 md:h-40 rounded-full bg-brand-primary text-white flex items-center justify-center shadow-2xl shadow-brand-primary/30 select-none">
                 <motion.div
                   animate={{ rotate: 360 }}
                   transition={{
@@ -78,7 +79,7 @@ export function WhatIsClubKey(): React.JSX.Element {
                   </svg>
                 </motion.div>
 
-                <div className="relative z-10 w-13 h-13 sm:w-20 sm:h-20 rounded-full bg-white dark:bg-zinc-950 text-[#FF6847] flex items-center justify-center shadow-md">
+                <div className="relative z-10 w-13 h-13 sm:w-20 sm:h-20 rounded-full bg-white dark:bg-zinc-950 text-brand-primary flex items-center justify-center shadow-md">
                   <Key className="w-6 h-6 sm:w-7 sm:h-7 stroke-[2.3]" />
                 </div>
               </div>
@@ -93,7 +94,7 @@ export function WhatIsClubKey(): React.JSX.Element {
             className="w-full lg:w-2/3 flex flex-col justify-center items-start text-left"
           >
             <div className="flex items-center gap-2 mb-4">
-              <span className="w-2 h-2 rounded-full bg-[#FF6847]" />
+              <span className="w-2 h-2 rounded-full bg-brand-primary" />
               <span className="text-xs font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400 font-heading">
                 SOBRE A CLUB KEY
               </span>
@@ -159,17 +160,14 @@ export function WhatIsClubKey(): React.JSX.Element {
             </div>
 
             <div>
-              <Link
-                href="https://clubkey.io/subscription"
+              <CtaButton
+                href={brandConfig.links.subscription}
                 target="_blank"
                 rel="noreferrer"
-                className="group relative inline-flex items-center justify-center px-8 py-4 overflow-hidden rounded-sm bg-[#FF6847] text-white font-bold text-sm uppercase tracking-wider shadow-md cursor-pointer transition-all duration-300"
+                size="lg"
               >
-                <span className="absolute inset-0 w-full h-full bg-white -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out" />
-                <span className="relative z-10 inline-flex items-center text-white group-hover:text-zinc-950 transition-colors duration-300">
-                  Conheça a Club Key
-                </span>
-              </Link>
+                Conheça a {brandConfig.name}
+              </CtaButton>
             </div>
           </motion.div>
         </div>

@@ -2,12 +2,11 @@
 
 import * as React from "react"
 
-import Link from "next/link"
-
 import { motion } from "framer-motion"
 import { Check } from "lucide-react"
 
 import { Container } from "@/src/components/common/container"
+import { CtaButton } from "@/src/components/common/ctaButton"
 
 const steps = [
   {
@@ -46,7 +45,7 @@ export function HowItWorksCatalog(): React.JSX.Element {
             className="mb-14 md:mb-16"
           >
             <div className="flex items-center gap-2 mb-4">
-              <span className="w-2 h-2 rounded-full bg-[#FF6847]" />
+              <span className="w-2 h-2 rounded-full bg-brand-primary" />
               <span className="text-xs font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400 font-heading">
                 PASSO A PASSO
               </span>
@@ -73,7 +72,7 @@ export function HowItWorksCatalog(): React.JSX.Element {
                 className="flex flex-col items-start"
               >
                 <div className="flex items-center gap-3 mb-4">
-                  <span className="text-2xl sm:text-3xl font-black text-[#FF6847] font-heading tracking-tight">
+                  <span className="text-2xl sm:text-3xl font-black text-brand-primary font-heading tracking-tight">
                     {item.number}
                   </span>
                   <span className="w-8 h-px bg-zinc-300 dark:bg-zinc-700" />
@@ -103,7 +102,7 @@ export function HowItWorksCatalog(): React.JSX.Element {
         >
           <div className="lg:col-span-7">
             <div className="flex items-center gap-2 mb-4">
-              <span className="w-2 h-2 rounded-full bg-[#FF6847]" />
+              <span className="w-2 h-2 rounded-full bg-brand-primary" />
               <span className="text-xs font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400 font-heading">
                 NOSSO CATÁLOGO SELECIONADO
               </span>
@@ -121,15 +120,12 @@ export function HowItWorksCatalog(): React.JSX.Element {
             </p>
 
             <div>
-              <Link
+              <CtaButton
                 href="/rooms"
-                className="group relative inline-flex items-center justify-center px-8 py-4 overflow-hidden rounded-sm bg-[#FF6847] text-white font-bold text-sm uppercase tracking-wider shadow-md cursor-pointer transition-all duration-300"
+                size="lg"
               >
-                <span className="absolute inset-0 w-full h-full bg-white -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out" />
-                <span className="relative z-10 inline-flex items-center text-white group-hover:text-zinc-950 transition-colors duration-300">
-                  Explorar catálogo
-                </span>
-              </Link>
+                Explorar catálogo
+              </CtaButton>
             </div>
           </div>
 
@@ -145,7 +141,7 @@ export function HowItWorksCatalog(): React.JSX.Element {
 
             <div className="flex flex-col gap-4">
               <div className="flex items-start gap-3.5">
-                <div className="w-6 h-6 rounded-full bg-[#FF6847] text-white flex items-center justify-center shrink-0 mt-0.5 shadow-xs shadow-[#FF6847]/25">
+                <div className="w-6 h-6 rounded-full bg-brand-primary text-white flex items-center justify-center shrink-0 mt-0.5 shadow-xs shadow-brand-primary/25">
                   <Check className="w-3.5 h-3.5 stroke-[3.5]" />
                 </div>
                 <p className="text-sm sm:text-base text-zinc-600 dark:text-zinc-400 font-light leading-relaxed">
@@ -155,7 +151,7 @@ export function HowItWorksCatalog(): React.JSX.Element {
               </div>
 
               <div className="flex items-start gap-3.5">
-                <div className="w-6 h-6 rounded-full bg-[#FF6847] text-white flex items-center justify-center shrink-0 mt-0.5 shadow-xs shadow-[#FF6847]/25">
+                <div className="w-6 h-6 rounded-full bg-brand-primary text-white flex items-center justify-center shrink-0 mt-0.5 shadow-xs shadow-brand-primary/25">
                   <Check className="w-3.5 h-3.5 stroke-[3.5]" />
                 </div>
                 <p className="text-sm sm:text-base text-zinc-600 dark:text-zinc-400 font-light leading-relaxed">
@@ -165,7 +161,7 @@ export function HowItWorksCatalog(): React.JSX.Element {
               </div>
 
               <div className="flex items-start gap-3.5">
-                <div className="w-6 h-6 rounded-full bg-[#FF6847] text-white flex items-center justify-center shrink-0 mt-0.5 shadow-xs shadow-[#FF6847]/25">
+                <div className="w-6 h-6 rounded-full bg-brand-primary text-white flex items-center justify-center shrink-0 mt-0.5 shadow-xs shadow-brand-primary/25">
                   <Check className="w-3.5 h-3.5 stroke-[3.5]" />
                 </div>
                 <p className="text-sm sm:text-base text-zinc-600 dark:text-zinc-400 font-light leading-relaxed">

@@ -1,26 +1,28 @@
+import { brandConfig } from "./brand.config"
 import { env } from "./env"
 
 export const siteConfig = {
-  name: "ClubKey",
-  shortName: "ClubKey",
-  description: "Ative sua Key e pague menos para viajar. Acesso exclusivo a milhares de hospedagens premium com descontos de até 60% e curadoria de especialistas.",
-  url: env.NEXT_PUBLIC_SITE_URL || "https://clubkey.io",
-  ogImage: `${env.NEXT_PUBLIC_SITE_URL}/og.png`,
+  name: brandConfig.name,
+  shortName: brandConfig.shortName,
+  description: brandConfig.description,
+  url: env.NEXT_PUBLIC_SITE_URL || brandConfig.links.website,
+  ogImage: `${env.NEXT_PUBLIC_SITE_URL || brandConfig.links.website}${brandConfig.assets.ogImage}`,
+  favicon: brandConfig.assets.favicon,
   authors: [
     {
-      name: "ClubKey Team",
-      url: "https://clubkey.io",
+      name: `${brandConfig.name} Team`,
+      url: brandConfig.links.website,
     },
   ],
-  creator: "ClubKey",
+  creator: brandConfig.name,
   links: {
-    subscription: "https://clubkey.io/subscription",
-    rooms: "https://clubkey.io/rooms",
-    login: "https://clubkey.io/login",
-    instagram: "https://instagram.com/clubkey.io",
+    subscription: brandConfig.links.subscription,
+    rooms: brandConfig.links.rooms,
+    login: brandConfig.links.login,
+    instagram: brandConfig.links.instagram,
   },
   contact: {
-    email: "contato@clubkey.io",
+    email: brandConfig.links.contactEmail,
   },
   locales: ["pt", "en"],
   defaultLocale: "pt",

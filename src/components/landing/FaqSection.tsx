@@ -70,7 +70,7 @@ export function FaqSection(): React.JSX.Element {
       <Container>
         <div className="w-full border-t border-b border-zinc-300 dark:border-zinc-800 py-3.5 flex flex-wrap items-center justify-between gap-4 text-xs font-mono uppercase tracking-widest text-zinc-500 dark:text-zinc-400 mb-12 sm:mb-16">
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-[#FF6847]" />
+            <span className="w-2 h-2 rounded-full bg-brand-primary" />
             <span>FAQ • CENTRAL DE ESCLARECIMENTOS</span>
           </div>
           <div className="hidden md:block">
@@ -121,7 +121,7 @@ export function FaqSection(): React.JSX.Element {
                     <span className="hidden sm:inline-flex items-center justify-center w-48 lg:w-52 py-1 px-2 text-[10px] font-mono uppercase tracking-wider border border-zinc-300 dark:border-zinc-800 text-zinc-500 dark:text-zinc-400 shrink-0 text-center">
                       {item.category}
                     </span>
-                    <h3 className="text-xl sm:text-2xl md:text-3xl font-black uppercase tracking-tight text-zinc-900 dark:text-white group-hover:text-[#FF6847] transition-colors leading-snug font-heading flex-1">
+                    <h3 className="text-xl sm:text-2xl md:text-3xl font-black uppercase tracking-tight text-zinc-900 dark:text-white group-hover:text-brand-primary transition-colors leading-snug font-heading flex-1">
                       {item.question}
                     </h3>
                   </div>
@@ -137,7 +137,7 @@ export function FaqSection(): React.JSX.Element {
                       <div
                         className={`w-9 h-9 border flex items-center justify-center transition-all duration-300 ${
                           isOpen
-                            ? "border-[#FF6847] bg-[#FF6847] text-white rotate-45"
+                            ? "border-brand-primary bg-brand-primary text-white rotate-45"
                             : "border-zinc-300 dark:border-zinc-700 bg-transparent text-zinc-700 dark:text-zinc-300 group-hover:border-zinc-900 dark:group-hover:border-white"
                         }`}
                       >
@@ -163,14 +163,14 @@ export function FaqSection(): React.JSX.Element {
                         <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 lg:gap-8">
                           <div className="hidden sm:block sm:w-10 shrink-0" />
                           <div className="hidden sm:block w-48 lg:w-52 shrink-0" />
-                          <div className="flex-1 pl-4 sm:pl-6 border-l-2 border-[#FF6847] flex flex-col lg:flex-row lg:items-start justify-between gap-6 lg:gap-12">
+                          <div className="flex-1 pl-4 sm:pl-6 border-l-2 border-brand-primary flex flex-col lg:flex-row lg:items-start justify-between gap-6 lg:gap-12">
                             <div className="max-w-3xl">
                               <p className="text-base sm:text-xl md:text-2xl font-light text-zinc-700 dark:text-zinc-200 leading-relaxed">
                                 {item.answer}
                               </p>
                             </div>
                             <div className="lg:max-w-xs shrink-0 bg-white/60 dark:bg-zinc-950/60 p-4 border border-zinc-200 dark:border-zinc-800 text-xs font-mono text-zinc-500 dark:text-zinc-400">
-                              <span className="text-[10px] font-bold uppercase tracking-wider text-[#FF6847] block mb-1">
+                              <span className="text-[10px] font-bold uppercase tracking-wider text-brand-primary block mb-1">
                                 [ DESTAQUE ]
                               </span>
                               {item.highlight}

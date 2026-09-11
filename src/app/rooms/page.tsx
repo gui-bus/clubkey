@@ -34,6 +34,7 @@ import {
 } from "lucide-react"
 
 import { Container } from "@/src/components/common/container"
+import { CtaButton } from "@/src/components/common/ctaButton"
 import { FloatingCta } from "@/src/components/landing/FloatingCta"
 import { Footer } from "@/src/components/landing/Footer"
 import { Navbar } from "@/src/components/landing/Navbar"
@@ -92,10 +93,10 @@ function EventBadgePopover({
           setIsOpen((prev) => !prev)
         }}
         onMouseEnter={() => setIsOpen(true)}
-        className="inline-flex items-center gap-1.5 px-2.5 py-0.5 sm:py-1 rounded-full border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 text-xs font-semibold hover:border-[#FF6847] hover:text-[#FF6847] transition-all shadow-2xs cursor-pointer"
+        className="inline-flex items-center gap-1.5 px-2.5 py-0.5 sm:py-1 rounded-full border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 text-xs font-semibold hover:border-brand-primary hover:text-brand-primary transition-all shadow-2xs cursor-pointer"
         aria-label={`Ver eventos em ${badge}`}
       >
-        <Ticket className="w-3.5 h-3.5 text-[#FF6847]" />
+        <Ticket className="w-3.5 h-3.5 text-brand-primary" />
         <span>{badge}</span>
       </button>
 
@@ -287,13 +288,13 @@ function RoomCard({
           <Heart
             className={cn(
               "w-4 h-4 transition-colors",
-              isFav ? "fill-[#FF6847] text-[#FF6847]" : "text-white"
+              isFav ? "fill-brand-primary text-brand-primary" : "text-white"
             )}
           />
         </button>
 
         {isLastMinute ? (
-          <div className="absolute top-3 left-3 z-20 px-2.5 py-1 rounded-full bg-[#FF6847] text-white text-[11px] font-bold tracking-wide shadow-md flex items-center gap-1.5">
+          <div className="absolute top-3 left-3 z-20 px-2.5 py-1 rounded-full bg-brand-primary text-white text-[11px] font-bold tracking-wide shadow-md flex items-center gap-1.5">
             <Flame className="w-3.5 h-3.5 fill-white text-white" />
             <span>60% OFF Last Minute</span>
           </div>
@@ -309,7 +310,7 @@ function RoomCard({
           {room.city.name}, {room.city.keys_coverage_states.name}
         </div>
 
-        <h3 className="text-sm sm:text-base font-bold text-zinc-900 dark:text-zinc-100 group-hover:text-[#FF6847] transition-colors line-clamp-1 leading-snug mb-2">
+        <h3 className="text-sm sm:text-base font-bold text-zinc-900 dark:text-zinc-100 group-hover:text-brand-primary transition-colors line-clamp-1 leading-snug mb-2">
           {room.title}
         </h3>
 
@@ -404,7 +405,7 @@ function RoomCard({
               <span className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400">
                 A partir de
               </span>
-              <span className="text-xl sm:text-2xl font-black text-[#FF6847] tracking-tight">
+              <span className="text-xl sm:text-2xl font-black text-brand-primary tracking-tight">
                 R$ {discountPrice}
               </span>
               <span className="text-xs text-zinc-500 dark:text-zinc-400 font-normal">
@@ -501,7 +502,7 @@ function SectionCarousel({
     <div className="w-full flex flex-col">
       <div className="flex items-center justify-between gap-4 mb-5">
         <div className="flex items-center gap-3 flex-wrap">
-          <h2 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-zinc-900 dark:text-white font-heading hover:text-[#FF6847] transition-colors cursor-pointer inline-flex items-center gap-1.5">
+          <h2 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-zinc-900 dark:text-white font-heading hover:text-brand-primary transition-colors cursor-pointer inline-flex items-center gap-1.5">
             <span>{section.title}</span>
             <ChevronRight className="w-4 h-4 text-zinc-400 dark:text-zinc-500 stroke-[2.5]" />
           </h2>
@@ -865,15 +866,15 @@ export default function RoomsPage(): React.JSX.Element {
                 className={cn(
                   "relative w-8 h-8 sm:w-9 sm:h-9 mx-auto flex items-center justify-center text-xs font-medium rounded-full transition-colors cursor-pointer select-none",
                   isCheckIn || isCheckOut
-                    ? "font-bold text-white bg-[#FF6847] shadow-xs"
+                    ? "font-bold text-white bg-brand-primary shadow-xs"
                     : inRange
-                      ? "font-semibold text-[#FF6847] bg-[#FF6847]/15 rounded-sm"
-                      : "text-zinc-800 dark:text-zinc-200 hover:bg-[#FF6847]/10 hover:text-[#FF6847]"
+                      ? "font-semibold text-brand-primary bg-brand-primary/15 rounded-sm"
+                      : "text-zinc-800 dark:text-zinc-200 hover:bg-brand-primary/10 hover:text-brand-primary"
                 )}
               >
                 <span>{date.getDate()}</span>
                 {isLastMinuteDay && !isCheckIn && !isCheckOut && (
-                  <Flame className="w-2.5 h-2.5 text-[#FF6847] fill-[#FF6847] absolute -top-0.5 -right-0.5" />
+                  <Flame className="w-2.5 h-2.5 text-brand-primary fill-brand-primary absolute -top-0.5 -right-0.5" />
                 )}
               </button>
             )
@@ -896,7 +897,7 @@ export default function RoomsPage(): React.JSX.Element {
     Boolean(checkOutDate)
 
   return (
-    <main className="w-full bg-[#F1F1F1] dark:bg-[#161616] text-[#111111] dark:text-white flex flex-col font-sans selection:bg-[#FF6847]/20 selection:text-[#FF6847]">
+    <main className="w-full bg-[#F1F1F1] dark:bg-[#161616] text-[#111111] dark:text-white flex flex-col font-sans selection:bg-brand-primary/20 selection:text-brand-primary">
       <TopBanner />
       <Navbar />
 
@@ -919,7 +920,7 @@ export default function RoomsPage(): React.JSX.Element {
           <div className="max-w-6xl flex flex-col items-center text-center w-full">
             <h1 className="text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-black uppercase tracking-tight text-white leading-[1.04] mb-4 font-heading drop-shadow-md">
               Viva momentos únicos em{" "}
-              <span className="text-[#FF6847]">acomodações incríveis</span>
+              <span className="text-brand-primary">acomodações incríveis</span>
             </h1>
 
             <p className="text-lg sm:text-xl md:text-2xl text-zinc-200 font-light mb-10 leading-relaxed drop-shadow-sm max-w-3xl">
@@ -945,7 +946,7 @@ export default function RoomsPage(): React.JSX.Element {
                   className="w-full flex items-center justify-between gap-2.5 px-4 py-2.5 sm:py-2 rounded-xl sm:rounded-full hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors text-left cursor-pointer"
                 >
                   <div className="flex items-center gap-2.5 truncate">
-                    <MapPin className="w-4 h-4 text-[#FF6847] shrink-0" />
+                    <MapPin className="w-4 h-4 text-brand-primary shrink-0" />
                     <span className="text-xs sm:text-sm font-semibold text-zinc-800 dark:text-zinc-200 truncate">
                       {searchDestination || "Qual o seu destino?"}
                     </span>
@@ -994,7 +995,7 @@ export default function RoomsPage(): React.JSX.Element {
                           className="w-full px-4 py-2.5 flex items-center justify-between hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors text-xs sm:text-sm font-medium text-zinc-800 dark:text-zinc-200 cursor-pointer text-left"
                         >
                           <div className="flex items-center gap-2.5 truncate">
-                            <MapPin className="w-3.5 h-3.5 text-[#FF6847] shrink-0" />
+                            <MapPin className="w-3.5 h-3.5 text-brand-primary shrink-0" />
                             <span className="truncate">{dest.label}</span>
                           </div>
                           <span className="text-[10px] text-zinc-400 dark:text-zinc-500 uppercase tracking-wider font-semibold shrink-0 ml-2">
@@ -1012,7 +1013,6 @@ export default function RoomsPage(): React.JSX.Element {
                 )}
               </div>
 
-              {}
               <button
                 type="button"
                 onClick={() => {
@@ -1032,7 +1032,6 @@ export default function RoomsPage(): React.JSX.Element {
                 </span>
               </button>
 
-              {}
               <button
                 type="button"
                 onClick={() => {
@@ -1052,7 +1051,6 @@ export default function RoomsPage(): React.JSX.Element {
                 </span>
               </button>
 
-              {}
               <div className="flex items-center gap-2.5 px-3 py-1.5">
                 <button
                   type="button"
@@ -1084,14 +1082,13 @@ export default function RoomsPage(): React.JSX.Element {
                 </button>
               </div>
 
-              {}
               <button
                 type="button"
                 onClick={() => {
                   setDestinationOpen(false)
                   setCalendarOpen(false)
                 }}
-                className="w-11 h-11 rounded-full bg-[#FF6847] hover:bg-[#E85535] text-white flex items-center justify-center shadow-lg transition-all shrink-0 cursor-pointer"
+                className="w-11 h-11 rounded-full bg-brand-primary hover:bg-brand-primary-hover text-white flex items-center justify-center shadow-lg transition-all shrink-0 cursor-pointer"
                 aria-label="Buscar acomodações"
               >
                 <Search className="w-4 h-4 stroke-[2.5]" />
@@ -1122,53 +1119,51 @@ export default function RoomsPage(): React.JSX.Element {
                     <div className="w-full md:w-56 shrink-0 md:border-l border-zinc-200 dark:border-zinc-800 md:pl-5 flex flex-col justify-between pt-4 md:pt-0 border-t md:border-t-0 gap-4">
                       <div className="flex flex-col gap-2.5">
                         <div className="flex items-center gap-1.5 text-sm font-bold text-zinc-900 dark:text-white mb-1">
-                          <Flame className="w-4 h-4 text-[#FF6847] fill-[#FF6847]" />
+                          <Flame className="w-4 h-4 text-brand-primary fill-brand-primary" />
                           <span>Last Minute</span>
                         </div>
                         <button
                           type="button"
                           onClick={handleSelectHoje}
-                          className="w-full py-2.5 px-3 border border-zinc-200 dark:border-zinc-700 rounded-sm text-xs font-semibold text-zinc-800 dark:text-zinc-200 hover:border-[#FF6847] hover:text-[#FF6847] flex items-center gap-2 transition-all cursor-pointer bg-white dark:bg-zinc-800/50 whitespace-nowrap select-none"
+                          className="w-full py-2.5 px-3 border border-zinc-200 dark:border-zinc-700 rounded-sm text-xs font-semibold text-zinc-800 dark:text-zinc-200 hover:border-brand-primary hover:text-brand-primary flex items-center gap-2 transition-all cursor-pointer bg-white dark:bg-zinc-800/50 whitespace-nowrap select-none"
                         >
-                          <Flame className="w-3.5 h-3.5 text-[#FF6847] shrink-0" />
+                          <Flame className="w-3.5 h-3.5 text-brand-primary shrink-0" />
                           <span className="whitespace-nowrap">Hoje (60% OFF)</span>
                         </button>
                         <button
                           type="button"
                           onClick={handleSelectAmanha}
-                          className="w-full py-2.5 px-3 border border-zinc-200 dark:border-zinc-700 rounded-sm text-xs font-semibold text-zinc-800 dark:text-zinc-200 hover:border-[#FF6847] hover:text-[#FF6847] flex items-center gap-2 transition-all cursor-pointer bg-white dark:bg-zinc-800/50 whitespace-nowrap select-none"
+                          className="w-full py-2.5 px-3 border border-zinc-200 dark:border-zinc-700 rounded-sm text-xs font-semibold text-zinc-800 dark:text-zinc-200 hover:border-brand-primary hover:text-brand-primary flex items-center gap-2 transition-all cursor-pointer bg-white dark:bg-zinc-800/50 whitespace-nowrap select-none"
                         >
-                          <Flame className="w-3.5 h-3.5 text-[#FF6847] shrink-0" />
+                          <Flame className="w-3.5 h-3.5 text-brand-primary shrink-0" />
                           <span className="whitespace-nowrap">Amanhã (60% OFF)</span>
                         </button>
                         <button
                           type="button"
                           onClick={handleSelectDepois}
-                          className="w-full py-2.5 px-3 border border-zinc-200 dark:border-zinc-700 rounded-sm text-xs font-semibold text-zinc-800 dark:text-zinc-200 hover:border-[#FF6847] hover:text-[#FF6847] flex items-center gap-2 transition-all cursor-pointer bg-white dark:bg-zinc-800/50 whitespace-nowrap select-none"
+                          className="w-full py-2.5 px-3 border border-zinc-200 dark:border-zinc-700 rounded-sm text-xs font-semibold text-zinc-800 dark:text-zinc-200 hover:border-brand-primary hover:text-brand-primary flex items-center gap-2 transition-all cursor-pointer bg-white dark:bg-zinc-800/50 whitespace-nowrap select-none"
                         >
-                          <Flame className="w-3.5 h-3.5 text-[#FF6847] shrink-0" />
+                          <Flame className="w-3.5 h-3.5 text-brand-primary shrink-0" />
                           <span className="whitespace-nowrap">Depois (60% OFF)</span>
                         </button>
                       </div>
 
                       <div className="flex flex-col gap-2 pt-2">
-                        <button
-                          type="button"
+                        <CtaButton
+                          isFullWidth
+                          size="sm"
                           onClick={() => setCalendarOpen(false)}
-                          className="group relative w-full py-2.5 px-4 overflow-hidden rounded-sm bg-[#FF6847] text-white text-xs sm:text-sm font-bold shadow-md whitespace-nowrap cursor-pointer transition-all duration-300 flex items-center justify-center select-none"
+                          className="whitespace-nowrap"
                         >
-                          <span className="absolute inset-0 w-full h-full bg-white -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out" />
-                          <span className="relative z-10 inline-flex items-center justify-center text-white group-hover:text-zinc-950 transition-colors duration-300">
-                            Confirmar
-                          </span>
-                        </button>
+                          Confirmar
+                        </CtaButton>
                         <button
                           type="button"
                           onClick={() => {
                             setCheckInDate(null)
                             setCheckOutDate(null)
                           }}
-                          className="w-full py-2.5 bg-white dark:bg-zinc-800 border border-[#FF6847] text-[#FF6847] hover:bg-orange-50 dark:hover:bg-zinc-700 rounded-sm text-xs sm:text-sm font-bold transition-colors cursor-pointer select-none"
+                          className="w-full py-2.5 bg-white dark:bg-zinc-800 border border-brand-primary text-brand-primary hover:bg-brand-primary-light dark:hover:bg-zinc-700 rounded-sm text-xs sm:text-sm font-bold transition-colors cursor-pointer select-none"
                         >
                           Limpar Datas
                         </button>
@@ -1191,19 +1186,19 @@ export default function RoomsPage(): React.JSX.Element {
                   Filtros aplicados:
                 </span>
                 {searchDestination && (
-                  <span className="px-2.5 py-1 rounded-full bg-[#FF6847]/10 text-[#FF6847] font-bold flex items-center gap-1.5">
+                  <span className="px-2.5 py-1 rounded-full bg-brand-primary/10 text-brand-primary font-bold flex items-center gap-1.5">
                     <MapPin className="w-3 h-3" />
                     <span>{searchDestination}</span>
                   </span>
                 )}
                 {guestCount > 1 && (
-                  <span className="px-2.5 py-1 rounded-full bg-[#FF6847]/10 text-[#FF6847] font-bold flex items-center gap-1.5">
+                  <span className="px-2.5 py-1 rounded-full bg-brand-primary/10 text-brand-primary font-bold flex items-center gap-1.5">
                     <Users className="w-3 h-3" />
                     <span>{guestCount} hóspedes</span>
                   </span>
                 )}
                 {(checkInDate || checkOutDate) && (
-                  <span className="px-2.5 py-1 rounded-full bg-[#FF6847]/10 text-[#FF6847] font-bold flex items-center gap-1.5">
+                  <span className="px-2.5 py-1 rounded-full bg-brand-primary/10 text-brand-primary font-bold flex items-center gap-1.5">
                     <Calendar className="w-3 h-3" />
                     <span>
                       {checkInDate?.toLocaleDateString("pt-BR", {
@@ -1228,7 +1223,7 @@ export default function RoomsPage(): React.JSX.Element {
                   setCheckInDate(null)
                   setCheckOutDate(null)
                 }}
-                className="text-xs font-bold text-[#FF6847] hover:underline cursor-pointer"
+                className="text-xs font-bold text-brand-primary hover:underline cursor-pointer"
               >
                 Limpar filtros
               </button>
@@ -1271,7 +1266,7 @@ export default function RoomsPage(): React.JSX.Element {
                   setCheckInDate(null)
                   setCheckOutDate(null)
                 }}
-                className="px-4 py-2 bg-[#FF6847] hover:bg-[#E85535] text-white text-xs font-bold rounded-full transition-colors cursor-pointer"
+                className="px-4 py-2 bg-brand-primary hover:bg-brand-primary-hover text-white text-xs font-bold rounded-full transition-colors cursor-pointer"
               >
                 Ver todas as acomodações
               </button>

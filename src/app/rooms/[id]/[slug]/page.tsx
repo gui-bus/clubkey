@@ -43,6 +43,7 @@ import {
 import { Toast, toast } from "@/src/components/ui/toast/toast"
 
 import { Container } from "@/src/components/common/container"
+import { CtaButton } from "@/src/components/common/ctaButton"
 import { FloatingCta } from "@/src/components/landing/FloatingCta"
 import { Footer } from "@/src/components/landing/Footer"
 import { Navbar } from "@/src/components/landing/Navbar"
@@ -264,7 +265,7 @@ export default function RoomDetailPage(): React.JSX.Element {
   }, [directionsOpen])
 
   return (
-    <main className="min-h-screen w-full bg-[#F1F1F1] dark:bg-[#161616] text-[#111111] dark:text-white flex flex-col font-sans selection:bg-[#FF6847]/20 selection:text-[#FF6847]">
+    <main className="min-h-screen w-full bg-[#F1F1F1] dark:bg-[#161616] text-[#111111] dark:text-white flex flex-col font-sans selection:bg-brand-primary/20 selection:text-brand-primary">
       <TopBanner />
       <Navbar isTransparent={false} />
 
@@ -305,7 +306,7 @@ export default function RoomDetailPage(): React.JSX.Element {
                     className={cn(
                       "w-3.5 h-3.5 transition-all duration-300",
                       isFav
-                        ? "fill-[#FF6847] text-[#FF6847] drop-shadow-[0_0_6px_rgba(255,104,71,0.5)]"
+                        ? "fill-brand-primary text-brand-primary drop-shadow-[0_0_6px_var(--brand-primary-glow)]"
                         : "text-zinc-600 dark:text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-white"
                     )}
                   />
@@ -317,7 +318,7 @@ export default function RoomDetailPage(): React.JSX.Element {
                       animate={{ scale: 2.2, opacity: 0 }}
                       exit={{ opacity: 0 }}
                       transition={{ duration: 0.5, ease: "easeOut" }}
-                      className="absolute inset-0 rounded-full bg-[#FF6847]/40 pointer-events-none"
+                      className="absolute inset-0 rounded-full bg-brand-primary/40 pointer-events-none"
                     />
                   )}
                 </AnimatePresence>
@@ -328,7 +329,7 @@ export default function RoomDetailPage(): React.JSX.Element {
         </div>
 
         <div className="mb-6">
-          <div className="flex items-center gap-2 text-xs font-bold text-[#FF6847] tracking-wider uppercase mb-1">
+          <div className="flex items-center gap-2 text-xs font-bold text-brand-primary tracking-wider uppercase mb-1">
             <MapPin className="w-3.5 h-3.5" />
             <span>
               {room.city.keys_coverage_states.name} — {room.city.name}
@@ -413,11 +414,11 @@ export default function RoomDetailPage(): React.JSX.Element {
 
               <div className="flex items-baseline justify-between">
                 <div>
-                  <div className="text-[10px] uppercase font-bold text-[#FF6847] tracking-wider mb-0.5">
+                  <div className="text-[10px] uppercase font-bold text-brand-primary tracking-wider mb-0.5">
                     Preço Exclusivo ClubKey
                   </div>
                   <div className="flex items-baseline gap-1.5">
-                    <span className="text-2xl sm:text-3xl font-black text-[#FF6847]">
+                    <span className="text-2xl sm:text-3xl font-black text-brand-primary">
                       R$ {discountPriceNum}
                     </span>
                     <span className="text-xs text-zinc-500 dark:text-zinc-400 font-medium">
@@ -581,26 +582,24 @@ export default function RoomDetailPage(): React.JSX.Element {
 
                 <div className="pt-2.5 border-t border-zinc-200 dark:border-zinc-800 flex items-baseline justify-between text-sm font-bold text-zinc-900 dark:text-white">
                   <span>Total</span>
-                  <span className="text-xl font-black text-[#FF6847]">
+                  <span className="text-xl font-black text-brand-primary">
                     R$ {total}
                   </span>
                 </div>
               </div>
 
               <div className="space-y-2">
-                <button
-                  type="button"
+                <CtaButton
+                  isFullWidth
+                  size="md"
                   onClick={() =>
                     alert(`Reserva simulada com sucesso para ${room.title}!`)
                   }
-                  className="group relative w-full py-3.5 px-6 overflow-hidden rounded-sm bg-[#FF6847] text-white font-bold text-xs sm:text-sm uppercase tracking-wider shadow-md cursor-pointer transition-all duration-300 flex items-center justify-center"
+                  textClassName="gap-2"
                 >
-                  <span className="absolute inset-0 w-full h-full bg-white -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out" />
-                  <span className="relative z-10 inline-flex items-center justify-center gap-2 text-white group-hover:text-zinc-950 transition-colors duration-300">
-                    <span>Reservar com ClubKey</span>
-                    <ChevronRight className="w-4 h-4 stroke-[2.5]" />
-                  </span>
-                </button>
+                  <span>Reservar com ClubKey</span>
+                  <ChevronRight className="w-4 h-4 stroke-[2.5]" />
+                </CtaButton>
 
                 <div className="flex items-center justify-center gap-1 text-[11px] text-zinc-500 dark:text-zinc-400 text-center">
                   <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
@@ -723,7 +722,7 @@ export default function RoomDetailPage(): React.JSX.Element {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
                 <div>
                   <div className="flex items-center gap-2 text-zinc-900 dark:text-white font-normal text-sm mb-2">
-                    <Clock className="w-4 h-4 text-[#FF6847]" />
+                    <Clock className="w-4 h-4 text-brand-primary" />
                     <span>Check-in e Check-out</span>
                   </div>
                   <ul className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 space-y-1.5">
@@ -735,7 +734,7 @@ export default function RoomDetailPage(): React.JSX.Element {
 
                 <div>
                   <div className="flex items-center gap-2 text-zinc-900 dark:text-white font-normal text-sm mb-2">
-                    <ShieldAlert className="w-4 h-4 text-[#FF6847]" />
+                    <ShieldAlert className="w-4 h-4 text-brand-primary" />
                     <span>Regras da casa</span>
                   </div>
                   <ul className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 space-y-1.5">
@@ -909,11 +908,11 @@ export default function RoomDetailPage(): React.JSX.Element {
 
             <div className="flex items-baseline justify-between">
               <div>
-                <div className="text-[10px] uppercase font-bold text-[#FF6847] tracking-wider mb-0.5">
+                <div className="text-[10px] uppercase font-bold text-brand-primary tracking-wider mb-0.5">
                   Preço Exclusivo ClubKey
                 </div>
                 <div className="flex items-baseline gap-1.5">
-                  <span className="text-2xl sm:text-3xl font-black text-[#FF6847]">
+                  <span className="text-2xl sm:text-3xl font-black text-brand-primary">
                     R$ {discountPriceNum}
                   </span>
                   <span className="text-xs text-zinc-500 dark:text-zinc-400 font-medium">
@@ -1033,7 +1032,7 @@ export default function RoomDetailPage(): React.JSX.Element {
 
               <div className="pt-3 border-t border-zinc-200 dark:border-zinc-800 flex items-baseline justify-between text-sm sm:text-base font-bold text-zinc-900 dark:text-white">
                 <span>Total</span>
-                <span className="text-xl font-black text-[#FF6847]">
+                <span className="text-xl font-black text-brand-primary">
                   R$ {total}
                 </span>
               </div>
@@ -1085,19 +1084,17 @@ export default function RoomDetailPage(): React.JSX.Element {
               </AnimatePresence>
             </div>
 
-            <button
-              type="button"
+            <CtaButton
+              isFullWidth
+              size="lg"
               onClick={() =>
                 alert(`Reserva simulada com sucesso para ${room.title}!`)
               }
-              className="group relative w-full py-4 px-6 overflow-hidden rounded-sm bg-[#FF6847] text-white font-bold text-xs sm:text-sm uppercase tracking-wider shadow-md cursor-pointer transition-all duration-300 flex items-center justify-center"
+              textClassName="gap-2"
             >
-              <span className="absolute inset-0 w-full h-full bg-white -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out" />
-              <span className="relative z-10 inline-flex items-center justify-center gap-2 text-white group-hover:text-zinc-950 transition-colors duration-300">
-                <span>Reservar com ClubKey</span>
-                <ChevronRight className="w-4 h-4 stroke-[2.5]" />
-              </span>
-            </button>
+              <span>Reservar com ClubKey</span>
+              <ChevronRight className="w-4 h-4 stroke-[2.5]" />
+            </CtaButton>
 
             <div className="flex flex-col items-center gap-2 text-center text-[11px] text-zinc-400">
               <span className="flex items-center gap-1 text-zinc-500 dark:text-zinc-400">
@@ -1180,7 +1177,7 @@ export default function RoomDetailPage(): React.JSX.Element {
                   className={cn(
                     "relative w-14 h-14 sm:w-16 sm:h-16 shrink-0 rounded-lg overflow-hidden border-2 transition-all cursor-pointer",
                     pIdx === activePhotoIndex
-                      ? "border-[#FF6847] scale-105 shadow-md opacity-100"
+                      ? "border-brand-primary scale-105 shadow-md opacity-100"
                       : "border-transparent opacity-50 hover:opacity-80"
                   )}
                 >

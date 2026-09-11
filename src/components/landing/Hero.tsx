@@ -8,6 +8,8 @@ import Link from "next/link"
 import { motion } from "framer-motion"
 
 import { Container } from "@/src/components/common/container"
+import { CtaButton } from "@/src/components/common/ctaButton"
+import { brandConfig } from "@/src/config/brand.config"
 
 const marqueePhrases = [
   { prefix: "ATÉ 60% OFF REAL", suffix: "TARIFAS PREFERENCIAIS & LAST MINUTE" },
@@ -68,17 +70,14 @@ export function Hero(): React.JSX.Element {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full sm:w-auto"
           >
-            <Link
-              href="https://clubkey.io/subscription"
+            <CtaButton
+              href={brandConfig.links.subscription}
               target="_blank"
               rel="noreferrer"
-              className="group relative inline-flex items-center justify-center px-8 py-4 overflow-hidden rounded-sm bg-[#FF6847] text-white font-bold text-sm uppercase tracking-wider shadow-md cursor-pointer transition-all duration-300"
+              size="lg"
             >
-              <span className="absolute inset-0 w-full h-full bg-white -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out" />
-              <span className="relative z-10 inline-flex items-center text-white group-hover:text-zinc-950 transition-colors duration-300">
-                Solicite agora
-              </span>
-            </Link>
+              Solicite agora
+            </CtaButton>
 
             <Link
               href="/rooms"

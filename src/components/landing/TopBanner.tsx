@@ -3,8 +3,9 @@
 import * as React from "react"
 
 import Image from "next/image"
-import Link from "next/link"
 
+import { CtaButton } from "@/src/components/common/ctaButton"
+import { brandConfig } from "@/src/config/brand.config"
 import { cn } from "@/src/lib/utils/utils"
 
 export function TopBanner(): React.JSX.Element {
@@ -61,21 +62,19 @@ export function TopBanner(): React.JSX.Element {
             +4.500 hospedagens
           </strong>{" "}
           com tarifas de membro e até{" "}
-          <span className="text-[#FF6847] font-bold">60% OFF</span>
+          <span className="text-brand-primary font-bold">60% OFF</span>
         </p>
 
         <div className="flex items-center gap-2.5 shrink-0">
-          <Link
-            href="https://clubkey.io/subscription"
+          <CtaButton
+            href={brandConfig.links.subscription}
             target="_blank"
             rel="noreferrer"
-            className="group relative inline-flex items-center justify-center px-4 py-1.5 overflow-hidden rounded-sm bg-[#FF6847] text-white text-xs font-bold uppercase tracking-wider shadow-xs whitespace-nowrap cursor-pointer transition-all duration-300"
+            size="xs"
+            className="shadow-xs whitespace-nowrap"
           >
-            <span className="absolute inset-0 w-full h-full bg-white -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out" />
-            <span className="relative z-10 inline-flex items-center text-white group-hover:text-zinc-950 transition-colors duration-300">
-              Quero ser associado
-            </span>
-          </Link>
+            Quero ser associado
+          </CtaButton>
 
           <Image
             src="/utils/gifs/arrow_right.gif"

@@ -2,6 +2,7 @@ import { Metadata, Viewport } from "next"
 
 import { GoogleAnalytics } from "@next/third-parties/google"
 
+import { BrandStyles } from "@/src/components/common/brandStyles"
 import { ThemeProvider } from "@/src/components/common/themeProvider"
 
 import { cn } from "@/src/lib/utils/utils"
@@ -10,6 +11,7 @@ import { fontVariables } from "@/src/config/fonts"
 import { siteConfig } from "@/src/config/site"
 
 import { NuqsAdapter } from "nuqs/adapters/next/app"
+import { Toast } from "@/src/components/ui/toast/toast"
 import "@/src/app/globals.css"
 
 export const viewport: Viewport = {
@@ -66,6 +68,11 @@ export async function generateMetadata(): Promise<Metadata> {
       index: true,
       follow: true,
     },
+    icons: {
+      icon: siteConfig.favicon || "/favicon.ico",
+      shortcut: siteConfig.favicon || "/favicon.ico",
+      apple: siteConfig.favicon || "/favicon.ico",
+    },
   }
 }
 
@@ -80,9 +87,14 @@ export default async function RootLayout({
       suppressHydrationWarning
       className={cn("antialiased scroll-smooth", fontVariables)}
     >
-      <body className="mx-auto w-full max-w-440 bg-background text-foreground selection:bg-[#FF6847]/20 selection:text-[#FF6847]">
+      <head>
+        <BrandStyles />
+        <link rel="icon" href={siteConfig.favicon || "/favicon.ico"} />
+      </head>
+      <body className="mx-auto w-full max-w-440 bg-background text-foreground selection:bg-brand-primary/20 selection:text-brand-primary">
         <ThemeProvider>
           <NuqsAdapter>{children}</NuqsAdapter>
+          <Toast position="top-right" />
         </ThemeProvider>
         {siteConfig.analytics.google && (
           <GoogleAnalytics gaId={siteConfig.analytics.google} />

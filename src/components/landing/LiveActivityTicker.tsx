@@ -56,8 +56,8 @@ export function LiveActivityTicker(): React.JSX.Element {
   return (
     <div className="w-full bg-[#EBEBEB] dark:bg-[#1A1A1D] border-b border-zinc-300 dark:border-zinc-800 py-3 overflow-hidden transition-colors">
       <Container className="flex items-center gap-4">
-        <div className="hidden sm:flex items-center gap-2 pr-4 shrink-0 border-r border-zinc-300 dark:border-zinc-800 text-xs font-bold uppercase tracking-wider text-[#FF6847]">
-          <span className="w-2 h-2 rounded-full bg-[#FF6847] animate-ping" />
+        <div className="hidden sm:flex items-center gap-2 pr-4 shrink-0 border-r border-zinc-300 dark:border-zinc-800 text-xs font-bold uppercase tracking-wider text-brand-primary">
+          <span className="w-2 h-2 rounded-full bg-brand-primary animate-ping" />
           <span>Atividade Recente:</span>
         </div>
 
@@ -67,7 +67,7 @@ export function LiveActivityTicker(): React.JSX.Element {
               key={`${booking.id}-${idx}`}
               className="inline-flex items-center gap-2 bg-white dark:bg-[#222226] border border-zinc-300 dark:border-zinc-700/60 px-3.5 py-1.5 rounded-sm text-zinc-800 dark:text-zinc-300 shadow-xs"
             >
-              <CheckCircle2 className="w-3.5 h-3.5 text-[#FF6847] shrink-0" />
+              <CheckCircle2 className="w-3.5 h-3.5 text-brand-primary shrink-0" />
               <span className="font-bold text-zinc-900 dark:text-white">
                 {booking.name}
               </span>
@@ -75,7 +75,7 @@ export function LiveActivityTicker(): React.JSX.Element {
               <span className="font-medium text-zinc-800 dark:text-zinc-200">
                 {booking.location}
               </span>
-              <span className="px-2 py-0.5 bg-[#FF6847]/15 text-[#FF6847] font-extrabold text-[10px] uppercase tracking-wider">
+              <span className="px-2 py-0.5 bg-brand-primary/15 text-brand-primary font-extrabold text-[10px] uppercase tracking-wider">
                 {booking.savings}
               </span>
               <span className="text-zinc-400 dark:text-zinc-500 text-[10px]">
