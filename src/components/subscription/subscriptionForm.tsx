@@ -9,6 +9,7 @@ import { toast } from "sonner"
 
 import { CtaButton } from "@/src/components/common/ctaButton"
 import { Input } from "@/src/components/ui/input/input"
+import { maskCardExpiry, maskCardNumber, maskCpf, maskCvv } from "@/src/lib/masks"
 import { cn } from "@/src/lib/utils/utils"
 import {
   type CreditCardPaymentFormData,
@@ -44,7 +45,7 @@ export function SubscriptionForm({
 
   const cardForm = useForm<CreditCardPaymentFormData>({
     resolver: zodResolver(creditCardPaymentSchema),
-    mode: "onTouched",
+    mode: "onSubmit",
     defaultValues: {
       cardNumber: "",
       holderName: user?.name || "",
@@ -62,29 +63,6 @@ export function SubscriptionForm({
       cardForm.setValue("holderCpf", user.cpf)
     }
   }, [user, cardForm])
-
-  const maskCardNumber = (val: string) => {
-    const raw = val.replace(/\D/g, "").slice(0, 16)
-    return raw.replace(/(\d{4})(?=\d)/g, "$1 ")
-  }
-
-  const maskExpiration = (val: string) => {
-    const raw = val.replace(/\D/g, "").slice(0, 4)
-    if (raw.length <= 2) return raw
-    return `${raw.slice(0, 2)}/${raw.slice(2)}`
-  }
-
-  const maskCvv = (val: string) => {
-    return val.replace(/\D/g, "").slice(0, 4)
-  }
-
-  const maskCpf = (val: string) => {
-    const raw = val.replace(/\D/g, "").slice(0, 11)
-    if (raw.length <= 3) return raw
-    if (raw.length <= 6) return `${raw.slice(0, 3)}.${raw.slice(3)}`
-    if (raw.length <= 9) return `${raw.slice(0, 3)}.${raw.slice(3, 6)}.${raw.slice(6)}`
-    return `${raw.slice(0, 3)}.${raw.slice(3, 6)}.${raw.slice(6, 9)}-${raw.slice(9)}`
-  }
 
   const onCardSubmit = () => {
     if (!user) {
@@ -179,16 +157,19 @@ export function SubscriptionForm({
                   href="/sign-in"
                   size="sm"
                   isFullWidth
-                  className="flex-1 rounded-sm"
+                  className="flex-1"
                 >
                   Fazer Login
                 </CtaButton>
-                <Link
+                <CtaButton
                   href="/sign-up"
-                  className="flex-1 py-2 sm:py-2.5 px-4 rounded-sm border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-600 text-zinc-800 dark:text-zinc-200 text-xs sm:text-sm font-bold uppercase tracking-wider transition-all flex items-center justify-center text-center"
+                  variant="secondary"
+                  size="sm"
+                  isFullWidth
+                  className="flex-1"
                 >
                   Criar Conta
-                </Link>
+                </CtaButton>
               </div>
             </div>
           </div>
@@ -303,7 +284,7 @@ export function SubscriptionForm({
                     render={({ field }) => (
                       <Input
                         value={field.value}
-                        onChange={(e) => field.onChange(maskExpiration(e.target.value))}
+                        onChange={(e) => field.onChange(maskCardExpiry(e.target.value))}
                         onBlur={field.onBlur}
                         placeholder="MM/AA"
                         variant={cardForm.formState.errors.expirationDate ? "error" : "default"}
@@ -378,13 +359,14 @@ export function SubscriptionForm({
               </div>
 
               <div className="pt-2">
-                <button
+                <CtaButton
                   type="submit"
                   disabled={isLoading || isFormLocked}
-                  className="w-full py-4 rounded-sm bg-brand-primary hover:bg-brand-primary-hover text-white text-sm font-bold uppercase tracking-wider transition-all shadow-md shadow-brand-primary/25 cursor-pointer outline-none disabled:opacity-60 disabled:cursor-not-allowed text-center"
+                  isFullWidth
+                  size="lg"
                 >
                   {isLoading ? "Processando assinatura..." : "Assinar plano mensal • R$ 19,90/mês"}
-                </button>
+                </CtaButton>
               </div>
             </form>
           ) : (
@@ -402,14 +384,15 @@ export function SubscriptionForm({
               </div>
 
               {!isPixGenerated ? (
-                <button
+                <CtaButton
                   type="button"
                   disabled={isLoading || isFormLocked}
                   onClick={handleGeneratePix}
-                  className="w-full py-4 rounded-sm bg-brand-primary hover:bg-brand-primary-hover text-white text-sm font-bold uppercase tracking-wider transition-all shadow-md shadow-brand-primary/25 cursor-pointer outline-none disabled:opacity-60 disabled:cursor-not-allowed text-center"
+                  isFullWidth
+                  size="lg"
                 >
                   {isLoading ? "Gerando código PIX..." : "Gerar Código PIX • R$ 214,92"}
-                </button>
+                </CtaButton>
               ) : (
                 <div className="flex flex-col items-center gap-5 p-5 rounded-sm bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700">
                   <div className="text-center space-y-1">

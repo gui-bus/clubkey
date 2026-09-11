@@ -5,6 +5,7 @@ import Link from "next/link"
 import { CheckCircle2, Home, KeyRound } from "lucide-react"
 
 import { Container } from "@/src/components/common/container"
+import { CtaButton } from "@/src/components/common/ctaButton"
 import { FloatingCta } from "@/src/components/landing/FloatingCta"
 import { Footer } from "@/src/components/landing/Footer"
 import { Navbar } from "@/src/components/landing/Navbar"
@@ -90,13 +91,13 @@ export default function SubscriptionPage(): React.JSX.Element {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-3 w-full pt-2">
-                <Link
+                <CtaButton
                   href="/rooms"
-                  className="flex-1 py-3.5 rounded-sm bg-brand-primary hover:bg-brand-primary-hover text-white text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-md shadow-brand-primary/25"
+                  className="flex-1 py-3.5"
                 >
-                  <KeyRound className="w-4 h-4" />
+                  <KeyRound className="w-4 h-4 mr-2" />
                   <span>Explorar Hospedagens</span>
-                </Link>
+                </CtaButton>
 
                 <Link
                   href="/"

@@ -53,12 +53,12 @@ export default function SignUpPage(): React.JSX.Element {
                   <label className="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
                     Escolha o tipo de conta
                   </label>
-                  <div className="grid grid-cols-2 gap-3 p-1.5 rounded-2xl bg-zinc-200/70 dark:bg-zinc-800/60 border border-zinc-300/80 dark:border-zinc-700 w-full">
+                  <div className="grid grid-cols-2 gap-3 p-1.5 rounded-sm bg-zinc-200/70 dark:bg-zinc-800/60 border border-zinc-300/80 dark:border-zinc-700 w-full">
                     <button
                       type="button"
                       onClick={() => setAccountType("pf")}
                       className={cn(
-                        "py-3 px-4 rounded-xl font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all cursor-pointer",
+                        "py-3 px-4 rounded-sm font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all cursor-pointer",
                         accountType === "pf"
                           ? "bg-white dark:bg-zinc-900 text-brand-primary shadow-sm"
                           : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white"
@@ -71,7 +71,7 @@ export default function SignUpPage(): React.JSX.Element {
                       type="button"
                       onClick={() => setAccountType("pj")}
                       className={cn(
-                        "py-3 px-4 rounded-xl font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all cursor-pointer",
+                        "py-3 px-4 rounded-sm font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all cursor-pointer",
                         accountType === "pj"
                           ? "bg-white dark:bg-zinc-900 text-brand-primary shadow-sm"
                           : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white"

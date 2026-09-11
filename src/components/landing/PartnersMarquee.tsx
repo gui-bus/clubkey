@@ -1,9 +1,7 @@
 "use client"
 
 import * as React from "react"
-
 import Image from "next/image"
-
 import { motion } from "framer-motion"
 
 import { Container } from "@/src/components/common/container"

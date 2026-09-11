@@ -1,14 +1,13 @@
 "use client"
 
 import * as React from "react"
-
 import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-
 import { Menu, User } from "lucide-react"
 
 import { Container } from "@/src/components/common/container"
+import { CtaButton } from "@/src/components/common/ctaButton"
 import { ThemeToggle } from "@/src/components/common/themeToggle"
 import {
   Sheet,
@@ -17,7 +16,6 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/src/components/ui/sheet/sheet"
-
 import { brandConfig } from "@/src/config/brand.config"
 import { cn } from "@/src/lib/utils/utils"
 
@@ -252,7 +250,7 @@ export function Navbar({
                               href={link.href}
                               onClick={() => setMobileMenuOpen(false)}
                               className={cn(
-                                "px-4 py-3 rounded-lg text-sm font-bold uppercase tracking-wider transition-all",
+                                "px-4 py-3 rounded-sm text-sm font-bold uppercase tracking-wider transition-all",
                                 isActive
                                   ? "text-brand-primary bg-brand-primary/10 border-l-2 border-brand-primary font-black"
                                   : "text-zinc-200 hover:text-brand-primary hover:bg-zinc-800/60"
@@ -275,13 +273,14 @@ export function Navbar({
                         <span>Já sou associado (Login)</span>
                       </Link>
 
-                      <Link
+                      <CtaButton
                         href={brandConfig.links.subscription}
                         onClick={() => setMobileMenuOpen(false)}
-                        className="flex items-center justify-center gap-2 w-full py-3.5 rounded-sm bg-brand-primary hover:bg-brand-primary-hover text-xs font-bold uppercase tracking-wider text-white transition-all shadow-md shadow-brand-primary/20"
+                        isFullWidth
+                        size="md"
                       >
-                        <span>Quero ser associado</span>
-                      </Link>
+                        Quero ser associado
+                      </CtaButton>
                     </div>
                   </SheetContent>
                 </Sheet>

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation"
 import { Mail } from "lucide-react"
 import { toast } from "sonner"
 
+import { CtaButton } from "@/src/components/common/ctaButton"
 import { InputOtp } from "@/src/components/ui/inputOtp/inputOtp"
 import { cn } from "@/src/lib/utils/utils"
 
@@ -109,19 +110,15 @@ export function EmailVerification({
         )}
       </div>
 
-      <button
+      <CtaButton
         type="button"
         onClick={handleVerify}
         disabled={otp.length < 6 || isVerifying}
-        className={cn(
-          "w-full py-4 rounded-xl text-sm font-bold uppercase tracking-wider text-white transition-all shadow-md cursor-pointer outline-none",
-          otp.length === 6 && !isVerifying
-            ? "bg-brand-primary hover:bg-brand-primary-hover shadow-brand-primary/25 hover:shadow-lg hover:shadow-brand-primary/30"
-            : "bg-brand-primary/50 opacity-60 cursor-not-allowed shadow-none"
-        )}
+        isFullWidth
+        size="lg"
       >
         {isVerifying ? "Verificando..." : "Verificar"}
-      </button>
+      </CtaButton>
     </div>
   )
 }

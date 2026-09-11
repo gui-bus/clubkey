@@ -1,8 +1,6 @@
 import * as React from "react"
 
-import Link from "next/link"
-
-import { Button } from "@/src/components/ui/button/button"
+import { CtaButton } from "@/src/components/common/ctaButton"
 
 export default function NotFound(): React.JSX.Element {
   return (
@@ -14,11 +12,9 @@ export default function NotFound(): React.JSX.Element {
         A página que você está procurando não existe.
       </p>
       <div className="mt-8">
-        <Link href="/">
-          <Button className="h-10 px-6 rounded-full bg-brand-primary text-white hover:bg-brand-primary/90 transition-all duration-200 cursor-pointer">
-            Voltar ao início
-          </Button>
-        </Link>
+        <CtaButton href="/">
+          Voltar ao início
+        </CtaButton>
       </div>
     </div>
   )

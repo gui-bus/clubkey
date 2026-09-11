@@ -9,8 +9,10 @@ import { toast } from "sonner"
 import { PhoneInput } from "@/src/components/auth/phoneInput"
 import { TermsCard } from "@/src/components/auth/termsCard"
 import { Checkbox } from "@/src/components/ui/checkbox/checkbox"
+import { CtaButton } from "@/src/components/common/ctaButton"
 import { Input } from "@/src/components/ui/input/input"
 import { PasswordInput } from "@/src/components/ui/passwordInput/passwordInput"
+import { maskCpf, maskCnpj, maskDate } from "@/src/lib/masks"
 import { type SignUpPjFormData, signUpPjSchema } from "@/src/schemas/auth.schema"
 
 export interface SignUpPjFormProps {
@@ -31,7 +33,7 @@ export function SignUpPjForm({ onSuccess }: SignUpPjFormProps): React.JSX.Elemen
     formState: { errors },
   } = useForm<SignUpPjFormData>({
     resolver: zodResolver(signUpPjSchema),
-    mode: "onTouched",
+    mode: "onSubmit",
     defaultValues: {
       accountType: "pj",
       companyName: "",
@@ -50,30 +52,6 @@ export function SignUpPjForm({ onSuccess }: SignUpPjFormProps): React.JSX.Elemen
   })
 
   const hasReferral = watch("hasReferral")
-
-  const maskCpf = (val: string) => {
-    const raw = val.replace(/\D/g, "").slice(0, 11)
-    if (raw.length <= 3) return raw
-    if (raw.length <= 6) return `${raw.slice(0, 3)}.${raw.slice(3)}`
-    if (raw.length <= 9) return `${raw.slice(0, 3)}.${raw.slice(3, 6)}.${raw.slice(6)}`
-    return `${raw.slice(0, 3)}.${raw.slice(3, 6)}.${raw.slice(6, 9)}-${raw.slice(9)}`
-  }
-
-  const maskCnpj = (val: string) => {
-    const raw = val.replace(/\D/g, "").slice(0, 14)
-    if (raw.length <= 2) return raw
-    if (raw.length <= 5) return `${raw.slice(0, 2)}.${raw.slice(2)}`
-    if (raw.length <= 8) return `${raw.slice(0, 2)}.${raw.slice(2, 5)}.${raw.slice(5)}`
-    if (raw.length <= 12) return `${raw.slice(0, 2)}.${raw.slice(2, 5)}.${raw.slice(5, 8)}/${raw.slice(8)}`
-    return `${raw.slice(0, 2)}.${raw.slice(2, 5)}.${raw.slice(5, 8)}/${raw.slice(8, 12)}-${raw.slice(12)}`
-  }
-
-  const maskDate = (val: string) => {
-    const raw = val.replace(/\D/g, "").slice(0, 8)
-    if (raw.length <= 2) return raw
-    if (raw.length <= 4) return `${raw.slice(0, 2)}/${raw.slice(2)}`
-    return `${raw.slice(0, 2)}/${raw.slice(2, 4)}/${raw.slice(4)}`
-  }
 
   const onSubmit = (data: SignUpPjFormData) => {
     setIsLoading(true)
@@ -303,7 +281,7 @@ export function SignUpPjForm({ onSuccess }: SignUpPjFormProps): React.JSX.Elemen
             <Checkbox
               id="pj-referral-check"
               checked={hasReferral}
-              onCheckedChange={(checked) => setValue("hasReferral", checked, { shouldValidate: true })}
+              onCheckedChange={(checked) => setValue("hasReferral", checked === true, { shouldValidate: true })}
             />
             <label
               htmlFor="pj-referral-check"
@@ -345,13 +323,14 @@ export function SignUpPjForm({ onSuccess }: SignUpPjFormProps): React.JSX.Elemen
       />
 
       <div className="flex flex-col items-center gap-4 pt-2 w-full">
-        <button
+        <CtaButton
           type="submit"
           disabled={isLoading}
-          className="w-full py-4 rounded-xl bg-brand-primary hover:bg-brand-primary-hover text-white text-sm font-bold uppercase tracking-wider transition-all shadow-md shadow-brand-primary/25 cursor-pointer outline-none disabled:opacity-60 disabled:cursor-not-allowed text-center"
+          isFullWidth
+          size="lg"
         >
           {isLoading ? "Criando conta..." : "Criar conta"}
-        </button>
+        </CtaButton>
 
         <div className="text-center text-xs text-zinc-500 dark:text-zinc-400">
           Já possui uma conta?{" "}

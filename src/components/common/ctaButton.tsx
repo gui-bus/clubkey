@@ -2,9 +2,12 @@ import * as React from "react"
 
 import Link from "next/link"
 
+import { Ripple } from "@/src/lib/ripple/ripple"
+import { useRipples } from "@/src/lib/ripple/useRipple"
 import { cn } from "@/src/lib/utils/utils"
 
 export type CtaButtonSize = "xs" | "sm" | "md" | "lg"
+export type CtaButtonVariant = "primary" | "secondary"
 
 export interface CtaButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -12,6 +15,8 @@ export interface CtaButtonProps
   target?: string
   rel?: string
   size?: CtaButtonSize
+  variant?: CtaButtonVariant
+  disableRipple?: boolean
   isFullWidth?: boolean
   children?: React.ReactNode
   className?: string
@@ -26,6 +31,21 @@ const sizeClasses: Record<CtaButtonSize, string> = {
   lg: "px-8 py-4 text-sm font-bold uppercase tracking-wider",
 }
 
+const variantClasses: Record<CtaButtonVariant, string> = {
+  primary: "bg-brand-primary text-white border-0 shadow-md hover:shadow-lg",
+  secondary: "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 border border-zinc-200/80 dark:border-zinc-800/80 shadow-xs",
+}
+
+const defaultSliderClasses: Record<CtaButtonVariant, string> = {
+  primary: "bg-brand-primary-dark",
+  secondary: "bg-zinc-100 dark:bg-zinc-800",
+}
+
+const defaultTextClasses: Record<CtaButtonVariant, string> = {
+  primary: "text-white",
+  secondary: "text-zinc-900 dark:text-zinc-100",
+}
+
 export const CtaButton = React.forwardRef<
   HTMLButtonElement | HTMLAnchorElement,
   CtaButtonProps
@@ -36,22 +56,76 @@ export const CtaButton = React.forwardRef<
       target,
       rel,
       size = "md",
+      variant = "primary",
+      disableRipple = false,
       isFullWidth = false,
       children,
       className,
       sliderClassName,
       textClassName,
       type = "button",
+      disabled,
+      onClick,
       ...props
     },
     ref
   ) => {
+    const { ripples, addRipple, removeRipple } = useRipples()
+
+    const handlePointerClick = (
+      e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>
+    ) => {
+      if (disabled) return
+
+      if (!disableRipple) {
+        const rect = e.currentTarget.getBoundingClientRect()
+        const rippleSize = Math.max(rect.width, rect.height)
+        addRipple(e.clientX - rect.left, e.clientY - rect.top, rippleSize)
+      }
+
+      onClick?.(e as React.MouseEvent<HTMLButtonElement>)
+    }
+
     const combinedClasses = cn(
-      "group relative inline-flex items-center justify-center overflow-hidden rounded-sm bg-brand-primary text-white shadow-md cursor-pointer transition-all duration-300 select-none",
+      "group relative inline-flex items-center justify-center overflow-hidden rounded-sm cursor-pointer select-none transition-all duration-300 ease-out active:scale-[0.98] will-change-transform",
       sizeClasses[size],
+      variantClasses[variant],
       isFullWidth && "w-full",
+      disabled && "opacity-50 cursor-not-allowed pointer-events-none active:scale-100",
       className
     )
+
+    const renderedSlider = (
+      <span
+        className={cn(
+          "absolute inset-0 w-full h-full translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-none",
+          defaultSliderClasses[variant],
+          sliderClassName
+        )}
+      />
+    )
+
+    const renderedText = (
+      <span
+        className={cn(
+          "relative z-10 inline-flex items-center justify-center transition-colors duration-300 pointer-events-none",
+          defaultTextClasses[variant],
+          textClassName
+        )}
+      >
+        {children}
+      </span>
+    )
+
+    const renderedRipples = ripples.map((r) => (
+      <Ripple
+        key={r.id}
+        x={r.x}
+        y={r.y}
+        size={r.size}
+        onComplete={() => removeRipple(r.id)}
+      />
+    ))
 
     if (href) {
       return (
@@ -60,26 +134,16 @@ export const CtaButton = React.forwardRef<
           href={href}
           target={target}
           rel={rel}
+          onClick={handlePointerClick}
           className={combinedClasses}
           {...(props as unknown as Omit<
             React.ComponentPropsWithoutRef<typeof Link>,
             "href"
           >)}
         >
-          <span
-            className={cn(
-              "absolute inset-0 w-full h-full bg-white -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out",
-              sliderClassName
-            )}
-          />
-          <span
-            className={cn(
-              "relative z-10 inline-flex items-center justify-center text-white group-hover:text-zinc-950 transition-colors duration-300",
-              textClassName
-            )}
-          >
-            {children}
-          </span>
+          {renderedSlider}
+          {renderedText}
+          {renderedRipples}
         </Link>
       )
     }
@@ -88,23 +152,14 @@ export const CtaButton = React.forwardRef<
       <button
         ref={ref as React.Ref<HTMLButtonElement>}
         type={type}
+        disabled={disabled}
+        onClick={handlePointerClick}
         className={combinedClasses}
         {...props}
       >
-        <span
-          className={cn(
-            "absolute inset-0 w-full h-full bg-white -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out",
-            sliderClassName
-          )}
-        />
-        <span
-          className={cn(
-            "relative z-10 inline-flex items-center justify-center text-white group-hover:text-zinc-950 transition-colors duration-300",
-            textClassName
-          )}
-        >
-          {children}
-        </span>
+        {renderedSlider}
+        {renderedText}
+        {renderedRipples}
       </button>
     )
   }

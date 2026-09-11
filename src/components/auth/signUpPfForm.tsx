@@ -9,8 +9,10 @@ import { toast } from "sonner"
 import { PhoneInput } from "@/src/components/auth/phoneInput"
 import { TermsCard } from "@/src/components/auth/termsCard"
 import { Checkbox } from "@/src/components/ui/checkbox/checkbox"
+import { CtaButton } from "@/src/components/common/ctaButton"
 import { Input } from "@/src/components/ui/input/input"
 import { PasswordInput } from "@/src/components/ui/passwordInput/passwordInput"
+import { maskCpf, maskDate } from "@/src/lib/masks"
 import { cn } from "@/src/lib/utils/utils"
 import { type SignUpPfFormData, signUpPfSchema } from "@/src/schemas/auth.schema"
 
@@ -23,8 +25,8 @@ export function SignUpPfForm({ onSuccess }: SignUpPfFormProps): React.JSX.Elemen
 
   const {
     register,
-    control,
     handleSubmit,
+    control,
     watch,
     setValue,
     clearErrors,
@@ -32,7 +34,7 @@ export function SignUpPfForm({ onSuccess }: SignUpPfFormProps): React.JSX.Elemen
     formState: { errors },
   } = useForm<SignUpPfFormData>({
     resolver: zodResolver(signUpPfSchema),
-    mode: "onTouched",
+    mode: "onSubmit",
     defaultValues: {
       accountType: "pf",
       nationality: "brasileiro",
@@ -51,21 +53,6 @@ export function SignUpPfForm({ onSuccess }: SignUpPfFormProps): React.JSX.Elemen
 
   const nationality = watch("nationality")
   const hasReferral = watch("hasReferral")
-
-  const maskCpf = (val: string) => {
-    const raw = val.replace(/\D/g, "").slice(0, 11)
-    if (raw.length <= 3) return raw
-    if (raw.length <= 6) return `${raw.slice(0, 3)}.${raw.slice(3)}`
-    if (raw.length <= 9) return `${raw.slice(0, 3)}.${raw.slice(3, 6)}.${raw.slice(6)}`
-    return `${raw.slice(0, 3)}.${raw.slice(3, 6)}.${raw.slice(6, 9)}-${raw.slice(9)}`
-  }
-
-  const maskDate = (val: string) => {
-    const raw = val.replace(/\D/g, "").slice(0, 8)
-    if (raw.length <= 2) return raw
-    if (raw.length <= 4) return `${raw.slice(0, 2)}/${raw.slice(2)}`
-    return `${raw.slice(0, 2)}/${raw.slice(2, 4)}/${raw.slice(4)}`
-  }
 
   const onSubmit = (data: SignUpPfFormData) => {
     setIsLoading(true)
@@ -101,7 +88,7 @@ export function SignUpPfForm({ onSuccess }: SignUpPfFormProps): React.JSX.Elemen
                 clearErrors("cpf")
               }}
               className={cn(
-                "h-11 px-4 rounded-xl border text-xs font-bold uppercase tracking-wider transition-all cursor-pointer",
+                "h-11 px-4 rounded-sm border text-xs font-bold uppercase tracking-wider transition-all cursor-pointer",
                 nationality === "brasileiro"
                   ? "border-brand-primary bg-brand-primary/10 text-brand-primary"
                   : "border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 hover:border-zinc-300"
@@ -117,7 +104,7 @@ export function SignUpPfForm({ onSuccess }: SignUpPfFormProps): React.JSX.Elemen
                 clearErrors("cpf")
               }}
               className={cn(
-                "h-11 px-4 rounded-xl border text-xs font-bold uppercase tracking-wider transition-all cursor-pointer",
+                "h-11 px-4 rounded-sm border text-xs font-bold uppercase tracking-wider transition-all cursor-pointer",
                 nationality === "estrangeiro"
                   ? "border-brand-primary bg-brand-primary/10 text-brand-primary"
                   : "border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 hover:border-zinc-300"
@@ -298,7 +285,7 @@ export function SignUpPfForm({ onSuccess }: SignUpPfFormProps): React.JSX.Elemen
             <Checkbox
               id="pf-referral-check"
               checked={hasReferral}
-              onCheckedChange={(checked) => setValue("hasReferral", checked, { shouldValidate: true })}
+              onCheckedChange={(checked) => setValue("hasReferral", checked === true, { shouldValidate: true })}
             />
             <label
               htmlFor="pf-referral-check"
@@ -340,13 +327,14 @@ export function SignUpPfForm({ onSuccess }: SignUpPfFormProps): React.JSX.Elemen
       />
 
       <div className="flex flex-col items-center gap-4 pt-2 w-full">
-        <button
+        <CtaButton
           type="submit"
           disabled={isLoading}
-          className="w-full py-4 rounded-xl bg-brand-primary hover:bg-brand-primary-hover text-white text-sm font-bold uppercase tracking-wider transition-all shadow-md shadow-brand-primary/25 cursor-pointer outline-none disabled:opacity-60 disabled:cursor-not-allowed text-center"
+          isFullWidth
+          size="lg"
         >
           {isLoading ? "Criando conta..." : "Criar conta"}
-        </button>
+        </CtaButton>
 
         <div className="text-center text-xs text-zinc-500 dark:text-zinc-400">
           Já possui uma conta?{" "}

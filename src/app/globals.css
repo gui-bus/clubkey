@@ -40,6 +40,7 @@
     --brand-primary: #FF6847;
     --brand-primary-hover: #E85535;
     --brand-primary-light: #FFF0ED;
+    --brand-primary-dark: #E85535;
     --brand-secondary: #141416;
 }
 
@@ -79,6 +80,7 @@
     --brand-primary: #FF6847;
     --brand-primary-hover: #FF7D5F;
     --brand-primary-light: #241410;
+    --brand-primary-dark: #E85535;
     --brand-secondary: #161616;
 }
 

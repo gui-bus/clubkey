@@ -2,7 +2,7 @@
 
 import * as React from "react"
 
-import { Button } from "@/src/components/ui/button/button"
+import { CtaButton } from "@/src/components/common/ctaButton"
 
 interface ErrorProps {
   error: Error & { digest?: string }
@@ -19,12 +19,9 @@ export default function Error({ reset }: ErrorProps): React.JSX.Element {
         Ocorreu um erro inesperado.
       </p>
       <div className="mt-8">
-        <Button
-          onClick={() => reset()}
-          className="h-10 px-6 rounded-full bg-brand-primary text-white hover:bg-brand-primary/90 transition-all duration-200 cursor-pointer"
-        >
+        <CtaButton onClick={() => reset()}>
           Tentar novamente
-        </Button>
+        </CtaButton>
       </div>
     </div>
   )

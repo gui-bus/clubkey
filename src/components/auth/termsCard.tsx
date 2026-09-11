@@ -48,7 +48,7 @@ export function TermsCard({
       <div className="flex items-start gap-3">
         <Checkbox
           checked={checked}
-          onCheckedChange={onCheckedChange}
+          onCheckedChange={(c) => onCheckedChange(c === true)}
           id="terms-checkbox"
           className="mt-0.5"
         />

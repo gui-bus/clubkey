@@ -1,9 +1,7 @@
 "use client"
 
 import * as React from "react"
-
 import Image from "next/image"
-
 import { motion } from "framer-motion"
 import { Key } from "lucide-react"
 
@@ -28,7 +26,7 @@ export function WhatIsClubKey(): React.JSX.Element {
             className="w-full lg:w-1/2 relative flex items-center justify-center"
           >
             <div className="relative w-full max-w-[520px] sm:max-w-[580px] h-[500px] sm:h-[560px] md:h-[620px]">
-              <div className="group absolute top-3 left-3 sm:top-5 sm:left-5 w-[65%] h-[80%] rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl -rotate-6 bg-zinc-200 dark:bg-zinc-800">
+              <div className="group absolute top-3 left-3 sm:top-5 sm:left-5 w-[65%] h-[80%] rounded-sm overflow-hidden shadow-2xl -rotate-6 bg-zinc-200 dark:bg-zinc-800">
                 <Image
                   src="/utils/banners/img_02.png"
                   alt="Hospedagens e resorts exclusivos da Club Key"
@@ -39,7 +37,7 @@ export function WhatIsClubKey(): React.JSX.Element {
                 />
               </div>
 
-              <div className="group absolute bottom-3 right-3 sm:bottom-5 sm:right-5 w-[67%] h-[84%] rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl rotate-3 bg-zinc-200 dark:bg-zinc-800 z-10">
+              <div className="group absolute bottom-3 right-3 sm:bottom-5 sm:right-5 w-[67%] h-[84%] rounded-sm overflow-hidden shadow-2xl rotate-3 bg-zinc-200 dark:bg-zinc-800 z-10">
                 <Image
                   src="/utils/banners/img_03.png"
                   alt="Experiência de hospitalidade premium Club Key"
