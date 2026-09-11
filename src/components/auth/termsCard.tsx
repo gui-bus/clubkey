@@ -60,14 +60,14 @@ export function TermsCard({
         </label>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 pl-7">
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-2 pl-7">
         {policyDocuments.map((doc) => (
           <Link
             key={doc.title}
             href={doc.href}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center gap-1.5 text-xs text-brand-primary hover:text-brand-primary-hover font-medium transition-colors"
+            className="inline-flex items-center gap-1.5 text-xs text-zinc-900 dark:text-zinc-100 hover:text-zinc-600 dark:hover:text-zinc-300 underline font-medium transition-colors"
           >
             <ExternalLink className="w-3.5 h-3.5 shrink-0" />
             <span>{doc.title}</span>
