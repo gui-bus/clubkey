@@ -1098,7 +1098,7 @@ export default function RoomsPage(): React.JSX.Element {
               </button>
 
               {calendarOpen && (
-                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-full max-w-[95vw] md:max-w-3xl bg-white dark:bg-[#1a1a1a] rounded-2xl shadow-2xl border border-zinc-200 dark:border-zinc-800 z-[100] p-4 sm:p-6 text-left animate-in fade-in zoom-in-95 duration-150">
+                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-full max-w-[95vw] md:max-w-4xl bg-white dark:bg-[#1a1a1a] rounded-2xl shadow-2xl border border-zinc-200 dark:border-zinc-800 z-[100] p-4 sm:p-6 text-left animate-in fade-in zoom-in-95 duration-150">
                   <div className="flex items-center justify-between pb-4 mb-4 border-b border-zinc-100 dark:border-zinc-800">
                     <span className="text-sm sm:text-base font-semibold text-zinc-800 dark:text-zinc-200">
                       Check-in / Check-out
@@ -1119,7 +1119,7 @@ export default function RoomsPage(): React.JSX.Element {
                       {renderMonth(nextMonthDate, false, true)}
                     </div>
 
-                    <div className="w-full md:w-48 md:border-l border-zinc-200 dark:border-zinc-800 md:pl-5 flex flex-col justify-between pt-4 md:pt-0 border-t md:border-t-0 gap-4">
+                    <div className="w-full md:w-56 shrink-0 md:border-l border-zinc-200 dark:border-zinc-800 md:pl-5 flex flex-col justify-between pt-4 md:pt-0 border-t md:border-t-0 gap-4">
                       <div className="flex flex-col gap-2.5">
                         <div className="flex items-center gap-1.5 text-sm font-bold text-zinc-900 dark:text-white mb-1">
                           <Flame className="w-4 h-4 text-[#FF6847] fill-[#FF6847]" />
@@ -1128,26 +1128,26 @@ export default function RoomsPage(): React.JSX.Element {
                         <button
                           type="button"
                           onClick={handleSelectHoje}
-                          className="w-full py-2 px-3 border border-zinc-200 dark:border-zinc-700 rounded-lg text-xs font-semibold text-zinc-800 dark:text-zinc-200 hover:border-[#FF6847] hover:text-[#FF6847] flex items-center gap-2 transition-all cursor-pointer bg-white dark:bg-zinc-800/50"
+                          className="w-full py-2.5 px-3 border border-zinc-200 dark:border-zinc-700 rounded-sm text-xs font-semibold text-zinc-800 dark:text-zinc-200 hover:border-[#FF6847] hover:text-[#FF6847] flex items-center gap-2 transition-all cursor-pointer bg-white dark:bg-zinc-800/50 whitespace-nowrap select-none"
                         >
-                          <Flame className="w-3.5 h-3.5 text-[#FF6847]" />
-                          <span>Hoje (60% OFF)</span>
+                          <Flame className="w-3.5 h-3.5 text-[#FF6847] shrink-0" />
+                          <span className="whitespace-nowrap">Hoje (60% OFF)</span>
                         </button>
                         <button
                           type="button"
                           onClick={handleSelectAmanha}
-                          className="w-full py-2 px-3 border border-zinc-200 dark:border-zinc-700 rounded-lg text-xs font-semibold text-zinc-800 dark:text-zinc-200 hover:border-[#FF6847] hover:text-[#FF6847] flex items-center gap-2 transition-all cursor-pointer bg-white dark:bg-zinc-800/50"
+                          className="w-full py-2.5 px-3 border border-zinc-200 dark:border-zinc-700 rounded-sm text-xs font-semibold text-zinc-800 dark:text-zinc-200 hover:border-[#FF6847] hover:text-[#FF6847] flex items-center gap-2 transition-all cursor-pointer bg-white dark:bg-zinc-800/50 whitespace-nowrap select-none"
                         >
-                          <Flame className="w-3.5 h-3.5 text-[#FF6847]" />
-                          <span>Amanhã (60% OFF)</span>
+                          <Flame className="w-3.5 h-3.5 text-[#FF6847] shrink-0" />
+                          <span className="whitespace-nowrap">Amanhã (60% OFF)</span>
                         </button>
                         <button
                           type="button"
                           onClick={handleSelectDepois}
-                          className="w-full py-2 px-3 border border-zinc-200 dark:border-zinc-700 rounded-lg text-xs font-semibold text-zinc-800 dark:text-zinc-200 hover:border-[#FF6847] hover:text-[#FF6847] flex items-center gap-2 transition-all cursor-pointer bg-white dark:bg-zinc-800/50"
+                          className="w-full py-2.5 px-3 border border-zinc-200 dark:border-zinc-700 rounded-sm text-xs font-semibold text-zinc-800 dark:text-zinc-200 hover:border-[#FF6847] hover:text-[#FF6847] flex items-center gap-2 transition-all cursor-pointer bg-white dark:bg-zinc-800/50 whitespace-nowrap select-none"
                         >
-                          <Flame className="w-3.5 h-3.5 text-[#FF6847]" />
-                          <span>Depois (60% OFF)</span>
+                          <Flame className="w-3.5 h-3.5 text-[#FF6847] shrink-0" />
+                          <span className="whitespace-nowrap">Depois (60% OFF)</span>
                         </button>
                       </div>
 
@@ -1155,9 +1155,12 @@ export default function RoomsPage(): React.JSX.Element {
                         <button
                           type="button"
                           onClick={() => setCalendarOpen(false)}
-                          className="w-full py-2.5 bg-[#FF6847] hover:bg-[#E85535] text-white rounded-lg text-xs sm:text-sm font-bold shadow-md transition-colors cursor-pointer"
+                          className="group relative w-full py-2.5 px-4 overflow-hidden rounded-sm bg-[#FF6847] text-white text-xs sm:text-sm font-bold shadow-md whitespace-nowrap cursor-pointer transition-all duration-300 flex items-center justify-center select-none"
                         >
-                          Confirmar
+                          <span className="absolute inset-0 w-full h-full bg-white -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out" />
+                          <span className="relative z-10 inline-flex items-center justify-center text-white group-hover:text-zinc-950 transition-colors duration-300">
+                            Confirmar
+                          </span>
                         </button>
                         <button
                           type="button"
@@ -1165,7 +1168,7 @@ export default function RoomsPage(): React.JSX.Element {
                             setCheckInDate(null)
                             setCheckOutDate(null)
                           }}
-                          className="w-full py-2.5 bg-white dark:bg-zinc-800 border border-[#FF6847] text-[#FF6847] hover:bg-orange-50 dark:hover:bg-zinc-700 rounded-lg text-xs sm:text-sm font-bold transition-colors cursor-pointer"
+                          className="w-full py-2.5 bg-white dark:bg-zinc-800 border border-[#FF6847] text-[#FF6847] hover:bg-orange-50 dark:hover:bg-zinc-700 rounded-sm text-xs sm:text-sm font-bold transition-colors cursor-pointer select-none"
                         >
                           Limpar Datas
                         </button>

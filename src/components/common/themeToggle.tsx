@@ -65,7 +65,7 @@ export function ThemeToggle(): React.JSX.Element {
           "relative z-10 ml-auto flex h-7 w-7 cursor-pointer items-center justify-center rounded-full transition-colors duration-200",
           !isLight
             ? "text-foreground"
-            : "text-muted-foreground/50 hover:text-muted-foreground"
+            : "text-white"
         )}
         title="Escuro"
       >

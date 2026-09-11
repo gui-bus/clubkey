@@ -23,22 +23,21 @@ export function Hero(): React.JSX.Element {
   return (
     <section
       id="hero"
-      className="relative w-full overflow-hidden bg-[#0D0D0D] text-white min-h-180 flex flex-col justify-between"
+      className="relative z-30 w-full overflow-hidden bg-[#0D0D0D] text-white min-h-[560px] md:min-h-[620px] flex flex-col justify-between"
     >
-      <div className="absolute inset-0 z-0 pointer-events-none select-none">
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none select-none">
         <Image
           src="/utils/banners/img_01.png"
           alt="ClubKey Background"
           fill
           priority
-          className="object-cover object-right md:object-center"
+          className="object-cover object-center"
         />
 
-        <div className="absolute inset-0 bg-gradient-to-r from-[#161616]/90 via-[#161616]/60 to-transparent z-10" />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#161616]/80 via-[#161616]/30 to-transparent z-10" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#161616]/85 via-[#161616]/65 to-[#161616]/95 z-10" />
       </div>
 
-      <Container className="relative z-20 pt-36 pb-16 md:pt-44 md:pb-24 lg:pt-48 lg:pb-28 flex-1 flex items-center">
+      <Container className="relative z-20 pt-36 pb-14 md:pt-44 md:pb-16 flex-1 flex items-center">
         <motion.div
           initial={{ opacity: 0, y: -15 }}
           animate={{ opacity: 1, y: 0 }}
