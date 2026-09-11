@@ -5,9 +5,8 @@ import * as React from "react"
 import * as TooltipPrimitive from "@radix-ui/react-tooltip"
 import { type VariantProps, cva } from "class-variance-authority"
 
-import { cn } from "@/src/lib/utils/utils"
-
-import { designRadius } from "../../../lib/design-system"
+import { cn } from "@/src/lib/utils"
+import { designRadius } from "@/src/lib/design-system"
 
 const TooltipProvider = TooltipPrimitive.Provider
 

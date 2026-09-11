@@ -10,7 +10,7 @@ import { toast } from "sonner"
 import { CtaButton } from "@/src/components/common/ctaButton"
 import { Input } from "@/src/components/ui/input/input"
 import { maskCardExpiry, maskCardNumber, maskCpf, maskCvv } from "@/src/lib/masks"
-import { cn } from "@/src/lib/utils/utils"
+import { cn } from "@/src/lib/utils"
 import {
   type CreditCardPaymentFormData,
   creditCardPaymentSchema,

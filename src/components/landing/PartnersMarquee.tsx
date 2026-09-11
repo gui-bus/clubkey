@@ -7,7 +7,7 @@ import { motion } from "framer-motion"
 import { Container } from "@/src/components/common/container"
 import { CtaButton } from "@/src/components/common/ctaButton"
 import { brandConfig } from "@/src/config/brand.config"
-import { cn } from "@/src/lib/utils/utils"
+import { cn } from "@/src/lib/utils"
 
 interface PartnerLogo {
   name: string

@@ -2,7 +2,7 @@
 
 import * as React from "react"
 
-import { cn } from "../utils/utils"
+import { cn } from "@/src/lib/utils"
 
 interface RippleProps {
   x: number

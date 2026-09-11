@@ -5,8 +5,8 @@ import type * as React from "react"
 import { Icon } from "@iconify/react"
 import { Toaster as SonnerToaster, toast as sonnerToast } from "sonner"
 
-import { designRadius } from "../../../lib/design-system"
-import { cn } from "../../../lib/utils/utils"
+import { designRadius } from "@/src/lib/design-system"
+import { cn } from "@/src/lib/utils"
 
 export type SpinnerVariant = "default" | "dots" | "wave"
 

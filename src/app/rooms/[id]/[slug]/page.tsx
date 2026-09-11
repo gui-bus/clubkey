@@ -24,7 +24,7 @@ import { Footer } from "@/src/components/landing/Footer"
 import { Navbar } from "@/src/components/landing/Navbar"
 import { TopBanner } from "@/src/components/landing/TopBanner"
 import { getRoomDetail } from "@/src/data/mockRoomDetails"
-import { cn } from "@/src/lib/utils/utils"
+import { cn } from "@/src/lib/utils"
 
 export default function RoomDetailPage(): React.JSX.Element {
   const params = useParams()

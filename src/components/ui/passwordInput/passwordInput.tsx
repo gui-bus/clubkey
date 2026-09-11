@@ -5,7 +5,7 @@ import { type VariantProps } from "class-variance-authority"
 import { Check, Circle, Eye, EyeOff, X } from "lucide-react"
 
 import { Input, type inputVariants } from "@/src/components/ui/input/input"
-import { cn } from "@/src/lib/utils/utils"
+import { cn } from "@/src/lib/utils"
 
 export interface PasswordRule {
   id: string

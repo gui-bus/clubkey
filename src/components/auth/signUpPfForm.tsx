@@ -13,7 +13,7 @@ import { CtaButton } from "@/src/components/common/ctaButton"
 import { Input } from "@/src/components/ui/input/input"
 import { PasswordInput } from "@/src/components/ui/passwordInput/passwordInput"
 import { maskCpf, maskDate } from "@/src/lib/masks"
-import { cn } from "@/src/lib/utils/utils"
+import { cn } from "@/src/lib/utils"
 import { type SignUpPfFormData, signUpPfSchema } from "@/src/schemas/auth.schema"
 
 export interface SignUpPfFormProps {

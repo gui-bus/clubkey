@@ -7,7 +7,7 @@ import { toast } from "sonner"
 
 import { CtaButton } from "@/src/components/common/ctaButton"
 import { InputOtp } from "@/src/components/ui/inputOtp/inputOtp"
-import { cn } from "@/src/lib/utils/utils"
+import { cn } from "@/src/lib/utils"
 
 export interface EmailVerificationProps {
   email: string

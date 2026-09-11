@@ -6,7 +6,7 @@ import ReactCountryFlag from "react-country-flag"
 
 import { countries, type Country } from "@/src/data/countries"
 import { maskPhone } from "@/src/lib/masks"
-import { cn } from "@/src/lib/utils/utils"
+import { cn } from "@/src/lib/utils"
 
 export interface PhoneInputValue {
   dialCode: string

@@ -28,6 +28,12 @@ const steps = [
   },
 ]
 
+const catalogFeatures = [
+  "Curadoria rigorosa de qualidade avaliando privacidade, conforto e localização.",
+  "Tarifas preferenciais e descontos last minute de até 60% sem taxas ocultas.",
+  "Benefícios reais de membro com flexibilidade e suporte dedicado.",
+] as const
+
 export function HowItWorksCatalog(): React.JSX.Element {
   return (
     <section
@@ -139,35 +145,16 @@ export function HowItWorksCatalog(): React.JSX.Element {
             </div>
 
             <div className="flex flex-col gap-4">
-              <div className="flex items-start gap-3.5">
-                <div className="w-6 h-6 rounded-full bg-brand-primary text-white flex items-center justify-center shrink-0 mt-0.5 shadow-xs shadow-brand-primary/25">
-                  <Check className="w-3.5 h-3.5 stroke-[3.5]" />
+              {catalogFeatures.map((feature, idx) => (
+                <div key={idx} className="flex items-start gap-3.5">
+                  <div className="w-6 h-6 rounded-full bg-brand-primary text-white flex items-center justify-center shrink-0 mt-0.5 shadow-xs shadow-brand-primary/25">
+                    <Check className="w-3.5 h-3.5 stroke-[3.5]" />
+                  </div>
+                  <p className="text-sm sm:text-base text-zinc-600 dark:text-zinc-400 font-light leading-relaxed">
+                    {feature}
+                  </p>
                 </div>
-                <p className="text-sm sm:text-base text-zinc-600 dark:text-zinc-400 font-light leading-relaxed">
-                  Curadoria rigorosa de qualidade avaliando privacidade,
-                  conforto e localização.
-                </p>
-              </div>
-
-              <div className="flex items-start gap-3.5">
-                <div className="w-6 h-6 rounded-full bg-brand-primary text-white flex items-center justify-center shrink-0 mt-0.5 shadow-xs shadow-brand-primary/25">
-                  <Check className="w-3.5 h-3.5 stroke-[3.5]" />
-                </div>
-                <p className="text-sm sm:text-base text-zinc-600 dark:text-zinc-400 font-light leading-relaxed">
-                  Tarifas preferenciais e descontos last minute de até 60% sem
-                  taxas ocultas.
-                </p>
-              </div>
-
-              <div className="flex items-start gap-3.5">
-                <div className="w-6 h-6 rounded-full bg-brand-primary text-white flex items-center justify-center shrink-0 mt-0.5 shadow-xs shadow-brand-primary/25">
-                  <Check className="w-3.5 h-3.5 stroke-[3.5]" />
-                </div>
-                <p className="text-sm sm:text-base text-zinc-600 dark:text-zinc-400 font-light leading-relaxed">
-                  Benefícios reais de membro com flexibilidade e suporte
-                  dedicado.
-                </p>
-              </div>
+              ))}
             </div>
           </div>
         </motion.div>

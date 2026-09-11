@@ -5,7 +5,7 @@ import * as React from "react"
 import { Icon } from "@iconify/react"
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu"
 
-import { cn } from "@/src/lib/utils/utils"
+import { cn } from "@/src/lib/utils"
 
 const DropdownMenu = ({
   modal = false,

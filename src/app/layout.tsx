@@ -5,7 +5,7 @@ import { GoogleAnalytics } from "@next/third-parties/google"
 import { BrandStyles } from "@/src/components/common/brandStyles"
 import { ThemeProvider } from "@/src/components/common/themeProvider"
 
-import { cn } from "@/src/lib/utils/utils"
+import { cn } from "@/src/lib/utils"
 
 import { fontVariables } from "@/src/config/fonts"
 import { siteConfig } from "@/src/config/site"

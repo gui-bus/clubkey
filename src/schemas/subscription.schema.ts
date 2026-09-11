@@ -1,6 +1,6 @@
 import { z } from "zod"
 
-import { isValidCpf } from "@/src/lib/utils/validators"
+import { isValidCpf } from "@/src/lib/validators"
 
 export const creditCardPaymentSchema = z
   .object({

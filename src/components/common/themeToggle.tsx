@@ -6,7 +6,7 @@ import { MoonIcon, SunIcon } from "@phosphor-icons/react"
 import { motion } from "framer-motion"
 
 import { useThemeTransition } from "@/src/lib/hooks/useThemeTransition"
-import { cn } from "@/src/lib/utils/utils"
+import { cn } from "@/src/lib/utils"
 
 export function ThemeToggle(): React.JSX.Element {
   const { resolvedTheme, toggleTheme } = useThemeTransition()

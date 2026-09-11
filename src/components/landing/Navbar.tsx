@@ -17,7 +17,7 @@ import {
   SheetTrigger,
 } from "@/src/components/ui/sheet/sheet"
 import { brandConfig } from "@/src/config/brand.config"
-import { cn } from "@/src/lib/utils/utils"
+import { cn } from "@/src/lib/utils"
 
 const isClubKey = brandConfig.id === "clubkey"
 const homeHref = isClubKey ? "/" : "/rooms"

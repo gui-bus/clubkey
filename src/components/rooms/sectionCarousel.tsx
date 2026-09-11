@@ -6,7 +6,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react"
 import { EventBadgePopover } from "@/src/components/rooms/eventBadgePopover"
 import { RoomCard } from "@/src/components/rooms/roomCard"
 import { type RoomSection } from "@/src/data/mockRooms"
-import { cn } from "@/src/lib/utils/utils"
+import { cn } from "@/src/lib/utils"
 
 export interface SectionCarouselProps {
   section: RoomSection

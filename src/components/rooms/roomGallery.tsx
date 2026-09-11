@@ -5,7 +5,7 @@ import Image from "next/image"
 import { AnimatePresence, motion } from "framer-motion"
 import { ChevronLeft, ChevronRight, Grid, X } from "lucide-react"
 
-import { cn } from "@/src/lib/utils/utils"
+import { cn } from "@/src/lib/utils"
 
 export interface RoomGalleryProps {
   title: string

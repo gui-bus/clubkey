@@ -13,7 +13,7 @@ import {
 } from "lucide-react"
 
 import { CtaButton } from "@/src/components/common/ctaButton"
-import { cn } from "@/src/lib/utils/utils"
+import { cn } from "@/src/lib/utils"
 
 export interface RoomBookingCardProps {
   roomTitle: string
@@ -64,7 +64,9 @@ export function RoomBookingCard({
         logo: "/utils/icons/sources/airbnb.svg",
         pricePerNight: airbnbPrice,
         total: airbnbPrice * nights + 220,
-        logoClass: "h-5 w-auto",
+        logoClass: "h-3 w-auto",
+        width: 48,
+        height: 14,
         url: airbnbUrl,
       },
       {
@@ -72,7 +74,9 @@ export function RoomBookingCard({
         logo: "/utils/icons/sources/booking.svg",
         pricePerNight: bookingPrice,
         total: bookingPrice * nights + 210,
-        logoClass: "h-4.5 w-auto",
+        logoClass: "h-2.5 w-auto",
+        width: 52,
+        height: 12,
         url: bookingUrl,
       },
       {
@@ -80,7 +84,9 @@ export function RoomBookingCard({
         logo: "/utils/icons/sources/trivago.svg",
         pricePerNight: trivagoPrice,
         total: trivagoPrice * nights + 215,
-        logoClass: "h-5 w-auto",
+        logoClass: "h-3 w-auto",
+        width: 52,
+        height: 14,
         url: trivagoUrl,
       },
     ],
@@ -118,54 +124,28 @@ export function RoomBookingCard({
                 Comparação em outros provedores:
               </span>
               <div className="flex items-center justify-between text-xs">
-                <Link
-                  href={airbnbUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  title="Ver acomodação no Airbnb"
-                  className="flex items-center gap-1.5 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:scale-105 transition-all cursor-pointer group/src"
-                >
-                  <Image
-                    src="/utils/icons/sources/airbnb.svg"
-                    alt="Airbnb"
-                    width={48}
-                    height={14}
-                    className="h-3 w-auto object-contain opacity-90 group-hover/src:opacity-100"
-                  />
-                  <span className="font-semibold">R$ {airbnbPrice}</span>
-                </Link>
-                <Link
-                  href={bookingUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  title="Ver acomodação no Booking.com"
-                  className="flex items-center gap-1.5 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:scale-105 transition-all cursor-pointer group/src"
-                >
-                  <Image
-                    src="/utils/icons/sources/booking.svg"
-                    alt="Booking.com"
-                    width={52}
-                    height={12}
-                    className="h-2.5 w-auto object-contain opacity-90 group-hover/src:opacity-100"
-                  />
-                  <span className="font-semibold">R$ {bookingPrice}</span>
-                </Link>
-                <Link
-                  href={trivagoUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  title="Ver acomodação no Trivago"
-                  className="flex items-center gap-1.5 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:scale-105 transition-all cursor-pointer group/src"
-                >
-                  <Image
-                    src="/utils/icons/sources/trivago.svg"
-                    alt="Trivago"
-                    width={52}
-                    height={14}
-                    className="h-3 w-auto object-contain opacity-90 group-hover/src:opacity-100"
-                  />
-                  <span className="font-semibold">R$ {trivagoPrice}</span>
-                </Link>
+                {competitors.map((comp) => (
+                  <Link
+                    key={comp.name}
+                    href={comp.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title={`Ver acomodação no ${comp.name}`}
+                    className="flex items-center gap-1.5 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:scale-105 transition-all cursor-pointer group/src"
+                  >
+                    <Image
+                      src={comp.logo}
+                      alt={comp.name}
+                      width={comp.width}
+                      height={comp.height}
+                      className={cn(
+                        comp.logoClass,
+                        "object-contain opacity-90 group-hover/src:opacity-100"
+                      )}
+                    />
+                    <span className="font-semibold">R$ {comp.pricePerNight}</span>
+                  </Link>
+                ))}
               </div>
             </div>
 
@@ -377,54 +357,28 @@ export function RoomBookingCard({
           Comparação em outros provedores:
         </span>
         <div className="flex items-center justify-between text-xs">
-          <Link
-            href={airbnbUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            title="Ver acomodação no Airbnb"
-            className="flex items-center gap-1.5 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:scale-105 transition-all cursor-pointer group/src"
-          >
-            <Image
-              src="/utils/icons/sources/airbnb.svg"
-              alt="Airbnb"
-              width={48}
-              height={14}
-              className="h-3 w-auto object-contain opacity-90 group-hover/src:opacity-100"
-            />
-            <span className="font-semibold">R$ {airbnbPrice}</span>
-          </Link>
-          <Link
-            href={bookingUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            title="Ver acomodação no Booking.com"
-            className="flex items-center gap-1.5 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:scale-105 transition-all cursor-pointer group/src"
-          >
-            <Image
-              src="/utils/icons/sources/booking.svg"
-              alt="Booking.com"
-              width={52}
-              height={12}
-              className="h-2.5 w-auto object-contain opacity-90 group-hover/src:opacity-100"
-            />
-            <span className="font-semibold">R$ {bookingPrice}</span>
-          </Link>
-          <Link
-            href={trivagoUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            title="Ver acomodação no Trivago"
-            className="flex items-center gap-1.5 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:scale-105 transition-all cursor-pointer group/src"
-          >
-            <Image
-              src="/utils/icons/sources/trivago.svg"
-              alt="Trivago"
-              width={52}
-              height={14}
-              className="h-3 w-auto object-contain opacity-90 group-hover/src:opacity-100"
-            />
-            <span className="font-semibold">R$ {trivagoPrice}</span>
-          </Link>
+          {competitors.map((comp) => (
+            <Link
+              key={comp.name}
+              href={comp.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              title={`Ver acomodação no ${comp.name}`}
+              className="flex items-center gap-1.5 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:scale-105 transition-all cursor-pointer group/src"
+            >
+              <Image
+                src={comp.logo}
+                alt={comp.name}
+                width={comp.width}
+                height={comp.height}
+                className={cn(
+                  comp.logoClass,
+                  "object-contain opacity-90 group-hover/src:opacity-100"
+                )}
+              />
+              <span className="font-semibold">R$ {comp.pricePerNight}</span>
+            </Link>
+          ))}
         </div>
       </div>
 

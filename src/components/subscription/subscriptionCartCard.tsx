@@ -12,6 +12,13 @@ export interface SubscriptionCartCardProps {
   paymentMethod: PaymentMethod
 }
 
+const membershipBenefits = [
+  "+4.500 acomodações",
+  "Até 60% de desconto",
+  "Tarifas Last Minute",
+  "Concierge prioritário",
+] as const
+
 export function SubscriptionCartCard({
   paymentMethod,
 }: SubscriptionCartCardProps): React.JSX.Element {
@@ -74,57 +81,20 @@ export function SubscriptionCartCard({
           Incluso no seu passe:
         </span>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-3">
-          <div className="flex items-center gap-2.5">
-            <Image
-              src="/utils/icons/check.webp"
-              alt="Check"
-              width={22}
-              height={22}
-              className="shrink-0"
-            />
-            <span className="text-xs font-medium text-zinc-800 dark:text-zinc-200">
-              +4.500 acomodações
-            </span>
-          </div>
-
-          <div className="flex items-center gap-2.5">
-            <Image
-              src="/utils/icons/check.webp"
-              alt="Check"
-              width={22}
-              height={22}
-              className="shrink-0"
-            />
-            <span className="text-xs font-medium text-zinc-800 dark:text-zinc-200">
-              Até 60% de desconto
-            </span>
-          </div>
-
-          <div className="flex items-center gap-2.5">
-            <Image
-              src="/utils/icons/check.webp"
-              alt="Check"
-              width={22}
-              height={22}
-              className="shrink-0"
-            />
-            <span className="text-xs font-medium text-zinc-800 dark:text-zinc-200">
-              Tarifas Last Minute
-            </span>
-          </div>
-
-          <div className="flex items-center gap-2.5">
-            <Image
-              src="/utils/icons/check.webp"
-              alt="Check"
-              width={22}
-              height={22}
-              className="shrink-0"
-            />
-            <span className="text-xs font-medium text-zinc-800 dark:text-zinc-200">
-              Concierge prioritário
-            </span>
-          </div>
+          {membershipBenefits.map((benefit) => (
+            <div key={benefit} className="flex items-center gap-2.5">
+              <Image
+                src="/utils/icons/check.webp"
+                alt="Check"
+                width={40}
+                height={40}
+                className="shrink-0"
+              />
+              <span className="text-xs font-medium text-zinc-800 dark:text-zinc-200">
+                {benefit}
+              </span>
+            </div>
+          ))}
         </div>
       </div>
 

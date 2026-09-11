@@ -2,7 +2,7 @@
 
 import * as React from "react"
 
-import { cn } from "@/src/lib/utils/utils"
+import { cn } from "@/src/lib/utils"
 
 export interface InputOtpProps {
   value: string

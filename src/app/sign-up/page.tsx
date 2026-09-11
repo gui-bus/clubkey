@@ -12,7 +12,7 @@ import { Footer } from "@/src/components/landing/Footer"
 import { Navbar } from "@/src/components/landing/Navbar"
 import { TopBanner } from "@/src/components/landing/TopBanner"
 import { brandConfig } from "@/src/config/brand.config"
-import { cn } from "@/src/lib/utils/utils"
+import { cn } from "@/src/lib/utils"
 
 type AccountType = "pf" | "pj"
 

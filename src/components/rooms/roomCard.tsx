@@ -15,7 +15,7 @@ import {
 } from "lucide-react"
 
 import { type RoomProperty } from "@/src/data/mockRooms"
-import { cn } from "@/src/lib/utils/utils"
+import { cn } from "@/src/lib/utils"
 
 export interface RoomCardProps {
   room: RoomProperty
@@ -77,6 +77,39 @@ export function RoomCard({
       window.open(url, "_blank", "noopener,noreferrer")
     }
   }
+
+  const otaSources = React.useMemo(
+    () => [
+      {
+        source: "airbnb" as const,
+        name: "Airbnb",
+        logo: "/utils/icons/sources/airbnb.svg",
+        price: airbnbPrice,
+        width: 42,
+        height: 12,
+        imgClass: "h-2.5 sm:h-3 w-auto object-contain opacity-90 group-hover/source:opacity-100",
+      },
+      {
+        source: "booking" as const,
+        name: "Booking.com",
+        logo: "/utils/icons/sources/booking.svg",
+        price: bookingPrice,
+        width: 48,
+        height: 10,
+        imgClass: "h-2 sm:h-2.5 w-auto object-contain opacity-90 group-hover/source:opacity-100",
+      },
+      {
+        source: "trivago" as const,
+        name: "Trivago",
+        logo: "/utils/icons/sources/trivago.svg",
+        price: trivagoPrice,
+        width: 48,
+        height: 12,
+        imgClass: "h-2.5 sm:h-3 w-auto object-contain opacity-90 group-hover/source:opacity-100",
+      },
+    ],
+    [airbnbPrice, bookingPrice, trivagoPrice]
+  )
 
   const handlePrevPhoto = (e: React.MouseEvent) => {
     e.preventDefault()
@@ -236,57 +269,26 @@ export function RoomCard({
 
         <div className="pt-2.5 border-t border-zinc-200/70 dark:border-zinc-800/70 flex flex-col gap-2">
           <div className="flex items-center gap-3.5 text-xs flex-wrap">
-            <button
-              type="button"
-              onClick={(e) => handleOpenSource(e, "airbnb")}
-              title="Ver acomodação no Airbnb"
-              className="flex items-center gap-1.5 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:scale-105 transition-all cursor-pointer group/source"
-            >
-              <Image
-                src="/utils/icons/sources/airbnb.svg"
-                alt="Airbnb"
-                width={42}
-                height={12}
-                className="h-2.5 sm:h-3 w-auto object-contain opacity-90 group-hover/source:opacity-100"
-              />
-              <span className="text-[11px] font-semibold">
-                R$ {airbnbPrice}
-              </span>
-            </button>
-            <button
-              type="button"
-              onClick={(e) => handleOpenSource(e, "booking")}
-              title="Ver acomodação no Booking.com"
-              className="flex items-center gap-1.5 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:scale-105 transition-all cursor-pointer group/source"
-            >
-              <Image
-                src="/utils/icons/sources/booking.svg"
-                alt="Booking.com"
-                width={48}
-                height={10}
-                className="h-2 sm:h-2.5 w-auto object-contain opacity-90 group-hover/source:opacity-100"
-              />
-              <span className="text-[11px] font-semibold">
-                R$ {bookingPrice}
-              </span>
-            </button>
-            <button
-              type="button"
-              onClick={(e) => handleOpenSource(e, "trivago")}
-              title="Ver acomodação no Trivago"
-              className="flex items-center gap-1.5 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:scale-105 transition-all cursor-pointer group/source"
-            >
-              <Image
-                src="/utils/icons/sources/trivago.svg"
-                alt="Trivago"
-                width={48}
-                height={12}
-                className="h-2.5 sm:h-3 w-auto object-contain opacity-90 group-hover/source:opacity-100"
-              />
-              <span className="text-[11px] font-semibold">
-                R$ {trivagoPrice}
-              </span>
-            </button>
+            {otaSources.map((ota) => (
+              <button
+                key={ota.source}
+                type="button"
+                onClick={(e) => handleOpenSource(e, ota.source)}
+                title={`Ver acomodação no ${ota.name}`}
+                className="flex items-center gap-1.5 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:scale-105 transition-all cursor-pointer group/source"
+              >
+                <Image
+                  src={ota.logo}
+                  alt={ota.name}
+                  width={ota.width}
+                  height={ota.height}
+                  className={ota.imgClass}
+                />
+                <span className="text-[11px] font-semibold">
+                  R$ {ota.price}
+                </span>
+              </button>
+            ))}
           </div>
 
           <div className="flex items-baseline justify-between">

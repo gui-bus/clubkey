@@ -5,7 +5,7 @@ import Link from "next/link"
 import { ExternalLink } from "lucide-react"
 
 import { Checkbox } from "@/src/components/ui/checkbox/checkbox"
-import { cn } from "@/src/lib/utils/utils"
+import { cn } from "@/src/lib/utils"
 
 export interface TermsCardProps {
   checked: boolean

@@ -4,7 +4,7 @@ import * as React from "react"
 import { Dialog as DialogPrimitive } from "radix-ui"
 import { X } from "lucide-react"
 
-import { cn } from "@/src/lib/utils/utils"
+import { cn } from "@/src/lib/utils"
 
 export type SheetBackdrop = "blur" | "dark" | "light" | "transparent" | "none"
 export type SheetSide = "top" | "bottom" | "left" | "right"

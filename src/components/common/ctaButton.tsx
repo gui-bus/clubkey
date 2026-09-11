@@ -4,7 +4,7 @@ import Link from "next/link"
 
 import { Ripple } from "@/src/lib/ripple/ripple"
 import { useRipples } from "@/src/lib/ripple/useRipple"
-import { cn } from "@/src/lib/utils/utils"
+import { cn } from "@/src/lib/utils"
 
 export type CtaButtonSize = "xs" | "sm" | "md" | "lg"
 export type CtaButtonVariant = "primary" | "secondary"

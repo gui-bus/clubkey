@@ -1,6 +1,6 @@
 import { z } from "zod"
 
-import { isValidCpf, isValidCnpj } from "@/src/lib/utils/validators"
+import { isValidCpf, isValidCnpj } from "@/src/lib/validators"
 
 export const passwordSchema = z
   .string()

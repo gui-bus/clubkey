@@ -6,7 +6,7 @@ import Image from "next/image"
 
 import { CtaButton } from "@/src/components/common/ctaButton"
 import { brandConfig } from "@/src/config/brand.config"
-import { cn } from "@/src/lib/utils/utils"
+import { cn } from "@/src/lib/utils"
 
 export function TopBanner(): React.JSX.Element {
   const [isVisible, setIsVisible] = React.useState(true)

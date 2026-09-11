@@ -8,6 +8,22 @@ import { Key } from "lucide-react"
 import { Container } from "@/src/components/common/container"
 import { CtaButton } from "@/src/components/common/ctaButton"
 import { brandConfig } from "@/src/config/brand.config"
+import { cn } from "@/src/lib/utils"
+
+const clubKeyHighlights = [
+  {
+    title: "Nossas Hospedagens de Alto Padrão",
+    description:
+      "Portfólio selecionado com mais de 4.500 vilas, resorts premiados e hotéis boutique nos destinos mais cobiçados do mundo.",
+    className: "mb-6",
+  },
+  {
+    title: "Uma Comunidade Exclusiva de Membros",
+    description:
+      "Vantagens ativas em mais de 35.000 marcas parceiras em 150 países, suporte concierge dedicado e ausência de tarifas abusivas.",
+    className: "mb-8",
+  },
+] as const
 
 export function WhatIsClubKey(): React.JSX.Element {
   return (
@@ -113,49 +129,30 @@ export function WhatIsClubKey(): React.JSX.Element {
               associados que valorizam privacidade, sofisticação e conforto.
             </p>
 
-            <div className="flex items-start gap-4 mb-6">
-              <div className="relative w-16 h-16 shrink-0 mt-0.5 select-none pointer-events-none">
-                <Image
-                  src="/utils/icons/check.webp"
-                  alt="Check"
-                  width={50}
-                  height={50}
-                  className="w-full h-full object-contain"
-                />
+            {clubKeyHighlights.map((highlight) => (
+              <div
+                key={highlight.title}
+                className={cn("flex items-start gap-4", highlight.className)}
+              >
+                <div className="relative w-16 h-16 shrink-0 mt-0.5 select-none pointer-events-none">
+                  <Image
+                    src="/utils/icons/check.webp"
+                    alt="Check"
+                    width={50}
+                    height={50}
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+                <div>
+                  <h4 className="text-base sm:text-lg font-bold text-zinc-900 dark:text-white mb-1">
+                    {highlight.title}
+                  </h4>
+                  <p className="text-sm text-zinc-600 dark:text-zinc-400 font-light leading-relaxed">
+                    {highlight.description}
+                  </p>
+                </div>
               </div>
-              <div>
-                <h4 className="text-base sm:text-lg font-bold text-zinc-900 dark:text-white mb-1">
-                  Nossas Hospedagens de Alto Padrão
-                </h4>
-                <p className="text-sm text-zinc-600 dark:text-zinc-400 font-light leading-relaxed">
-                  Portfólio selecionado com mais de 4.500 vilas, resorts
-                  premiados e hotéis boutique nos destinos mais cobiçados do
-                  mundo.
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-4 mb-8">
-              <div className="relative w-16 h-16 shrink-0 mt-0.5 select-none pointer-events-none">
-                <Image
-                  src="/utils/icons/check.webp"
-                  alt="Check"
-                  width={50}
-                  height={50}
-                  className="w-full h-full object-contain"
-                />
-              </div>
-              <div>
-                <h4 className="text-base sm:text-lg font-bold text-zinc-900 dark:text-white mb-1">
-                  Uma Comunidade Exclusiva de Membros
-                </h4>
-                <p className="text-sm text-zinc-600 dark:text-zinc-400 font-light leading-relaxed">
-                  Vantagens ativas em mais de 35.000 marcas parceiras em 150
-                  países, suporte concierge dedicado e ausência de tarifas
-                  abusivas.
-                </p>
-              </div>
-            </div>
+            ))}
 
             <div>
               <CtaButton

@@ -8,9 +8,32 @@ import { ArrowUp, Mail, ShieldCheck } from "lucide-react"
 import { Container } from "@/src/components/common/container"
 import { brandConfig } from "@/src/config/brand.config"
 
+const clubKeyNavLinks = [
+  { href: "/#sobre-a-club-key", label: `Sobre a ${brandConfig.name}` },
+  { href: "/#parceiros", label: "Parceiros" },
+  { href: "/#experiencia", label: "Experiência" },
+  { href: "/#como-funciona", label: "Como Funciona" },
+  { href: "/rooms", label: "Catálogo" },
+  { href: "/#faq", label: "Perguntas Frequentes" },
+] as const
+
+const genericNavLinks = [
+  { href: "/rooms", label: "Hospedagens" },
+  { href: brandConfig.links.subscription, label: "Assinatura" },
+  { href: brandConfig.links.login, label: "Área do Membro" },
+] as const
+
+const memberLinks = [
+  { href: brandConfig.links.login, label: "Já sou associado (Login)" },
+  { href: brandConfig.links.subscription, label: "Quero ser associado" },
+  { href: "/rooms", label: "Explorar Hospedagens" },
+  { href: `mailto:${brandConfig.links.contactEmail}`, label: "Suporte & Concierge" },
+] as const
+
 export function Footer(): React.JSX.Element {
   const isClubKey = brandConfig.id === "clubkey"
   const homeHref = isClubKey ? "/" : "/rooms"
+  const activeNavLinks = isClubKey ? clubKeyNavLinks : genericNavLinks
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" })
@@ -57,85 +80,16 @@ export function Footer(): React.JSX.Element {
               Navegação
             </h4>
             <ul className="space-y-2.5 text-xs text-zinc-400">
-              {isClubKey ? (
-                <>
-                  <li>
-                    <Link
-                      href="/#sobre-a-club-key"
-                      className="hover:text-white transition-colors"
-                    >
-                      Sobre a {brandConfig.name}
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      href="/#parceiros"
-                      className="hover:text-white transition-colors"
-                    >
-                      Parceiros
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      href="/#experiencia"
-                      className="hover:text-white transition-colors"
-                    >
-                      Experiência
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      href="/#como-funciona"
-                      className="hover:text-white transition-colors"
-                    >
-                      Como Funciona
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      href="/rooms"
-                      className="hover:text-white transition-colors"
-                    >
-                      Catálogo
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      href="/#faq"
-                      className="hover:text-white transition-colors"
-                    >
-                      Perguntas Frequentes
-                    </Link>
-                  </li>
-                </>
-              ) : (
-                <>
-                  <li>
-                    <Link
-                      href="/rooms"
-                      className="hover:text-white transition-colors"
-                    >
-                      Hospedagens
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      href={brandConfig.links.subscription}
-                      className="hover:text-white transition-colors"
-                    >
-                      Assinatura
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      href={brandConfig.links.login}
-                      className="hover:text-white transition-colors"
-                    >
-                      Área do Membro
-                    </Link>
-                  </li>
-                </>
-              )}
+              {activeNavLinks.map((item) => (
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    className="hover:text-white transition-colors"
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -144,38 +98,16 @@ export function Footer(): React.JSX.Element {
               Associados
             </h4>
             <ul className="space-y-2.5 text-xs text-zinc-400">
-              <li>
-                <Link
-                  href={brandConfig.links.login}
-                  className="hover:text-white transition-colors"
-                >
-                  Já sou associado (Login)
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href={brandConfig.links.subscription}
-                  className="hover:text-white transition-colors"
-                >
-                  Quero ser associado
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/rooms"
-                  className="hover:text-white transition-colors"
-                >
-                  Explorar Hospedagens
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href={`mailto:${brandConfig.links.contactEmail}`}
-                  className="hover:text-white transition-colors"
-                >
-                  Suporte & Concierge
-                </Link>
-              </li>
+              {memberLinks.map((item) => (
+                <li key={item.label}>
+                  <Link
+                    href={item.href}
+                    className="hover:text-white transition-colors"
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 

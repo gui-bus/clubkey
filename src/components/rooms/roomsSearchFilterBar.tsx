@@ -19,7 +19,7 @@ import {
 
 import { CtaButton } from "@/src/components/common/ctaButton"
 import { destinationOptions } from "@/src/data/mockDestinations"
-import { cn } from "@/src/lib/utils/utils"
+import { cn } from "@/src/lib/utils"
 
 const monthNames = [
   "Janeiro",
@@ -494,30 +494,21 @@ export function RoomsSearchFilterBar({
                   <Flame className="w-4 h-4 text-brand-primary fill-brand-primary" />
                   <span>Last Minute</span>
                 </div>
-                <button
-                  type="button"
-                  onClick={handleSelectHoje}
-                  className="w-full py-2.5 px-3 border border-zinc-200 dark:border-zinc-700 rounded-sm text-xs font-semibold text-zinc-800 dark:text-zinc-200 hover:border-brand-primary hover:text-brand-primary flex items-center gap-2 transition-all cursor-pointer bg-white dark:bg-zinc-800/50 whitespace-nowrap select-none"
-                >
-                  <Flame className="w-3.5 h-3.5 text-brand-primary shrink-0" />
-                  <span className="whitespace-nowrap">Hoje (60% OFF)</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={handleSelectAmanha}
-                  className="w-full py-2.5 px-3 border border-zinc-200 dark:border-zinc-700 rounded-sm text-xs font-semibold text-zinc-800 dark:text-zinc-200 hover:border-brand-primary hover:text-brand-primary flex items-center gap-2 transition-all cursor-pointer bg-white dark:bg-zinc-800/50 whitespace-nowrap select-none"
-                >
-                  <Flame className="w-3.5 h-3.5 text-brand-primary shrink-0" />
-                  <span className="whitespace-nowrap">Amanhã (60% OFF)</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={handleSelectDepois}
-                  className="w-full py-2.5 px-3 border border-zinc-200 dark:border-zinc-700 rounded-sm text-xs font-semibold text-zinc-800 dark:text-zinc-200 hover:border-brand-primary hover:text-brand-primary flex items-center gap-2 transition-all cursor-pointer bg-white dark:bg-zinc-800/50 whitespace-nowrap select-none"
-                >
-                  <Flame className="w-3.5 h-3.5 text-brand-primary shrink-0" />
-                  <span className="whitespace-nowrap">Depois (60% OFF)</span>
-                </button>
+                {[
+                  { label: "Hoje (60% OFF)", action: handleSelectHoje },
+                  { label: "Amanhã (60% OFF)", action: handleSelectAmanha },
+                  { label: "Depois (60% OFF)", action: handleSelectDepois },
+                ].map((opt) => (
+                  <button
+                    key={opt.label}
+                    type="button"
+                    onClick={opt.action}
+                    className="w-full py-2.5 px-3 border border-zinc-200 dark:border-zinc-700 rounded-sm text-xs font-semibold text-zinc-800 dark:text-zinc-200 hover:border-brand-primary hover:text-brand-primary flex items-center gap-2 transition-all cursor-pointer bg-white dark:bg-zinc-800/50 whitespace-nowrap select-none"
+                  >
+                    <Flame className="w-3.5 h-3.5 text-brand-primary shrink-0" />
+                    <span className="whitespace-nowrap">{opt.label}</span>
+                  </button>
+                ))}
               </div>
 
               <div className="flex flex-col gap-2 pt-2">
