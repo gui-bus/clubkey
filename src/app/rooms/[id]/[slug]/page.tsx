@@ -303,8 +303,8 @@ export default function RoomDetailPage(): React.JSX.Element {
                 region={room.property_meta?.address?.region}
                 cityName={room.city.name}
                 stateName={room.city.keys_coverage_states.name}
-                latitude={room.latitude}
-                longitude={room.longitude}
+                latitude={Number(room.latitude) || 0}
+                longitude={Number(room.longitude) || 0}
                 neighborhoodOverview={room.property_meta?._msneighborhood_overview?.pt_BR}
               />
 

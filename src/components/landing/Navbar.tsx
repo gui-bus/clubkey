@@ -18,6 +18,7 @@ import {
 } from "@/src/components/ui/sheet/sheet"
 import { brandConfig } from "@/src/config/brand.config"
 import { cn } from "@/src/lib/utils"
+import { usePortalStore } from "@/src/store/usePortalStore"
 
 const isClubKey = brandConfig.id === "clubkey"
 const homeHref = isClubKey ? "/" : "/rooms"
@@ -39,6 +40,7 @@ export function Navbar({
   isTransparent?: boolean
 } = {}): React.JSX.Element {
   const pathname = usePathname()
+  const { isAuthenticated } = usePortalStore()
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false)
   const [activeSection, setActiveSection] = React.useState<string>("")
 
@@ -187,14 +189,14 @@ export function Navbar({
             <ThemeToggle />
 
             <Link
-              href={brandConfig.links.login}
+              href={isAuthenticated ? "/home" : brandConfig.links.login}
               className={cn(
                 "items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-zinc-200 hover:text-brand-primary transition-colors",
                 navLinks.length > 0 ? "hidden sm:inline-flex" : "inline-flex"
               )}
             >
               <User className="w-3.5 h-3.5" />
-              <span>Já sou associado</span>
+              <span>{isAuthenticated ? "Acessar Portal" : "Já sou associado"}</span>
             </Link>
 
             {navLinks.length > 0 && (
@@ -265,12 +267,12 @@ export function Navbar({
 
                     <div className="flex flex-col gap-3 pt-6 border-t border-zinc-800/80">
                       <Link
-                        href={brandConfig.links.login}
+                        href={isAuthenticated ? "/home" : brandConfig.links.login}
                         onClick={() => setMobileMenuOpen(false)}
                         className="flex items-center justify-center gap-2 w-full py-3.5 rounded-sm border border-zinc-700 text-xs font-bold uppercase tracking-wider text-white hover:bg-zinc-800 hover:border-zinc-500 transition-all"
                       >
                         <User className="w-4 h-4" />
-                        <span>Já sou associado (Login)</span>
+                        <span>{isAuthenticated ? "Acessar Portal" : "Já sou associado (Login)"}</span>
                       </Link>
 
                       <CtaButton

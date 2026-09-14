@@ -3,7 +3,6 @@
 import * as React from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 
 import { AuthSplitLayout } from "@/src/components/auth/authSplitLayout"
@@ -12,38 +11,39 @@ import { Input } from "@/src/components/ui/input/input"
 import { PasswordInput } from "@/src/components/ui/passwordInput/passwordInput"
 import { toast } from "@/src/components/ui/toast/toast"
 import { brandConfig } from "@/src/config/brand.config"
-import { type SignInFormData, signInSchema } from "@/src/schemas/auth.schema"
+import { usePortalStore } from "@/src/store/usePortalStore"
+
+interface FormValues {
+  email: string
+  password: string
+}
 
 export default function SignInPage(): React.JSX.Element {
   const router = useRouter()
   const [isLoading, setIsLoading] = React.useState(false)
+  const { login } = usePortalStore()
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<SignInFormData>({
-    resolver: zodResolver(signInSchema),
-    mode: "onSubmit",
+  const { register, handleSubmit } = useForm<FormValues>({
     defaultValues: {
       email: "",
-      password: "",
-    },
+      password: ""
+    }
   })
 
-  const onSubmit = () => {
+  const onSubmit = (data: FormValues) => {
     setIsLoading(true)
     setTimeout(() => {
+      login(data.email)
       setIsLoading(false)
-      toast.success("Login realizado com sucesso!")
-      router.push("/rooms")
-    }, 600)
+      toast.success("Login realizado com sucesso! Bem-vindo ao portal.")
+      router.push("/home")
+    }, 400)
   }
 
   return (
     <AuthSplitLayout
       formTitle="Acesse sua conta"
-      formSubtitle={`Entre com suas credenciais para gerenciar sua assinatura e reservas na ${brandConfig.name}.`}
+      formSubtitle={`Entre com suas credenciais para acessar o portal de membros da ${brandConfig.name}.`}
     >
       <form noValidate onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
         <div className="flex flex-col gap-1.5">
@@ -57,14 +57,10 @@ export default function SignInPage(): React.JSX.Element {
             id="email"
             type="email"
             placeholder="seu@email.com"
-            variant={errors.email ? "error" : "default"}
             disabled={isLoading}
             autoComplete="email"
             {...register("email")}
           />
-          {errors.email && (
-            <span className="text-xs text-red-500">{errors.email.message}</span>
-          )}
         </div>
 
         <div className="flex flex-col gap-1.5">
@@ -85,16 +81,12 @@ export default function SignInPage(): React.JSX.Element {
           <PasswordInput
             id="password"
             placeholder="Digite sua senha"
-            variant={errors.password ? "error" : "default"}
             showRequirements="never"
             showStrengthMeter={false}
             disabled={isLoading}
             autoComplete="current-password"
             {...register("password")}
           />
-          {errors.password && (
-            <span className="text-xs text-red-500">{errors.password.message}</span>
-          )}
         </div>
 
         <CtaButton
@@ -104,7 +96,7 @@ export default function SignInPage(): React.JSX.Element {
           size="lg"
           className="mt-2"
         >
-          {isLoading ? "Entrando..." : "Entrar"}
+          {isLoading ? "Entrando no portal..." : "Entrar no Portal"}
         </CtaButton>
 
         <div className="text-center text-xs text-zinc-500 dark:text-zinc-400 mt-2">
