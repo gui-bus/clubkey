@@ -4,7 +4,7 @@ import * as React from "react"
 import Link from "next/link"
 import { Building, MapPin, UserPlus, Check } from "lucide-react"
 
-import { Member, getInitials } from "@/src/data/portalData"
+import { Member, getInitials, getMemberSlug } from "@/src/data/portalData"
 import { usePortalStore } from "@/src/store/usePortalStore"
 import { Avatar, AvatarImage, AvatarFallback } from "@/src/components/ui/avatar/avatar"
 import { Badge } from "@/src/components/ui/badge/badge"
@@ -33,7 +33,7 @@ export function MemberCard({ member }: MemberCardProps): React.JSX.Element {
 
   return (
     <Link
-      href={`/pessoas/${member.id}`}
+      href={`/conexoes/${member.id}/${getMemberSlug(member)}`}
       className="group flex flex-col justify-between p-5 rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] hover:border-brand-primary/60 dark:hover:border-brand-primary/60 transition-all hover:shadow-lg cursor-pointer"
     >
       <div className="space-y-4">

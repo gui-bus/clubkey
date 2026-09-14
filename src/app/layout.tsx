@@ -94,7 +94,7 @@ export default async function RootLayout({
       <body className="mx-auto w-full max-w-440 bg-background text-foreground selection:bg-brand-primary/20 selection:text-brand-primary">
         <ThemeProvider>
           <NuqsAdapter>{children}</NuqsAdapter>
-          <Toast position="top-right" />
+          <Toast position="bottom-right" />
         </ThemeProvider>
         {siteConfig.analytics.google && (
           <GoogleAnalytics gaId={siteConfig.analytics.google} />

@@ -126,7 +126,7 @@ export function HowItWorksCatalog(): React.JSX.Element {
 
             <div>
               <CtaButton
-                href="/rooms"
+                href="/hospedagens"
                 size="lg"
               >
                 Explorar catálogo

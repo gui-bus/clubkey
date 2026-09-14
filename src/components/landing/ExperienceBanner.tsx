@@ -52,7 +52,7 @@ export function ExperienceBanner(): React.JSX.Element {
             </CtaButton>
 
             <Link
-              href="/rooms"
+              href="/hospedagens"
               className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-sm bg-zinc-900/80 hover:bg-zinc-800 border border-white/20 text-white font-bold text-sm uppercase tracking-wider transition-all duration-200 shadow-xs cursor-pointer text-center backdrop-blur-xs"
             >
               <span>Explorar Acomodações (+4.500)</span>

@@ -130,7 +130,7 @@ export const brandPresets: Record<string, BrandConfig> = {
     },
     links: {
       subscription: "/subscription",
-      rooms: "/rooms",
+      rooms: "/hospedagens",
       login: "/sign-in",
       instagram: "https://oceanclub.io",
       contactEmail: "contato@oceanclub.io",

@@ -3,14 +3,16 @@
 import * as React from "react"
 import Image from "next/image"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { Calendar, ArrowRight, Users, Check, Clock, MapPin } from "lucide-react"
 
 import { usePortalStore } from "@/src/store/usePortalStore"
-import { EVENTS, EXPERIENCES, MEMBERS, BENEFITS, getInitials } from "@/src/data/portalData"
+import { EVENTS, EXPERIENCES, MEMBERS, BENEFITS, getInitials, getEventSlug, getMemberSlug } from "@/src/data/portalData"
 import { UniverseOrbit } from "@/src/components/portal/UniverseOrbit"
 import { ExperienceCard } from "@/src/components/portal/ExperienceCard"
 import { MemberCard } from "@/src/components/portal/MemberCard"
 import { BenefitCard } from "@/src/components/portal/BenefitCard"
+import { AvatarGroup } from "@/src/components/ui/avatarGroup/avatarGroup"
 import { Avatar, AvatarImage, AvatarFallback } from "@/src/components/ui/avatar/avatar"
 import { Badge } from "@/src/components/ui/badge/badge"
 import { Button } from "@/src/components/ui/button/button"
@@ -19,6 +21,7 @@ import { toast } from "@/src/components/ui/toast/toast"
 import { Container } from "@/src/components/common/container"
 
 export default function HomePage(): React.JSX.Element {
+  const router = useRouter()
   const { userProfile, confirmedEvents, toggleEventRSVP } = usePortalStore()
 
   const nextEvent = EVENTS[0]
@@ -85,11 +88,11 @@ export default function HomePage(): React.JSX.Element {
               </Link>
 
               <Link
-                href="/pessoas"
+                href="/conexoes"
                 className="inline-flex items-center gap-2 px-5 py-3 rounded-sm border border-white/20 bg-white/10 hover:bg-white/20 text-white text-xs font-black uppercase tracking-wider backdrop-blur-sm transition-all"
               >
                 <Users className="w-4 h-4" />
-                <span>Ver Membros</span>
+                <span>Ver Conexões</span>
               </Link>
 
               <Link
@@ -160,13 +163,26 @@ export default function HomePage(): React.JSX.Element {
 
             <div className="shrink-0 w-full lg:w-auto flex flex-col sm:flex-row lg:flex-col items-start sm:items-center lg:items-end justify-between gap-5 pt-4 lg:pt-0 border-t lg:border-t-0 border-zinc-200 dark:border-white/10">
               <div className="flex items-center gap-3">
-                <div className="flex -space-x-2">
+                <AvatarGroup
+                  showTooltip
+                  isPressable
+                  radius="full"
+                  size="sm"
+                  max={5}
+                  overlap="sm"
+                >
                   {participantMembers.map((m) => (
                     <Avatar
                       key={m?.id}
-                      size="sm"
-                      radius="sm"
-                      className="ring-1 ring-zinc-300 dark:ring-white/20"
+                      title={`${m?.name} • ${m?.role} (${m?.company})`}
+                      onClick={(e) => {
+                        e.preventDefault()
+                        e.stopPropagation()
+                        if (m?.id !== undefined) {
+                          router.push(`/conexoes/${m.id}/${getMemberSlug(m)}`)
+                        }
+                      }}
+                      className="cursor-pointer"
                     >
                       {m?.avatar && (
                         <AvatarImage src={m.avatar} alt={m.name} />
@@ -176,7 +192,7 @@ export default function HomePage(): React.JSX.Element {
                       </AvatarFallback>
                     </Avatar>
                   ))}
-                </div>
+                </AvatarGroup>
                 <span className="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
                   {nextEventCount} de {nextEvent.capacity} confirmados
                 </span>
@@ -196,7 +212,7 @@ export default function HomePage(): React.JSX.Element {
                 </Button>
 
                 <Link
-                  href={`/eventos/${nextEvent.id}`}
+                  href={`/eventos/${nextEvent.id}/${getEventSlug(nextEvent)}`}
                   className="px-5 py-2.5 rounded-sm border border-zinc-300 dark:border-white/20 bg-zinc-100 dark:bg-white/10 hover:bg-zinc-200 dark:hover:bg-white/20 text-xs font-bold uppercase tracking-wider text-zinc-900 dark:text-white transition-colors"
                 >
                   Detalhes
@@ -241,14 +257,14 @@ export default function HomePage(): React.JSX.Element {
                 Networking
               </span>
               <h2 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-zinc-900 dark:text-white font-heading">
-                Pessoas para conhecer
+                Conexões recomendadas
               </h2>
             </div>
             <Link
-              href="/pessoas"
+              href="/conexoes"
               className="text-xs font-bold uppercase tracking-wider text-brand-primary hover:translate-x-0.5 transition-transform flex items-center gap-1"
             >
-              <span>Ver diretório</span>
+              <span>Ver todas</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>

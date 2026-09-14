@@ -2,7 +2,6 @@
 
 import * as React from "react"
 import { Navbar } from "@/src/components/landing/Navbar"
-import { Toast } from "@/src/components/ui/toast/toast"
 
 export default function PortalLayout({
   children
@@ -15,7 +14,6 @@ export default function PortalLayout({
       <main className="flex-1 w-full flex flex-col">
         {children}
       </main>
-      <Toast position="bottom-right" />
     </div>
   )
 }

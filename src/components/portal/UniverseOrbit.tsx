@@ -10,8 +10,8 @@ import { Badge } from "@/src/components/ui/badge/badge"
 
 const ORBIT_NODES = [
   {
-    href: "/pessoas",
-    label: "Pessoas",
+    href: "/conexoes",
+    label: "Conexões",
     count: MEMBERS.length,
     icon: Users,
     positionClass: "left-[4%] sm:left-[10%] lg:left-[15%] top-[12%] sm:top-[14%]"

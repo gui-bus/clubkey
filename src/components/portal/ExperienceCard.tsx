@@ -5,7 +5,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { MapPin, Calendar, Check, Gift } from "lucide-react"
 
-import { ExperienceItem, formatBRL } from "@/src/data/portalData"
+import { ExperienceItem, formatBRL, getExperienceSlug } from "@/src/data/portalData"
 import { usePortalStore } from "@/src/store/usePortalStore"
 import { Badge } from "@/src/components/ui/badge/badge"
 
@@ -22,7 +22,7 @@ export function ExperienceCard({
 
   return (
     <Link
-      href={`/experiencias/${experience.id}`}
+      href={`/experiencias/${experience.id}/${getExperienceSlug(experience)}`}
       className="group flex flex-col justify-between rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] overflow-hidden hover:border-brand-primary/60 dark:hover:border-brand-primary/60 transition-all hover:shadow-lg cursor-pointer"
     >
       <div>

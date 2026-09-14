@@ -3,6 +3,7 @@
 import * as React from "react"
 import Image from "next/image"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import {
   Calendar,
   CheckCircle2,
@@ -16,14 +17,16 @@ import {
 } from "lucide-react"
 
 import { usePortalStore } from "@/src/store/usePortalStore"
-import { EVENTS, MEMBERS, getInitials } from "@/src/data/portalData"
+import { EVENTS, MEMBERS, getInitials, getEventSlug, getMemberSlug } from "@/src/data/portalData"
 import { Container } from "@/src/components/common/container"
 import { Badge } from "@/src/components/ui/badge/badge"
 import { Button } from "@/src/components/ui/button/button"
+import { AvatarGroup } from "@/src/components/ui/avatarGroup/avatarGroup"
 import { Avatar, AvatarFallback, AvatarImage } from "@/src/components/ui/avatar/avatar"
 import { toast } from "@/src/components/ui/toast/toast"
 
 export default function MeusEventosPage(): React.JSX.Element {
+  const router = useRouter()
   const { confirmedEvents, toggleEventRSVP, userProfile } = usePortalStore()
 
   const myEvents = React.useMemo(() => {
@@ -231,13 +234,24 @@ export default function MeusEventosPage(): React.JSX.Element {
                       </div>
 
                       <div className="flex items-center gap-2 pt-2">
-                        <div className="flex -space-x-2">
+                        <AvatarGroup
+                          showTooltip
+                          isPressable
+                          radius="full"
+                          size="sm"
+                          max={5}
+                          overlap="sm"
+                        >
                           {participantMembers.map((member) => (
                             <Avatar
                               key={member.id}
-                              size="sm"
-                              radius="sm"
-                              className="ring-1 ring-white dark:ring-zinc-900"
+                              title={`${member.name} • ${member.role} (${member.company})`}
+                              onClick={(e) => {
+                                e.preventDefault()
+                                e.stopPropagation()
+                                router.push(`/conexoes/${member.id}/${getMemberSlug(member)}`)
+                              }}
+                              className="cursor-pointer"
                             >
                               {member.avatar && (
                                 <AvatarImage src={member.avatar} alt={member.name} />
@@ -247,7 +261,7 @@ export default function MeusEventosPage(): React.JSX.Element {
                               </AvatarFallback>
                             </Avatar>
                           ))}
-                        </div>
+                        </AvatarGroup>
                         <span className="text-xs font-semibold text-zinc-500 dark:text-zinc-400">
                           {event.initialConfirmed + 1} membros confirmados
                         </span>
@@ -257,7 +271,7 @@ export default function MeusEventosPage(): React.JSX.Element {
 
                   <div className="flex flex-col sm:flex-row lg:flex-col items-stretch sm:items-center lg:items-end gap-2.5 w-full lg:w-auto shrink-0 pt-4 lg:pt-0 border-t lg:border-t-0 border-zinc-100 dark:border-zinc-800">
                     <Link
-                      href={`/eventos/meus-eventos/${event.id}`}
+                      href={`/eventos/meus-eventos/${event.id}/${getEventSlug(event)}`}
                       className="px-4 py-2 rounded-sm bg-brand-primary hover:bg-brand-primary/90 text-white text-xs font-black uppercase tracking-wider transition-all text-center flex items-center justify-center gap-1.5"
                     >
                       <span>Meu Ingresso / Detalhes</span>
@@ -265,7 +279,7 @@ export default function MeusEventosPage(): React.JSX.Element {
                     </Link>
 
                     <Link
-                      href={`/eventos/${event.id}/quem-vai`}
+                      href={`/eventos/${event.id}/${getEventSlug(event)}/quem-vai`}
                       className="px-4 py-2 rounded-sm border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-900 text-xs font-bold uppercase tracking-wider text-zinc-800 dark:text-zinc-200 hover:border-brand-primary/60 transition-colors text-center flex items-center justify-center gap-1.5"
                     >
                       <Users className="w-3.5 h-3.5 text-brand-primary" />

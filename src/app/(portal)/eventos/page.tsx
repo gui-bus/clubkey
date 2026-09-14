@@ -17,6 +17,21 @@ const EVENTS_VIEWS = [
   { value: "meus", label: "Meus eventos" },
 ]
 
+const MONTH_LABELS: Record<string, string> = {
+  JAN: "Janeiro 2026",
+  FEV: "Fevereiro 2026",
+  MAR: "Março 2026",
+  ABR: "Abril 2026",
+  MAI: "Maio 2026",
+  JUN: "Junho 2026",
+  JUL: "Julho 2026",
+  AGO: "Agosto 2026",
+  SET: "Setembro 2026",
+  OUT: "Outubro 2026",
+  NOV: "Novembro 2026",
+  DEZ: "Dezembro 2026",
+}
+
 export default function EventsPage(): React.JSX.Element {
   const [activeFilter, setActiveFilter] = React.useState("proximos")
   const [searchQuery, setSearchQuery] = React.useState("")
@@ -61,6 +76,26 @@ export default function EventsPage(): React.JSX.Element {
       return fullText.includes(q)
     })
   }, [activeFilter, confirmedEvents, searchQuery])
+
+  const groupedEventsByMonth = React.useMemo(() => {
+    const groups: { monthKey: string; monthLabel: string; events: typeof EVENTS }[] = []
+
+    for (const event of filteredEvents) {
+      const key = event.month?.toUpperCase() || "OUTROS"
+      let group = groups.find((g) => g.monthKey === key)
+      if (!group) {
+        group = {
+          monthKey: key,
+          monthLabel: MONTH_LABELS[key] || key,
+          events: [],
+        }
+        groups.push(group)
+      }
+      group.events.push(event)
+    }
+
+    return groups
+  }, [filteredEvents])
 
   const hasActiveFilters = activeFilter !== "proximos" || Boolean(searchQuery)
 
@@ -175,9 +210,28 @@ export default function EventsPage(): React.JSX.Element {
             </Button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 gap-4">
-            {filteredEvents.map((event) => (
-              <EventCard key={event.id} event={event} />
+          <div className="space-y-10">
+            {groupedEventsByMonth.map((group) => (
+              <div key={group.monthKey} className="space-y-4">
+                <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-brand-primary shadow-xs" />
+                    <h2 className="text-base sm:text-lg font-heading font-black tracking-tight uppercase text-zinc-900 dark:text-white">
+                      {group.monthLabel}
+                    </h2>
+                  </div>
+                  <div className="h-px flex-1 bg-zinc-200 dark:bg-zinc-800" />
+                  <span className="text-[11px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">
+                    {group.events.length} {group.events.length === 1 ? "encontro" : "encontros"}
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-1 gap-4">
+                  {group.events.map((event) => (
+                    <EventCard key={event.id} event={event} />
+                  ))}
+                </div>
+              </div>
             ))}
           </div>
         )}

@@ -4,7 +4,7 @@ import * as React from "react"
 import Link from "next/link"
 import { Users, ArrowRight } from "lucide-react"
 
-import { Member, getInitials } from "@/src/data/portalData"
+import { Member, getInitials, getMemberSlug } from "@/src/data/portalData"
 import { Avatar, AvatarImage, AvatarFallback } from "@/src/components/ui/avatar/avatar"
 import { Badge } from "@/src/components/ui/badge/badge"
 
@@ -97,7 +97,7 @@ export function MatchCard({ member, reason }: MatchCardProps): React.JSX.Element
 
         <div className="shrink-0 w-full lg:w-auto flex flex-col items-center sm:items-stretch gap-3">
           <Link
-            href={`/pessoas/${member.id}`}
+            href={`/conexoes/${member.id}/${getMemberSlug(member)}`}
             className="w-full inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-sm bg-brand-primary hover:bg-brand-primary-hover text-white text-xs font-bold uppercase tracking-wider transition-all shadow-sm cursor-pointer"
           >
             <span>Ver perfil completo</span>

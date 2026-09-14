@@ -17,7 +17,7 @@ import { FloatingCta } from "@/src/components/landing/FloatingCta"
 
 export default function Page(): React.JSX.Element {
   if (brandConfig.id !== "clubkey") {
-    redirect("/rooms")
+    redirect("/hospedagens")
   }
 
   return (

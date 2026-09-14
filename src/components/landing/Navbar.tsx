@@ -61,7 +61,7 @@ const PORTAL_NAV_LINKS = [
   { name: "Home", href: "/home" },
   { name: "Eventos", href: "/eventos" },
   { name: "Experiências", href: "/experiencias" },
-  { name: "Pessoas", href: "/pessoas" },
+  { name: "Conexões", href: "/conexoes" },
   { name: "Benefícios", href: "/beneficios" },
   { name: "Catálogo", href: "/hospedagens" },
 ]
@@ -127,9 +127,17 @@ export function Navbar({
   const userEmail = userProfile?.email || "william@tabatacapital.com"
 
   const isDetailRoute = Boolean(
-    pathname?.startsWith("/rooms/") &&
-      pathname !== "/rooms" &&
-      pathname !== "/hospedagens"
+    ((pathname?.startsWith("/rooms/") && pathname !== "/rooms") ||
+      (pathname?.startsWith("/hospedagens/") &&
+        pathname !== "/hospedagens" &&
+        pathname !== "/hospedagens/minhas-hospedagens") ||
+      (pathname?.startsWith("/eventos/") &&
+        pathname !== "/eventos" &&
+        pathname !== "/eventos/meus-eventos") ||
+      (pathname?.startsWith("/agenda/") && pathname !== "/agenda") ||
+      (pathname?.startsWith("/experiencias/") && pathname !== "/experiencias") ||
+      (pathname?.startsWith("/conexoes/") && pathname !== "/conexoes") ||
+      (pathname?.startsWith("/pessoas/") && pathname !== "/pessoas"))
   )
 
   const isPortalRoute = Boolean(
@@ -140,6 +148,8 @@ export function Navbar({
       pathname?.startsWith("/agenda/") ||
       pathname === "/experiencias" ||
       pathname?.startsWith("/experiencias/") ||
+      pathname === "/conexoes" ||
+      pathname?.startsWith("/conexoes/") ||
       pathname === "/pessoas" ||
       pathname?.startsWith("/pessoas/") ||
       pathname === "/beneficios" ||
@@ -159,7 +169,7 @@ export function Navbar({
   const transparent =
     isTransparent !== undefined
       ? isTransparent
-      : !isAuthRoute
+      : !isAuthRoute && !isDetailRoute
 
   const isDarkBar = true
 

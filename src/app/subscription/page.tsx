@@ -92,7 +92,7 @@ export default function SubscriptionPage(): React.JSX.Element {
 
               <div className="flex flex-col sm:flex-row gap-3 w-full pt-2">
                 <CtaButton
-                  href="/rooms"
+                  href="/hospedagens"
                   className="flex-1 py-3.5"
                 >
                   <KeyRound className="w-4 h-4 mr-2" />

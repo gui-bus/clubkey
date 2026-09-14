@@ -131,7 +131,7 @@ export function RoomCard({
 
   return (
     <Link
-      href={`/rooms/${room.id}/${room.slug}`}
+      href={`/hospedagens/${room.id}/${room.slug}`}
       draggable={false}
       onDragStart={(e) => e.preventDefault()}
       onClick={(e) => {

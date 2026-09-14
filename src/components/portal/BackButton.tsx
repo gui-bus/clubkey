@@ -1,8 +1,10 @@
 "use client"
 
 import * as React from "react"
+import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { ArrowLeft } from "lucide-react"
+import { ChevronLeft } from "lucide-react"
+import { cn } from "@/src/lib/utils"
 
 interface BackButtonProps {
   label?: string
@@ -13,25 +15,35 @@ interface BackButtonProps {
 export function BackButton({
   label = "Voltar",
   fallbackHref,
-  className = ""
+  className = "",
 }: BackButtonProps) {
   const router = useRouter()
 
-  const handleBack = () => {
-    if (fallbackHref) {
-      router.push(fallbackHref)
-    } else {
-      router.back()
-    }
+  if (fallbackHref) {
+    return (
+      <Link
+        href={fallbackHref}
+        className={cn(
+          "inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors cursor-pointer",
+          className
+        )}
+      >
+        <ChevronLeft className="w-4 h-4" />
+        <span>{label}</span>
+      </Link>
+    )
   }
 
   return (
     <button
       type="button"
-      onClick={handleBack}
-      className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-sm bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 hover:text-brand-primary hover:border-brand-primary/40 transition-colors cursor-pointer ${className}`}
+      onClick={() => router.back()}
+      className={cn(
+        "inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors cursor-pointer",
+        className
+      )}
     >
-      <ArrowLeft className="w-3.5 h-3.5 text-brand-primary" />
+      <ChevronLeft className="w-4 h-4" />
       <span>{label}</span>
     </button>
   )

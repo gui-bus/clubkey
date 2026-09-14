@@ -13,12 +13,12 @@ const clubKeyNavLinks = [
   { href: "/#parceiros", label: "Parceiros" },
   { href: "/#experiencia", label: "Experiência" },
   { href: "/#como-funciona", label: "Como Funciona" },
-  { href: "/rooms", label: "Catálogo" },
+  { href: "/hospedagens", label: "Catálogo" },
   { href: "/#faq", label: "Perguntas Frequentes" },
 ] as const
 
 const genericNavLinks = [
-  { href: "/rooms", label: "Hospedagens" },
+  { href: "/hospedagens", label: "Hospedagens" },
   { href: brandConfig.links.subscription, label: "Assinatura" },
   { href: brandConfig.links.login, label: "Área do Membro" },
 ] as const
@@ -26,13 +26,13 @@ const genericNavLinks = [
 const memberLinks = [
   { href: brandConfig.links.login, label: "Já sou associado (Login)" },
   { href: brandConfig.links.subscription, label: "Quero ser associado" },
-  { href: "/rooms", label: "Explorar Hospedagens" },
+  { href: "/hospedagens", label: "Explorar Hospedagens" },
   { href: `mailto:${brandConfig.links.contactEmail}`, label: "Suporte & Concierge" },
 ] as const
 
 export function Footer(): React.JSX.Element {
   const isClubKey = brandConfig.id === "clubkey"
-  const homeHref = isClubKey ? "/" : "/rooms"
+  const homeHref = isClubKey ? "/" : "/hospedagens"
   const activeNavLinks = isClubKey ? clubKeyNavLinks : genericNavLinks
 
   const scrollToTop = () => {
@@ -142,7 +142,7 @@ export function Footer(): React.JSX.Element {
 
           <div className="flex items-center gap-6">
             <Link
-              href="/rooms"
+              href="/hospedagens"
               className="hover:text-white transition-colors"
             >
               Hospedagens
