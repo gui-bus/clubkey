@@ -10,8 +10,8 @@ export interface RoomLocationCardProps {
   region?: string
   cityName: string
   stateName: string
-  latitude: number
-  longitude: number
+  latitude: number | string
+  longitude: number | string
   neighborhoodOverview?: string
 }
 

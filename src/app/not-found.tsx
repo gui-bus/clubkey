@@ -1,3 +1,5 @@
+"use client"
+
 import * as React from "react"
 
 import { CtaButton } from "@/src/components/common/ctaButton"
