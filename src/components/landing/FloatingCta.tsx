@@ -9,8 +9,20 @@ import { motion } from "framer-motion"
 import { Container } from "@/src/components/common/container"
 import { CtaButton } from "@/src/components/common/ctaButton"
 import { brandConfig } from "@/src/config/brand.config"
+import { usePortalStore } from "@/src/store/usePortalStore"
 
-export function FloatingCta(): React.JSX.Element {
+export function FloatingCta(): React.JSX.Element | null {
+  const [mounted, setMounted] = React.useState(false)
+  const isAuthenticated = usePortalStore((state) => state.isAuthenticated)
+
+  React.useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!mounted || isAuthenticated) {
+    return null
+  }
+
   return (
     <Container
       as="aside"

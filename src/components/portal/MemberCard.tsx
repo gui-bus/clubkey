@@ -1,12 +1,14 @@
 "use client"
 
 import * as React from "react"
-import Image from "next/image"
 import Link from "next/link"
 import { Building, MapPin, UserPlus, Check } from "lucide-react"
 
 import { Member, getInitials } from "@/src/data/portalData"
 import { usePortalStore } from "@/src/store/usePortalStore"
+import { Avatar, AvatarImage, AvatarFallback } from "@/src/components/ui/avatar/avatar"
+import { Badge } from "@/src/components/ui/badge/badge"
+import { toast } from "@/src/components/ui/toast/toast"
 
 interface MemberCardProps {
   member: Member
@@ -20,6 +22,13 @@ export function MemberCard({ member }: MemberCardProps): React.JSX.Element {
     e.preventDefault()
     e.stopPropagation()
     toggleConnect(member.id)
+    if (!isConnected) {
+      toast.success(`Solicitação enviada para ${member.name}`, {
+        description: "Você será notificado quando houver resposta.",
+      })
+    } else {
+      toast.info(`Conexão com ${member.name} desfeita.`)
+    }
   }
 
   return (
@@ -30,18 +39,14 @@ export function MemberCard({ member }: MemberCardProps): React.JSX.Element {
       <div className="space-y-4">
         <div className="flex items-start justify-between gap-3">
           <div className="flex items-center gap-3">
-            <div className="relative w-12 h-12 shrink-0 rounded-sm overflow-hidden bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-white flex items-center justify-center font-bold text-sm">
-              {member.avatar ? (
-                <Image
-                  src={member.avatar}
-                  alt={member.name}
-                  fill
-                  className="object-cover"
-                />
-              ) : (
-                getInitials(member.name)
+            <Avatar size="lg" radius="sm" className="shrink-0">
+              {member.avatar && (
+                <AvatarImage src={member.avatar} alt={member.name} />
               )}
-            </div>
+              <AvatarFallback className="font-bold text-xs bg-zinc-900 text-white dark:bg-zinc-800">
+                {getInitials(member.name)}
+              </AvatarFallback>
+            </Avatar>
             <div>
               <h3 className="text-base font-bold uppercase tracking-tight text-zinc-900 dark:text-white group-hover:text-brand-primary transition-colors line-clamp-1">
                 {member.name}
@@ -89,12 +94,16 @@ export function MemberCard({ member }: MemberCardProps): React.JSX.Element {
             </span>
             <div className="flex flex-wrap gap-1.5">
               {member.offering.map((tag) => (
-                <span
+                <Badge
                   key={tag}
-                  className="px-2 py-0.5 rounded-sm text-[11px] font-semibold bg-brand-primary/10 text-brand-primary border border-brand-primary/20"
+                  color="primary"
+                  variant="flat"
+                  size="sm"
+                  radius="sm"
+                  className="text-[11px] font-semibold"
                 >
                   {tag}
-                </span>
+                </Badge>
               ))}
             </div>
           </div>
@@ -105,12 +114,16 @@ export function MemberCard({ member }: MemberCardProps): React.JSX.Element {
             </span>
             <div className="flex flex-wrap gap-1.5">
               {member.seeking.map((tag) => (
-                <span
+                <Badge
                   key={tag}
-                  className="px-2 py-0.5 rounded-sm text-[11px] font-medium bg-zinc-100 dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-800"
+                  color="default"
+                  variant="flat"
+                  size="sm"
+                  radius="sm"
+                  className="text-[11px] font-medium"
                 >
                   {tag}
-                </span>
+                </Badge>
               ))}
             </div>
           </div>

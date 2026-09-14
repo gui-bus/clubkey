@@ -2,10 +2,8 @@
 
 import * as React from "react"
 import Link from "next/link"
-import Image from "next/image"
 import { useParams, notFound } from "next/navigation"
 import {
-  Calendar,
   MapPin,
   Check,
   ShieldCheck,
@@ -17,6 +15,12 @@ import {
 import { EXPERIENCES, MEMBERS, formatBRL, getInitials } from "@/src/data/portalData"
 import { usePortalStore } from "@/src/store/usePortalStore"
 import { BackButton } from "@/src/components/portal/BackButton"
+import { Avatar, AvatarImage, AvatarFallback } from "@/src/components/ui/avatar/avatar"
+import { Badge } from "@/src/components/ui/badge/badge"
+import { Button } from "@/src/components/ui/button/button"
+import { toast } from "@/src/components/ui/toast/toast"
+import Image from "next/image"
+import { Container } from "@/src/components/common/container"
 
 export default function ExperienceDetailPage(): React.JSX.Element {
   const params = useParams()
@@ -37,10 +41,13 @@ export default function ExperienceDetailPage(): React.JSX.Element {
 
   const handleFreeParticipation = () => {
     buyExperience(experience.id)
+    toast.success("Vaga gratuita garantida com sucesso!", {
+      description: `Sua presença em "${experience.title}" foi confirmada.`,
+    })
   }
 
   return (
-    <div className="w-full space-y-8">
+    <Container className="pt-28 md:pt-36 pb-12 space-y-8">
       <BackButton
         fallbackHref="/experiencias"
         label="Voltar para experiências"
@@ -61,12 +68,22 @@ export default function ExperienceDetailPage(): React.JSX.Element {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#141416] via-black/40 to-transparent" />
                 <div className="absolute top-4 left-4 z-10 flex items-center gap-2">
-                  <span className="px-3 py-1 rounded-sm text-xs font-black uppercase tracking-wider bg-brand-primary text-white shadow-xs">
+                  <Badge
+                    color="primary"
+                    variant="default"
+                    radius="sm"
+                    className="font-black uppercase tracking-wider shadow-xs"
+                  >
                     {experience.date}
-                  </span>
-                  <span className="px-3 py-1 rounded-sm text-xs font-black uppercase tracking-wider bg-black/70 backdrop-blur-md text-white border border-white/10">
+                  </Badge>
+                  <Badge
+                    color="default"
+                    variant="flat"
+                    radius="sm"
+                    className="bg-black/70 backdrop-blur-md text-white border-white/10 font-black uppercase tracking-wider"
+                  >
                     {experience.place}
-                  </span>
+                  </Badge>
                 </div>
               </div>
             )}
@@ -112,21 +129,14 @@ export default function ExperienceDetailPage(): React.JSX.Element {
                   href={`/pessoas/${attendee?.id}`}
                   className="group flex items-center gap-3.5 p-4 rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] hover:border-brand-primary/60 dark:hover:border-brand-primary/60 transition-all shadow-2xs hover:shadow-xs"
                 >
-                  {attendee?.image ? (
-                    <div className="relative w-12 h-12 shrink-0 rounded-sm overflow-hidden bg-zinc-900 ring-1 ring-zinc-200 dark:ring-zinc-800">
-                      <Image
-                        src={attendee.image}
-                        alt={attendee.name}
-                        fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-300"
-                        sizes="48px"
-                      />
-                    </div>
-                  ) : (
-                    <div className="w-12 h-12 shrink-0 rounded-sm bg-zinc-900 dark:bg-zinc-800 text-white flex items-center justify-center font-black text-xs">
+                  <Avatar size="lg" radius="sm" className="shrink-0 ring-1 ring-zinc-200 dark:ring-zinc-800">
+                    {(attendee?.image || attendee?.avatar) && (
+                      <AvatarImage src={attendee.image || attendee.avatar} alt={attendee.name} />
+                    )}
+                    <AvatarFallback className="font-black text-xs bg-zinc-900 text-white dark:bg-zinc-800">
                       {getInitials(attendee?.name || "")}
-                    </div>
-                  )}
+                    </AvatarFallback>
+                  </Avatar>
                   <div className="min-w-0">
                     <p className="text-sm font-bold uppercase tracking-tight text-zinc-900 dark:text-white group-hover:text-brand-primary transition-colors truncate">
                       {attendee?.name}
@@ -172,17 +182,19 @@ export default function ExperienceDetailPage(): React.JSX.Element {
               <span>Participação garantida</span>
             </div>
           ) : isFree ? (
-            <button
+            <Button
               type="button"
+              color="primary"
+              radius="sm"
               onClick={handleFreeParticipation}
-              className="w-full py-4 px-4 rounded-sm bg-brand-primary hover:bg-brand-primary/90 text-white text-xs font-black uppercase tracking-wider transition-all shadow-xs cursor-pointer"
+              className="w-full h-12 text-xs font-black uppercase tracking-wider"
             >
               Garantir minha vaga gratuita
-            </button>
+            </Button>
           ) : (
             <Link
               href={`/experiencias/${experience.id}/checkout`}
-              className="w-full py-4 px-4 rounded-sm bg-brand-primary hover:bg-brand-primary/90 text-white text-xs font-black uppercase tracking-wider transition-all shadow-xs flex items-center justify-center"
+              className="w-full h-12 rounded-sm bg-brand-primary hover:bg-brand-primary/90 text-white text-xs font-black uppercase tracking-wider transition-all shadow-xs flex items-center justify-center"
             >
               Comprar vaga
             </Link>
@@ -200,6 +212,6 @@ export default function ExperienceDetailPage(): React.JSX.Element {
           </div>
         </div>
       </div>
-    </div>
+    </Container>
   )
 }

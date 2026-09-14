@@ -81,6 +81,7 @@ export interface StayItem {
 
 export interface UserProfile {
   name: string
+  email?: string
   role: string
   company: string
   city: string
@@ -784,6 +785,7 @@ export const STAYS: StayItem[] = [
 
 export const DEFAULT_USER: UserProfile = {
   name: "William Tabata",
+  email: "william@tabatacapital.com",
   role: "Sócio-diretor",
   company: "Tabata Capital",
   city: "São Paulo",
@@ -817,3 +819,113 @@ export function formatBRL(amount: number): string {
     maximumFractionDigits: 0
   }).format(amount)
 }
+
+export interface MemberStayReservation {
+  id: string
+  stayId: number
+  stayName: string
+  location: string
+  image: string
+  checkIn: string
+  checkOut: string
+  nights: number
+  guests: number
+  roomType: string
+  totalPrice: number
+  status: "confirmada" | "em_analise" | "concluida"
+  confirmationCode: string
+}
+
+export const DEFAULT_MEMBER_STAYS: MemberStayReservation[] = [
+  {
+    id: "res-01",
+    stayId: 0,
+    stayName: "Fazenda Boa Vista",
+    location: "Porto Feliz, SP",
+    image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&auto=format&fit=crop&q=80",
+    checkIn: "24 de Outubro, 2026",
+    checkOut: "27 de Outubro, 2026",
+    nights: 3,
+    guests: 2,
+    roomType: "Villa Master com Piscina Privativa",
+    totalPrice: 5760,
+    status: "confirmada",
+    confirmationCode: "CK-BV-8821"
+  },
+  {
+    id: "res-02",
+    stayId: 3,
+    stayName: "Uxua Casa Hotel & Spa",
+    location: "Trancoso, BA",
+    image: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=800&auto=format&fit=crop&q=80",
+    checkIn: "18 de Novembro, 2026",
+    checkOut: "22 de Novembro, 2026",
+    nights: 4,
+    guests: 2,
+    roomType: "Casa da Praça (Suíte Presidencial)",
+    totalPrice: 9280,
+    status: "confirmada",
+    confirmationCode: "CK-UX-4490"
+  }
+]
+
+export interface MemberSubscription {
+  planName: string
+  tierBadge: string
+  status: "active" | "trialing" | "canceled"
+  renewalDate: string
+  priceMonthly: number
+  priceAnnual: number
+  period: "annual" | "monthly"
+  paymentMethod: {
+    brand: string
+    last4: string
+    expiry: string
+  }
+  invoices: {
+    id: string
+    date: string
+    amount: number
+    status: "paid" | "pending"
+    pdfUrl?: string
+  }[]
+  features: string[]
+}
+
+export const DEFAULT_MEMBER_SUBSCRIPTION: MemberSubscription = {
+  planName: "ClubKey Founder Black",
+  tierBadge: "Membro Fundador VIP",
+  status: "active",
+  renewalDate: "15 de Outubro de 2026",
+  priceMonthly: 1200,
+  priceAnnual: 12900,
+  period: "annual",
+  paymentMethod: {
+    brand: "Mastercard Black",
+    last4: "8842",
+    expiry: "11/29"
+  },
+  invoices: [
+    {
+      id: "INV-2026-009",
+      date: "15/10/2025",
+      amount: 12900,
+      status: "paid"
+    },
+    {
+      id: "INV-2025-009",
+      date: "15/10/2024",
+      amount: 10800,
+      status: "paid"
+    }
+  ],
+  features: [
+    "Acesso total a todos os encontros mensais e eventos fechados",
+    "Tarifas com até 35% de desconto no catálogo de hospedagens parceiras",
+    "Canal direto com concierge VIP 24/7 para reservas e experiências",
+    "Diretório completo de membros com introduções e conexões bilaterais",
+    "Prioridade máxima na lista de espera para viagens e regatas exclusivas",
+    "Clube de benefícios e parcerias com hospitais, aviação executiva e gastronomia"
+  ]
+}
+

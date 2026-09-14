@@ -2,7 +2,6 @@
 
 import * as React from "react"
 import Link from "next/link"
-import Image from "next/image"
 import { useParams, notFound } from "next/navigation"
 import {
   MapPin,
@@ -17,6 +16,11 @@ import {
 import { MEMBERS, EVENTS, getInitials } from "@/src/data/portalData"
 import { usePortalStore } from "@/src/store/usePortalStore"
 import { BackButton } from "@/src/components/portal/BackButton"
+import { Avatar, AvatarImage, AvatarFallback } from "@/src/components/ui/avatar/avatar"
+import { Badge } from "@/src/components/ui/badge/badge"
+import { Button } from "@/src/components/ui/button/button"
+import { toast } from "@/src/components/ui/toast/toast"
+import { Container } from "@/src/components/common/container"
 
 export default function MemberProfilePage(): React.JSX.Element {
   const params = useParams()
@@ -37,30 +41,39 @@ export default function MemberProfilePage(): React.JSX.Element {
   const firstName = member.name.split(" ")[0]
   const synergyReason = `O que ${firstName} oferece complementa o que você procura: ${member.offering[0]?.toLowerCase() || "novas parcerias"}. Vocês também compartilham interesses estratégicos nos encontros deste trimestre.`
 
+  const handleConnectToggle = () => {
+    toggleConnect(member.id)
+    if (!isConnected) {
+      toast.success(`Solicitação de conexão enviada para ${member.name}!`, {
+        description: "Seu perfil com suas buscas e ofertas foi compartilhado.",
+      })
+    } else {
+      toast.info(`Conexão com ${member.name} desfeita.`)
+    }
+  }
+
+  const handleSendMessage = () => {
+    toast.success(`Canal de mensagem direta aberto com ${firstName}!`, {
+      description: "Nosso concierge conectará vocês via canal seguro do clube.",
+    })
+  }
+
   return (
-    <div className="space-y-6">
+    <Container className="pt-28 md:pt-36 pb-12 space-y-6">
       <BackButton fallbackHref="/pessoas" label="Voltar para pessoas" />
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
         <div className="lg:col-span-2 space-y-8">
           <div className="rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] p-6 sm:p-8 space-y-6 shadow-xs">
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5">
-              {member.image ? (
-                <div className="relative w-20 h-20 sm:w-24 sm:h-24 shrink-0 rounded-sm overflow-hidden bg-zinc-900 ring-2 ring-zinc-200 dark:ring-zinc-800 shadow-md">
-                  <Image
-                    src={member.image}
-                    alt={member.name}
-                    fill
-                    priority
-                    className="object-cover"
-                    sizes="96px"
-                  />
-                </div>
-              ) : (
-                <div className="w-20 h-20 sm:w-24 sm:h-24 shrink-0 rounded-sm bg-zinc-900 dark:bg-zinc-800 text-white flex items-center justify-center font-black text-2xl ring-2 ring-zinc-200 dark:ring-zinc-700 shadow-md">
+              <Avatar size="3xl" radius="sm" className="shrink-0 ring-2 ring-zinc-200 dark:ring-zinc-800 shadow-md">
+                {(member.image || member.avatar) && (
+                  <AvatarImage src={member.image || member.avatar} alt={member.name} />
+                )}
+                <AvatarFallback className="font-black text-2xl bg-zinc-900 text-white dark:bg-zinc-800">
                   {getInitials(member.name)}
-                </div>
-              )}
+                </AvatarFallback>
+              </Avatar>
 
               <div className="space-y-1.5 min-w-0">
                 <h1 className="text-2xl sm:text-3xl font-heading font-black tracking-tight uppercase text-zinc-900 dark:text-white">
@@ -106,12 +119,16 @@ export default function MemberProfilePage(): React.JSX.Element {
                 </span>
                 <div className="flex flex-wrap gap-1.5">
                   {member.offering.map((tag) => (
-                    <span
+                    <Badge
                       key={tag}
-                      className="px-2.5 py-1 rounded-sm text-xs font-semibold bg-white dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 border border-zinc-200 dark:border-zinc-700"
+                      color="primary"
+                      variant="flat"
+                      size="sm"
+                      radius="sm"
+                      className="font-semibold"
                     >
                       {tag}
-                    </span>
+                    </Badge>
                   ))}
                 </div>
               </div>
@@ -122,12 +139,16 @@ export default function MemberProfilePage(): React.JSX.Element {
                 </span>
                 <div className="flex flex-wrap gap-1.5">
                   {member.seeking.map((tag) => (
-                    <span
+                    <Badge
                       key={tag}
-                      className="px-2.5 py-1 rounded-sm text-xs font-semibold bg-white dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 border border-zinc-200 dark:border-zinc-700"
+                      color="default"
+                      variant="flat"
+                      size="sm"
+                      radius="sm"
+                      className="font-medium"
                     >
                       {tag}
-                    </span>
+                    </Badge>
                   ))}
                 </div>
               </div>
@@ -153,7 +174,7 @@ export default function MemberProfilePage(): React.JSX.Element {
               {memberEvents.map((evt) => (
                 <Link
                   key={evt.id}
-                  href={`/agenda/${evt.id}`}
+                  href={`/eventos/${evt.id}`}
                   className="group flex items-center justify-between p-4 rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] hover:border-brand-primary/60 dark:hover:border-brand-primary/60 transition-colors shadow-2xs"
                 >
                   <div className="flex items-center gap-3.5">
@@ -195,35 +216,29 @@ export default function MemberProfilePage(): React.JSX.Element {
           </div>
 
           <div className="space-y-2.5">
-            <button
+            <Button
               type="button"
-              onClick={() => toggleConnect(member.id)}
-              className={`w-full py-3.5 px-4 rounded-sm text-xs font-black uppercase tracking-wider transition-all shadow-xs cursor-pointer flex items-center justify-center gap-2 ${
-                isConnected
-                  ? "bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700 hover:bg-emerald-100"
-                  : "bg-brand-primary hover:bg-brand-primary/90 text-white"
-              }`}
+              color={isConnected ? "success" : "primary"}
+              variant={isConnected ? "flat" : "default"}
+              radius="sm"
+              onClick={handleConnectToggle}
+              startContent={isConnected ? <Check className="w-4 h-4" /> : <UserPlus className="w-4 h-4" />}
+              className="w-full h-11 text-xs font-black uppercase tracking-wider"
             >
-              {isConnected ? (
-                <>
-                  <Check className="w-4 h-4" />
-                  Conexão solicitada
-                </>
-              ) : (
-                <>
-                  <UserPlus className="w-4 h-4" />
-                  Solicitar conexão
-                </>
-              )}
-            </button>
+              {isConnected ? "Conexão solicitada" : "Solicitar conexão"}
+            </Button>
 
-            <button
+            <Button
               type="button"
-              className="w-full py-3 px-4 rounded-sm border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 text-xs font-bold uppercase tracking-wider text-zinc-800 dark:text-zinc-200 hover:border-brand-primary transition-colors flex items-center justify-center gap-2 cursor-pointer"
+              color="default"
+              variant="bordered"
+              radius="sm"
+              onClick={handleSendMessage}
+              startContent={<MessageSquare className="w-4 h-4 text-brand-primary" />}
+              className="w-full h-10 text-xs font-bold uppercase tracking-wider"
             >
-              <MessageSquare className="w-4 h-4 text-brand-primary" />
               Enviar mensagem
-            </button>
+            </Button>
           </div>
 
           <div className="grid grid-cols-2 gap-4 pt-4 border-t border-zinc-100 dark:border-zinc-800 text-center">
@@ -247,6 +262,6 @@ export default function MemberProfilePage(): React.JSX.Element {
           </div>
         </div>
       </div>
-    </div>
+    </Container>
   )
 }

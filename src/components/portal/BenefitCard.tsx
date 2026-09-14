@@ -5,12 +5,21 @@ import Image from "next/image"
 import { ArrowRight } from "lucide-react"
 
 import { BenefitItem, getInitials } from "@/src/data/portalData"
+import { Badge } from "@/src/components/ui/badge/badge"
+import { Button } from "@/src/components/ui/button/button"
+import { toast } from "@/src/components/ui/toast/toast"
 
 interface BenefitCardProps {
   benefit: BenefitItem
 }
 
 export function BenefitCard({ benefit }: BenefitCardProps): React.JSX.Element {
+  const handleRedeem = () => {
+    toast.success(`Benefício resgatado: ${benefit.partner}`, {
+      description: `Código promocional VIP de ${benefit.discount} ativado e copiado!`,
+    })
+  }
+
   return (
     <div className="group flex flex-col justify-between rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] overflow-hidden hover:border-brand-primary/60 dark:hover:border-brand-primary/60 transition-all hover:shadow-lg">
       <div>
@@ -25,9 +34,15 @@ export function BenefitCard({ benefit }: BenefitCardProps): React.JSX.Element {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
             <div className="absolute top-3 right-3 z-10">
-              <span className="px-2.5 py-1 rounded-sm text-xs font-black uppercase tracking-wider bg-brand-primary text-white shadow-xs">
+              <Badge
+                color="primary"
+                variant="default"
+                radius="sm"
+                size="sm"
+                className="font-black uppercase tracking-wider shadow-xs"
+              >
                 {benefit.discount}
-              </span>
+              </Badge>
             </div>
             <div className="absolute bottom-3 left-4 z-10">
               <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-300">
@@ -63,16 +78,26 @@ export function BenefitCard({ benefit }: BenefitCardProps): React.JSX.Element {
       </div>
 
       <div className="px-5 py-3 border-t border-zinc-100 dark:border-zinc-800/80 flex items-center justify-between bg-zinc-50/70 dark:bg-zinc-900/50">
-        <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-400">
-          Membro ClubKey
-        </span>
-        <button
-          type="button"
-          className="inline-flex items-center gap-1 text-xs font-bold uppercase tracking-wider text-brand-primary hover:translate-x-0.5 transition-transform cursor-pointer"
+        <Badge
+          color="default"
+          variant="flat"
+          size="sm"
+          radius="sm"
+          className="text-[10px] font-bold uppercase tracking-widest"
         >
-          <span>Resgatar</span>
-          <ArrowRight className="w-3.5 h-3.5" />
-        </button>
+          Membro ClubKey
+        </Badge>
+        <Button
+          type="button"
+          size="sm"
+          variant="light"
+          color="primary"
+          onClick={handleRedeem}
+          endContent={<ArrowRight className="w-3.5 h-3.5" />}
+          className="text-xs font-bold uppercase tracking-wider p-0 h-auto"
+        >
+          Resgatar
+        </Button>
       </div>
     </div>
   )

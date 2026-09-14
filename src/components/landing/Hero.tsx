@@ -31,7 +31,7 @@ export function Hero(): React.JSX.Element {
           alt="ClubKey Background"
           fill
           priority
-          className="object-cover object-center"
+          className="object-cover object-top"
         />
 
         <div className="absolute inset-0 bg-gradient-to-b from-[#161616]/85 via-[#161616]/65 to-[#161616]/95 z-10" />

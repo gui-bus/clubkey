@@ -7,6 +7,7 @@ import { MapPin, Calendar, Check, Gift } from "lucide-react"
 
 import { ExperienceItem, formatBRL } from "@/src/data/portalData"
 import { usePortalStore } from "@/src/store/usePortalStore"
+import { Badge } from "@/src/components/ui/badge/badge"
 
 interface ExperienceCardProps {
   experience: ExperienceItem
@@ -38,21 +39,39 @@ export function ExperienceCard({
           <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
 
           <div className="absolute top-4 left-4 right-4 z-10 flex items-center justify-between">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-sm text-xs font-bold uppercase tracking-wider bg-black/60 backdrop-blur-md text-white border border-white/20">
-              <Calendar className="w-3.5 h-3.5 text-brand-primary" />
+            <Badge
+              color="default"
+              variant="flat"
+              radius="sm"
+              size="sm"
+              startContent={<Calendar className="w-3.5 h-3.5 text-brand-primary" />}
+              className="bg-black/60 backdrop-blur-md text-white border-white/20 uppercase tracking-wider font-bold"
+            >
               {experience.date}
-            </span>
+            </Badge>
 
             {isBought ? (
-              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-sm text-xs font-bold uppercase tracking-wider bg-emerald-500 text-white shadow-xs">
-                <Check className="w-3 h-3" />
+              <Badge
+                color="success"
+                variant="default"
+                radius="sm"
+                size="sm"
+                startContent={<Check className="w-3 h-3" />}
+                className="uppercase tracking-wider font-bold shadow-xs"
+              >
                 Garantido
-              </span>
+              </Badge>
             ) : isFree ? (
-              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-sm text-xs font-bold uppercase tracking-wider bg-brand-primary text-white shadow-xs">
-                <Gift className="w-3 h-3" />
+              <Badge
+                color="primary"
+                variant="default"
+                radius="sm"
+                size="sm"
+                startContent={<Gift className="w-3 h-3" />}
+                className="uppercase tracking-wider font-bold shadow-xs"
+              >
                 Cortesia Membro
-              </span>
+              </Badge>
             ) : null}
           </div>
 

@@ -130,36 +130,37 @@ export default function RoomsPage(): React.JSX.Element {
   }
 
   return (
-    <main className="w-full bg-[#F1F1F1] dark:bg-[#161616] text-[#111111] dark:text-white flex flex-col font-sans selection:bg-brand-primary/20 selection:text-brand-primary">
+    <main className="w-full bg-zinc-50 dark:bg-[#0D0D0D] text-zinc-900 dark:text-white flex flex-col font-sans selection:bg-brand-primary/20 selection:text-brand-primary min-h-screen">
       <TopBanner />
       <Navbar />
 
       <section
         id="hero"
-        className="relative z-30 w-full bg-[#0D0D0D] text-white min-h-[560px] md:min-h-[620px] flex flex-col justify-center"
+        className="relative z-30 w-full bg-[#0D0D0D] text-white min-h-[520px] md:min-h-[580px] flex flex-col justify-center"
       >
         <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none select-none">
           <Image
             src="/utils/banners/img_01.png"
-            alt="ClubKey Background"
+            alt="ClubKey Hospedagens"
             fill
             priority
-            className="object-cover object-center"
+            className="object-cover object-top"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#161616]/85 via-[#161616]/65 to-[#161616]/95 z-10" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-zinc-50 dark:from-[#161616]/85 dark:via-[#161616]/65 dark:to-[#0D0D0D] z-10" />
         </div>
 
-        <Container className="relative z-20 pt-36 pb-20 md:pt-44 md:pb-24 flex flex-col justify-center items-center text-center">
-          <div className="max-w-6xl flex flex-col items-center text-center w-full">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-black uppercase tracking-tight text-white leading-[1.04] mb-4 font-heading drop-shadow-md">
-              Viva momentos únicos em{" "}
-              <span className="text-brand-primary">acomodações incríveis</span>
+        <Container className="relative z-20 pt-36 pb-16 md:pt-44 md:pb-20 flex flex-col justify-center items-center text-center">
+          <div className="max-w-5xl flex flex-col items-center text-center w-full">
+            <span className="text-xs sm:text-sm font-black uppercase tracking-widest text-brand-primary block mb-3">
+              Catálogo de Hospedagens • Travel Club
+            </span>
+            <h1 className="text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-black uppercase tracking-tight text-white leading-[1.05] mb-4 font-heading drop-shadow-md">
+              Viva momentos únicos em <span className="text-brand-primary">acomodações incríveis</span>
             </h1>
 
-            <p className="text-lg sm:text-xl md:text-2xl text-zinc-200 font-light mb-10 leading-relaxed drop-shadow-sm max-w-3xl">
-              Com o benefício Club Key, viaje o ano todo pagando com até{" "}
-              <strong className="font-bold text-white">60% OFF</strong> em
-              reservas last minute.
+            <p className="text-base sm:text-lg md:text-xl text-zinc-200 font-light mb-8 leading-relaxed drop-shadow-sm max-w-2xl">
+              Com o benefício Club Key, viaje o ano todo pagando tarifas exclusivas de membro e até{" "}
+              <strong className="font-bold text-white">60% OFF</strong> em reservas last minute.
             </p>
 
             <RoomsSearchFilterBar
@@ -176,10 +177,10 @@ export default function RoomsPage(): React.JSX.Element {
         </Container>
       </section>
 
-      <Container className="relative z-10 flex-1 py-10">
+      <Container className="relative z-10 flex-1 py-10 space-y-12">
         <div className="w-full flex flex-col gap-12 sm:gap-16">
           {hasActiveFilters && (
-            <div className="flex flex-wrap items-center justify-between gap-3 bg-white dark:bg-[#1a1a1a] px-4 py-3 rounded-sm border border-zinc-200 dark:border-zinc-800 shadow-xs">
+            <div className="flex flex-wrap items-center justify-between gap-3 bg-white dark:bg-[#141416] px-4 py-3 rounded-sm border border-zinc-200 dark:border-zinc-800 shadow-sm text-zinc-900 dark:text-white">
               <div className="flex flex-wrap items-center gap-2 text-xs text-zinc-600 dark:text-zinc-300">
                 <span className="font-semibold text-zinc-900 dark:text-white">
                   Filtros aplicados:
@@ -245,17 +246,17 @@ export default function RoomsPage(): React.JSX.Element {
           })()}
 
           {filteredSections.length === 0 && (
-            <div className="py-16 text-center flex flex-col items-center justify-center">
-              <p className="text-lg font-bold text-zinc-700 dark:text-zinc-300 mb-2">
-                Nenhuma acomodação encontrada para os filtros selecionados
+            <div className="py-16 text-center flex flex-col items-center justify-center p-12 rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416]">
+              <p className="text-lg font-bold text-zinc-900 dark:text-white mb-2 font-heading uppercase tracking-tight">
+                Nenhuma acomodação encontrada
               </p>
-              <p className="text-xs text-zinc-500 dark:text-zinc-400 mb-4">
-                Tente alterar o destino ou reduzir o número de hóspedes.
+              <p className="text-xs text-zinc-600 dark:text-zinc-400 mb-6 max-w-md leading-relaxed">
+                Não encontramos hospedagens para os filtros selecionados. Tente alterar o destino ou reduzir o número de hóspedes.
               </p>
               <button
                 type="button"
                 onClick={handleClearFilters}
-                className="px-4 py-2 bg-brand-primary hover:bg-brand-primary-hover text-white text-xs font-bold rounded-sm transition-colors cursor-pointer"
+                className="px-5 py-2.5 bg-brand-primary hover:bg-brand-primary-hover text-white text-xs font-bold uppercase tracking-wider rounded-sm transition-colors cursor-pointer shadow-sm"
               >
                 Ver todas as acomodações
               </button>

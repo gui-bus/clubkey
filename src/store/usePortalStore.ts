@@ -1,6 +1,15 @@
 import { create } from "zustand"
 import { persist } from "zustand/middleware"
-import { CLUBS, Club, DEFAULT_USER, UserProfile } from "@/src/data/portalData"
+import {
+  CLUBS,
+  Club,
+  DEFAULT_USER,
+  UserProfile,
+  MemberStayReservation,
+  DEFAULT_MEMBER_STAYS,
+  MemberSubscription,
+  DEFAULT_MEMBER_SUBSCRIPTION
+} from "@/src/data/portalData"
 
 interface PortalState {
   isAuthenticated: boolean
@@ -8,6 +17,8 @@ interface PortalState {
   confirmedEvents: Record<number, boolean>
   connectedMembers: Record<number, boolean>
   boughtExperiences: Record<number, boolean>
+  memberStays: MemberStayReservation[]
+  memberSubscription: MemberSubscription
   userProfile: UserProfile
   login: (email?: string, name?: string) => void
   logout: () => void
@@ -16,6 +27,7 @@ interface PortalState {
   toggleEventRSVP: (eventId: number) => boolean
   toggleConnect: (memberId: number) => boolean
   buyExperience: (experienceId: number) => void
+  cancelStay: (stayReservationId: string) => void
   updateProfile: (profile: Partial<UserProfile>) => void
   addSeekingTag: (tag: string) => void
   removeSeekingTag: (index: number) => void
@@ -31,10 +43,15 @@ export const usePortalStore = create<PortalState>()(
       confirmedEvents: { 1: true, 5: true },
       connectedMembers: {},
       boughtExperiences: {},
+      memberStays: DEFAULT_MEMBER_STAYS,
+      memberSubscription: DEFAULT_MEMBER_SUBSCRIPTION,
       userProfile: DEFAULT_USER,
 
       login: (email?: string, name?: string) => {
-        let updatedProfile = { ...get().userProfile }
+        const updatedProfile = { ...get().userProfile }
+        if (email && email.trim()) {
+          updatedProfile.email = email.trim()
+        }
         if (name && name.trim()) {
           updatedProfile.name = name.trim()
         } else if (email && email.includes("@")) {
@@ -94,6 +111,12 @@ export const usePortalStore = create<PortalState>()(
             ...state.boughtExperiences,
             [experienceId]: true
           }
+        }))
+      },
+
+      cancelStay: (stayReservationId: string) => {
+        set((state) => ({
+          memberStays: state.memberStays.filter((s) => s.id !== stayReservationId)
         }))
       },
 

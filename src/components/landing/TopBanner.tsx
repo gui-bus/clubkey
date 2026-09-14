@@ -8,11 +8,21 @@ import { CtaButton } from "@/src/components/common/ctaButton"
 import { brandConfig } from "@/src/config/brand.config"
 import { cn } from "@/src/lib/utils"
 
-export function TopBanner(): React.JSX.Element {
+import { usePortalStore } from "@/src/store/usePortalStore"
+
+export function TopBanner(): React.JSX.Element | null {
+  const [mounted, setMounted] = React.useState(false)
+  const isAuthenticated = usePortalStore((state) => state.isAuthenticated)
   const [isVisible, setIsVisible] = React.useState(true)
   const lastScrollY = React.useRef(0)
 
   React.useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  React.useEffect(() => {
+    if (!mounted || isAuthenticated) return
+
     const handleScroll = () => {
       const currentScrollY = window.scrollY
 
@@ -45,7 +55,11 @@ export function TopBanner(): React.JSX.Element {
 
     window.addEventListener("scroll", handleScroll, { passive: true })
     return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
+  }, [mounted, isAuthenticated])
+
+  if (!mounted || isAuthenticated) {
+    return null
+  }
 
   return (
     <aside
@@ -79,7 +93,7 @@ export function TopBanner(): React.JSX.Element {
             width={20}
             height={10}
             alt=""
-            className="w-8 sm:w-12  dark:invert dark:brightness-0 shrink-0 select-none pointer-events-none rotate-180"
+            className="w-8 sm:w-12 dark:invert dark:brightness-0 shrink-0 select-none pointer-events-none rotate-180"
           />
         </div>
       </div>

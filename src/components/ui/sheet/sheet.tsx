@@ -43,7 +43,7 @@ const SheetOverlay = React.forwardRef<HTMLDivElement, SheetOverlayProps>(
         <div
           ref={ref}
           className={cn(
-            "fixed inset-0 z-50 cursor-pointer pointer-events-auto max-w-[110rem] mx-auto left-0 right-0 overflow-hidden transition-all duration-300 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+            "fixed inset-0 z-50 cursor-pointer pointer-events-auto max-w-[110rem] mx-auto left-0 right-0 overflow-hidden transition-all data-[state=open]:animate-[sheet-overlay-show_300ms_ease-out] data-[state=closed]:animate-[sheet-overlay-hide_200ms_ease-in]",
             backdropVariants[backdrop],
             className
           )}
@@ -57,11 +57,11 @@ SheetOverlay.displayName = "SheetOverlay"
 
 const positionStyles: Record<SheetSide, string> = {
   right:
-    "absolute top-0 right-0 bottom-0 h-full w-full max-w-sm border-l border-zinc-200 dark:border-zinc-800 data-[state=open]:slide-in-from-right data-[state=closed]:slide-out-to-right",
-  left: "absolute top-0 left-0 bottom-0 h-full w-full max-w-sm border-r border-zinc-200 dark:border-zinc-800 data-[state=open]:slide-in-from-left data-[state=closed]:slide-out-to-left",
+    "absolute top-0 right-0 bottom-0 h-full w-full max-w-sm border-l border-zinc-200 dark:border-zinc-800 data-[state=open]:animate-[sheet-slide-in-right_320ms_cubic-bezier(0.16,1,0.3,1)] data-[state=closed]:animate-[sheet-slide-out-right_240ms_cubic-bezier(0.16,1,0.3,1)]",
+  left: "absolute top-0 left-0 bottom-0 h-full w-full max-w-sm border-r border-zinc-200 dark:border-zinc-800 data-[state=open]:animate-[sheet-slide-in-left_320ms_cubic-bezier(0.16,1,0.3,1)] data-[state=closed]:animate-[sheet-slide-out-left_240ms_cubic-bezier(0.16,1,0.3,1)]",
   bottom:
-    "absolute bottom-0 left-0 right-0 h-96 border-t border-zinc-200 dark:border-zinc-800 data-[state=open]:slide-in-from-bottom data-[state=closed]:slide-out-to-bottom",
-  top: "absolute top-0 left-0 right-0 h-96 border-b border-zinc-200 dark:border-zinc-800 data-[state=open]:slide-in-from-top data-[state=closed]:slide-out-to-top",
+    "absolute bottom-0 left-0 right-0 h-96 border-t border-zinc-200 dark:border-zinc-800 data-[state=open]:animate-in data-[state=closed]:animate-out",
+  top: "absolute top-0 left-0 right-0 h-96 border-b border-zinc-200 dark:border-zinc-800 data-[state=open]:animate-in data-[state=closed]:animate-out",
 }
 
 export interface SheetContentProps
@@ -102,7 +102,7 @@ const SheetContent = React.forwardRef<
             {children}
           </div>
           {showCloseButton && (
-            <DialogPrimitive.Close className="absolute right-4 top-4 rounded-full p-2 text-zinc-400 hover:text-white hover:bg-white/10 transition-colors cursor-pointer outline-none z-10 flex items-center justify-center">
+            <DialogPrimitive.Close className="absolute right-4 top-4 rounded-full p-2 text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-white/10 transition-colors cursor-pointer outline-none z-10 flex items-center justify-center">
               <X className="w-5 h-5" />
               <span className="sr-only">Fechar</span>
             </DialogPrimitive.Close>

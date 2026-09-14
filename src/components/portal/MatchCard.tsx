@@ -1,11 +1,12 @@
 "use client"
 
 import * as React from "react"
-import Image from "next/image"
 import Link from "next/link"
 import { Users, ArrowRight } from "lucide-react"
 
 import { Member, getInitials } from "@/src/data/portalData"
+import { Avatar, AvatarImage, AvatarFallback } from "@/src/components/ui/avatar/avatar"
+import { Badge } from "@/src/components/ui/badge/badge"
 
 interface MatchCardProps {
   member: Member
@@ -17,24 +18,26 @@ export function MatchCard({ member, reason }: MatchCardProps): React.JSX.Element
     <div className="relative w-full rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] p-6 sm:p-8 overflow-hidden shadow-sm">
       <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8">
         <div className="space-y-4 flex-1">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-sm text-xs font-bold uppercase tracking-wider bg-brand-primary/10 text-brand-primary border border-brand-primary/20">
-            <Users className="w-3.5 h-3.5" />
-            <span>Recomendação de Conexão Estratégica</span>
-          </div>
+          <Badge
+            color="primary"
+            variant="flat"
+            size="md"
+            radius="sm"
+            startContent={<Users className="w-3.5 h-3.5" />}
+            className="uppercase tracking-wider font-bold"
+          >
+            Recomendação de Conexão Estratégica
+          </Badge>
 
           <div className="flex items-center gap-5">
-            <div className="relative w-16 h-16 sm:w-18 sm:h-18 shrink-0 rounded-sm overflow-hidden bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-white flex items-center justify-center font-bold text-xl">
-              {member.avatar ? (
-                <Image
-                  src={member.avatar}
-                  alt={member.name}
-                  fill
-                  className="object-cover"
-                />
-              ) : (
-                getInitials(member.name)
+            <Avatar size="2xl" radius="sm" className="shrink-0 ring-1 ring-zinc-200 dark:ring-zinc-800">
+              {member.avatar && (
+                <AvatarImage src={member.avatar} alt={member.name} />
               )}
-            </div>
+              <AvatarFallback className="font-bold text-lg bg-zinc-900 text-white dark:bg-zinc-800">
+                {getInitials(member.name)}
+              </AvatarFallback>
+            </Avatar>
             <div>
               <h3 className="text-xl sm:text-2xl font-bold uppercase tracking-tight text-zinc-900 dark:text-white">
                 {member.name}
@@ -56,12 +59,16 @@ export function MatchCard({ member, reason }: MatchCardProps): React.JSX.Element
               </span>
               <div className="flex flex-wrap gap-1.5">
                 {member.offering.map((tag) => (
-                  <span
+                  <Badge
                     key={tag}
-                    className="px-2.5 py-1 rounded-sm text-xs font-semibold bg-brand-primary/10 text-brand-primary border border-brand-primary/20"
+                    color="primary"
+                    variant="flat"
+                    size="sm"
+                    radius="sm"
+                    className="font-semibold"
                   >
                     {tag}
-                  </span>
+                  </Badge>
                 ))}
               </div>
             </div>
@@ -72,12 +79,16 @@ export function MatchCard({ member, reason }: MatchCardProps): React.JSX.Element
               </span>
               <div className="flex flex-wrap gap-1.5">
                 {member.seeking.map((tag) => (
-                  <span
+                  <Badge
                     key={tag}
-                    className="px-2.5 py-1 rounded-sm text-xs font-semibold bg-zinc-100 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 border border-zinc-200 dark:border-zinc-700"
+                    color="default"
+                    variant="flat"
+                    size="sm"
+                    radius="sm"
+                    className="font-medium"
                   >
                     {tag}
-                  </span>
+                  </Badge>
                 ))}
               </div>
             </div>

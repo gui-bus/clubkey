@@ -15,6 +15,9 @@ import {
 import { EXPERIENCES, formatBRL } from "@/src/data/portalData"
 import { usePortalStore } from "@/src/store/usePortalStore"
 import { BackButton } from "@/src/components/portal/BackButton"
+import { Button } from "@/src/components/ui/button/button"
+import { toast } from "@/src/components/ui/toast/toast"
+import { Container } from "@/src/components/common/container"
 
 export default function ExperienceCheckoutPage(): React.JSX.Element {
   const params = useParams()
@@ -41,12 +44,15 @@ export default function ExperienceCheckoutPage(): React.JSX.Element {
       buyExperience(experience.id)
       setIsProcessing(false)
       setIsSuccess(true)
+      toast.success("Pagamento aprovado com sucesso!", {
+        description: `Vaga garantida para ${experience.title}.`,
+      })
     }, 700)
   }
 
   if (isSuccess) {
     return (
-      <div className="w-full py-12 text-center space-y-6">
+      <Container className="pt-28 md:pt-36 pb-12 max-w-2xl mx-auto py-12 text-center space-y-6">
         <div className="w-16 h-16 rounded-sm bg-brand-primary/10 text-brand-primary border border-brand-primary/30 flex items-center justify-center mx-auto shadow-sm">
           <CheckCircle2 className="w-8 h-8" />
         </div>
@@ -96,12 +102,12 @@ export default function ExperienceCheckoutPage(): React.JSX.Element {
             <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>
-      </div>
+      </Container>
     )
   }
 
   return (
-    <div className="w-full space-y-8">
+    <Container className="pt-28 md:pt-36 pb-12 space-y-8">
       <BackButton
         fallbackHref={`/experiencias/${experience.id}`}
         label="Voltar para detalhes"
@@ -184,21 +190,17 @@ export default function ExperienceCheckoutPage(): React.JSX.Element {
             </div>
           </div>
 
-          <button
+          <Button
             type="button"
+            color="primary"
+            radius="sm"
+            isLoading={isProcessing}
             onClick={handlePayment}
-            disabled={isProcessing}
-            className="w-full py-4 px-4 rounded-sm bg-brand-primary hover:bg-brand-primary/90 text-white text-xs font-black uppercase tracking-wider transition-all shadow-xs flex items-center justify-center gap-2 cursor-pointer disabled:opacity-70"
+            endContent={!isProcessing ? <ArrowRight className="w-4 h-4" /> : undefined}
+            className="w-full h-12 text-xs font-black uppercase tracking-wider shadow-xs"
           >
-            {isProcessing ? (
-              "Processando pagamento..."
-            ) : (
-              <>
-                <span>Pagar {formatBRL(totalAmount)}</span>
-                <ArrowRight className="w-4 h-4" />
-              </>
-            )}
-          </button>
+            Pagar {formatBRL(totalAmount)}
+          </Button>
 
           <p className="text-xs text-center text-zinc-400 flex items-center justify-center gap-1.5 leading-relaxed">
             <ShieldCheck className="w-4 h-4 text-brand-primary shrink-0" />
@@ -206,6 +208,6 @@ export default function ExperienceCheckoutPage(): React.JSX.Element {
           </p>
         </div>
       </div>
-    </div>
+    </Container>
   )
 }

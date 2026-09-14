@@ -7,6 +7,10 @@ import { MapPin, Clock, Check, Users } from "lucide-react"
 
 import { EventItem, MEMBERS, getInitials } from "@/src/data/portalData"
 import { usePortalStore } from "@/src/store/usePortalStore"
+import { Avatar, AvatarImage, AvatarFallback } from "@/src/components/ui/avatar/avatar"
+import { Badge } from "@/src/components/ui/badge/badge"
+import { Button } from "@/src/components/ui/button/button"
+import { toast } from "@/src/components/ui/toast/toast"
 
 interface EventCardProps {
   event: EventItem
@@ -26,11 +30,18 @@ export function EventCard({ event }: EventCardProps): React.JSX.Element {
     e.preventDefault()
     e.stopPropagation()
     toggleEventRSVP(event.id)
+    if (!isConfirmed) {
+      toast.success(`Presença confirmada: ${event.title}`, {
+        description: "Adicionado aos seus eventos confirmados.",
+      })
+    } else {
+      toast.info(`Presença cancelada: ${event.title}`)
+    }
   }
 
   return (
     <Link
-      href={`/agenda/${event.id}`}
+      href={`/eventos/${event.id}`}
       className="group block p-5 md:p-6 rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] hover:border-brand-primary/60 dark:hover:border-brand-primary/60 transition-all hover:shadow-lg cursor-pointer"
     >
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5">
@@ -71,10 +82,16 @@ export function EventCard({ event }: EventCardProps): React.JSX.Element {
                 {event.title}
               </h3>
               {isConfirmed && (
-                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-sm text-[10px] font-bold uppercase tracking-wider bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30">
-                  <Check className="w-3 h-3" />
+                <Badge
+                  color="success"
+                  variant="flat"
+                  size="sm"
+                  radius="sm"
+                  startContent={<Check className="w-3 h-3" />}
+                  className="uppercase tracking-wider font-bold"
+                >
                   Confirmado
-                </span>
+                </Badge>
               )}
             </div>
 
@@ -100,22 +117,19 @@ export function EventCard({ event }: EventCardProps): React.JSX.Element {
           <div className="flex items-center gap-2.5">
             <div className="flex -space-x-2">
               {participantMembers.map((member) => (
-                <div
+                <Avatar
                   key={member?.id}
-                  className="relative w-7 h-7 rounded-sm overflow-hidden bg-zinc-800 text-white flex items-center justify-center text-[10px] font-bold ring-1 ring-white dark:ring-zinc-900"
-                  title={member?.name}
+                  size="sm"
+                  radius="sm"
+                  className="ring-1 ring-white dark:ring-zinc-900"
                 >
-                  {member?.avatar ? (
-                    <Image
-                      src={member.avatar}
-                      alt={member.name}
-                      fill
-                      className="object-cover"
-                    />
-                  ) : (
-                    getInitials(member?.name || "")
+                  {member?.avatar && (
+                    <AvatarImage src={member.avatar} alt={member.name} />
                   )}
-                </div>
+                  <AvatarFallback className="font-bold text-[9px] bg-zinc-800 text-white">
+                    {getInitials(member?.name || "")}
+                  </AvatarFallback>
+                </Avatar>
               ))}
             </div>
             <span className="text-xs font-semibold text-zinc-500 dark:text-zinc-400 flex items-center gap-1">
@@ -124,17 +138,17 @@ export function EventCard({ event }: EventCardProps): React.JSX.Element {
             </span>
           </div>
 
-          <button
+          <Button
             type="button"
+            size="sm"
+            radius="sm"
+            color={isConfirmed ? "default" : "primary"}
+            variant={isConfirmed ? "flat" : "default"}
             onClick={handleRSVP}
-            className={`px-4 py-2 rounded-sm text-xs font-bold uppercase tracking-wider transition-all cursor-pointer shadow-xs ${
-              isConfirmed
-                ? "bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700"
-                : "bg-brand-primary text-white hover:bg-brand-primary-hover"
-            }`}
+            className="text-xs font-bold uppercase tracking-wider"
           >
             {isConfirmed ? "Presença ✓" : "Confirmar"}
-          </button>
+          </Button>
         </div>
       </div>
     </Link>
