@@ -23,6 +23,7 @@ export interface RoomCardProps {
   isFav: boolean
   onToggleFav: (id: string, e: React.MouseEvent) => void
   hasDragged?: boolean
+  className?: string
 }
 
 export function RoomCard({
@@ -30,6 +31,7 @@ export function RoomCard({
   isFav,
   onToggleFav,
   hasDragged,
+  className,
 }: RoomCardProps): React.JSX.Element {
   const [currentPhotoIndex, setCurrentPhotoIndex] = React.useState(0)
 
@@ -140,7 +142,10 @@ export function RoomCard({
           e.preventDefault()
         }
       }}
-      className="group flex flex-col w-[310px] sm:w-[350px] md:w-[380px] lg:w-[400px] shrink-0 snap-start select-none cursor-pointer bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-sm overflow-hidden transition-colors hover:border-zinc-300 dark:hover:border-zinc-700"
+      className={cn(
+        "group flex flex-col shrink-0 snap-start select-none cursor-pointer bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-sm overflow-hidden transition-colors hover:border-zinc-300 dark:hover:border-zinc-700",
+        className || "w-[310px] sm:w-[350px] md:w-[380px] lg:w-[400px]"
+      )}
     >
       <div className="relative aspect-[16/10] sm:aspect-[4/3] w-full overflow-hidden bg-zinc-200 dark:bg-zinc-800 select-none">
         {photos.map((photoUrl, idx) => (
