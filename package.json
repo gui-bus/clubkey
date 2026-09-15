@@ -18,8 +18,7 @@
     "analyze": "ANALYZE=true pnpm build",
     "clean": "rm -rf .next node_modules pnpm-lock.yaml",
     "strip": "node scripts/strip-comments.js",
-    "cleanup": "node scripts/cleanup.js",
-    "prepare": "husky"
+    "cleanup": "node scripts/cleanup.js"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.9.1",
