@@ -15,6 +15,7 @@ import {
 } from "lucide-react"
 
 import { type RoomProperty } from "@/src/data/mockRooms"
+import { DiscountRibbon } from "@/src/components/common/discountRibbon"
 import { cn } from "@/src/lib/utils"
 
 export interface RoomCardProps {
@@ -242,11 +243,7 @@ export function RoomCard({
         )}
 
         {discountPercent > 0 && (
-          <div className="absolute top-0 right-0 w-24 h-24 overflow-hidden pointer-events-none z-20">
-            <div className="absolute -right-8 top-4 w-32 rotate-45 bg-emerald-500 text-white font-black text-xs py-1 text-center uppercase tracking-wider select-none">
-              -{discountPercent}%
-            </div>
-          </div>
+          <DiscountRibbon>{discountPercent}% OFF</DiscountRibbon>
         )}
       </div>
 

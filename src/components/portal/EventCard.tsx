@@ -11,8 +11,7 @@ import {
   X,
   Plus,
   Users,
-  ArrowUpRight,
-  ShieldCheck
+  ArrowUpRight
 } from "lucide-react"
 
 import { EventItem, MEMBERS, getInitials, getEventSlug, getMemberSlug } from "@/src/data/portalData"
@@ -20,6 +19,8 @@ import { usePortalStore } from "@/src/store/usePortalStore"
 import { AvatarGroup } from "@/src/components/ui/avatarGroup/avatarGroup"
 import { Avatar, AvatarImage, AvatarFallback } from "@/src/components/ui/avatar/avatar"
 import { toast } from "@/src/components/ui/toast/toast"
+import { CtaButton } from "@/src/components/common/ctaButton"
+import { GlassBadge } from "@/src/components/portal/GlassBadge"
 import { cn } from "@/src/lib/utils"
 
 interface EventCardProps {
@@ -56,7 +57,7 @@ export function EventCard({ event }: EventCardProps): React.JSX.Element {
   return (
     <Link
       href={`/eventos/${event.id}/${getEventSlug(event)}`}
-      className="group relative block rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] overflow-hidden cursor-pointer"
+      className="group/card relative block rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] overflow-hidden hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors duration-200 cursor-pointer"
     >
       <div className="flex flex-col md:flex-row items-stretch">
         <div className="relative w-full md:w-72 lg:w-80 h-52 md:h-auto min-h-[220px] shrink-0 overflow-hidden bg-zinc-950">
@@ -66,7 +67,7 @@ export function EventCard({ event }: EventCardProps): React.JSX.Element {
                 src={event.image}
                 alt={event.title}
                 fill
-                className="object-cover opacity-80 group-hover:scale-105 transition-transform duration-700"
+                className="object-cover opacity-80 group-hover/card:scale-105 transition-transform duration-700"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/20" />
             </>
@@ -75,9 +76,7 @@ export function EventCard({ event }: EventCardProps): React.JSX.Element {
           )}
 
           <div className="absolute top-3.5 left-3.5 right-3.5 z-10 flex items-center justify-between gap-2">
-            <span className="inline-flex items-center px-2.5 py-1 rounded-sm bg-white/10 backdrop-blur-md text-[10px] font-bold uppercase tracking-widest text-white shadow-xs">
-              {event.category || "Exclusivo"}
-            </span>
+            <GlassBadge>{event.category || "Exclusivo"}</GlassBadge>
 
             {isConfirmed && (
               <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-sm bg-emerald-500 text-white text-[10px] font-black uppercase tracking-widest shadow-xs">
@@ -88,7 +87,7 @@ export function EventCard({ event }: EventCardProps): React.JSX.Element {
           </div>
 
           <div className="absolute bottom-3.5 left-3.5 right-3.5 z-10">
-            <div className="flex items-center gap-3 p-2.5 sm:p-3 rounded-sm bg-white/10 backdrop-blur-md shadow-xs">
+            <div className="flex items-center gap-3 p-2.5 sm:p-3 rounded-sm bg-white/10 backdrop-blur-md shadow-xs border border-white/15">
               <div className="flex flex-col items-center justify-center min-w-11 px-2 py-1 rounded-sm bg-brand-primary text-white text-center shrink-0">
                 <span className="text-xl font-black font-heading leading-none text-white">
                   {event.day}
@@ -113,35 +112,28 @@ export function EventCard({ event }: EventCardProps): React.JSX.Element {
 
         <div className="flex-1 p-5 sm:p-6 flex flex-col justify-between gap-5 min-w-0">
           <div className="space-y-3">
-            <div className="flex flex-wrap items-center justify-between gap-2">
-              <div className="flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-400">
-                {organizer.avatar ? (
-                  <div className="relative w-5 h-5 rounded-full overflow-hidden shrink-0 border border-zinc-200 dark:border-zinc-700">
-                    <Image
-                      src={organizer.avatar}
-                      alt={organizer.name}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                ) : (
-                  <div className="w-5 h-5 rounded-full bg-zinc-800 text-white font-bold text-[8px] flex items-center justify-center shrink-0">
-                    {getInitials(organizer.name)}
-                  </div>
-                )}
-                <span className="text-zinc-700 dark:text-zinc-300 font-semibold truncate">
-                  Host: {organizer.name} ({organizer.company})
-                </span>
-              </div>
-
-              <span className="text-[11px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider flex items-center gap-1">
-                <ShieldCheck className="w-3.5 h-3.5 text-brand-primary" />
-                Acesso Membros
+            <div className="flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-400">
+              {organizer.avatar ? (
+                <div className="relative w-5 h-5 rounded-full overflow-hidden shrink-0 border border-zinc-200 dark:border-zinc-700">
+                  <Image
+                    src={organizer.avatar}
+                    alt={organizer.name}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+              ) : (
+                <div className="w-5 h-5 rounded-full bg-zinc-800 text-white font-bold text-[8px] flex items-center justify-center shrink-0">
+                  {getInitials(organizer.name)}
+                </div>
+              )}
+              <span className="text-zinc-700 dark:text-zinc-300 font-semibold truncate">
+                Host: {organizer.name} ({organizer.company})
               </span>
             </div>
 
             <div className="space-y-1.5">
-              <h3 className="text-lg sm:text-xl font-heading font-black uppercase tracking-tight text-zinc-900 dark:text-white group-hover:text-brand-primary transition-colors leading-snug">
+              <h3 className="text-lg sm:text-xl font-heading font-black uppercase tracking-tight text-zinc-900 dark:text-white group-hover/card:text-brand-primary transition-colors leading-snug">
                 {event.title}
               </h3>
               <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">
@@ -203,36 +195,40 @@ export function EventCard({ event }: EventCardProps): React.JSX.Element {
             </div>
 
             <div className="flex items-center gap-3 shrink-0">
-              <button
-                type="button"
-                onClick={handleRSVP}
-                className={cn(
-                  "group/rsvp relative inline-flex items-center justify-center gap-1.5 w-full sm:w-36 h-9 px-4 rounded-sm text-xs font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer select-none active:scale-[0.98]",
-                  isConfirmed
-                    ? "border border-emerald-500/30 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 hover:border-rose-500/30 hover:bg-rose-500/10 hover:text-rose-600 dark:hover:text-rose-400"
-                    : "bg-brand-primary text-white hover:bg-brand-primary/90 shadow-xs"
-                )}
-              >
-                {isConfirmed ? (
-                  <>
-                    <span className="inline-flex items-center gap-1.5 group-hover/rsvp:hidden">
-                      <Check className="w-3.5 h-3.5" />
-                      <span>Confirmado</span>
-                    </span>
-                    <span className="hidden items-center gap-1.5 group-hover/rsvp:inline-flex">
-                      <X className="w-3.5 h-3.5" />
-                      <span>Desmarcar</span>
-                    </span>
-                  </>
-                ) : (
-                  <span className="inline-flex items-center gap-1">
-                    <Plus className="w-3.5 h-3.5" />
-                    <span>Confirmar</span>
+              {isConfirmed ? (
+                <CtaButton
+                  type="button"
+                  variant="secondary"
+                  size="xs"
+                  onClick={handleRSVP}
+                  className="w-full sm:w-auto px-4 h-9 text-[11px] font-bold uppercase tracking-wider whitespace-nowrap shadow-none hover:shadow-none border-emerald-500/40 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 hover:border-rose-500/40 hover:bg-rose-500/10 hover:text-rose-600 dark:hover:text-rose-400 shrink-0"
+                  sliderClassName="bg-rose-500/15"
+                  textClassName="text-emerald-600 dark:text-emerald-400 group-hover:text-rose-600 dark:group-hover:text-rose-400 whitespace-nowrap"
+                >
+                  <span className="inline-flex items-center gap-1.5 group-hover:hidden whitespace-nowrap">
+                    <Check className="w-3.5 h-3.5 shrink-0" />
+                    <span>Presença confirmada</span>
                   </span>
-                )}
-              </button>
+                  <span className="hidden items-center gap-1.5 group-hover:inline-flex whitespace-nowrap">
+                    <X className="w-3.5 h-3.5 shrink-0" />
+                    <span>Cancelar presença</span>
+                  </span>
+                </CtaButton>
+              ) : (
+                <CtaButton
+                  type="button"
+                  variant="primary"
+                  size="xs"
+                  onClick={handleRSVP}
+                  className="w-full sm:w-auto px-4 h-9 text-[11px] font-bold uppercase tracking-wider whitespace-nowrap shadow-none hover:shadow-none shrink-0"
+                  textClassName="whitespace-nowrap"
+                >
+                  <Plus className="w-3.5 h-3.5 mr-1.5 shrink-0" />
+                  <span>Confirmar presença</span>
+                </CtaButton>
+              )}
 
-              <div className="hidden sm:flex items-center justify-center w-9 h-9 rounded-sm border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 text-zinc-500 group-hover:text-zinc-900 dark:group-hover:text-white transition-colors">
+              <div className="hidden sm:flex items-center justify-center w-9 h-9 rounded-sm border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 text-zinc-500 group-hover/card:text-zinc-900 dark:group-hover/card:text-white transition-colors">
                 <ArrowUpRight className="w-4 h-4" />
               </div>
             </div>

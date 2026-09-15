@@ -7,7 +7,7 @@ import { MapPin, Calendar, Check, Gift } from "lucide-react"
 
 import { ExperienceItem, formatBRL, getExperienceSlug } from "@/src/data/portalData"
 import { usePortalStore } from "@/src/store/usePortalStore"
-import { Badge } from "@/src/components/ui/badge/badge"
+import { GlassBadge } from "@/src/components/portal/GlassBadge"
 
 interface ExperienceCardProps {
   experience: ExperienceItem
@@ -23,7 +23,7 @@ export function ExperienceCard({
   return (
     <Link
       href={`/experiencias/${experience.id}/${getExperienceSlug(experience)}`}
-      className="group flex flex-col justify-between rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] overflow-hidden hover:border-brand-primary/60 dark:hover:border-brand-primary/60 transition-all hover:shadow-lg cursor-pointer"
+      className="group flex flex-col justify-between rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] overflow-hidden hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors duration-200 cursor-pointer"
     >
       <div>
         <div className="relative h-48 w-full overflow-hidden bg-zinc-900">
@@ -38,47 +38,26 @@ export function ExperienceCard({
           )}
           <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
 
-          <div className="absolute top-4 left-4 right-4 z-10 flex items-center justify-between">
-            <Badge
-              color="default"
-              variant="flat"
-              radius="sm"
-              size="sm"
-              startContent={<Calendar className="w-3.5 h-3.5 text-brand-primary" />}
-              className="bg-black/60 backdrop-blur-md text-white border-white/20 uppercase tracking-wider font-bold"
-            >
+          <div className="absolute top-3.5 left-3.5 right-3.5 z-10 flex items-center justify-between gap-2">
+            <GlassBadge icon={<Calendar className="w-3 h-3 text-white" />}>
               {experience.date}
-            </Badge>
+            </GlassBadge>
 
             {isBought ? (
-              <Badge
-                color="success"
-                variant="default"
-                radius="sm"
-                size="sm"
-                startContent={<Check className="w-3 h-3" />}
-                className="uppercase tracking-wider font-bold shadow-xs"
-              >
-                Garantido
-              </Badge>
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-sm bg-emerald-500 text-white text-[10px] font-black uppercase tracking-widest shadow-xs">
+                <Check className="w-3 h-3" />
+                <span>Garantido</span>
+              </span>
             ) : isFree ? (
-              <Badge
-                color="primary"
-                variant="default"
-                radius="sm"
-                size="sm"
-                startContent={<Gift className="w-3 h-3" />}
-                className="uppercase tracking-wider font-bold shadow-xs"
-              >
-                Cortesia Membro
-              </Badge>
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-sm bg-brand-primary text-white text-[10px] font-black uppercase tracking-widest shadow-xs">
+                <Gift className="w-3 h-3" />
+                <span>Cortesia Membro</span>
+              </span>
             ) : null}
           </div>
 
-          <div className="absolute bottom-3 left-4 right-4 z-10">
-            <span className="text-[11px] font-bold text-zinc-300 uppercase tracking-widest">
-              {experience.sub}
-            </span>
+          <div className="absolute bottom-3.5 left-3.5 z-10">
+            <GlassBadge>{experience.sub}</GlassBadge>
           </div>
         </div>
 
