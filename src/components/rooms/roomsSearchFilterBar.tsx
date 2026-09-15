@@ -1,7 +1,6 @@
 "use client"
 
 import * as React from "react"
-import { motion } from "framer-motion"
 import {
   Calendar,
   ChevronDown,
@@ -360,10 +359,7 @@ export function RoomsSearchFilterBar({
   )
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, delay: 0.2 }}
+    <div
       ref={searchBarRef}
       className="relative z-40 w-full max-w-4xl bg-white dark:bg-zinc-900 rounded-sm sm:rounded-full shadow-2xl p-3 sm:p-2 border border-zinc-200 dark:border-zinc-800"
     >
@@ -696,6 +692,6 @@ export function RoomsSearchFilterBar({
           </div>
         </div>
       )}
-    </motion.div>
+    </div>
   )
 }

@@ -1,16 +1,19 @@
 "use client"
 
 import * as React from "react"
+
 import Image from "next/image"
-import { Search, Users } from "lucide-react"
 
 import { MEMBERS } from "@/src/data/portalData"
-import { MemberCard } from "@/src/components/portal/MemberCard"
+import { Search, Users } from "lucide-react"
+
+import { Button } from "@/src/components/ui/button/button"
+
+import { Container } from "@/src/components/common/container"
 import { MatchCard } from "@/src/components/portal/MatchCard"
+import { MemberCard } from "@/src/components/portal/MemberCard"
 import { PortalHero } from "@/src/components/portal/PortalHero"
 import { PortalHeroFilterBar } from "@/src/components/portal/PortalHeroFilterBar"
-import { Button } from "@/src/components/ui/button/button"
-import { Container } from "@/src/components/common/container"
 
 const MEMBER_ROLES = [
   { value: "todos", label: "Todos" },
@@ -153,7 +156,7 @@ export default function ConexoesPage(): React.JSX.Element {
         />
       </PortalHero>
 
-      <Container className="relative z-10 flex-1 py-10 space-y-8">
+      <Container className="relative z-10 flex-1 py-10 space-y-8 bg-[#F1F1F1] dark:bg-[#161616]">
         {hasActiveFilters && (
           <div className="flex flex-wrap items-center justify-between gap-3 text-zinc-900 dark:text-white">
             <div className="flex flex-wrap items-center gap-2 text-xs text-zinc-600 dark:text-zinc-300">
@@ -194,7 +197,9 @@ export default function ConexoesPage(): React.JSX.Element {
           <div className="flex items-center justify-between">
             <span className="text-xs font-black uppercase tracking-widest text-zinc-400">
               {filteredMembers.length}{" "}
-              {filteredMembers.length === 1 ? "membro encontrado" : "membros na rede"}
+              {filteredMembers.length === 1
+                ? "membro encontrado"
+                : "membros na rede"}
             </span>
           </div>
 
@@ -207,7 +212,8 @@ export default function ConexoesPage(): React.JSX.Element {
                 Nenhuma conexão encontrada
               </h3>
               <p className="text-xs text-zinc-500 dark:text-zinc-400 max-w-sm mx-auto">
-                Não encontramos membros com os filtros selecionados. Tente buscar por outros termos ou categorias.
+                Não encontramos membros com os filtros selecionados. Tente
+                buscar por outros termos ou categorias.
               </p>
               <Button
                 type="button"

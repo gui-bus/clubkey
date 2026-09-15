@@ -57,8 +57,8 @@ const PORTAL_NAV_LINKS = [
   { name: "Hospedagens", href: "/hospedagens" },
   { name: "Eventos", href: "/eventos" },
   { name: "Experiências", href: "/experiencias" },
-  { name: "Conexões", href: "/conexoes" },
   { name: "Benefícios", href: "/beneficios" },
+  { name: "Conexões", href: "/conexoes" },
 ]
 
 export function Navbar({

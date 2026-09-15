@@ -163,7 +163,7 @@ export default function HospedagensPage(): React.JSX.Element {
         />
       </PortalHero>
 
-      <Container className="relative z-10 flex-1 py-10 space-y-12">
+      <Container className="relative z-10 flex-1 py-10 space-y-12 bg-[#F1F1F1] dark:bg-[#161616]">
         <div className="w-full flex flex-col gap-12 sm:gap-16">
           {hasActiveFilters && (
             <div className="flex flex-wrap items-center justify-between gap-3 text-zinc-900 dark:text-white">

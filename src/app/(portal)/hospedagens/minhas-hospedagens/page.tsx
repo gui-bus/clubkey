@@ -1,32 +1,37 @@
 "use client"
 
 import * as React from "react"
+
 import Image from "next/image"
 import Link from "next/link"
+
+import { formatBRL, getStaySlug } from "@/src/data/portalData"
+import { usePortalStore } from "@/src/store/usePortalStore"
 import {
-  Calendar,
-  MapPin,
-  Users,
-  Building2,
-  Phone,
-  Ticket,
-  CheckCircle2,
   ArrowRight,
+  Building2,
+  Calendar,
+  CheckCircle2,
   Clock,
+  MapPin,
+  Phone,
   ShieldCheck,
-  XCircle
+  Ticket,
+  Users,
+  XCircle,
 } from "lucide-react"
 
-import { usePortalStore } from "@/src/store/usePortalStore"
-import { formatBRL, getStaySlug } from "@/src/data/portalData"
-import { Container } from "@/src/components/common/container"
 import { Badge } from "@/src/components/ui/badge/badge"
 import { Button } from "@/src/components/ui/button/button"
 import { toast } from "@/src/components/ui/toast/toast"
 
+import { Container } from "@/src/components/common/container"
+
 export default function MinhasHospedagensPage(): React.JSX.Element {
   const { memberStays, cancelStay, userProfile } = usePortalStore()
-  const [selectedVoucher, setSelectedVoucher] = React.useState<string | null>(null)
+  const [selectedVoucher, setSelectedVoucher] = React.useState<string | null>(
+    null
+  )
 
   const activeReservationsCount = memberStays.length
   const totalNights = memberStays.reduce((acc, curr) => acc + curr.nights, 0)
@@ -34,13 +39,13 @@ export default function MinhasHospedagensPage(): React.JSX.Element {
   const handleCancel = (id: string, name: string) => {
     cancelStay(id)
     toast.info(`Reserva em ${name} cancelada.`, {
-      description: "Nossa equipe de concierge foi notificada para o estorno."
+      description: "Nossa equipe de concierge foi notificada para o estorno.",
     })
   }
 
   const handleContactConcierge = (stayName: string) => {
     toast.success(`Concierge VIP acionado para ${stayName}!`, {
-      description: "Em instantes você receberá um contato direto no WhatsApp."
+      description: "Em instantes você receberá um contato direto no WhatsApp.",
     })
   }
 
@@ -70,13 +75,14 @@ export default function MinhasHospedagensPage(): React.JSX.Element {
               Minhas <span className="text-brand-primary">Hospedagens</span>
             </h1>
             <p className="text-base sm:text-lg md:text-xl text-zinc-200 font-light leading-relaxed drop-shadow-sm max-w-2xl">
-              Gerencie suas estadias confirmadas, vouchers de check-in e suporte exclusivo do concierge ClubKey.
+              Gerencie suas estadias confirmadas, vouchers de check-in e suporte
+              exclusivo do concierge ClubKey.
             </p>
           </div>
         </Container>
       </section>
 
-      <Container className="relative z-10 flex-1 py-10 space-y-8">
+      <Container className="relative z-10 flex-1 py-10 space-y-8 bg-[#F1F1F1] dark:bg-[#161616]">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div className="p-5 rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] shadow-xs flex items-center gap-4">
             <div className="w-12 h-12 rounded-sm bg-brand-primary/10 text-brand-primary flex items-center justify-center shrink-0">
@@ -127,7 +133,10 @@ export default function MinhasHospedagensPage(): React.JSX.Element {
               Estadias Confirmadas
             </h2>
             <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
-              Titular da reserva: <strong className="text-zinc-900 dark:text-white">{userProfile.name}</strong>
+              Titular da reserva:{" "}
+              <strong className="text-zinc-900 dark:text-white">
+                {userProfile.name}
+              </strong>
             </p>
           </div>
 
@@ -150,7 +159,9 @@ export default function MinhasHospedagensPage(): React.JSX.Element {
                 Nenhuma reserva ativa no momento
               </h3>
               <p className="text-xs text-zinc-500 dark:text-zinc-400 max-w-md mx-auto leading-relaxed">
-                Você ainda não possui estadias agendadas. Explore nossa curadoria de hotéis boutique e resorts com tarifas exclusivas para associados.
+                Você ainda não possui estadias agendadas. Explore nossa
+                curadoria de hotéis boutique e resorts com tarifas exclusivas
+                para associados.
               </p>
             </div>
             <Link
@@ -202,7 +213,9 @@ export default function MinhasHospedagensPage(): React.JSX.Element {
                         <MapPin className="w-3.5 h-3.5 text-brand-primary shrink-0" />
                         <span>{stay.location}</span>
                         <span>•</span>
-                        <span className="font-semibold text-zinc-700 dark:text-zinc-300">{stay.roomType}</span>
+                        <span className="font-semibold text-zinc-700 dark:text-zinc-300">
+                          {stay.roomType}
+                        </span>
                       </p>
                     </div>
 
@@ -211,12 +224,16 @@ export default function MinhasHospedagensPage(): React.JSX.Element {
                         <Calendar className="w-3.5 h-3.5 text-brand-primary" />
                         {stay.checkIn} — {stay.checkOut}
                       </span>
-                      <span className="text-zinc-300 dark:text-zinc-700">•</span>
+                      <span className="text-zinc-300 dark:text-zinc-700">
+                        •
+                      </span>
                       <span className="flex items-center gap-1">
                         <Clock className="w-3.5 h-3.5 text-brand-primary" />
                         {stay.nights} {stay.nights === 1 ? "noite" : "noites"}
                       </span>
-                      <span className="text-zinc-300 dark:text-zinc-700">•</span>
+                      <span className="text-zinc-300 dark:text-zinc-700">
+                        •
+                      </span>
                       <span className="flex items-center gap-1">
                         <Users className="w-3.5 h-3.5 text-brand-primary" />
                         {stay.guests} hóspedes
@@ -224,8 +241,13 @@ export default function MinhasHospedagensPage(): React.JSX.Element {
                     </div>
 
                     <div className="text-xs text-zinc-500 dark:text-zinc-400">
-                      Total da estadia: <strong className="text-sm font-heading font-black text-zinc-900 dark:text-white">{formatBRL(stay.totalPrice)}</strong>
-                      <span className="text-[10px] text-emerald-500 font-bold ml-2">(Benefício de Membro aplicado)</span>
+                      Total da estadia:{" "}
+                      <strong className="text-sm font-heading font-black text-zinc-900 dark:text-white">
+                        {formatBRL(stay.totalPrice)}
+                      </strong>
+                      <span className="text-[10px] text-emerald-500 font-bold ml-2">
+                        (Benefício de Membro aplicado)
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -246,7 +268,9 @@ export default function MinhasHospedagensPage(): React.JSX.Element {
                     color="default"
                     variant="bordered"
                     onClick={() => handleContactConcierge(stay.stayName)}
-                    startContent={<Phone className="w-3.5 h-3.5 text-brand-primary" />}
+                    startContent={
+                      <Phone className="w-3.5 h-3.5 text-brand-primary" />
+                    }
                     className="text-xs font-bold uppercase tracking-wider"
                   >
                     Concierge WhatsApp
@@ -269,13 +293,24 @@ export default function MinhasHospedagensPage(): React.JSX.Element {
                         Comprovante Oficial de Reserva
                       </span>
                       <p className="text-xs font-bold text-zinc-900 dark:text-white">
-                        Apresente o código <span className="font-mono text-brand-primary">{stay.confirmationCode}</span> na recepção do hotel junto com seu documento oficial.
+                        Apresente o código{" "}
+                        <span className="font-mono text-brand-primary">
+                          {stay.confirmationCode}
+                        </span>{" "}
+                        na recepção do hotel junto com seu documento oficial.
                       </p>
                       <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
-                        Check-in a partir das 15h00 • Check-out até às 12h00 • Café da manhã cortesia de membro incluído.
+                        Check-in a partir das 15h00 • Check-out até às 12h00 •
+                        Café da manhã cortesia de membro incluído.
                       </p>
                     </div>
-                    <Badge color="primary" variant="flat" size="lg" radius="sm" className="font-mono font-black text-sm tracking-widest uppercase">
+                    <Badge
+                      color="primary"
+                      variant="flat"
+                      size="lg"
+                      radius="sm"
+                      className="font-mono font-black text-sm tracking-widest uppercase"
+                    >
                       {stay.confirmationCode}
                     </Badge>
                   </div>

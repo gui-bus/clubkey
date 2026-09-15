@@ -26,6 +26,7 @@ import {
   getExperienceSlug
 } from "@/src/data/portalData"
 import { usePortalStore } from "@/src/store/usePortalStore"
+import { MemberCard } from "@/src/components/portal/MemberCard"
 import { BackButton } from "@/src/components/portal/BackButton"
 import { ShareButton } from "@/src/components/portal/ShareButton"
 import { AddToCalendarButton } from "@/src/components/portal/AddToCalendarButton"
@@ -292,38 +293,7 @@ export default function ExperienceDetailPage(): React.JSX.Element {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {attendees.map((attendee) => (
-                <Link
-                  key={attendee.id}
-                  href={`/conexoes/${attendee.id}/${getMemberSlug(attendee)}`}
-                  className="group flex items-start gap-3.5 p-4 rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] hover:border-brand-primary transition-all shadow-2xs hover:shadow-xs"
-                >
-                  <div className="relative w-10 h-10 shrink-0 rounded-full overflow-hidden bg-zinc-900 text-white flex items-center justify-center font-bold text-xs border border-zinc-200 dark:border-zinc-700">
-                    {(attendee.image || attendee.avatar) ? (
-                      <Image
-                        src={attendee.image || attendee.avatar || ""}
-                        alt={attendee.name}
-                        fill
-                        className="object-cover"
-                      />
-                    ) : (
-                      getInitials(attendee.name)
-                    )}
-                  </div>
-
-                  <div className="min-w-0 flex-1">
-                    <p className="text-xs font-bold uppercase tracking-tight text-zinc-900 dark:text-white group-hover:text-brand-primary transition-colors truncate">
-                      {attendee.name}
-                    </p>
-                    <p className="text-[11px] text-zinc-500 dark:text-zinc-400 truncate">
-                      {attendee.role} • {attendee.company}
-                    </p>
-                    {attendee.offering.length > 0 && (
-                      <span className="inline-block text-[10px] text-brand-primary font-medium truncate mt-0.5">
-                        Oferece: {attendee.offering[0]}
-                      </span>
-                    )}
-                  </div>
-                </Link>
+                <MemberCard key={attendee.id} member={attendee} />
               ))}
             </div>
           </section>

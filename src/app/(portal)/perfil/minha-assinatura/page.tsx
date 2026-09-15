@@ -1,45 +1,50 @@
 "use client"
 
 import * as React from "react"
+
 import Image from "next/image"
 import Link from "next/link"
+
+import { formatBRL } from "@/src/data/portalData"
+import { usePortalStore } from "@/src/store/usePortalStore"
 import {
-  CreditCard,
-  CheckCircle2,
   Calendar,
-  ShieldCheck,
+  CheckCircle2,
+  CreditCard,
   Download,
+  FileText,
   Phone,
   Receipt,
-  FileText
+  ShieldCheck,
 } from "lucide-react"
 
-import { usePortalStore } from "@/src/store/usePortalStore"
-import { formatBRL } from "@/src/data/portalData"
-import { BackButton } from "@/src/components/portal/BackButton"
-import { Container } from "@/src/components/common/container"
 import { Badge } from "@/src/components/ui/badge/badge"
 import { Button } from "@/src/components/ui/button/button"
 import { toast } from "@/src/components/ui/toast/toast"
+
+import { Container } from "@/src/components/common/container"
+import { BackButton } from "@/src/components/portal/BackButton"
 
 export default function MinhaAssinaturaPage(): React.JSX.Element {
   const { memberSubscription, userProfile } = usePortalStore()
 
   const handleUpdatePayment = () => {
     toast.info("Alteração de método de pagamento", {
-      description: "Nosso concierge enviará o link seguro para atualização do seu cartão."
+      description:
+        "Nosso concierge enviará o link seguro para atualização do seu cartão.",
     })
   }
 
   const handleDownloadInvoice = (invoiceId: string) => {
     toast.success(`Fatura ${invoiceId} baixada!`, {
-      description: "O comprovante fiscal em PDF foi gerado."
+      description: "O comprovante fiscal em PDF foi gerado.",
     })
   }
 
   const handleContactConcierge = () => {
     toast.success("Concierge VIP acionado!", {
-      description: "Em instantes você receberá um contato direto no WhatsApp sobre sua assinatura."
+      description:
+        "Em instantes você receberá um contato direto no WhatsApp sobre sua assinatura.",
     })
   }
 
@@ -69,13 +74,14 @@ export default function MinhaAssinaturaPage(): React.JSX.Element {
               Minha <span className="text-brand-primary">Assinatura</span>
             </h1>
             <p className="text-base sm:text-lg md:text-xl text-zinc-200 font-light leading-relaxed drop-shadow-sm max-w-2xl">
-              Gerencie os detalhes do seu plano, forma de pagamento cadastrada e histórico financeiro.
+              Gerencie os detalhes do seu plano, forma de pagamento cadastrada e
+              histórico financeiro.
             </p>
           </div>
         </Container>
       </section>
 
-      <Container className="relative z-10 flex-1 py-10 space-y-8">
+      <Container className="relative z-10 flex-1 py-10 space-y-8 bg-[#F1F1F1] dark:bg-[#161616]">
         <BackButton fallbackHref="/perfil" label="Voltar para Meu Perfil" />
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
@@ -87,22 +93,36 @@ export default function MinhaAssinaturaPage(): React.JSX.Element {
                     <h2 className="text-2xl font-heading font-black uppercase tracking-tight text-zinc-900 dark:text-white">
                       {memberSubscription.planName}
                     </h2>
-                    <Badge color="success" variant="flat" size="sm" radius="sm" startContent={<CheckCircle2 className="w-3 h-3" />} className="font-bold uppercase tracking-wider">
+                    <Badge
+                      color="success"
+                      variant="flat"
+                      size="sm"
+                      radius="sm"
+                      startContent={<CheckCircle2 className="w-3 h-3" />}
+                      className="font-bold uppercase tracking-wider"
+                    >
                       Assinatura Ativa
                     </Badge>
                   </div>
                   <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                    Titular: <strong className="text-zinc-900 dark:text-white">{userProfile.name}</strong> • {userProfile.email}
+                    Titular:{" "}
+                    <strong className="text-zinc-900 dark:text-white">
+                      {userProfile.name}
+                    </strong>{" "}
+                    • {userProfile.email}
                   </p>
                 </div>
 
                 <div className="text-left sm:text-right">
                   <span className="text-2xl font-heading font-black text-brand-primary block leading-none">
                     {formatBRL(memberSubscription.priceAnnual)}
-                    <span className="text-xs font-semibold text-zinc-400">/ano</span>
+                    <span className="text-xs font-semibold text-zinc-400">
+                      /ano
+                    </span>
                   </span>
                   <span className="text-[11px] text-zinc-400">
-                    Equivalente a {formatBRL(memberSubscription.priceMonthly)}/mês
+                    Equivalente a {formatBRL(memberSubscription.priceMonthly)}
+                    /mês
                   </span>
                 </div>
               </div>
@@ -127,7 +147,8 @@ export default function MinhaAssinaturaPage(): React.JSX.Element {
                   </span>
                   <p className="text-sm font-bold text-zinc-900 dark:text-white flex items-center gap-2">
                     <CreditCard className="w-4 h-4 text-brand-primary shrink-0" />
-                    {memberSubscription.paymentMethod.brand} •••• {memberSubscription.paymentMethod.last4}
+                    {memberSubscription.paymentMethod.brand} ••••{" "}
+                    {memberSubscription.paymentMethod.last4}
                   </p>
                   <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
                     Expira em {memberSubscription.paymentMethod.expiry}
@@ -192,7 +213,13 @@ export default function MinhaAssinaturaPage(): React.JSX.Element {
                         <span className="text-xs font-bold text-zinc-900 dark:text-white block">
                           {formatBRL(inv.amount)}
                         </span>
-                        <Badge color="success" variant="flat" size="sm" radius="sm" className="text-[9px] font-bold uppercase">
+                        <Badge
+                          color="success"
+                          variant="flat"
+                          size="sm"
+                          radius="sm"
+                          className="text-[9px] font-bold uppercase"
+                        >
                           Pago
                         </Badge>
                       </div>
@@ -224,7 +251,9 @@ export default function MinhaAssinaturaPage(): React.JSX.Element {
                 Suporte de Membership
               </h3>
               <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
-                Precisa alterar titularidade, dados de faturamento corporativo ou solicitar nota fiscal especial? Fale com seu concierge dedicado.
+                Precisa alterar titularidade, dados de faturamento corporativo
+                ou solicitar nota fiscal especial? Fale com seu concierge
+                dedicado.
               </p>
             </div>
 
@@ -247,7 +276,9 @@ export default function MinhaAssinaturaPage(): React.JSX.Element {
                 variant="bordered"
                 radius="sm"
                 onClick={handleUpdatePayment}
-                startContent={<CreditCard className="w-4 h-4 text-brand-primary" />}
+                startContent={
+                  <CreditCard className="w-4 h-4 text-brand-primary" />
+                }
                 className="w-full h-10 text-xs font-bold uppercase tracking-wider"
               >
                 Alterar Cartão de Crédito
@@ -260,7 +291,8 @@ export default function MinhaAssinaturaPage(): React.JSX.Element {
                 <span>Garantia de Confidencialidade</span>
               </div>
               <p className="text-[11px] text-zinc-400 leading-relaxed">
-                Todos os seus dados financeiros e cadastrais são criptografados sob padrões bancários de segurança.
+                Todos os seus dados financeiros e cadastrais são criptografados
+                sob padrões bancários de segurança.
               </p>
             </div>
           </div>

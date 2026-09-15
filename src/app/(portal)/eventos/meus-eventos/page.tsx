@@ -1,16 +1,19 @@
 "use client"
 
 import * as React from "react"
+
 import Image from "next/image"
 import Link from "next/link"
+
+import { EVENTS } from "@/src/data/portalData"
+import { usePortalStore } from "@/src/store/usePortalStore"
 import { Calendar, Search } from "lucide-react"
 
-import { usePortalStore } from "@/src/store/usePortalStore"
-import { EVENTS } from "@/src/data/portalData"
+import { Button } from "@/src/components/ui/button/button"
+
+import { Container } from "@/src/components/common/container"
 import { EventCard } from "@/src/components/portal/EventCard"
 import { PortalHeroFilterBar } from "@/src/components/portal/PortalHeroFilterBar"
-import { Button } from "@/src/components/ui/button/button"
-import { Container } from "@/src/components/common/container"
 
 const MY_EVENTS_VIEWS = [
   { value: "todos", label: "Todos confirmados" },
@@ -78,7 +81,11 @@ export default function MeusEventosPage(): React.JSX.Element {
   }, [activeFilter, confirmedList, searchQuery])
 
   const groupedEventsByMonth = React.useMemo(() => {
-    const groups: { monthKey: string; monthLabel: string; events: typeof EVENTS }[] = []
+    const groups: {
+      monthKey: string
+      monthLabel: string
+      events: typeof EVENTS
+    }[] = []
 
     for (const event of filteredEvents) {
       const key = event.month?.toUpperCase() || "OUTROS"
@@ -130,7 +137,8 @@ export default function MeusEventosPage(): React.JSX.Element {
               Meus <span className="text-brand-primary">Eventos</span>
             </h1>
             <p className="text-base sm:text-lg md:text-xl text-zinc-200 font-light mb-8 leading-relaxed drop-shadow-sm max-w-2xl">
-              Encontros, almoços e painéis estratégicos com a sua participação garantida no clube.
+              Encontros, almoços e painéis estratégicos com a sua participação
+              garantida no clube.
             </p>
 
             <PortalHeroFilterBar
@@ -147,7 +155,7 @@ export default function MeusEventosPage(): React.JSX.Element {
         </Container>
       </section>
 
-      <Container className="relative z-10 flex-1 py-10 space-y-8">
+      <Container className="relative z-10 flex-1 py-10 space-y-8 bg-[#F1F1F1] dark:bg-[#161616]">
         {hasActiveFilters && (
           <div className="flex flex-wrap items-center justify-between gap-3 text-zinc-900 dark:text-white">
             <div className="flex flex-wrap items-center gap-2 text-xs text-zinc-600 dark:text-zinc-300">
@@ -158,7 +166,10 @@ export default function MeusEventosPage(): React.JSX.Element {
                 <span className="px-2.5 py-1 rounded-sm bg-brand-primary/10 text-brand-primary font-bold flex items-center gap-1.5">
                   <Calendar className="w-3 h-3" />
                   <span>
-                    {MY_EVENTS_VIEWS.find((v) => v.value === activeFilter)?.label}
+                    {
+                      MY_EVENTS_VIEWS.find((v) => v.value === activeFilter)
+                        ?.label
+                    }
                   </span>
                 </span>
               )}
@@ -183,7 +194,9 @@ export default function MeusEventosPage(): React.JSX.Element {
         <div className="flex items-center justify-between">
           <span className="text-xs font-black uppercase tracking-widest text-zinc-400">
             {filteredEvents.length}{" "}
-            {filteredEvents.length === 1 ? "encontro confirmado" : "encontros confirmados"}
+            {filteredEvents.length === 1
+              ? "encontro confirmado"
+              : "encontros confirmados"}
           </span>
 
           <Link
@@ -219,9 +232,7 @@ export default function MeusEventosPage(): React.JSX.Element {
                 size="sm"
                 className="mt-2 text-xs font-black uppercase tracking-wider"
               >
-                <Link href="/eventos">
-                  Explorar agenda completa
-                </Link>
+                <Link href="/eventos">Explorar agenda completa</Link>
               </Button>
             ) : (
               <Button
@@ -249,7 +260,8 @@ export default function MeusEventosPage(): React.JSX.Element {
                   </div>
                   <div className="h-px flex-1 bg-zinc-200 dark:bg-zinc-800" />
                   <span className="text-[11px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">
-                    {group.events.length} {group.events.length === 1 ? "encontro" : "encontros"}
+                    {group.events.length}{" "}
+                    {group.events.length === 1 ? "encontro" : "encontros"}
                   </span>
                 </div>
 

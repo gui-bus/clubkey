@@ -1,32 +1,35 @@
 "use client"
 
 import * as React from "react"
-import Link from "next/link"
+
 import Image from "next/image"
+import Link from "next/link"
+
+import { getInitials } from "@/src/data/portalData"
+import { usePortalStore } from "@/src/store/usePortalStore"
 import {
-  User,
-  Building,
-  MapPin,
+  ArrowRight,
   Briefcase,
-  Save,
+  Building,
   CreditCard,
-  ArrowRight
+  MapPin,
+  Save,
+  User,
 } from "lucide-react"
 
-import { usePortalStore } from "@/src/store/usePortalStore"
-import { getInitials } from "@/src/data/portalData"
-import { TagInput } from "@/src/components/ui/tagInput/tagInput"
-import { Avatar, AvatarFallback, AvatarImage } from "@/src/components/ui/avatar/avatar"
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/src/components/ui/avatar/avatar"
 import { Badge } from "@/src/components/ui/badge/badge"
+import { TagInput } from "@/src/components/ui/tagInput/tagInput"
 import { toast } from "@/src/components/ui/toast/toast"
+
 import { Container } from "@/src/components/common/container"
 
 export default function ProfilePage(): React.JSX.Element {
-  const {
-    userProfile,
-    updateProfile,
-    getActiveClub
-  } = usePortalStore()
+  const { userProfile, updateProfile, getActiveClub } = usePortalStore()
 
   const activeClub = getActiveClub()
 
@@ -35,7 +38,7 @@ export default function ProfilePage(): React.JSX.Element {
     role: userProfile.role,
     company: userProfile.company,
     city: userProfile.city,
-    bio: userProfile.bio
+    bio: userProfile.bio,
   })
 
   React.useEffect(() => {
@@ -44,14 +47,14 @@ export default function ProfilePage(): React.JSX.Element {
       role: userProfile.role,
       company: userProfile.company,
       city: userProfile.city,
-      bio: userProfile.bio
+      bio: userProfile.bio,
     })
   }, [
     userProfile.name,
     userProfile.role,
     userProfile.company,
     userProfile.city,
-    userProfile.bio
+    userProfile.bio,
   ])
 
   const handleChange = (field: string, value: string) => {
@@ -62,7 +65,7 @@ export default function ProfilePage(): React.JSX.Element {
     e.preventDefault()
     updateProfile(formData)
     toast.success("Perfil atualizado!", {
-      description: "Suas informações de membro foram salvas com sucesso."
+      description: "Suas informações de membro foram salvas com sucesso.",
     })
   }
 
@@ -89,20 +92,26 @@ export default function ProfilePage(): React.JSX.Element {
               Configurações de Conta
             </span>
             <h1 className="text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-black uppercase tracking-tight text-white leading-[1.05] mb-4 font-heading drop-shadow-md">
-              Meu perfil de <span className="text-brand-primary">associado</span>
+              Meu perfil de{" "}
+              <span className="text-brand-primary">associado</span>
             </h1>
             <p className="text-base sm:text-lg md:text-xl text-zinc-200 font-light leading-relaxed drop-shadow-sm max-w-2xl">
-              Mantenha suas informações e interesses atualizados para recomendações de conexões assertivas.
+              Mantenha suas informações e interesses atualizados para
+              recomendações de conexões assertivas.
             </p>
           </div>
         </Container>
       </section>
 
-      <Container className="relative z-10 flex-1 py-10 space-y-8">
+      <Container className="relative z-10 flex-1 py-10 space-y-8 bg-[#F1F1F1] dark:bg-[#161616]">
         <div className="rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] p-6 sm:p-8 space-y-8 shadow-xs">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-zinc-100 dark:border-zinc-800">
             <div className="flex items-center gap-5">
-              <Avatar size="2xl" radius="sm" className="ring-2 ring-zinc-200 dark:ring-zinc-700 shadow-sm">
+              <Avatar
+                size="2xl"
+                radius="sm"
+                className="ring-2 ring-zinc-200 dark:ring-zinc-700 shadow-sm"
+              >
                 <AvatarImage src={userProfile.avatar} alt={userProfile.name} />
                 <AvatarFallback className="font-black text-xl bg-zinc-900 text-white">
                   {getInitials(userProfile.name)}
@@ -117,7 +126,12 @@ export default function ProfilePage(): React.JSX.Element {
                   {userProfile.role} • {userProfile.company}
                 </p>
                 <div className="mt-2">
-                  <Badge color="primary" variant="flat" radius="sm" className="font-bold text-[11px] gap-1.5">
+                  <Badge
+                    color="primary"
+                    variant="flat"
+                    radius="sm"
+                    className="font-bold text-[11px] gap-1.5"
+                  >
                     <span
                       className="w-2 h-2 rounded-full"
                       style={{ backgroundColor: activeClub.accent }}
@@ -138,130 +152,132 @@ export default function ProfilePage(): React.JSX.Element {
             </Link>
           </div>
 
-        <form onSubmit={handleSave} className="space-y-6">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-            <div className="space-y-1.5">
-              <label className="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 flex items-center gap-1.5">
-                <User className="w-3.5 h-3.5 text-brand-primary" />
-                Nome completo
-              </label>
-              <input
-                type="text"
-                value={formData.name}
-                onChange={(e) => handleChange("name", e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-xs font-semibold text-zinc-900 dark:text-white outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary transition-all"
-                required
-              />
+          <form onSubmit={handleSave} className="space-y-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 flex items-center gap-1.5">
+                  <User className="w-3.5 h-3.5 text-brand-primary" />
+                  Nome completo
+                </label>
+                <input
+                  type="text"
+                  value={formData.name}
+                  onChange={(e) => handleChange("name", e.target.value)}
+                  className="w-full px-3.5 py-2.5 rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-xs font-semibold text-zinc-900 dark:text-white outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary transition-all"
+                  required
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 flex items-center gap-1.5">
+                  <Briefcase className="w-3.5 h-3.5 text-brand-primary" />
+                  Profissão / Cargo
+                </label>
+                <input
+                  type="text"
+                  value={formData.role}
+                  onChange={(e) => handleChange("role", e.target.value)}
+                  className="w-full px-3.5 py-2.5 rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-xs font-semibold text-zinc-900 dark:text-white outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary transition-all"
+                  required
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 flex items-center gap-1.5">
+                  <Building className="w-3.5 h-3.5 text-brand-primary" />
+                  Empresa
+                </label>
+                <input
+                  type="text"
+                  value={formData.company}
+                  onChange={(e) => handleChange("company", e.target.value)}
+                  className="w-full px-3.5 py-2.5 rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-xs font-semibold text-zinc-900 dark:text-white outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary transition-all"
+                  required
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 flex items-center gap-1.5">
+                  <MapPin className="w-3.5 h-3.5 text-brand-primary" />
+                  Cidade / Base
+                </label>
+                <input
+                  type="text"
+                  value={formData.city}
+                  onChange={(e) => handleChange("city", e.target.value)}
+                  className="w-full px-3.5 py-2.5 rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-xs font-semibold text-zinc-900 dark:text-white outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary transition-all"
+                  required
+                />
+              </div>
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 flex items-center gap-1.5">
-                <Briefcase className="w-3.5 h-3.5 text-brand-primary" />
-                Profissão / Cargo
+              <label className="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
+                Minibiografia / Resumo de atuação
               </label>
-              <input
-                type="text"
-                value={formData.role}
-                onChange={(e) => handleChange("role", e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-xs font-semibold text-zinc-900 dark:text-white outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary transition-all"
-                required
+              <textarea
+                rows={3}
+                value={formData.bio}
+                onChange={(e) => handleChange("bio", e.target.value)}
+                className="w-full px-3.5 py-2.5 rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-xs text-zinc-900 dark:text-white outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary transition-all resize-none leading-relaxed"
               />
             </div>
 
-            <div className="space-y-1.5">
-              <label className="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 flex items-center gap-1.5">
-                <Building className="w-3.5 h-3.5 text-brand-primary" />
-                Empresa
-              </label>
-              <input
-                type="text"
-                value={formData.company}
-                onChange={(e) => handleChange("company", e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-xs font-semibold text-zinc-900 dark:text-white outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary transition-all"
-                required
+            <div className="flex items-center gap-3 pt-2">
+              <button
+                type="submit"
+                className="px-6 py-3 rounded-sm bg-brand-primary hover:bg-brand-primary/90 text-white text-xs font-black uppercase tracking-wider transition-all shadow-xs flex items-center gap-2 cursor-pointer"
+              >
+                <Save className="w-4 h-4" />
+                <span>Salvar alterações</span>
+              </button>
+            </div>
+          </form>
+
+          <div className="space-y-6 pt-6 border-t border-zinc-100 dark:border-zinc-800">
+            <div className="space-y-3">
+              <div>
+                <h3 className="text-sm font-heading font-black tracking-tight uppercase text-zinc-900 dark:text-white">
+                  O que estou procurando (Networking & Negócios)
+                </h3>
+                <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                  Outros membros saberão onde podem agregar valor ao conectar
+                  com você
+                </p>
+              </div>
+
+              <TagInput
+                value={userProfile.seeking}
+                onChange={(tags) => updateProfile({ seeking: tags })}
+                tagColor="primary"
+                tagVariant="flat"
+                radius="sm"
+                placeholder="Digite uma busca e pressione Enter..."
               />
             </div>
 
-            <div className="space-y-1.5">
-              <label className="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 flex items-center gap-1.5">
-                <MapPin className="w-3.5 h-3.5 text-brand-primary" />
-                Cidade / Base
-              </label>
-              <input
-                type="text"
-                value={formData.city}
-                onChange={(e) => handleChange("city", e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-xs font-semibold text-zinc-900 dark:text-white outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary transition-all"
-                required
+            <div className="space-y-3 pt-4 border-t border-zinc-100 dark:border-zinc-800">
+              <div>
+                <h3 className="text-sm font-heading font-black tracking-tight uppercase text-zinc-900 dark:text-white">
+                  O que posso oferecer
+                </h3>
+                <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                  Seus pontos fortes, experiência, conexões e mentorias
+                  disponíveis
+                </p>
+              </div>
+
+              <TagInput
+                value={userProfile.offering}
+                onChange={(tags) => updateProfile({ offering: tags })}
+                tagColor="primary"
+                tagVariant="flat"
+                radius="sm"
+                placeholder="Digite uma oferta e pressione Enter..."
               />
             </div>
-          </div>
-
-          <div className="space-y-1.5">
-            <label className="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
-              Minibiografia / Resumo de atuação
-            </label>
-            <textarea
-              rows={3}
-              value={formData.bio}
-              onChange={(e) => handleChange("bio", e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-xs text-zinc-900 dark:text-white outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary transition-all resize-none leading-relaxed"
-            />
-          </div>
-
-          <div className="flex items-center gap-3 pt-2">
-            <button
-              type="submit"
-              className="px-6 py-3 rounded-sm bg-brand-primary hover:bg-brand-primary/90 text-white text-xs font-black uppercase tracking-wider transition-all shadow-xs flex items-center gap-2 cursor-pointer"
-            >
-              <Save className="w-4 h-4" />
-              <span>Salvar alterações</span>
-            </button>
-          </div>
-        </form>
-
-        <div className="space-y-6 pt-6 border-t border-zinc-100 dark:border-zinc-800">
-          <div className="space-y-3">
-            <div>
-              <h3 className="text-sm font-heading font-black tracking-tight uppercase text-zinc-900 dark:text-white">
-                O que estou procurando (Networking & Negócios)
-              </h3>
-              <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                Outros membros saberão onde podem agregar valor ao conectar com você
-              </p>
-            </div>
-
-            <TagInput
-              value={userProfile.seeking}
-              onChange={(tags) => updateProfile({ seeking: tags })}
-              tagColor="primary"
-              tagVariant="flat"
-              radius="sm"
-              placeholder="Digite uma busca e pressione Enter..."
-            />
-          </div>
-
-          <div className="space-y-3 pt-4 border-t border-zinc-100 dark:border-zinc-800">
-            <div>
-              <h3 className="text-sm font-heading font-black tracking-tight uppercase text-zinc-900 dark:text-white">
-                O que posso oferecer
-              </h3>
-              <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                Seus pontos fortes, experiência, conexões e mentorias disponíveis
-              </p>
-            </div>
-
-            <TagInput
-              value={userProfile.offering}
-              onChange={(tags) => updateProfile({ offering: tags })}
-              tagColor="primary"
-              tagVariant="flat"
-              radius="sm"
-              placeholder="Digite uma oferta e pressione Enter..."
-            />
           </div>
         </div>
-      </div>
       </Container>
     </div>
   )

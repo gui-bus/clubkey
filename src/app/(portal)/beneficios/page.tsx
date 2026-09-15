@@ -1,16 +1,20 @@
 "use client"
 
 import * as React from "react"
+
 import Image from "next/image"
-import { Building2, ArrowRight, Gift, Search } from "lucide-react"
+
 import { BENEFITS } from "@/src/data/portalData"
+import { ArrowRight, Building2, Gift, Search } from "lucide-react"
+
+import { Badge } from "@/src/components/ui/badge/badge"
+import { Button } from "@/src/components/ui/button/button"
+
+import { Container } from "@/src/components/common/container"
+import { CtaButton } from "@/src/components/common/ctaButton"
 import { BenefitCard } from "@/src/components/portal/BenefitCard"
 import { PortalHero } from "@/src/components/portal/PortalHero"
 import { PortalHeroFilterBar } from "@/src/components/portal/PortalHeroFilterBar"
-import { Badge } from "@/src/components/ui/badge/badge"
-import { Button } from "@/src/components/ui/button/button"
-import { CtaButton } from "@/src/components/common/ctaButton"
-import { Container } from "@/src/components/common/container"
 
 const CATEGORIES = [
   "Todos",
@@ -19,7 +23,7 @@ const CATEGORIES = [
   "Viagem",
   "Gastronomia",
   "Mobilidade",
-  "Serviços"
+  "Serviços",
 ]
 
 export default function BenefitsPage(): React.JSX.Element {
@@ -33,7 +37,7 @@ export default function BenefitsPage(): React.JSX.Element {
       count:
         cat === "Todos"
           ? BENEFITS.length
-          : BENEFITS.filter((b) => b.category === cat).length
+          : BENEFITS.filter((b) => b.category === cat).length,
     }))
   }, [])
 
@@ -47,12 +51,7 @@ export default function BenefitsPage(): React.JSX.Element {
     if (!q) return list
 
     return list.filter((b) => {
-      const fullText = [
-        b.partner,
-        b.category,
-        b.discount,
-        b.desc
-      ]
+      const fullText = [b.partner, b.category, b.discount, b.desc]
         .filter(Boolean)
         .join(" ")
         .toLowerCase()
@@ -93,7 +92,7 @@ export default function BenefitsPage(): React.JSX.Element {
         />
       </PortalHero>
 
-      <Container className="relative z-10 flex-1 py-10 space-y-8">
+      <Container className="relative z-10 flex-1 py-10 space-y-8 bg-[#F1F1F1] dark:bg-[#161616]">
         {hasActiveFilters && (
           <div className="flex flex-wrap items-center justify-between gap-3 text-zinc-900 dark:text-white">
             <div className="flex flex-wrap items-center gap-2 text-xs text-zinc-600 dark:text-zinc-300">
@@ -124,45 +123,49 @@ export default function BenefitsPage(): React.JSX.Element {
           </div>
         )}
 
-        {!searchQuery && (activeCategory === "Todos" || activeCategory === "Viagem") && (
-          <div className="relative rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] p-6 sm:p-8 overflow-hidden">
-            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-              <div className="space-y-2 flex-1">
-                <Badge
-                  color="primary"
-                  variant="flat"
-                  size="sm"
-                  radius="sm"
-                  startContent={<Building2 className="w-3.5 h-3.5" />}
-                  className="font-black uppercase tracking-wider"
-                >
-                  Travel Club
-                </Badge>
-                <h2 className="text-2xl sm:text-3xl font-heading font-black tracking-tight uppercase text-zinc-900 dark:text-white">
-                  Hospedagens com tarifa de membro
-                </h2>
-                <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed max-w-2xl">
-                  Hotéis e pousadas selecionados no Brasil, com até 20% abaixo da diária pública e cortesias de upgrade de categoria.
-                </p>
-              </div>
+        {!searchQuery &&
+          (activeCategory === "Todos" || activeCategory === "Viagem") && (
+            <div className="relative rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] p-6 sm:p-8 overflow-hidden">
+              <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+                <div className="space-y-2 flex-1">
+                  <Badge
+                    color="primary"
+                    variant="flat"
+                    size="sm"
+                    radius="sm"
+                    startContent={<Building2 className="w-3.5 h-3.5" />}
+                    className="font-black uppercase tracking-wider"
+                  >
+                    Travel Club
+                  </Badge>
+                  <h2 className="text-2xl sm:text-3xl font-heading font-black tracking-tight uppercase text-zinc-900 dark:text-white">
+                    Hospedagens com tarifa de membro
+                  </h2>
+                  <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed max-w-2xl">
+                    Hotéis e pousadas selecionados no Brasil, com até 20% abaixo
+                    da diária pública e cortesias de upgrade de categoria.
+                  </p>
+                </div>
 
-              <CtaButton
-                href="/hospedagens"
-                variant="primary"
-                size="md"
-                className="shrink-0"
-              >
-                <span>Ver hospedagens</span>
-                <ArrowRight className="w-4 h-4 ml-2" />
-              </CtaButton>
+                <CtaButton
+                  href="/hospedagens"
+                  variant="primary"
+                  size="md"
+                  className="shrink-0"
+                >
+                  <span>Ver hospedagens</span>
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </CtaButton>
+              </div>
             </div>
-          </div>
-        )}
+          )}
 
         <div className="flex items-center justify-between">
           <span className="text-xs font-black uppercase tracking-widest text-zinc-400">
             {filteredBenefits.length}{" "}
-            {filteredBenefits.length === 1 ? "benefício encontrado" : "benefícios exclusivos"}
+            {filteredBenefits.length === 1
+              ? "benefício encontrado"
+              : "benefícios exclusivos"}
           </span>
         </div>
 
@@ -175,7 +178,8 @@ export default function BenefitsPage(): React.JSX.Element {
               Nenhum benefício encontrado
             </h3>
             <p className="text-xs text-zinc-500 dark:text-zinc-400 max-w-sm mx-auto">
-              Não encontramos parceiros ou benefícios com os critérios digitados. Tente ajustar os termos ou a categoria.
+              Não encontramos parceiros ou benefícios com os critérios
+              digitados. Tente ajustar os termos ou a categoria.
             </p>
             <Button
               type="button"

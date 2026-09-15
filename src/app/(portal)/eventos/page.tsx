@@ -1,17 +1,20 @@
 "use client"
 
 import * as React from "react"
+
 import Image from "next/image"
 import Link from "next/link"
+
+import { EVENTS } from "@/src/data/portalData"
+import { usePortalStore } from "@/src/store/usePortalStore"
 import { Calendar, Search } from "lucide-react"
 
-import { usePortalStore } from "@/src/store/usePortalStore"
-import { EVENTS } from "@/src/data/portalData"
+import { Button } from "@/src/components/ui/button/button"
+
+import { Container } from "@/src/components/common/container"
 import { EventCard } from "@/src/components/portal/EventCard"
 import { PortalHero } from "@/src/components/portal/PortalHero"
 import { PortalHeroFilterBar } from "@/src/components/portal/PortalHeroFilterBar"
-import { Button } from "@/src/components/ui/button/button"
-import { Container } from "@/src/components/common/container"
 
 const EVENTS_VIEWS = [
   { value: "proximos", label: "Próximos" },
@@ -45,7 +48,9 @@ export default function EventsPage(): React.JSX.Element {
       label: v.label,
       count:
         v.value === "meus"
-          ? Object.keys(confirmedEvents).filter((k) => !!confirmedEvents[Number(k)]).length
+          ? Object.keys(confirmedEvents).filter(
+              (k) => !!confirmedEvents[Number(k)]
+            ).length
           : EVENTS.length,
     }))
   }, [confirmedEvents])
@@ -80,7 +85,11 @@ export default function EventsPage(): React.JSX.Element {
   }, [activeFilter, confirmedEvents, searchQuery])
 
   const groupedEventsByMonth = React.useMemo(() => {
-    const groups: { monthKey: string; monthLabel: string; events: typeof EVENTS }[] = []
+    const groups: {
+      monthKey: string
+      monthLabel: string
+      events: typeof EVENTS
+    }[] = []
 
     for (const event of filteredEvents) {
       const key = event.month?.toUpperCase() || "OUTROS"
@@ -131,7 +140,7 @@ export default function EventsPage(): React.JSX.Element {
         />
       </PortalHero>
 
-      <Container className="relative z-10 flex-1 py-10 space-y-8">
+      <Container className="relative z-10 flex-1 py-10 space-y-8 bg-[#F1F1F1] dark:bg-[#161616]">
         {hasActiveFilters && (
           <div className="flex flex-wrap items-center justify-between gap-3 text-zinc-900 dark:text-white">
             <div className="flex flex-wrap items-center gap-2 text-xs text-zinc-600 dark:text-zinc-300">
@@ -167,7 +176,9 @@ export default function EventsPage(): React.JSX.Element {
         <div className="flex items-center justify-between">
           <span className="text-xs font-black uppercase tracking-widest text-zinc-400">
             {filteredEvents.length}{" "}
-            {filteredEvents.length === 1 ? "encontro encontrado" : "encontros na agenda"}
+            {filteredEvents.length === 1
+              ? "encontro encontrado"
+              : "encontros na agenda"}
           </span>
 
           <Link
@@ -187,7 +198,8 @@ export default function EventsPage(): React.JSX.Element {
               Nenhum evento encontrado
             </h3>
             <p className="text-xs text-zinc-500 dark:text-zinc-400 max-w-sm mx-auto">
-              Não encontramos eventos com os critérios pesquisados. Tente ajustar os filtros ou a busca.
+              Não encontramos eventos com os critérios pesquisados. Tente
+              ajustar os filtros ou a busca.
             </p>
             <Button
               type="button"
@@ -213,7 +225,8 @@ export default function EventsPage(): React.JSX.Element {
                   </div>
                   <div className="h-px flex-1 bg-zinc-200 dark:bg-zinc-800" />
                   <span className="text-[11px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">
-                    {group.events.length} {group.events.length === 1 ? "encontro" : "encontros"}
+                    {group.events.length}{" "}
+                    {group.events.length === 1 ? "encontro" : "encontros"}
                   </span>
                 </div>
 

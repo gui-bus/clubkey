@@ -15,7 +15,7 @@ export interface PortalHeroProps {
   imageSrc: string
   imageAlt: string
   imageClassName?: string
-  className?: string
+className?: string
   children?: React.ReactNode
 }
 
@@ -45,7 +45,7 @@ export function PortalHero({
           priority
           className={cn("object-cover object-top", imageClassName)}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-zinc-50 dark:from-[#161616]/85 dark:via-[#161616]/65 dark:to-[#0D0D0D] z-10" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-[#F1F1F1] dark:from-[#161616]/85 dark:via-[#161616]/65 dark:to-[#161616] z-10" />
       </div>
 
       <Container className="relative z-20 pt-36 pb-16 md:pt-44 md:pb-20 flex flex-col justify-center items-center text-center">
