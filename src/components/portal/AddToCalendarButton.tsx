@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { CalendarPlus } from "lucide-react"
+import { CalendarPlus } from "@phosphor-icons/react"
 import { toast } from "@/src/components/ui/toast/toast"
 import { cn } from "@/src/lib/utils"
 

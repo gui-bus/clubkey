@@ -3,7 +3,7 @@
 import * as React from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { ArrowUp, Mail, ShieldCheck } from "lucide-react"
+import { ArrowUp, EnvelopeSimple, ShieldCheck } from "@phosphor-icons/react"
 
 import { Container } from "@/src/components/common/container"
 import { brandConfig } from "@/src/config/brand.config"
@@ -132,7 +132,7 @@ export function Footer(): React.JSX.Element | null {
                   href={`mailto:${brandConfig.links.contactEmail}`}
                   className="hover:text-brand-primary transition-colors flex items-center gap-2"
                 >
-                  <Mail className="w-3.5 h-3.5 text-brand-primary" />
+                  <EnvelopeSimple className="w-3.5 h-3.5 text-brand-primary" />
                   <span>{brandConfig.links.contactEmail}</span>
                 </Link>
               </li>

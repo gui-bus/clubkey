@@ -1,20 +1,7 @@
 "use client"
 
 import * as React from "react"
-import {
-  Calendar,
-  ChevronDown,
-  ChevronLeft,
-  ChevronRight,
-  Flame,
-  Lock,
-  MapPin,
-  Minus,
-  Plus,
-  Search,
-  Users,
-  X,
-} from "lucide-react"
+import { Calendar, CaretDown, CaretLeft, CaretRight, Flame, Lock, MapPin, Minus, Plus, MagnifyingGlass, Users, X } from "@phosphor-icons/react"
 
 import { CtaButton } from "@/src/components/common/ctaButton"
 import { destinationOptions } from "@/src/data/mockDestinations"
@@ -202,7 +189,7 @@ export function RoomsSearchFilterBar({
                 className="p-1 rounded-sm hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-300 transition-colors cursor-pointer"
                 aria-label="Mês anterior"
               >
-                <ChevronLeft className="w-4 h-4" />
+                <CaretLeft className="w-4 h-4" />
               </button>
             )}
             {showNextNav && (
@@ -217,7 +204,7 @@ export function RoomsSearchFilterBar({
                 className="p-1 rounded-sm hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-300 transition-colors cursor-pointer"
                 aria-label="Próximo mês"
               >
-                <ChevronRight className="w-4 h-4" />
+                <CaretRight className="w-4 h-4" />
               </button>
             )}
           </div>
@@ -307,7 +294,7 @@ export function RoomsSearchFilterBar({
   const destinationDropdownMarkup = destinationOpen && (
     <div className="absolute top-full left-0 right-0 sm:right-auto mt-2 w-full sm:w-84 bg-white dark:bg-zinc-900 rounded-sm shadow-2xl border border-zinc-200 dark:border-zinc-800 z-[100] overflow-hidden text-left animate-in fade-in zoom-in-95 duration-150">
       <div className="p-3 border-b border-zinc-100 dark:border-zinc-800 flex items-center gap-2">
-        <Search className="w-4 h-4 text-zinc-400 shrink-0" />
+        <MagnifyingGlass className="w-4 h-4 text-zinc-400 shrink-0" />
         <input
           type="text"
           placeholder="Buscar estado ou cidade..."
@@ -386,7 +373,7 @@ export function RoomsSearchFilterBar({
                 </span>
               </div>
             </div>
-            <ChevronDown
+            <CaretDown
               className={cn(
                 "w-4 h-4 text-zinc-400 shrink-0 transition-transform duration-200",
                 destinationOpen && "rotate-180"
@@ -500,7 +487,7 @@ export function RoomsSearchFilterBar({
           className="w-full h-10 rounded-sm bg-brand-primary hover:bg-brand-primary-hover text-white font-bold text-xs uppercase tracking-wide shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-[0.99] mt-0.5"
           aria-label="Buscar acomodações"
         >
-          <Search className="w-4 h-4 stroke-[2.5]" />
+          <MagnifyingGlass className="w-4 h-4 stroke-[2.5]" />
           <span>Buscar Acomodações</span>
         </button>
       </div>
@@ -521,7 +508,7 @@ export function RoomsSearchFilterBar({
                 {searchDestination || "Qual o seu destino?"}
               </span>
             </div>
-            <ChevronDown
+            <CaretDown
               className={cn(
                 "w-3.5 h-3.5 text-zinc-400 shrink-0 transition-transform",
                 destinationOpen && "rotate-180"
@@ -614,7 +601,7 @@ export function RoomsSearchFilterBar({
           className="w-11 h-11 rounded-full bg-brand-primary hover:bg-brand-primary-hover text-white flex items-center justify-center shadow-lg transition-all shrink-0 cursor-pointer"
           aria-label="Buscar acomodações"
         >
-          <Search className="w-4 h-4 stroke-[2.5]" />
+          <MagnifyingGlass className="w-4 h-4 stroke-[2.5]" />
         </button>
       </div>
 

@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { useRouter } from "next/navigation"
-import { Mail } from "lucide-react"
+import { EnvelopeSimple } from "@phosphor-icons/react"
 import { toast } from "sonner"
 
 import { CtaButton } from "@/src/components/common/ctaButton"
@@ -65,7 +65,7 @@ export function EmailVerification({
       )}
     >
       <div className="w-20 h-20 rounded-full bg-brand-primary/10 flex items-center justify-center text-brand-primary mb-6 shadow-inner">
-        <Mail className="w-9 h-9 stroke-[2.2]" />
+        <EnvelopeSimple className="w-9 h-9 stroke-[2.2]" />
       </div>
 
       <h2 className="text-2xl sm:text-3xl font-black text-zinc-900 dark:text-white font-heading tracking-tight mb-3">

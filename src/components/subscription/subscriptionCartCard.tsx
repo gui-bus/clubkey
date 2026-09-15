@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import Image from "next/image"
-import { ShoppingCart } from "lucide-react"
+import { ShoppingCart } from "@phosphor-icons/react"
 
 import { brandConfig } from "@/src/config/brand.config"
 

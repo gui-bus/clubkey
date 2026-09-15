@@ -3,7 +3,7 @@
 import * as React from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { MapPin, UserPlus, Check, Hourglass, ArrowRight } from "lucide-react"
+import { MapPin, UserPlus, Check, Hourglass, ArrowRight } from "@phosphor-icons/react"
 
 import { Member, getInitials, getMemberSlug } from "@/src/data/portalData"
 import { usePortalStore } from "@/src/store/usePortalStore"

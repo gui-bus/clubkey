@@ -3,14 +3,7 @@
 import * as React from "react"
 import Link from "next/link"
 import { useParams, notFound } from "next/navigation"
-import {
-  MapPin,
-  Search,
-  Users,
-  Check,
-  Calendar,
-  ArrowRight
-} from "lucide-react"
+import { MapPin, MagnifyingGlass, Users, Check, Calendar, ArrowRight } from "@phosphor-icons/react"
 
 import { EVENTS, MEMBERS } from "@/src/data/portalData"
 import { usePortalStore } from "@/src/store/usePortalStore"
@@ -243,7 +236,7 @@ export default function EventParticipantsPage(): React.JSX.Element {
             )}
             {searchQuery && (
               <span className="px-2.5 py-1 rounded-sm bg-brand-primary/10 text-brand-primary font-bold flex items-center gap-1.5">
-                <Search className="w-3 h-3" />
+                <MagnifyingGlass className="w-3 h-3" />
                 <span>&ldquo;{searchQuery}&rdquo;</span>
               </span>
             )}

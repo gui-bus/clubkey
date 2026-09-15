@@ -5,7 +5,7 @@ import * as React from "react"
 import Image from "next/image"
 
 import { MEMBERS } from "@/src/data/portalData"
-import { Search, Users } from "lucide-react"
+import { MagnifyingGlass, Users } from "@phosphor-icons/react"
 
 import { Button } from "@/src/components/ui/button/button"
 
@@ -173,7 +173,7 @@ export default function ConexoesPage(): React.JSX.Element {
               )}
               {searchQuery && (
                 <span className="px-2.5 py-1 rounded-sm bg-brand-primary/10 text-brand-primary font-bold flex items-center gap-1.5">
-                  <Search className="w-3 h-3" />
+                  <MagnifyingGlass className="w-3 h-3" />
                   <span>&ldquo;{searchQuery}&rdquo;</span>
                 </span>
               )}

@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import Link from "next/link"
-import { ExternalLink } from "lucide-react"
+import { ArrowSquareOut } from "@phosphor-icons/react"
 
 import { Checkbox } from "@/src/components/ui/checkbox/checkbox"
 import { cn } from "@/src/lib/utils"
@@ -69,7 +69,7 @@ export function TermsCard({
             rel="noreferrer"
             className="inline-flex items-center gap-1.5 text-xs text-zinc-900 dark:text-zinc-100 hover:text-zinc-600 dark:hover:text-zinc-300 underline font-medium transition-colors"
           >
-            <ExternalLink className="w-3.5 h-3.5 shrink-0" />
+            <ArrowSquareOut className="w-3.5 h-3.5 shrink-0" />
             <span>{doc.title}</span>
           </Link>
         ))}

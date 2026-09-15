@@ -7,15 +7,7 @@ import Link from "next/link"
 
 import { getInitials } from "@/src/data/portalData"
 import { usePortalStore } from "@/src/store/usePortalStore"
-import {
-  ArrowRight,
-  Briefcase,
-  Building,
-  CreditCard,
-  MapPin,
-  Save,
-  User,
-} from "lucide-react"
+import { ArrowRight, Briefcase, Building, CreditCard, MapPin, FloppyDisk, User } from "@phosphor-icons/react"
 
 import {
   Avatar,
@@ -228,7 +220,7 @@ export default function ProfilePage(): React.JSX.Element {
                 type="submit"
                 className="px-6 py-3 rounded-sm bg-brand-primary hover:bg-brand-primary/90 text-white text-xs font-black uppercase tracking-wider transition-all shadow-xs flex items-center gap-2 cursor-pointer"
               >
-                <Save className="w-4 h-4" />
+                <FloppyDisk className="w-4 h-4" />
                 <span>Salvar alterações</span>
               </button>
             </div>

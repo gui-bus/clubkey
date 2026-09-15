@@ -7,7 +7,7 @@ import Link from "next/link"
 
 import { EVENTS } from "@/src/data/portalData"
 import { usePortalStore } from "@/src/store/usePortalStore"
-import { Calendar, Search } from "lucide-react"
+import { Calendar, MagnifyingGlass } from "@phosphor-icons/react"
 
 import { Button } from "@/src/components/ui/button/button"
 
@@ -175,7 +175,7 @@ export default function MeusEventosPage(): React.JSX.Element {
               )}
               {searchQuery && (
                 <span className="px-2.5 py-1 rounded-sm bg-brand-primary/10 text-brand-primary font-bold flex items-center gap-1.5">
-                  <Search className="w-3 h-3" />
+                  <MagnifyingGlass className="w-3 h-3" />
                   <span>&ldquo;{searchQuery}&rdquo;</span>
                 </span>
               )}

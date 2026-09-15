@@ -7,19 +7,7 @@ import Link from "next/link"
 
 import { formatBRL, getStaySlug } from "@/src/data/portalData"
 import { usePortalStore } from "@/src/store/usePortalStore"
-import {
-  ArrowRight,
-  Building2,
-  Calendar,
-  CheckCircle2,
-  Clock,
-  MapPin,
-  Phone,
-  ShieldCheck,
-  Ticket,
-  Users,
-  XCircle,
-} from "lucide-react"
+import { ArrowRight, Buildings, Calendar, CheckCircle, Clock, MapPin, Phone, ShieldCheck, Ticket, Users, XCircle } from "@phosphor-icons/react"
 
 import { Badge } from "@/src/components/ui/badge/badge"
 import { Button } from "@/src/components/ui/button/button"
@@ -86,7 +74,7 @@ export default function MinhasHospedagensPage(): React.JSX.Element {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div className="p-5 rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] shadow-xs flex items-center gap-4">
             <div className="w-12 h-12 rounded-sm bg-brand-primary/10 text-brand-primary flex items-center justify-center shrink-0">
-              <Building2 className="w-6 h-6" />
+              <Buildings className="w-6 h-6" />
             </div>
             <div>
               <span className="text-2xl font-black text-zinc-900 dark:text-white font-heading block leading-none">
@@ -152,7 +140,7 @@ export default function MinhasHospedagensPage(): React.JSX.Element {
         {memberStays.length === 0 ? (
           <div className="p-12 text-center rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] space-y-4">
             <div className="w-14 h-14 rounded-sm bg-brand-primary/10 text-brand-primary flex items-center justify-center mx-auto">
-              <Building2 className="w-7 h-7" />
+              <Buildings className="w-7 h-7" />
             </div>
             <div className="space-y-1">
               <h3 className="text-lg font-bold uppercase tracking-tight text-zinc-900 dark:text-white font-heading">
@@ -193,7 +181,7 @@ export default function MinhasHospedagensPage(): React.JSX.Element {
                         variant="flat"
                         size="sm"
                         radius="sm"
-                        startContent={<CheckCircle2 className="w-3 h-3" />}
+                        startContent={<CheckCircle className="w-3 h-3" />}
                         className="font-black text-[10px] uppercase tracking-wider backdrop-blur-md"
                       >
                         Confirmada

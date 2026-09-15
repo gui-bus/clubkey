@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import Link from "next/link"
-import { ArrowLeft, MailCheck } from "lucide-react"
+import { ArrowLeft, EnvelopeOpen } from "@phosphor-icons/react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 
@@ -68,7 +68,7 @@ export default function ForgotPasswordPage(): React.JSX.Element {
       {isSubmitted ? (
         <div className="flex flex-col items-center text-center space-y-6 animate-in fade-in-0 duration-300">
           <div className="w-16 h-16 rounded-sm bg-brand-primary/10 flex items-center justify-center text-brand-primary shadow-xs">
-            <MailCheck className="w-8 h-8" />
+            <EnvelopeOpen className="w-8 h-8" />
           </div>
 
           <div className="space-y-2">

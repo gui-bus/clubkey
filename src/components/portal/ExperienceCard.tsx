@@ -3,7 +3,7 @@
 import * as React from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { MapPin, Calendar, Check, Gift } from "lucide-react"
+import { MapPin, Calendar, Check, Gift } from "@phosphor-icons/react"
 
 import { ExperienceItem, formatBRL, getExperienceSlug } from "@/src/data/portalData"
 import { usePortalStore } from "@/src/store/usePortalStore"

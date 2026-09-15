@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Check, Copy, CreditCard, Lock, QrCode, ShieldCheck, UserCheck } from "lucide-react"
+import { Check, Copy, CreditCard, Lock, QrCode, ShieldCheck, UserCheck } from "@phosphor-icons/react"
 import Link from "next/link"
 import { Controller, useForm } from "react-hook-form"
 import { toast } from "sonner"

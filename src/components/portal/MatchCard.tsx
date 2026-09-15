@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Zap, ArrowRight, MapPin, Target, CheckCircle2, Award } from "lucide-react"
+import { Lightning, ArrowRight, MapPin, Target, CheckCircle, Medal } from "@phosphor-icons/react"
 
 import { Member, getInitials, getMemberSlug } from "@/src/data/portalData"
 import { Avatar, AvatarImage, AvatarFallback } from "@/src/components/ui/avatar/avatar"
@@ -21,7 +21,7 @@ export function MatchCard({ member, reason }: MatchCardProps): React.JSX.Element
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-zinc-100 dark:border-zinc-800">
         <div className="flex items-center gap-2.5">
           <div className="w-7 h-7 rounded-sm bg-brand-primary/10 text-brand-primary flex items-center justify-center shrink-0">
-            <Zap className="w-3.5 h-3.5" />
+            <Lightning className="w-3.5 h-3.5" />
           </div>
           <div>
             <span className="text-xs font-black uppercase tracking-widest text-brand-primary block">
@@ -35,7 +35,7 @@ export function MatchCard({ member, reason }: MatchCardProps): React.JSX.Element
 
         <div className="flex items-center gap-2 self-start sm:self-auto">
           <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xs bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[10px] font-black uppercase tracking-wider border border-emerald-500/20">
-            <CheckCircle2 className="w-3 h-3" />
+            <CheckCircle className="w-3 h-3" />
             <span>98% Afinidade</span>
           </span>
         </div>
@@ -103,7 +103,7 @@ export function MatchCard({ member, reason }: MatchCardProps): React.JSX.Element
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="p-4 sm:p-5 rounded-sm bg-zinc-50/50 dark:bg-zinc-900/40 border border-zinc-200/80 dark:border-zinc-800 space-y-2.5">
           <div className="flex items-center gap-2">
-            <Award className="w-3.5 h-3.5 text-brand-primary shrink-0" />
+            <Medal className="w-3.5 h-3.5 text-brand-primary shrink-0" />
             <span className="text-[10px] font-black uppercase tracking-widest text-brand-primary">
               O que {firstName} oferece
             </span>

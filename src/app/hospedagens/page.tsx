@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import Image from "next/image"
-import { Calendar, MapPin, Users } from "lucide-react"
+import { Calendar, MapPin, Users } from "@phosphor-icons/react"
 
 import { PortalHero } from "@/src/components/portal/PortalHero"
 import { RoomsSearchFilterBar } from "@/src/components/rooms/roomsSearchFilterBar"

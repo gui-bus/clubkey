@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import Link from "next/link"
-import { CheckCircle2, Home, KeyRound } from "lucide-react"
+import { CheckCircle, House, Key } from "@phosphor-icons/react"
 
 import { Container } from "@/src/components/common/container"
 import { CtaButton } from "@/src/components/common/ctaButton"
@@ -51,12 +51,12 @@ export default function SubscriptionPage(): React.JSX.Element {
           {isSuccess ? (
             <div className="max-w-xl mx-auto bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-sm p-6 sm:p-10 text-center flex flex-col items-center gap-6 shadow-sm animate-in fade-in-0 duration-300">
               <div className="w-16 h-16 rounded-sm bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-500">
-                <CheckCircle2 className="w-9 h-9" />
+                <CheckCircle className="w-9 h-9" />
               </div>
 
               <div className="space-y-2">
                 <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-sm bg-brand-primary/10 text-brand-primary text-xs font-bold uppercase tracking-wider">
-                  <KeyRound className="w-3.5 h-3.5" />
+                  <Key className="w-3.5 h-3.5" />
                   <span>Assinatura Ativada</span>
                 </div>
                 <h1 className="text-2xl sm:text-3xl font-black text-zinc-900 dark:text-white font-heading uppercase tracking-tight">
@@ -95,7 +95,7 @@ export default function SubscriptionPage(): React.JSX.Element {
                   href="/hospedagens"
                   className="flex-1 py-3.5"
                 >
-                  <KeyRound className="w-4 h-4 mr-2" />
+                  <Key className="w-4 h-4 mr-2" />
                   <span>Explorar Hospedagens</span>
                 </CtaButton>
 
@@ -103,7 +103,7 @@ export default function SubscriptionPage(): React.JSX.Element {
                   href="/"
                   className="py-3.5 px-6 rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 hover:border-zinc-300 text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all"
                 >
-                  <Home className="w-4 h-4" />
+                  <House className="w-4 h-4" />
                   <span>Início</span>
                 </Link>
               </div>

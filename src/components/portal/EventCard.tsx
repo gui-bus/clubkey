@@ -4,15 +4,7 @@ import * as React from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import {
-  MapPin,
-  Clock,
-  Check,
-  X,
-  Plus,
-  Users,
-  ArrowUpRight
-} from "lucide-react"
+import { MapPin, Clock, Check, X, Plus, Users, ArrowUpRight } from "@phosphor-icons/react"
 
 import { EventItem, MEMBERS, getInitials, getEventSlug, getMemberSlug } from "@/src/data/portalData"
 import { usePortalStore } from "@/src/store/usePortalStore"

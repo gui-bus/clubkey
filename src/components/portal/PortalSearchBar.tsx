@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Search, X } from "lucide-react"
+import { MagnifyingGlass, X } from "@phosphor-icons/react"
 import { cn } from "@/src/lib/utils"
 
 export interface PortalSearchBarProps {
@@ -40,7 +40,7 @@ export function PortalSearchBar({
       )}
     >
       <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-brand-primary/10 text-brand-primary flex items-center justify-center shrink-0 ml-1">
-        <Search className="w-4 h-4 stroke-[2.5]" />
+        <MagnifyingGlass className="w-4 h-4 stroke-[2.5]" />
       </div>
 
       <input
@@ -66,7 +66,7 @@ export function PortalSearchBar({
         type="submit"
         className="px-4 sm:px-6 h-8 sm:h-10 rounded-full bg-brand-primary hover:bg-brand-primary/90 text-white font-heading font-black text-xs uppercase tracking-wider shadow-md transition-all flex items-center justify-center gap-1.5 cursor-pointer active:scale-[0.98] shrink-0"
       >
-        <Search className="w-3.5 h-3.5 stroke-[2.5] hidden sm:inline-block" />
+        <MagnifyingGlass className="w-3.5 h-3.5 stroke-[2.5] hidden sm:inline-block" />
         <span>Buscar</span>
       </button>
     </form>

@@ -4,13 +4,7 @@ import * as React from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { AnimatePresence, motion } from "framer-motion"
-import {
-  BadgePercent,
-  ChevronRight,
-  Minus,
-  Plus,
-  ShieldCheck,
-} from "lucide-react"
+import { Percent, CaretRight, Minus, Plus, ShieldCheck } from "@phosphor-icons/react"
 
 import { CtaButton } from "@/src/components/common/ctaButton"
 import { cn } from "@/src/lib/utils"
@@ -199,7 +193,7 @@ export function RoomBookingCard({
                       />
                     </Link>
                     <span className="inline-flex items-center gap-1 text-[11px] font-bold text-zinc-900 dark:text-white">
-                      <BadgePercent className="w-3.5 h-3.5 text-zinc-900 dark:text-white" />
+                      <Percent className="w-3.5 h-3.5 text-zinc-900 dark:text-white" />
                       <span>Menor preço garantido</span>
                     </span>
                   </div>
@@ -331,7 +325,7 @@ export function RoomBookingCard({
                 textClassName="gap-2"
               >
                 <span>Reservar com ClubKey</span>
-                <ChevronRight className="w-4 h-4 stroke-[2.5]" />
+                <CaretRight className="w-4 h-4 stroke-[2.5]" />
               </CtaButton>
 
               <div className="flex items-center justify-center gap-1 text-[11px] text-zinc-500 dark:text-zinc-400 text-center">
@@ -542,7 +536,7 @@ export function RoomBookingCard({
                 />
               </Link>
               <span className="inline-flex items-center gap-1 text-[11px] font-bold text-zinc-900 dark:text-white">
-                <BadgePercent className="w-3.5 h-3.5 text-zinc-900 dark:text-white" />
+                <Percent className="w-3.5 h-3.5 text-zinc-900 dark:text-white" />
                 <span>Menor preço garantido</span>
               </span>
             </div>
@@ -565,7 +559,7 @@ export function RoomBookingCard({
         textClassName="gap-2"
       >
         <span>Reservar com ClubKey</span>
-        <ChevronRight className="w-4 h-4 stroke-[2.5]" />
+        <CaretRight className="w-4 h-4 stroke-[2.5]" />
       </CtaButton>
 
       <div className="flex flex-col items-center gap-2 text-center text-[11px] text-zinc-400">

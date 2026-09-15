@@ -7,16 +7,7 @@ import Link from "next/link"
 
 import { formatBRL } from "@/src/data/portalData"
 import { usePortalStore } from "@/src/store/usePortalStore"
-import {
-  Calendar,
-  CheckCircle2,
-  CreditCard,
-  Download,
-  FileText,
-  Phone,
-  Receipt,
-  ShieldCheck,
-} from "lucide-react"
+import { Calendar, CheckCircle, CreditCard, Download, FileText, Phone, Receipt, ShieldCheck } from "@phosphor-icons/react"
 
 import { Badge } from "@/src/components/ui/badge/badge"
 import { Button } from "@/src/components/ui/button/button"
@@ -98,7 +89,7 @@ export default function MinhaAssinaturaPage(): React.JSX.Element {
                       variant="flat"
                       size="sm"
                       radius="sm"
-                      startContent={<CheckCircle2 className="w-3 h-3" />}
+                      startContent={<CheckCircle className="w-3 h-3" />}
                       className="font-bold uppercase tracking-wider"
                     >
                       Assinatura Ativa
@@ -167,7 +158,7 @@ export default function MinhaAssinaturaPage(): React.JSX.Element {
                       key={i}
                       className="flex items-start gap-2.5 text-xs text-zinc-700 dark:text-zinc-300"
                     >
-                      <CheckCircle2 className="w-4 h-4 text-brand-primary shrink-0 mt-0.5" />
+                      <CheckCircle className="w-4 h-4 text-brand-primary shrink-0 mt-0.5" />
                       <span className="leading-snug">{feature}</span>
                     </div>
                   ))}

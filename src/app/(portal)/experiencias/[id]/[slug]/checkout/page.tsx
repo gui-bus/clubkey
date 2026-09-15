@@ -4,21 +4,7 @@ import * as React from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { useParams, notFound } from "next/navigation"
-import {
-  CreditCard,
-  QrCode,
-  ShieldCheck,
-  CheckCircle2,
-  Calendar,
-  MapPin,
-  ArrowRight,
-  ShoppingCart,
-  Copy,
-  Check,
-  Clock,
-  KeyRound,
-  Lock
-} from "lucide-react"
+import { CreditCard, QrCode, ShieldCheck, CheckCircle, Calendar, MapPin, ArrowRight, ShoppingCart, Copy, Check, Clock, Key, Lock } from "@phosphor-icons/react"
 
 import { EXPERIENCES, formatBRL, getExperienceSlug } from "@/src/data/portalData"
 import { usePortalStore } from "@/src/store/usePortalStore"
@@ -117,12 +103,12 @@ export default function ExperienceCheckoutPage(): React.JSX.Element {
     return (
       <Container className="pt-8 pb-20 max-w-2xl mx-auto py-12 text-center space-y-6">
         <div className="w-16 h-16 rounded-sm bg-emerald-500/10 text-emerald-500 border border-emerald-500/30 flex items-center justify-center mx-auto shadow-sm">
-          <CheckCircle2 className="w-8 h-8" />
+          <CheckCircle className="w-8 h-8" />
         </div>
 
         <div className="space-y-2">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-sm bg-brand-primary/10 text-brand-primary text-xs font-bold uppercase tracking-wider">
-            <KeyRound className="w-3.5 h-3.5" />
+            <Key className="w-3.5 h-3.5" />
             <span>Vaga Confirmada • Acesso VIP</span>
           </div>
           <h1 className="text-3xl sm:text-4xl font-heading font-black tracking-tight uppercase text-zinc-900 dark:text-white">
@@ -521,7 +507,7 @@ export default function ExperienceCheckoutPage(): React.JSX.Element {
               <ul className="space-y-2 text-xs text-zinc-600 dark:text-zinc-300">
                 {experience.includes.slice(0, 4).map((item, i) => (
                   <li key={i} className="flex items-start gap-2">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-brand-primary shrink-0 mt-0.5" />
+                    <CheckCircle className="w-3.5 h-3.5 text-brand-primary shrink-0 mt-0.5" />
                     <span className="line-clamp-1">{item}</span>
                   </li>
                 ))}

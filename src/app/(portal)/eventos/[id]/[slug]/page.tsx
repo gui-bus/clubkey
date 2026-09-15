@@ -4,18 +4,7 @@ import * as React from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { useParams, notFound } from "next/navigation"
-import {
-  Calendar,
-  Clock,
-  MapPin,
-  Users,
-  Check,
-  X,
-  Plus,
-  ArrowRight,
-  ShieldCheck,
-  CheckCircle2
-} from "lucide-react"
+import { Calendar, Clock, MapPin, Users, Check, X, Plus, ArrowRight, ShieldCheck, CheckCircle } from "@phosphor-icons/react"
 
 import { EVENTS, MEMBERS, getInitials, getMemberSlug, getEventSlug } from "@/src/data/portalData"
 import { usePortalStore } from "@/src/store/usePortalStore"
@@ -442,7 +431,7 @@ export default function EventDetailPage(): React.JSX.Element {
               <ul className="space-y-2.5 text-xs text-zinc-600 dark:text-zinc-300">
                 {inclusions.map((item, index) => (
                   <li key={index} className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
+                    <CheckCircle className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
                     <span>{item}</span>
                   </li>
                 ))}

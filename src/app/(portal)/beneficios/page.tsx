@@ -5,7 +5,7 @@ import * as React from "react"
 import Image from "next/image"
 
 import { BENEFITS } from "@/src/data/portalData"
-import { ArrowRight, Building2, Gift, Search } from "lucide-react"
+import { ArrowRight, Buildings, Gift, MagnifyingGlass } from "@phosphor-icons/react"
 
 import { Badge } from "@/src/components/ui/badge/badge"
 import { Button } from "@/src/components/ui/button/button"
@@ -107,7 +107,7 @@ export default function BenefitsPage(): React.JSX.Element {
               )}
               {searchQuery && (
                 <span className="px-2.5 py-1 rounded-sm bg-brand-primary/10 text-brand-primary font-bold flex items-center gap-1.5">
-                  <Search className="w-3 h-3" />
+                  <MagnifyingGlass className="w-3 h-3" />
                   <span>&ldquo;{searchQuery}&rdquo;</span>
                 </span>
               )}
@@ -133,7 +133,7 @@ export default function BenefitsPage(): React.JSX.Element {
                     variant="flat"
                     size="sm"
                     radius="sm"
-                    startContent={<Building2 className="w-3.5 h-3.5" />}
+                    startContent={<Buildings className="w-3.5 h-3.5" />}
                     className="font-black uppercase tracking-wider"
                   >
                     Travel Club

@@ -14,6 +14,11 @@ Bloom UI is a next-generation utility-first React design system built on top of 
 - **Colors**: `"default"` | `"primary"` | `"secondary"` | `"accent"` | `"success"` | `"warning"` | `"danger"` | `"custom"`
 - **Variants**: `"default"` | `"bordered"` | `"light"` | `"flat"` | `"ghost"` | `"shadow"` | `"link"`
 
+## 🚫 Regra Obrigatória de Ícones: Proibido `lucide-react`, usar SEMPRE `@phosphor-icons/react`
+- **NUNCA** utilize ícones do pacote `lucide-react`. O pacote `lucide-react` foi removido e é estritamente proibido.
+- **SEMPRE** utilize ícones do pacote `@phosphor-icons/react` (ou `@phosphor-icons/react/dist/ssr` para Next.js Server Components).
+- Sempre que você vir um componente com ícone do `lucide-react`, altere-o imediatamente para o equivalente do `@phosphor-icons/react`.
+
 ## 🛠️ Path Configurations
 Bloom UI files are configured dynamically during initialization (refer to `bloom.json` in the workspace):
 - **Utility CSS/class Merger**: Import `cn` from `@/src/lib/utils` (or config path).

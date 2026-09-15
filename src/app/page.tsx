@@ -26,7 +26,7 @@ export default function Page(): React.JSX.Element {
 
   if (isAuthenticated) {
     return (
-      <div className="min-h-screen w-full bg-zinc-50 dark:bg-[#0D0D0D] text-zinc-900 dark:text-white flex flex-col font-sans selection:bg-brand-primary/20 selection:text-brand-primary">
+      <div className="min-h-screen w-full text-zinc-900 dark:text-white flex flex-col font-sans selection:bg-brand-primary/20 selection:text-brand-primary">
         <Navbar />
         <main className="flex-1 w-full flex flex-col">
           <PortalHome />

@@ -3,7 +3,7 @@
 import * as React from "react"
 import Link from "next/link"
 import { AnimatePresence, motion } from "framer-motion"
-import { Navigation } from "lucide-react"
+import { NavigationArrow } from "@phosphor-icons/react"
 
 export interface RoomLocationCardProps {
   street?: string
@@ -64,7 +64,7 @@ export function RoomLocationCard({
             onClick={() => setDirectionsOpen((prev) => !prev)}
             className="inline-flex items-center gap-2 px-4 py-2 rounded-sm bg-white dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-xs font-bold text-zinc-900 dark:text-white shadow-sm border border-zinc-200 dark:border-zinc-700 transition-all hover:scale-103 cursor-pointer"
           >
-            <Navigation className="w-3.5 h-3.5 text-zinc-900 dark:text-white fill-none stroke-[2.2]" />
+            <NavigationArrow className="w-3.5 h-3.5 text-zinc-900 dark:text-white fill-none stroke-[2.2]" />
             <span>Como chegar</span>
           </button>
 

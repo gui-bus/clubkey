@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { ChevronDown, Search } from "lucide-react"
+import { CaretDown, MagnifyingGlass } from "@phosphor-icons/react"
 import ReactCountryFlag from "react-country-flag"
 
 import { countries, type Country } from "@/src/data/countries"
@@ -124,13 +124,13 @@ export function PhoneInput({
               />
               <span>+{selectedCountry.dialCode}</span>
             </div>
-            <ChevronDown className="w-4 h-4 text-zinc-400 shrink-0" />
+            <CaretDown className="w-4 h-4 text-zinc-400 shrink-0" />
           </button>
 
           {dropdownOpen && (
             <div className="absolute top-full left-0 mt-1.5 w-72 sm:w-80 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-sm shadow-2xl z-50 p-2 overflow-hidden animate-in fade-in-0 zoom-in-95 duration-150">
               <div className="relative flex items-center mb-2 px-2">
-                <Search className="w-4 h-4 absolute left-4 text-zinc-400 pointer-events-none" />
+                <MagnifyingGlass className="w-4 h-4 absolute left-4 text-zinc-400 pointer-events-none" />
                 <input
                   ref={searchInputRef}
                   type="text"

@@ -3,7 +3,7 @@
 import * as React from "react"
 import Image from "next/image"
 import { AnimatePresence, motion } from "framer-motion"
-import { ChevronLeft, ChevronRight, Grid, X } from "lucide-react"
+import { CaretLeft, CaretRight, SquaresFour, X } from "@phosphor-icons/react"
 
 import { cn } from "@/src/lib/utils"
 
@@ -98,7 +98,7 @@ export function RoomGallery({ title, photos }: RoomGalleryProps): React.JSX.Elem
           onClick={() => openLightbox(0)}
           className="absolute bottom-4 right-4 z-20 px-3.5 py-2 rounded-sm bg-white/95 dark:bg-zinc-900/95 hover:bg-white dark:hover:bg-zinc-900 text-zinc-900 dark:text-white text-xs sm:text-sm font-bold shadow-lg flex items-center gap-2 border border-zinc-200/80 dark:border-zinc-700 backdrop-blur-xs transition-all hover:scale-103 cursor-pointer"
         >
-          <Grid className="w-4 h-4" />
+          <SquaresFour className="w-4 h-4" />
           <span>Ver todas as fotos ({photos.length})</span>
         </button>
       </div>
@@ -136,7 +136,7 @@ export function RoomGallery({ title, photos }: RoomGalleryProps): React.JSX.Elem
                 className="absolute left-2 sm:left-4 z-20 w-11 h-11 rounded-sm bg-white/15 hover:bg-white/30 text-white flex items-center justify-center backdrop-blur-sm transition-all hover:scale-105 cursor-pointer"
                 aria-label="Foto anterior"
               >
-                <ChevronLeft className="w-6 h-6" />
+                <CaretLeft className="w-6 h-6" />
               </button>
 
               <div className="relative w-full h-[65vh] sm:h-[75vh]">
@@ -160,7 +160,7 @@ export function RoomGallery({ title, photos }: RoomGalleryProps): React.JSX.Elem
                 className="absolute right-2 sm:right-4 z-20 w-11 h-11 rounded-sm bg-white/15 hover:bg-white/30 text-white flex items-center justify-center backdrop-blur-sm transition-all hover:scale-105 cursor-pointer"
                 aria-label="Próxima foto"
               >
-                <ChevronRight className="w-6 h-6" />
+                <CaretRight className="w-6 h-6" />
               </button>
             </div>
 

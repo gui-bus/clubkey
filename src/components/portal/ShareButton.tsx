@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Link2, Check } from "lucide-react"
+import { LinkSimple, Check } from "@phosphor-icons/react"
 import { toast } from "@/src/components/ui/toast/toast"
 import { cn } from "@/src/lib/utils"
 
@@ -54,7 +54,7 @@ export function ShareButton({
         {copied ? (
           <Check className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 animate-in zoom-in-75 duration-200" />
         ) : (
-          <Link2 className="w-3.5 h-3.5 text-zinc-400 group-hover:text-brand-primary transition-colors duration-200" />
+          <LinkSimple className="w-3.5 h-3.5 text-zinc-400 group-hover:text-brand-primary transition-colors duration-200" />
         )}
       </span>
       <span

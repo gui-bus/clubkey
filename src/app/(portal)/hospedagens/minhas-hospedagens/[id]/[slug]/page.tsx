@@ -4,20 +4,7 @@ import * as React from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { useParams, notFound } from "next/navigation"
-import {
-  Calendar,
-  Clock,
-  MapPin,
-  Users,
-  CheckCircle2,
-  Building2,
-  Phone,
-  Ticket,
-  ShieldCheck,
-  Download,
-  XCircle,
-  Info
-} from "lucide-react"
+import { Calendar, Clock, MapPin, Users, CheckCircle, Buildings, Phone, Ticket, ShieldCheck, Download, XCircle, Info } from "@phosphor-icons/react"
 
 import { usePortalStore } from "@/src/store/usePortalStore"
 import { formatBRL } from "@/src/data/portalData"
@@ -84,7 +71,7 @@ export default function MinhaHospedagemDetailPage(): React.JSX.Element {
                     variant="flat"
                     size="sm"
                     radius="sm"
-                    startContent={<CheckCircle2 className="w-3 h-3" />}
+                    startContent={<CheckCircle className="w-3 h-3" />}
                     className="font-bold uppercase tracking-wider backdrop-blur-md"
                   >
                     Reserva Confirmada
@@ -122,7 +109,7 @@ export default function MinhaHospedagemDetailPage(): React.JSX.Element {
                     Acomodação
                   </span>
                   <p className="text-sm font-bold text-zinc-900 dark:text-white flex items-center gap-2">
-                    <Building2 className="w-4 h-4 text-brand-primary shrink-0" />
+                    <Buildings className="w-4 h-4 text-brand-primary shrink-0" />
                     {stay.roomType}
                   </p>
                 </div>
@@ -155,19 +142,19 @@ export default function MinhaHospedagemDetailPage(): React.JSX.Element {
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-zinc-700 dark:text-zinc-300">
                   <div className="flex items-center gap-2">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-brand-primary" />
+                    <CheckCircle className="w-3.5 h-3.5 text-brand-primary" />
                     <span>Café da manhã à la carte cortesia</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-brand-primary" />
+                    <CheckCircle className="w-3.5 h-3.5 text-brand-primary" />
                     <span>Early check-in & late check-out prioritário</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-brand-primary" />
+                    <CheckCircle className="w-3.5 h-3.5 text-brand-primary" />
                     <span>Garrafa de espumante de boas-vindas</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-brand-primary" />
+                    <CheckCircle className="w-3.5 h-3.5 text-brand-primary" />
                     <span>Upgrade de categoria sujeito a disponibilidade</span>
                   </div>
                 </div>

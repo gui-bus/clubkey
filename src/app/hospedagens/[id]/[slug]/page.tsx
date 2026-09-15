@@ -4,13 +4,7 @@ import * as React from "react"
 import Link from "next/link"
 import { useParams } from "next/navigation"
 import { AnimatePresence, motion } from "framer-motion"
-import {
-  ChevronLeft,
-  Clock,
-  Heart,
-  MapPin,
-  ShieldAlert,
-} from "lucide-react"
+import { CaretLeft, Clock, Heart, MapPin, ShieldWarning } from "@phosphor-icons/react"
 
 import { RoomAmenities } from "@/src/components/rooms/roomAmenities"
 import { RoomBookingCard } from "@/src/components/rooms/roomBookingCard"
@@ -101,7 +95,7 @@ export default function HospedagemDetailPage(): React.JSX.Element {
             href="/hospedagens"
             className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors cursor-pointer"
           >
-            <ChevronLeft className="w-4 h-4" />
+            <CaretLeft className="w-4 h-4" />
             <span>Voltar para acomodações</span>
           </Link>
 
@@ -242,7 +236,7 @@ export default function HospedagemDetailPage(): React.JSX.Element {
 
                   <div>
                     <div className="flex items-center gap-2 text-zinc-900 dark:text-white font-normal text-sm mb-2">
-                      <ShieldAlert className="w-4 h-4 text-brand-primary" />
+                      <ShieldWarning className="w-4 h-4 text-brand-primary" />
                       <span>Regras da casa</span>
                     </div>
                     <ul className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 space-y-1.5">

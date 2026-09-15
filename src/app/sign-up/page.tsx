@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Building2, User } from "lucide-react"
+import { Buildings, User } from "@phosphor-icons/react"
 
 import { EmailVerification } from "@/src/components/auth/emailVerification"
 import { SignUpPfForm } from "@/src/components/auth/signUpPfForm"
@@ -77,7 +77,7 @@ export default function SignUpPage(): React.JSX.Element {
                           : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white"
                       )}
                     >
-                      <Building2 className="w-4 h-4" />
+                      <Buildings className="w-4 h-4" />
                       <span>Pessoa Jurídica</span>
                     </button>
                   </div>

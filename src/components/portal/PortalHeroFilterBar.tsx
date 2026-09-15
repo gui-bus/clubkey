@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { ChevronDown, Search, X, LucideIcon } from "lucide-react"
+import { CaretDown, MagnifyingGlass, X, type Icon } from "@phosphor-icons/react"
 import { cn } from "@/src/lib/utils"
 
 export interface FilterOption {
@@ -12,7 +12,7 @@ export interface FilterOption {
 
 export interface PortalHeroFilterBarProps {
   categoryLabel?: string
-  categoryIcon?: LucideIcon
+  categoryIcon?: Icon
   activeCategory: string
   onCategoryChange: (value: string) => void
   categories: FilterOption[]
@@ -77,7 +77,7 @@ export function PortalHeroFilterBar({
                 {CategoryIcon ? (
                   <CategoryIcon className="w-3.5 h-3.5" />
                 ) : (
-                  <Search className="w-3.5 h-3.5" />
+                  <MagnifyingGlass className="w-3.5 h-3.5" />
                 )}
               </div>
               <div className="flex flex-col min-w-0">
@@ -89,7 +89,7 @@ export function PortalHeroFilterBar({
                 </span>
               </div>
             </div>
-            <ChevronDown
+            <CaretDown
               className={cn(
                 "w-4 h-4 text-zinc-400 shrink-0 transition-transform duration-200",
                 dropdownOpen && "rotate-180"
@@ -152,7 +152,7 @@ export function PortalHeroFilterBar({
           onClick={() => handleSearchSubmit()}
           className="w-full h-10 rounded-sm bg-brand-primary hover:bg-brand-primary/90 text-white font-bold text-xs uppercase tracking-wide shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-[0.99]"
         >
-          <Search className="w-4 h-4 stroke-[2.5]" />
+          <MagnifyingGlass className="w-4 h-4 stroke-[2.5]" />
           <span>Buscar</span>
         </button>
       </div>
@@ -168,7 +168,7 @@ export function PortalHeroFilterBar({
               {CategoryIcon ? (
                 <CategoryIcon className="w-4 h-4 text-brand-primary shrink-0" />
               ) : (
-                <Search className="w-4 h-4 text-brand-primary shrink-0" />
+                <MagnifyingGlass className="w-4 h-4 text-brand-primary shrink-0" />
               )}
               <div className="flex flex-col min-w-0">
                 <span className="text-[9px] font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
@@ -179,7 +179,7 @@ export function PortalHeroFilterBar({
                 </span>
               </div>
             </div>
-            <ChevronDown
+            <CaretDown
               className={cn(
                 "w-3.5 h-3.5 text-zinc-400 shrink-0 transition-transform",
                 dropdownOpen && "rotate-180"
@@ -221,7 +221,7 @@ export function PortalHeroFilterBar({
         <div className="w-px h-7 bg-zinc-200 dark:bg-zinc-800 shrink-0" />
 
         <div className="flex-1 flex items-center gap-2 px-3 py-1">
-          <Search className="w-4 h-4 text-zinc-400 shrink-0" />
+          <MagnifyingGlass className="w-4 h-4 text-zinc-400 shrink-0" />
           <input
             type="text"
             value={searchQuery}
@@ -249,7 +249,7 @@ export function PortalHeroFilterBar({
           className="w-11 h-11 rounded-full bg-brand-primary hover:bg-brand-primary/90 text-white flex items-center justify-center shadow-lg transition-all shrink-0 cursor-pointer active:scale-95"
           aria-label="Buscar"
         >
-          <Search className="w-4 h-4 stroke-[2.5]" />
+          <MagnifyingGlass className="w-4 h-4 stroke-[2.5]" />
         </button>
       </div>
     </div>

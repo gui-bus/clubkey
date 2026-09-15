@@ -7,17 +7,7 @@ import Link from "next/link"
 
 import { EVENTS, getInitials } from "@/src/data/portalData"
 import { usePortalStore } from "@/src/store/usePortalStore"
-import {
-  ArrowRight,
-  Building2,
-  Calendar,
-  CheckCircle2,
-  Compass,
-  Gift,
-  Hotel,
-  ShieldCheck,
-  Users,
-} from "lucide-react"
+import { ArrowRight, Buildings, Calendar, CheckCircle, Compass, Gift, BuildingApartment, ShieldCheck, Users } from "@phosphor-icons/react"
 
 import {
   Avatar,
@@ -129,7 +119,7 @@ export function PortalHome(): React.JSX.Element {
               className="group relative overflow-hidden p-4 rounded-sm bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:border-brand-primary/50 dark:hover:border-brand-primary/50 transition-all shadow-xs flex flex-col justify-between min-h-[115px]"
             >
               <div className="absolute -right-2 -bottom-2 pointer-events-none select-none transition-all duration-300 group-hover:scale-110 group-hover:-rotate-6">
-                <Building2 className="w-20 h-20 text-zinc-900/[0.05] dark:text-white/[0.05] group-hover:text-brand-primary/[0.1] dark:group-hover:text-brand-primary/[0.1] transition-colors" />
+                <Buildings className="w-20 h-20 text-zinc-900/[0.05] dark:text-white/[0.05] group-hover:text-brand-primary/[0.1] dark:group-hover:text-brand-primary/[0.1] transition-colors" />
               </div>
 
               <div className="mb-3 relative z-10">
@@ -220,7 +210,7 @@ export function PortalHome(): React.JSX.Element {
               className="group relative overflow-hidden p-4 rounded-sm bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:border-brand-primary/50 dark:hover:border-brand-primary/50 hover:shadow-md transition-all flex flex-col justify-between min-h-[125px]"
             >
               <div className="absolute -right-2 -bottom-2 pointer-events-none select-none transition-all duration-300 group-hover:scale-110 group-hover:-rotate-6">
-                <Hotel className="w-20 h-20 text-zinc-900/[0.05] dark:text-white/[0.05] group-hover:text-brand-primary/[0.1] dark:group-hover:text-brand-primary/[0.1] transition-colors" />
+                <BuildingApartment className="w-20 h-20 text-zinc-900/[0.05] dark:text-white/[0.05] group-hover:text-brand-primary/[0.1] dark:group-hover:text-brand-primary/[0.1] transition-colors" />
               </div>
               <div className="relative z-10">
                 <div className="flex items-center justify-between gap-1.5 mb-1.5">

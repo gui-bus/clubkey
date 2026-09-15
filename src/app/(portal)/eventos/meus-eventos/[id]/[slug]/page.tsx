@@ -4,19 +4,7 @@ import * as React from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { useParams, notFound } from "next/navigation"
-import {
-  Calendar,
-  Clock,
-  MapPin,
-  Users,
-  CheckCircle2,
-  Building,
-  ArrowRight,
-  QrCode,
-  Share2,
-  XCircle,
-  Download
-} from "lucide-react"
+import { Calendar, Clock, MapPin, Users, CheckCircle, Building, ArrowRight, QrCode, ShareNetwork, XCircle, Download } from "@phosphor-icons/react"
 
 import { EVENTS, MEMBERS, getInitials, getMemberSlug, getEventSlug } from "@/src/data/portalData"
 import { usePortalStore } from "@/src/store/usePortalStore"
@@ -83,7 +71,7 @@ export default function MeuEventoDetailPage(): React.JSX.Element {
                       <Calendar className="w-3.5 h-3.5" />
                       {event.weekday}, {event.day} de {event.month} de 2026
                     </span>
-                    <Badge color="success" variant="flat" size="sm" radius="sm" startContent={<CheckCircle2 className="w-3 h-3" />} className="font-bold uppercase tracking-wider">
+                    <Badge color="success" variant="flat" size="sm" radius="sm" startContent={<CheckCircle className="w-3 h-3" />} className="font-bold uppercase tracking-wider">
                       Presença Garantida
                     </Badge>
                   </div>

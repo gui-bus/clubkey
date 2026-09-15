@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { type VariantProps } from "class-variance-authority"
-import { Check, Circle, Eye, EyeOff, X } from "lucide-react"
+import { Check, Circle, Eye, EyeSlash, X } from "@phosphor-icons/react"
 
 import { Input, type inputVariants } from "@/src/components/ui/input/input"
 import { cn } from "@/src/lib/utils"
@@ -201,7 +201,7 @@ const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputProps>(
             tabIndex={-1}
           >
             {showPassword ? (
-              <EyeOff className="w-4 h-4" />
+              <EyeSlash className="w-4 h-4" />
             ) : (
               <Eye className="w-4 h-4" />
             )}

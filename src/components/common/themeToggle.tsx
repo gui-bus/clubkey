@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { useTheme } from "next-themes"
-import { Moon, Sun } from "lucide-react"
+import { Moon, Sun } from "@phosphor-icons/react"
 import { motion, AnimatePresence } from "framer-motion"
 
 import { AnimatedThemeToggler, type TransitionVariant } from "@/src/components/ui/animated-theme-toggler"

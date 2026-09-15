@@ -4,18 +4,7 @@ import * as React from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { useParams, notFound } from "next/navigation"
-import {
-  Calendar,
-  Clock,
-  MapPin,
-  Users,
-  Check,
-  Plus,
-  ArrowRight,
-  ShieldCheck,
-  CheckCircle2,
-  Gift
-} from "lucide-react"
+import { Calendar, Clock, MapPin, Users, Check, Plus, ArrowRight, ShieldCheck, CheckCircle, Gift } from "@phosphor-icons/react"
 
 import {
   EXPERIENCES,
@@ -266,7 +255,7 @@ export default function ExperienceDetailPage(): React.JSX.Element {
                   key={index}
                   className="p-4 sm:p-5 rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] flex items-start gap-3 hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors"
                 >
-                  <CheckCircle2 className="w-4 h-4 text-brand-primary shrink-0 mt-0.5" />
+                  <CheckCircle className="w-4 h-4 text-brand-primary shrink-0 mt-0.5" />
                   <span className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
                     {item}
                   </span>
@@ -385,7 +374,7 @@ export default function ExperienceDetailPage(): React.JSX.Element {
                 <span>Cancelamento gratuito até 48h antes da data</span>
               </div>
               <div className="flex items-start gap-2">
-                <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
+                <CheckCircle className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
                 <span>Concierge e suporte dedicado durante a experiência</span>
               </div>
             </div>

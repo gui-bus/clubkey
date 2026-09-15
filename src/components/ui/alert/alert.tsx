@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  AlertCircle,
-  AlertTriangle,
-  CheckCircle2,
-  Info,
-  X,
-} from "lucide-react";
+import { WarningCircle, Warning, CheckCircle, Info, X } from "@phosphor-icons/react";
 import * as React from "react";
 import { cn } from "../../../lib/utils";
 
@@ -87,9 +81,9 @@ const variantCardMap: Record<AlertVariant, string> = {
 const iconMap: Record<AlertColor, React.ElementType> = {
   default: Info,
   info: Info,
-  success: CheckCircle2,
-  warning: AlertTriangle,
-  danger: AlertCircle,
+  success: CheckCircle,
+  warning: Warning,
+  danger: WarningCircle,
 };
 
 export interface AlertProps

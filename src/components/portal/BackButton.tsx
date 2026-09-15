@@ -3,7 +3,7 @@
 import * as React from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { ChevronLeft } from "lucide-react"
+import { CaretLeft } from "@phosphor-icons/react"
 import { cn } from "@/src/lib/utils"
 
 interface BackButtonProps {
@@ -28,7 +28,7 @@ export function BackButton({
           className
         )}
       >
-        <ChevronLeft className="w-4 h-4" />
+        <CaretLeft className="w-4 h-4" />
         <span>{label}</span>
       </Link>
     )
@@ -43,7 +43,7 @@ export function BackButton({
         className
       )}
     >
-      <ChevronLeft className="w-4 h-4" />
+      <CaretLeft className="w-4 h-4" />
       <span>{label}</span>
     </button>
   )

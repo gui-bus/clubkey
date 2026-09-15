@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import Image from "next/image"
-import { ArrowRight, Check, Copy, ExternalLink, ShieldCheck, Gift } from "lucide-react"
+import { ArrowRight, Check, Copy, ArrowSquareOut, ShieldCheck, Gift } from "@phosphor-icons/react"
 
 import { BenefitItem, getInitials } from "@/src/data/portalData"
 import { CtaButton } from "@/src/components/common/ctaButton"

@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import Image from "next/image"
-import { ShieldCheck } from "lucide-react"
+import { ShieldCheck } from "@phosphor-icons/react"
 
 import { FloatingCta } from "@/src/components/landing/FloatingCta"
 import { Footer } from "@/src/components/landing/Footer"

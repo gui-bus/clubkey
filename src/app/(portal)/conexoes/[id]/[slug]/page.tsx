@@ -4,19 +4,7 @@ import * as React from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { useParams, notFound } from "next/navigation"
-import {
-  MapPin,
-  Check,
-  Hourglass,
-  UserPlus,
-  Send,
-  ExternalLink,
-  Globe,
-  ArrowRight,
-  Award,
-  Target,
-  ShieldCheck
-} from "lucide-react"
+import { MapPin, Check, Hourglass, UserPlus, PaperPlaneRight, ArrowSquareOut, Globe, ArrowRight, Medal, Target, ShieldCheck } from "@phosphor-icons/react"
 
 import { MEMBERS, EVENTS, getInitials, getMemberSlug, getEventSlug } from "@/src/data/portalData"
 import { usePortalStore } from "@/src/store/usePortalStore"
@@ -179,7 +167,7 @@ export default function MemberProfileDetailPage(): React.JSX.Element {
                     rel="noreferrer"
                     className="text-zinc-600 dark:text-zinc-400 hover:text-brand-primary dark:hover:text-brand-primary flex items-center gap-1 font-medium transition-colors"
                   >
-                    LinkedIn <ExternalLink className="w-3 h-3" />
+                    LinkedIn <ArrowSquareOut className="w-3 h-3" />
                   </a>
                 </>
               )}
@@ -228,7 +216,7 @@ export default function MemberProfileDetailPage(): React.JSX.Element {
               <div className="p-4 sm:p-5 rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] space-y-2 hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors">
                 <div className="flex items-center gap-2.5">
                   <div className="w-8 h-8 rounded-sm bg-brand-primary/10 flex items-center justify-center shrink-0">
-                    <Award className="w-4 h-4 text-brand-primary" />
+                    <Medal className="w-4 h-4 text-brand-primary" />
                   </div>
                   <span className="text-[11px] font-black uppercase tracking-widest text-zinc-400">
                     O que {firstName} Oferece
@@ -459,7 +447,7 @@ export default function MemberProfileDetailPage(): React.JSX.Element {
                 onClick={handleSendMessage}
                 className="h-10 text-xs shadow-none hover:shadow-none"
               >
-                <Send className="w-3.5 h-3.5 mr-2 shrink-0" />
+                <PaperPlaneRight className="w-3.5 h-3.5 mr-2 shrink-0" />
                 Enviar mensagem
               </CtaButton>
             </div>

@@ -3,16 +3,7 @@
 import * as React from "react"
 import Image from "next/image"
 import Link from "next/link"
-import {
-  Bath,
-  Bed,
-  Bookmark,
-  ChevronLeft,
-  ChevronRight,
-  DoorClosed,
-  Flame,
-  Users,
-} from "lucide-react"
+import { Bathtub, Bed, Bookmark, CaretLeft, CaretRight, Door, Flame, Users } from "@phosphor-icons/react"
 
 import { type RoomProperty } from "@/src/data/mockRooms"
 import { DiscountRibbon } from "@/src/components/common/discountRibbon"
@@ -177,7 +168,7 @@ export function RoomCard({
             className="absolute left-2 top-1/2 -translate-y-1/2 z-20 p-1 text-white hover:text-white/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all hover:scale-110 cursor-pointer"
             aria-label="Foto anterior"
           >
-            <ChevronLeft className="w-6 h-6 stroke-[2.5]" />
+            <CaretLeft className="w-6 h-6 stroke-[2.5]" />
           </button>
         )}
 
@@ -188,7 +179,7 @@ export function RoomCard({
             className="absolute right-2 top-1/2 -translate-y-1/2 z-20 p-1 text-white hover:text-white/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all hover:scale-110 cursor-pointer"
             aria-label="Próxima foto"
           >
-            <ChevronRight className="w-6 h-6 stroke-[2.5]" />
+            <CaretRight className="w-6 h-6 stroke-[2.5]" />
           </button>
         )}
 
@@ -269,7 +260,7 @@ export function RoomCard({
               className="flex items-center gap-1.5"
               title={`${room.rooms} Quartos`}
             >
-              <DoorClosed className="w-3.5 h-3.5 text-zinc-400 dark:text-zinc-500 shrink-0" />
+              <Door className="w-3.5 h-3.5 text-zinc-400 dark:text-zinc-500 shrink-0" />
               <span>{room.rooms}</span>
             </div>
             <span className="text-zinc-300 dark:text-zinc-700 select-none">•</span>
@@ -293,7 +284,7 @@ export function RoomCard({
               className="flex items-center gap-1.5"
               title={`${room.bathrooms} Banheiros`}
             >
-              <Bath className="w-3.5 h-3.5 text-zinc-400 dark:text-zinc-500 shrink-0" />
+              <Bathtub className="w-3.5 h-3.5 text-zinc-400 dark:text-zinc-500 shrink-0" />
               <span>{room.bathrooms}</span>
             </div>
           </div>
