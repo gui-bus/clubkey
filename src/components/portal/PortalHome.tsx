@@ -43,7 +43,7 @@ export function PortalHome(): React.JSX.Element {
     <div className="w-full flex flex-col">
       <section
         id="hero"
-        className="relative z-30 w-full bg-[#0D0D0D] text-white overflow-hidden"
+        className="relative z-30 w-full bg-[#0D0D0D] border-b border-zinc-200 dark:border-zinc-800 text-white overflow-hidden"
       >
         <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none select-none">
           <Image
@@ -51,23 +51,52 @@ export function PortalHome(): React.JSX.Element {
             alt="ClubKey Hub"
             fill
             priority
-            className="object-cover object-top opacity-40"
+            className="object-cover object-center opacity-20"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/85 via-black/75 to-zinc-50 dark:to-[#0D0D0D] z-10" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/95 via-black/85 to-black/95" />
         </div>
 
-        <Container className="relative z-20 pt-28 pb-12 sm:pt-32 sm:pb-14 md:pt-36 md:pb-16 flex flex-col items-center text-center">
-          <div className="max-w-3xl flex flex-col items-center text-center w-full">
-            <span className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-brand-primary/15 border border-brand-primary/30 text-brand-primary text-[10px] sm:text-xs font-black uppercase tracking-widest mb-4">
-              <span className="w-1.5 h-1.5 rounded-full bg-brand-primary animate-pulse" />
-              Painel do Membro • Acesso VIP
-            </span>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tight text-white leading-[1.05] mb-3 font-heading drop-shadow-md">
-              Bem-vindo, <span className="text-brand-primary">{userProfile.name}</span>
-            </h1>
-            <p className="text-sm sm:text-base md:text-lg text-zinc-300 font-light leading-relaxed drop-shadow-sm max-w-xl">
-              {userProfile.role} na {userProfile.company} • Membro Oficial ClubKey
-            </p>
+        <Container className="relative z-20 pt-28 pb-8 sm:pt-32 sm:pb-10 md:pt-36 md:pb-10">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+            <div className="space-y-2 max-w-2xl">
+              <div className="flex items-center gap-2">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-brand-primary/15 border border-brand-primary/30 text-brand-primary text-[10px] font-bold uppercase tracking-widest">
+                  <span className="w-1.5 h-1.5 rounded-full bg-brand-primary" />
+                  Membro VIP • ClubKey Privé
+                </span>
+              </div>
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-black uppercase tracking-tight text-white font-heading">
+                Bem-vindo, <span className="text-brand-primary">{userProfile.name}</span>
+              </h1>
+              <p className="text-xs sm:text-sm text-zinc-400 font-normal">
+                {userProfile.role} na {userProfile.company} • Acesso exclusivo a hospedagens, eventos, networking e benefícios do clube.
+              </p>
+            </div>
+
+            <div className="flex items-center gap-3 shrink-0 flex-wrap sm:flex-nowrap">
+              <div className="flex items-center gap-3 px-4 py-3 rounded-sm border border-zinc-800 bg-white/5 backdrop-blur-sm text-left">
+                <div>
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400 block">
+                    Status da Conta
+                  </span>
+                  <span className="text-xs font-black uppercase text-emerald-400 flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                    Assinatura Ativa
+                  </span>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3 px-4 py-3 rounded-sm border border-zinc-800 bg-white/5 backdrop-blur-sm text-left">
+                <div>
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400 block">
+                    Concierge VIP
+                  </span>
+                  <span className="text-xs font-bold text-zinc-200">
+                    Disponível 24/7
+                  </span>
+                </div>
+              </div>
+            </div>
           </div>
         </Container>
       </section>
