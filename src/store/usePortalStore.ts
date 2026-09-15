@@ -11,11 +11,13 @@ import {
   DEFAULT_MEMBER_SUBSCRIPTION
 } from "@/src/data/portalData"
 
+export type MemberConnectionStatus = "none" | "pending" | "connected"
+
 interface PortalState {
   isAuthenticated: boolean
   activeClubId: string
   confirmedEvents: Record<number, boolean>
-  connectedMembers: Record<number, boolean>
+  connectedMembers: Record<number, "pending" | "connected">
   boughtExperiences: Record<number, boolean>
   memberStays: MemberStayReservation[]
   memberSubscription: MemberSubscription
@@ -25,7 +27,8 @@ interface PortalState {
   setActiveClubId: (id: string) => void
   getActiveClub: () => Club
   toggleEventRSVP: (eventId: number) => boolean
-  toggleConnect: (memberId: number) => boolean
+  toggleConnect: (memberId: number) => MemberConnectionStatus
+  getConnectionStatus: (memberId: number) => MemberConnectionStatus
   buyExperience: (experienceId: number) => void
   cancelStay: (stayReservationId: string) => void
   updateProfile: (profile: Partial<UserProfile>) => void
@@ -41,7 +44,14 @@ export const usePortalStore = create<PortalState>()(
       isAuthenticated: true,
       activeClubId: "alpha",
       confirmedEvents: { 1: true, 5: true },
-      connectedMembers: {},
+      connectedMembers: {
+        0: "connected",
+        2: "connected",
+        7: "connected",
+        10: "connected",
+        4: "pending",
+        14: "pending"
+      },
       boughtExperiences: {},
       memberStays: DEFAULT_MEMBER_STAYS,
       memberSubscription: DEFAULT_MEMBER_SUBSCRIPTION,
@@ -93,16 +103,28 @@ export const usePortalStore = create<PortalState>()(
         return next
       },
 
-      toggleConnect: (memberId: number) => {
-        const current = !!get().connectedMembers[memberId]
-        const next = !current
-        set((state) => ({
-          connectedMembers: {
-            ...state.connectedMembers,
-            [memberId]: next
-          }
-        }))
-        return next
+      getConnectionStatus: (memberId: number): MemberConnectionStatus => {
+        return get().connectedMembers[memberId] || "none"
+      },
+
+      toggleConnect: (memberId: number): MemberConnectionStatus => {
+        const current = get().connectedMembers[memberId]
+        if (current === "connected" || current === "pending") {
+          set((state) => {
+            const copy = { ...state.connectedMembers }
+            delete copy[memberId]
+            return { connectedMembers: copy }
+          })
+          return "none"
+        } else {
+          set((state) => ({
+            connectedMembers: {
+              ...state.connectedMembers,
+              [memberId]: "pending"
+            }
+          }))
+          return "pending"
+        }
       },
 
       buyExperience: (experienceId: number) => {
@@ -170,17 +192,29 @@ export const usePortalStore = create<PortalState>()(
       }
     }),
     {
-      name: "clubkey-portal-storage-v2",
-      version: 2,
+      name: "clubkey-portal-storage-v3",
+      version: 3,
       migrate: (persistedState: unknown) => {
         const state = persistedState as PortalState
-        if (state?.userProfile?.name === "Marina Duarte" || !state?.userProfile?.name) {
-          return {
-            ...state,
-            userProfile: DEFAULT_USER
-          }
+        if (!state) return state
+        const migratedState = { ...state }
+        if (migratedState.userProfile?.name === "Marina Duarte" || !migratedState.userProfile?.name) {
+          migratedState.userProfile = DEFAULT_USER
         }
-        return state
+        if (migratedState.connectedMembers) {
+          const raw = migratedState.connectedMembers as Record<number, unknown>
+          const fixed: Record<number, "pending" | "connected"> = {}
+          for (const key in raw) {
+            const val = raw[key]
+            if (val === true || val === "connected") {
+              fixed[Number(key)] = "connected"
+            } else if (val === "pending") {
+              fixed[Number(key)] = "pending"
+            }
+          }
+          migratedState.connectedMembers = fixed
+        }
+        return migratedState
       },
       onRehydrateStorage: () => (state) => {
         if (state) {

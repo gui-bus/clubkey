@@ -2,14 +2,13 @@
 
 import * as React from "react"
 import Image from "next/image"
-import Link from "next/link"
 import { Building2, ArrowRight, Gift, Search } from "lucide-react"
-
 import { BENEFITS } from "@/src/data/portalData"
 import { BenefitCard } from "@/src/components/portal/BenefitCard"
 import { PortalHeroFilterBar } from "@/src/components/portal/PortalHeroFilterBar"
 import { Badge } from "@/src/components/ui/badge/badge"
 import { Button } from "@/src/components/ui/button/button"
+import { CtaButton } from "@/src/components/common/ctaButton"
 import { Container } from "@/src/components/common/container"
 
 const CATEGORIES = [
@@ -112,7 +111,7 @@ export default function BenefitsPage(): React.JSX.Element {
 
       <Container className="relative z-10 flex-1 py-10 space-y-8">
         {hasActiveFilters && (
-          <div className="flex flex-wrap items-center justify-between gap-3 bg-white dark:bg-[#141416] px-4 py-3 rounded-sm border border-zinc-200 dark:border-zinc-800 shadow-sm text-zinc-900 dark:text-white">
+          <div className="flex flex-wrap items-center justify-between gap-3 text-zinc-900 dark:text-white">
             <div className="flex flex-wrap items-center gap-2 text-xs text-zinc-600 dark:text-zinc-300">
               <span className="font-semibold text-zinc-900 dark:text-white">
                 Filtros aplicados:
@@ -142,7 +141,7 @@ export default function BenefitsPage(): React.JSX.Element {
         )}
 
         {!searchQuery && (activeCategory === "Todos" || activeCategory === "Viagem") && (
-          <div className="relative rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] p-6 sm:p-8 overflow-hidden shadow-sm">
+          <div className="relative rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] p-6 sm:p-8 overflow-hidden">
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
               <div className="space-y-2 flex-1">
                 <Badge
@@ -163,13 +162,15 @@ export default function BenefitsPage(): React.JSX.Element {
                 </p>
               </div>
 
-              <Link
+              <CtaButton
                 href="/hospedagens"
-                className="px-6 py-3.5 rounded-sm bg-brand-primary hover:bg-brand-primary/90 text-white text-xs font-black uppercase tracking-wider transition-colors shrink-0 flex items-center gap-2 shadow-xs"
+                variant="primary"
+                size="md"
+                className="shrink-0"
               >
                 <span>Ver hospedagens</span>
-                <ArrowRight className="w-4 h-4" />
-              </Link>
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </CtaButton>
             </div>
           </div>
         )}

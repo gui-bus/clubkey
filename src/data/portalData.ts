@@ -25,6 +25,12 @@ export interface Member {
   }
 }
 
+export interface EventHighlight {
+  title: string
+  desc: string
+  icon?: string
+}
+
 export interface EventItem {
   id: number
   title: string
@@ -45,6 +51,10 @@ export interface EventItem {
     role: string
   }
   image?: string
+  dressCode?: string
+  format?: string
+  highlights?: EventHighlight[]
+  inclusions?: string[]
 }
 
 export interface ExperienceItem {
@@ -323,11 +333,37 @@ export const EVENTS: EventItem[] = [
     time: "20h00",
     place: "Casa Alpha, Jardins (São Paulo)",
     organizerId: 0,
-    capacity: 60,
-    initialConfirmed: 35,
+    capacity: 15,
+    initialConfirmed: 8,
     image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&auto=format&fit=crop&q=80",
     desc: "Mesa longa, conversas de alto nível e uma regra: cada convidado apresenta os desafios estratégicos do trimestre. Sem pitch, sem palco.",
-    participants: [0, 1, 2, 4, 9, 10, 14, 15]
+    participants: [0, 1, 2, 4, 9, 10, 14, 15],
+    dressCode: "Smart Casual / Business",
+    format: "Jantar Exclusivo • Mesa Redonda",
+    highlights: [
+      {
+        title: "Mesa Redonda Sem Palco",
+        desc: "Diálogo aberto e sem apresentações formais, onde cada membro compartilha um desafio estratégico real do trimestre."
+      },
+      {
+        title: "Regra Chatham House",
+        desc: "Segurança e sigilo absoluto para debater números, transações e planos de expansão com franqueza."
+      },
+      {
+        title: "Harmonização Gastronômica",
+        desc: "Jantar autoral em múltiplos tempos no Casa Alpha com carta de vinhos curada exclusivamente para membros."
+      },
+      {
+        title: "Deal Flow & Mapeamento",
+        desc: "Síntese executiva das oportunidades e sinergias identificadas distribuída aos participantes pós-encontro."
+      }
+    ],
+    inclusions: [
+      "Acesso ao salão privativo Casa Alpha",
+      "Menu autoral em 4 tempos & carta de vinhos",
+      "Resumo executivo de oportunidades pós-evento",
+      "Suporte e atendimento do concierge ClubKey"
+    ]
   },
   {
     id: 1,
@@ -338,11 +374,37 @@ export const EVENTS: EventItem[] = [
     time: "12h30",
     place: "Fasano, Rua Vittorio Fasano (São Paulo)",
     organizerId: 10,
-    capacity: 24,
-    initialConfirmed: 21,
+    capacity: 10,
+    initialConfirmed: 5,
     image: "https://images.unsplash.com/photo-1528605248644-14dd04022da1?w=800&auto=format&fit=crop&q=80",
     desc: "Almoço fechado com gestores ativos em SaaS, infraestrutura e real estate. Cada membro traz uma pauta objetiva de crescimento e captação.",
-    participants: [0, 10, 9, 5, 2]
+    participants: [10, 0, 9, 5, 2],
+    dressCode: "Business Elegante",
+    format: "Almoço Fechado • Sala Privativa",
+    highlights: [
+      {
+        title: "Acesso Direto a GPs & LPs",
+        desc: "Convivência próxima e direta com tomadores de decisão de fundos tier-1 de Venture Capital e Private Equity."
+      },
+      {
+        title: "Teses de Investimento 2027",
+        desc: "Gestores apresentam em primeira mão os setores prioritários e critérios de alocação de cheques para o próximo ciclo."
+      },
+      {
+        title: "Feedback Estratégico",
+        desc: "Espaço reservado para debate sincero sobre governança, unit economics e estratégias de captação institucional."
+      },
+      {
+        title: "Experiência Gastronômica Fasano",
+        desc: "Menu clássico italiano em sala privativa no Fasano com serviço impecável e privacidade total."
+      }
+    ],
+    inclusions: [
+      "Salão privativo Fasano Jardins",
+      "Almoço executivo completo com harmonização",
+      "Material com teses dos fundos participantes",
+      "Acesso direto aos contatos dos gestores"
+    ]
   },
   {
     id: 2,
@@ -353,11 +415,37 @@ export const EVENTS: EventItem[] = [
     time: "19h00",
     place: "Sede ClubKey, Faria Lima (São Paulo)",
     organizerId: 7,
-    capacity: 30,
-    initialConfirmed: 12,
+    capacity: 12,
+    initialConfirmed: 4,
     image: "https://images.unsplash.com/photo-1577962917302-cd874c4e31d2?w=800&auto=format&fit=crop&q=80",
     desc: "Três gerações de empresários debatem governança estruturada, acordos societários modernos e mitigação de riscos familiares.",
-    participants: [7, 4, 3, 11]
+    participants: [7, 4, 3, 11],
+    dressCode: "Business Formal / Smart",
+    format: "Roda de Conversa & Coquetel",
+    highlights: [
+      {
+        title: "Casos Reais & Sucessão",
+        desc: "Depoimentos francos de fundadores e herdeiros sobre transição de comando, mediação e governança de holdings."
+      },
+      {
+        title: "Acordos de Sócios Modernos",
+        desc: "Estratégias jurídicas e cláusulas essenciais para blindagem patrimonial e alinhamento de visão societária."
+      },
+      {
+        title: "Conselhos Consultivos",
+        desc: "Como estruturar conselhos independentes de alto impacto sem burocratizar a tomada de decisões da empresa."
+      },
+      {
+        title: "Coquetel no Lounge VIP",
+        desc: "Encerramento com coquetel volante, drinks autorais e aprofundamento das conexões entre as famílias empresárias."
+      }
+    ],
+    inclusions: [
+      "Acesso ao lounge executivo ClubKey Faria Lima",
+      "Coquetel volante e coquetelaria autoral",
+      "Guia prático de governança para empresas familiares",
+      "Lista de contatos dos participantes"
+    ]
   },
   {
     id: 3,
@@ -368,11 +456,37 @@ export const EVENTS: EventItem[] = [
     time: "09h00",
     place: "Ribeirão Preto, SP",
     organizerId: 3,
-    capacity: 20,
-    initialConfirmed: 8,
+    capacity: 10,
+    initialConfirmed: 4,
     image: "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=800&auto=format&fit=crop&q=80",
     desc: "Dia de campo imersivo: inovação agtech, armazenagem inteligente e a estrutura financeira por trás da safra recorde.",
-    participants: [3, 6, 9, 1]
+    participants: [3, 6, 9, 1],
+    dressCode: "Campo / Botas & Camisa",
+    format: "Field Day • Visita Técnica",
+    highlights: [
+      {
+        title: "Tecnologia de Campo ao Vivo",
+        desc: "Demonstração prática de telemetria autônoma, drones de monitoramento e bioinsumos aplicados em larga escala."
+      },
+      {
+        title: "Engenharia Financeira do Agro",
+        desc: "Apresentação dos modelos de estruturação de Fiagro, CPRs financeiras e operações de barter da safra."
+      },
+      {
+        title: "Armazenagem & Logística",
+        desc: "Visita técnica aos silos inteligentes e processos de redução de quebra de grãos na cadeia de suprimentos."
+      },
+      {
+        title: "Almoço Rústico de Confraternização",
+        desc: "Churrasco de cortes nobres na sede da fazenda com líderes e investidores do agronegócio nacional."
+      }
+    ],
+    inclusions: [
+      "Traslado executivo interno na fazenda modelo",
+      "Almoço típico com churrasco premium de cortes nobres",
+      "Dossiê técnico com os dados de produtividade e finanças",
+      "Seguro viagem e cobertura de campo inclusos"
+    ]
   },
   {
     id: 4,
@@ -383,11 +497,37 @@ export const EVENTS: EventItem[] = [
     time: "20h30",
     place: "Adega Bonvivant (São Paulo)",
     organizerId: 8,
-    capacity: 16,
-    initialConfirmed: 16,
+    capacity: 8,
+    initialConfirmed: 4,
     image: "https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?w=800&auto=format&fit=crop&q=80",
     desc: "Seis rótulos raros servidos às cegas com harmonização completa e curadoria sommelier exclusiva para membros.",
-    participants: [8, 12, 14, 4]
+    participants: [8, 12, 14, 4],
+    dressCode: "Smart Casual",
+    format: "Degustação Guiada • Sala Climatizada",
+    highlights: [
+      {
+        title: "Degustação Às Cegas",
+        desc: "Avaliação de seis safras históricas premiadas guiadas por Master Sommelier em sala climatizada privativa."
+      },
+      {
+        title: "Harmonização em 5 Tempos",
+        desc: "Menu desenvolvido sob medida para realçar as notas de cada terroir e casta de uva apresentada."
+      },
+      {
+        title: "Acesso a Lotes Exclusivos",
+        desc: "Oportunidade de adquirir garrafas do acervo privado da adega com condições reservadas para membros."
+      },
+      {
+        title: "Networking Intimista",
+        desc: "Ambiente reservado para apenas 16 participantes, propiciando conexões profundas e duradouras."
+      }
+    ],
+    inclusions: [
+      "6 taças de safras especiais raras e históricas",
+      "Menu harmonizado em 5 etapas",
+      "Ficha técnica e guia de notas de degustação",
+      "Taça comemorativa de cristal personalizada"
+    ]
   },
   {
     id: 5,
@@ -398,11 +538,37 @@ export const EVENTS: EventItem[] = [
     time: "18h30",
     place: "Auditório Faria Lima (São Paulo)",
     organizerId: 9,
-    capacity: 120,
-    initialConfirmed: 74,
+    capacity: 16,
+    initialConfirmed: 6,
     image: "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=800&auto=format&fit=crop&q=80",
     desc: "Como empresas brasileiras aceleram parcerias e aportes institucionais no exterior, direto com fundos que operam nos dois mercados.",
-    participants: [9, 0, 10, 5, 11, 15]
+    participants: [9, 0, 10, 5, 11, 15],
+    dressCode: "Business / Passeio Completo",
+    format: "Painel Estratégico & Foyer VIP",
+    highlights: [
+      {
+        title: "Panorama Macroeconômico Global",
+        desc: "Análise aprofundada de fluxos de capital internacional, taxas de juros americanas e oportunidades de arbitragem."
+      },
+      {
+        title: "Estruturas Offshore & Cayman",
+        desc: "Modelos societários e tributários recomendados para fundos soberanos e investidores institucionais estrangeiros."
+      },
+      {
+        title: "Painelistas Internacionais",
+        desc: "Presença de Managing Partners de fundos sediados em Nova York, Londres e São Paulo no mesmo palco."
+      },
+      {
+        title: "Coquetel Executivo no Foyer",
+        desc: "Sessão estendida de networking com os painelistas e convidados selecionados no foyer privativo."
+      }
+    ],
+    inclusions: [
+      "Acesso ao auditório principal e assento reservado",
+      "Coquetel executivo completo no foyer",
+      "Relatório econômico digital pós-evento",
+      "Credencial nominal VIP de membro"
+    ]
   },
   {
     id: 6,
@@ -413,11 +579,37 @@ export const EVENTS: EventItem[] = [
     time: "08h00",
     place: "Rooftop Itaim (São Paulo)",
     organizerId: 14,
-    capacity: 18,
-    initialConfirmed: 11,
+    capacity: 10,
+    initialConfirmed: 4,
     image: "https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=800&auto=format&fit=crop&q=80",
     desc: "Pauta dinâmica e objetiva com foco em inteligência artificial corporativa, contratações chave e eficiência de capital.",
-    participants: [14, 2, 12, 6]
+    participants: [14, 2, 12, 6],
+    dressCode: "Casual Executivo",
+    format: "Breakfast Briefing • Rooftop",
+    highlights: [
+      {
+        title: "IA Aplicada à Eficiência",
+        desc: "Casos reais de redução de custos operacionais e aceleração de receita com ferramentas de inteligência artificial."
+      },
+      {
+        title: "Atração de Talentos C-Level",
+        desc: "Estratégias de atração, pacotes de equity e modelos de incentivo de longo prazo para lideranças estratégicas."
+      },
+      {
+        title: "Formato Ágil & Dinâmico",
+        desc: "Sessão concisa das 08h00 às 09h30, ideal para a rotina de fundadores e executivos de alta performance."
+      },
+      {
+        title: "Rooftop com Vista Panorâmica",
+        desc: "Café da manhã continental servido em ambiente inspirador com vista panorâmica do skyline paulistano."
+      }
+    ],
+    inclusions: [
+      "Buffet de café da manhã continental gourmet",
+      "Resumo executivo em PDF com os insights do painel",
+      "Networking ágil com líderes do ecossistema",
+      "Estacionamento com manobrista cortesia"
+    ]
   },
   {
     id: 7,
@@ -428,11 +620,37 @@ export const EVENTS: EventItem[] = [
     time: "21h00",
     place: "Charutaria Lisboa (São Paulo)",
     organizerId: 13,
-    capacity: 25,
-    initialConfirmed: 19,
+    capacity: 12,
+    initialConfirmed: 6,
     image: "https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=800&auto=format&fit=crop&q=80",
     desc: "Encontro descontraído de encerramento de mês com foco em conexões espontâneas e alianças de longo prazo.",
-    participants: [13, 7, 1, 3, 11, 15]
+    participants: [13, 7, 1, 3, 11, 15],
+    dressCode: "Smart Casual / Noite",
+    format: "Lounge Noturno • Fumoir Privado",
+    highlights: [
+      {
+        title: "Charutaria & Curadoria",
+        desc: "Seleção exclusiva de charutos cubanos e nicaraguenses acompanhados por especialista certificado."
+      },
+      {
+        title: "Destilados Raros & Single Malts",
+        desc: "Carta com whiskies escoceses de edições limitadas e coquetéis clássicos preparados por mixologista da casa."
+      },
+      {
+        title: "Conexões Descontraídas",
+        desc: "Ambiente descontraído e sem formalidades, focado em fortalecer amizades e parcerias genuínas."
+      },
+      {
+        title: "Fumoir Reservado com Exaustão",
+        desc: "Sala privativa com acústica tratada e sistema de ventilação e climatização de alto desempenho."
+      }
+    ],
+    inclusions: [
+      "2 charutos premium selecionados pelo sommelier",
+      "Open bar de destilados selecionados e coquetelaria",
+      "Menu de petiscos gourmet para harmonização",
+      "Reserva integral do espaço para membros"
+    ]
   }
 ]
 
@@ -694,7 +912,7 @@ export const BENEFITS: BenefitItem[] = [
     id: 10,
     partner: "Belmonte Real Estate",
     category: "Serviços",
-    discount: "Consultoria VIP",
+    discount: "20% OFF",
     image: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&auto=format&fit=crop&q=80",
     desc: "Avaliação mercadológica e curadoria de lajes corporativas AAA sem honorários iniciais."
   },
