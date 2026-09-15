@@ -36,7 +36,7 @@ export default function SignInPage(): React.JSX.Element {
       login(data.email)
       setIsLoading(false)
       toast.success("Login realizado com sucesso! Bem-vindo ao portal.")
-      router.push("/home")
+      router.push("/")
     }, 400)
   }
 

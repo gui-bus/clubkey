@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import * as React from "react"
 import Image from "next/image"
@@ -17,10 +17,9 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/src/components/ui/avatar/
 import { Badge } from "@/src/components/ui/badge/badge"
 import { Button } from "@/src/components/ui/button/button"
 import { toast } from "@/src/components/ui/toast/toast"
-
 import { Container } from "@/src/components/common/container"
 
-export default function HomePage(): React.JSX.Element {
+export function PortalHome(): React.JSX.Element {
   const router = useRouter()
   const { userProfile, confirmedEvents, toggleEventRSVP } = usePortalStore()
 
