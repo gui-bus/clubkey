@@ -54,11 +54,11 @@ const PUBLIC_NAV_LINKS = isClubKey
 
 const PORTAL_NAV_LINKS = [
   { name: "Home", href: "/" },
+  { name: "Catálogo", href: "/hospedagens" },
   { name: "Eventos", href: "/eventos" },
   { name: "Experiências", href: "/experiencias" },
   { name: "Conexões", href: "/conexoes" },
   { name: "Benefícios", href: "/beneficios" },
-  { name: "Catálogo", href: "/hospedagens" },
 ]
 
 export function Navbar({
@@ -688,17 +688,17 @@ export function Navbar({
                       </>
                     ) : (
                       <>
-                        <div className="grid grid-cols-2 gap-2 mb-1">
+                        <div className="grid grid-cols-1 gap-2 mb-1">
                           <Link
                             href="/hospedagens/minhas-hospedagens"
                             onClick={() => setMobileMenuOpen(false)}
-                            className="flex items-center justify-between p-2 rounded-sm border border-zinc-200 dark:border-zinc-800 text-[11px] font-bold uppercase tracking-tight text-zinc-800 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-white/5 transition-all"
+                            className="flex items-center justify-between p-2.5 rounded-sm border border-zinc-200 dark:border-zinc-800 text-[11px] font-bold uppercase tracking-tight text-zinc-800 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-white/5 transition-all"
                           >
                             <span className="flex items-center gap-1.5 truncate">
-                              <MapPin className="w-3 h-3 text-brand-primary shrink-0" />
+                              <MapPin className="w-3.5 h-3.5 text-brand-primary shrink-0" />
                               Hospedagens
                             </span>
-                            <Badge color="primary" variant="flat" size="sm" radius="sm" className="text-[9px] px-1 h-3.5 leading-none">
+                            <Badge color="primary" variant="flat" size="sm" radius="sm" className="text-[9px] px-1.5 h-4 leading-none">
                               {staysCount}
                             </Badge>
                           </Link>
@@ -706,13 +706,13 @@ export function Navbar({
                           <Link
                             href="/eventos/meus-eventos"
                             onClick={() => setMobileMenuOpen(false)}
-                            className="flex items-center justify-between p-2 rounded-sm border border-zinc-200 dark:border-zinc-800 text-[11px] font-bold uppercase tracking-tight text-zinc-800 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-white/5 transition-all"
+                            className="flex items-center justify-between p-2.5 rounded-sm border border-zinc-200 dark:border-zinc-800 text-[11px] font-bold uppercase tracking-tight text-zinc-800 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-white/5 transition-all"
                           >
                             <span className="flex items-center gap-1.5 truncate">
-                              <Calendar className="w-3 h-3 text-brand-primary shrink-0" />
+                              <Calendar className="w-3.5 h-3.5 text-brand-primary shrink-0" />
                               Eventos
                             </span>
-                            <Badge color="primary" variant="flat" size="sm" radius="sm" className="text-[9px] px-1 h-3.5 leading-none">
+                            <Badge color="primary" variant="flat" size="sm" radius="sm" className="text-[9px] px-1.5 h-4 leading-none">
                               {eventsCount}
                             </Badge>
                           </Link>
