@@ -9,11 +9,6 @@ import {
   User,
   ChevronDown,
   LogOut,
-  Sparkle,
-  Compass,
-  Handshake,
-  Workflow,
-  HelpCircle,
   Calendar,
   Gift,
   MapPin,
@@ -58,45 +53,12 @@ const PUBLIC_NAV_LINKS = isClubKey
   : []
 
 const PORTAL_NAV_LINKS = [
-  { name: "Home", href: "/home" },
+  { name: "Home", href: "/" },
   { name: "Eventos", href: "/eventos" },
   { name: "Experiências", href: "/experiencias" },
   { name: "Conexões", href: "/conexoes" },
   { name: "Benefícios", href: "/beneficios" },
   { name: "Catálogo", href: "/hospedagens" },
-]
-
-const INSTITUTIONAL_ITEMS = [
-  {
-    title: `Sobre a ${brandConfig.name}`,
-    description: "Nossa história, propósito e curadoria seletiva",
-    href: "/#sobre-a-club-key",
-    icon: Compass,
-  },
-  {
-    title: "Parceiros Oficiais",
-    description: "Marcas e redes parceiras com benefícios exclusivos",
-    href: "/#parceiros",
-    icon: Handshake,
-  },
-  {
-    title: "Experiência do Membro",
-    description: "Vantagens de hospedar e viver o clube",
-    href: "/#experiencia",
-    icon: Sparkle,
-  },
-  {
-    title: "Como Funciona",
-    description: "Regras de reserva, diárias e descontos",
-    href: "/#como-funciona",
-    icon: Workflow,
-  },
-  {
-    title: "Dúvidas Frequentes",
-    description: "Perguntas mais comuns sobre o acesso",
-    href: "/#faq",
-    icon: HelpCircle,
-  },
 ]
 
 export function Navbar({
@@ -115,7 +77,6 @@ export function Navbar({
   } = usePortalStore()
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false)
   const [activeSection, setActiveSection] = React.useState<string>("")
-  const [isMegaMenuOpen, setIsMegaMenuOpen] = React.useState(false)
 
   const staysCount = memberStays?.length ?? 2
   const eventsCount = Object.keys(confirmedEvents || {}).filter(
@@ -123,7 +84,7 @@ export function Navbar({
   ).length || 1
 
   const userInitials = getInitials(userProfile?.name || "")
-  const homeHref = isAuthenticated ? "/home" : isClubKey ? "/" : "/hospedagens"
+  const homeHref = isClubKey ? "/" : "/hospedagens"
   const userEmail = userProfile?.email || "william@tabatacapital.com"
 
   const isDetailRoute = Boolean(
@@ -141,7 +102,7 @@ export function Navbar({
   )
 
   const isPortalRoute = Boolean(
-    pathname === "/home" ||
+    (pathname === "/" && isAuthenticated) ||
       pathname === "/eventos" ||
       pathname?.startsWith("/eventos/") ||
       pathname === "/agenda" ||
@@ -347,80 +308,18 @@ export function Navbar({
             )
           ) : (
             <nav className="hidden lg:flex items-center gap-1">
-              <div
-                className="relative"
-                onMouseEnter={() => setIsMegaMenuOpen(true)}
-                onMouseLeave={() => setIsMegaMenuOpen(false)}
-              >
-                <button
-                  type="button"
-                  className={cn(
-                    "relative flex items-center gap-1 px-3.5 py-1.5 text-xs font-bold uppercase tracking-wider transition-colors duration-200 group whitespace-nowrap cursor-pointer outline-none",
-                    isDarkBar
-                      ? "text-zinc-300 hover:text-white"
-                      : "text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white"
-                  )}
-                >
-                  <span>Institucional</span>
-                  <ChevronDown
-                    className={cn(
-                      "w-3.5 h-3.5 transition-transform duration-200",
-                      isMegaMenuOpen ? "rotate-180 text-brand-primary" : "opacity-70"
-                    )}
-                  />
-                </button>
-
-                <div
-                  className={cn(
-                    "absolute left-0 top-full pt-2 w-[340px] transition-all duration-200 z-50",
-                    isMegaMenuOpen
-                      ? "opacity-100 visible translate-y-0"
-                      : "opacity-0 invisible -translate-y-2 pointer-events-none"
-                  )}
-                >
-                  <div className="rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] p-3 shadow-2xl space-y-1">
-                    <div className="px-3 py-1.5 text-[10px] font-black uppercase tracking-widest text-brand-primary border-b border-zinc-100 dark:border-zinc-800 mb-1">
-                      Conheça a {brandConfig.name}
-                    </div>
-
-                    {INSTITUTIONAL_ITEMS.map((item) => {
-                      const IconComp = item.icon
-                      return (
-                        <Link
-                          key={item.title}
-                          href={item.href}
-                          onClick={() => setIsMegaMenuOpen(false)}
-                          className="flex items-start gap-3 p-2.5 rounded-sm hover:bg-zinc-50 dark:hover:bg-zinc-900/80 transition-colors group/item"
-                        >
-                          <div className="w-7 h-7 rounded-sm bg-brand-primary/10 text-brand-primary flex items-center justify-center shrink-0 mt-0.5 group-hover/item:bg-brand-primary group-hover/item:text-white transition-colors">
-                            <IconComp className="w-3.5 h-3.5" />
-                          </div>
-                          <div className="min-w-0">
-                            <p className="text-xs font-bold text-zinc-900 dark:text-white group-hover/item:text-brand-primary transition-colors uppercase tracking-tight">
-                              {item.title}
-                            </p>
-                            <p className="text-[11px] text-zinc-500 dark:text-zinc-400 leading-snug line-clamp-1">
-                              {item.description}
-                            </p>
-                          </div>
-                        </Link>
-                      )
-                    })}
-                  </div>
-                </div>
-              </div>
-
               {PORTAL_NAV_LINKS.map((item) => {
                 const isCatalogPath =
                   item.href === "/hospedagens" &&
                   (pathname === "/hospedagens" || pathname === "/rooms")
 
                 const isActive =
-                  isCatalogPath ||
-                  pathname === item.href ||
-                  (item.href !== "/home" &&
-                    item.href !== "/hospedagens" &&
-                    pathname.startsWith(item.href))
+                  item.href === "/"
+                    ? pathname === "/"
+                    : isCatalogPath ||
+                      pathname === item.href ||
+                      (item.href !== "/hospedagens" &&
+                        pathname.startsWith(item.href))
 
                 return (
                   <Link
@@ -692,26 +591,8 @@ export function Navbar({
                     <div className="flex flex-col gap-1 pt-2">
                       {isAuthenticated ? (
                         <>
-                          <div className="text-[10px] font-black uppercase tracking-widest text-zinc-400 dark:text-zinc-500 px-3 pt-2 pb-1">
-                            Institucional
-                          </div>
-                          {INSTITUTIONAL_ITEMS.map((item) => {
-                            const IconComp = item.icon
-                            return (
-                              <Link
-                                key={item.title}
-                                href={item.href}
-                                onClick={() => setMobileMenuOpen(false)}
-                                className="px-3.5 py-2 rounded-sm text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-white/5 transition-all flex items-center gap-2.5"
-                              >
-                                <IconComp className="w-3.5 h-3.5 text-zinc-400 dark:text-zinc-500" />
-                                <span>{item.title}</span>
-                              </Link>
-                            )
-                          })}
-
-                          <div className="text-[10px] font-black uppercase tracking-widest text-brand-primary px-3 pt-3 pb-1">
-                            Portal do Membro
+                          <div className="text-[10px] font-black uppercase tracking-widest text-brand-primary px-3 pt-2 pb-1">
+                            Menu do Membro
                           </div>
                           {PORTAL_NAV_LINKS.map((link) => {
                             const isCatalogPath =
@@ -720,11 +601,12 @@ export function Navbar({
                                 pathname === "/rooms")
 
                             const isActive =
-                              isCatalogPath ||
-                              pathname === link.href ||
-                              (link.href !== "/home" &&
-                                link.href !== "/hospedagens" &&
-                                pathname.startsWith(link.href))
+                              link.href === "/"
+                                ? pathname === "/"
+                                : isCatalogPath ||
+                                  pathname === link.href ||
+                                  (link.href !== "/hospedagens" &&
+                                    pathname.startsWith(link.href))
 
                             return (
                               <Link
