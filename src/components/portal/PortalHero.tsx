@@ -1,8 +1,11 @@
 "use client"
 
 import * as React from "react"
+
 import Image from "next/image"
+
 import { Container } from "@/src/components/common/container"
+
 import { cn } from "@/src/lib/utils"
 
 export interface PortalHeroProps {
@@ -48,12 +51,12 @@ export function PortalHero({
       <Container className="relative z-20 pt-36 pb-16 md:pt-44 md:pb-20 flex flex-col justify-center items-center text-center">
         <div className="max-w-5xl flex flex-col items-center text-center w-full">
           {badge && (
-            <span className="text-xs sm:text-sm font-black uppercase tracking-widest text-brand-primary block mb-3">
+            <span className="text-xs uppercase tracking-widest mb-3">
               {badge}
             </span>
           )}
 
-          <h1 className="text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-black uppercase tracking-tight text-white leading-[1.05] mb-4 font-heading drop-shadow-md">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-black uppercase tracking-tight text-white leading-[1.05] mb-4 font-heading drop-shadow-md">
             {title}
           </h1>
 
