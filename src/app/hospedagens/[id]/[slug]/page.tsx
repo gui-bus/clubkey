@@ -9,7 +9,6 @@ import {
   Clock,
   Heart,
   MapPin,
-  Share2,
   ShieldAlert,
 } from "lucide-react"
 
@@ -18,6 +17,7 @@ import { RoomBookingCard } from "@/src/components/rooms/roomBookingCard"
 import { RoomGallery } from "@/src/components/rooms/roomGallery"
 import { RoomLocationCard } from "@/src/components/rooms/roomLocationCard"
 import { Container } from "@/src/components/common/container"
+import { ShareButton } from "@/src/components/portal/ShareButton"
 import { toast } from "@/src/components/ui/toast/toast"
 import { FloatingCta } from "@/src/components/landing/FloatingCta"
 import { Footer } from "@/src/components/landing/Footer"
@@ -37,7 +37,6 @@ export default function HospedagemDetailPage(): React.JSX.Element {
 
   const [isFav, setIsFav] = React.useState(false)
   const [heartPop, setHeartPop] = React.useState(false)
-  const [copiedLink, setCopiedLink] = React.useState(false)
 
   const [guests, setGuests] = React.useState(2)
   const [nights, setNights] = React.useState(3)
@@ -69,42 +68,6 @@ export default function HospedagemDetailPage(): React.JSX.Element {
   const airbnbUrl = `https://www.airbnb.com.br/s/${encodeURIComponent(`${room.title} ${room.city.name}`)}/homes`
   const bookingUrl = `https://www.booking.com/searchresults.pt-br.html?ss=${encodeURIComponent(`${room.title} ${room.city.name}`)}`
   const trivagoUrl = `https://www.trivago.com.br/pt-BR/srl?search=${encodeURIComponent(`${room.title} ${room.city.name}`)}`
-
-  const handleShare = async () => {
-    const shareData = {
-      title: room.title,
-      text: `Confira ${room.title} na ClubKey com tarifas exclusivas e até ${discountPercent}% de desconto!`,
-      url: typeof window !== "undefined" ? window.location.href : "",
-    }
-
-    if (
-      typeof navigator !== "undefined" &&
-      typeof navigator.share === "function"
-    ) {
-      try {
-        await navigator.share(shareData)
-        toast.success("Link compartilhado!", {
-          description: "Obrigado por compartilhar esta acomodação.",
-        })
-        return
-      } catch (err: unknown) {
-        if (err instanceof Error && err.name === "AbortError") return
-      }
-    }
-
-    if (typeof navigator !== "undefined" && navigator.clipboard) {
-      try {
-        await navigator.clipboard.writeText(window.location.href)
-        setCopiedLink(true)
-        setTimeout(() => setCopiedLink(false), 2500)
-        toast.success("Link copiado para a área de transferência!", {
-          description: "Envie para seus amigos e garanta o melhor desconto.",
-        })
-      } catch {
-        toast.error("Não foi possível copiar o link.")
-      }
-    }
-  }
 
   const handleToggleFav = () => {
     const nextFav = !isFav
@@ -143,18 +106,11 @@ export default function HospedagemDetailPage(): React.JSX.Element {
           </Link>
 
           <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={handleShare}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-sm border border-black/10 dark:border-white/10 bg-black/5 hover:bg-black/10 dark:bg-white/10 dark:hover:bg-white/15 text-xs font-semibold text-zinc-800 dark:text-zinc-200 transition-all cursor-pointer backdrop-blur-md shadow-2xs active:scale-95 group"
-            >
-              <Share2 className="w-3.5 h-3.5 text-zinc-600 dark:text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-white transition-colors" />
-              <span>{copiedLink ? "Link copiado!" : "Compartilhar"}</span>
-            </button>
+            <ShareButton />
             <button
               type="button"
               onClick={handleToggleFav}
-              className="relative inline-flex items-center gap-1.5 px-3.5 py-2 rounded-sm border border-black/10 dark:border-white/10 bg-black/5 hover:bg-black/10 dark:bg-white/10 dark:hover:bg-white/15 text-xs font-semibold text-zinc-800 dark:text-zinc-200 transition-all cursor-pointer backdrop-blur-md shadow-2xs active:scale-95 group overflow-hidden"
+              className="relative inline-flex items-center gap-1.5 h-9 px-3.5 rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] hover:border-zinc-300 dark:hover:border-zinc-700 text-xs font-semibold text-zinc-800 dark:text-zinc-200 transition-all cursor-pointer shadow-2xs hover:shadow-xs active:scale-95 group overflow-hidden"
             >
               <div className="relative flex items-center justify-center">
                 <motion.div

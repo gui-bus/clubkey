@@ -16,7 +16,6 @@ import {
   ShieldCheck,
   Download,
   XCircle,
-  Sparkles,
   Info
 } from "lucide-react"
 
@@ -151,7 +150,7 @@ export default function MinhaHospedagemDetailPage(): React.JSX.Element {
 
               <div className="p-5 rounded-sm bg-brand-primary/5 border border-brand-primary/20 space-y-3">
                 <div className="flex items-center gap-2 text-xs font-bold text-brand-primary uppercase tracking-wider">
-                  <Sparkles className="w-4 h-4" />
+                  <ShieldCheck className="w-4 h-4" />
                   <span>Benefícios VIP Inclusos nesta Estadia</span>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-zinc-700 dark:text-zinc-300">
