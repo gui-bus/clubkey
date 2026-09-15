@@ -1,14 +1,15 @@
-﻿"use client"
+"use client"
 
 import * as React from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { Calendar, ArrowRight, Users, Check, Clock, MapPin } from "lucide-react"
+import { Calendar, ArrowRight, Clock, MapPin, Check } from "lucide-react"
 
 import { usePortalStore } from "@/src/store/usePortalStore"
 import { EVENTS, EXPERIENCES, MEMBERS, BENEFITS, getInitials, getEventSlug, getMemberSlug } from "@/src/data/portalData"
-import { UniverseOrbit } from "@/src/components/portal/UniverseOrbit"
+import { catalogSections } from "@/src/data/mockRooms"
+import { RoomCard } from "@/src/components/rooms/roomCard"
 import { ExperienceCard } from "@/src/components/portal/ExperienceCard"
 import { MemberCard } from "@/src/components/portal/MemberCard"
 import { BenefitCard } from "@/src/components/portal/BenefitCard"
@@ -22,6 +23,7 @@ import { Container } from "@/src/components/common/container"
 export function PortalHome(): React.JSX.Element {
   const router = useRouter()
   const { userProfile, confirmedEvents, toggleEventRSVP } = usePortalStore()
+  const [favorites, setFavorites] = React.useState<Record<string, boolean>>({})
 
   const nextEvent = EVENTS[0]
   const isNextEventConfirmed = !!confirmedEvents[nextEvent.id]
@@ -33,9 +35,25 @@ export function PortalHome(): React.JSX.Element {
     .filter((m): m is typeof MEMBERS[0] => Boolean(m))
     .slice(0, 5)
 
+  const featuredRooms = React.useMemo(() => {
+    return (catalogSections[0]?.rooms || []).slice(0, 3)
+  }, [])
+
   const featuredExperiences = EXPERIENCES.slice(0, 3)
   const featuredMembers = MEMBERS.slice(0, 3)
   const featuredBenefits = BENEFITS.slice(0, 3)
+
+  const toggleFavorite = (id: string, e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    const willBeFav = !favorites[id]
+    setFavorites((prev) => ({ ...prev, [id]: willBeFav }))
+    if (willBeFav) {
+      toast.success("Hospedagem salva nos favoritos!")
+    } else {
+      toast.info("Hospedagem removida dos favoritos.")
+    }
+  }
 
   const handleRSVP = () => {
     toggleEventRSVP(nextEvent.id)
@@ -52,7 +70,7 @@ export function PortalHome(): React.JSX.Element {
     <div className="w-full flex flex-col">
       <section
         id="hero"
-        className="relative z-30 w-full bg-[#0D0D0D] text-white min-h-[500px] md:min-h-[560px] flex flex-col justify-center"
+        className="relative z-30 w-full bg-[#0D0D0D] text-white overflow-hidden"
       >
         <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none select-none">
           <Image
@@ -60,54 +78,29 @@ export function PortalHome(): React.JSX.Element {
             alt="ClubKey Hub"
             fill
             priority
-            className="object-cover object-top"
+            className="object-cover object-top opacity-40"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-zinc-50 dark:from-[#161616]/85 dark:via-[#161616]/65 dark:to-[#0D0D0D] z-10" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/85 via-black/75 to-zinc-50 dark:to-[#0D0D0D] z-10" />
         </div>
 
-        <Container className="relative z-20 pt-36 pb-16 md:pt-44 md:pb-20 flex flex-col justify-center items-center text-center">
-          <div className="max-w-4xl flex flex-col items-center text-center w-full">
-            <span className="text-xs sm:text-sm font-black uppercase tracking-widest text-brand-primary block mb-3">
+        <Container className="relative z-20 pt-28 pb-12 sm:pt-32 sm:pb-14 md:pt-36 md:pb-16 flex flex-col items-center text-center">
+          <div className="max-w-3xl flex flex-col items-center text-center w-full">
+            <span className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-brand-primary/15 border border-brand-primary/30 text-brand-primary text-[10px] sm:text-xs font-black uppercase tracking-widest mb-4">
+              <span className="w-1.5 h-1.5 rounded-full bg-brand-primary animate-pulse" />
               Painel do Membro • Acesso VIP
             </span>
-            <h1 className="text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-black uppercase tracking-tight text-white leading-[1.05] mb-4 font-heading drop-shadow-md">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tight text-white leading-[1.05] mb-3 font-heading drop-shadow-md">
               Bem-vindo, <span className="text-brand-primary">{userProfile.name}</span>
             </h1>
-            <p className="text-base sm:text-lg md:text-xl text-zinc-200 font-light mb-8 leading-relaxed drop-shadow-sm max-w-2xl">
-              {userProfile.role} na {userProfile.company} • Conecte-se aos membros, explore experiências exclusivas e aproveite benefícios exclusivos.
+            <p className="text-sm sm:text-base md:text-lg text-zinc-300 font-light leading-relaxed drop-shadow-sm max-w-xl">
+              {userProfile.role} na {userProfile.company} • Membro Oficial ClubKey
             </p>
-
-            <div className="flex flex-wrap items-center justify-center gap-3">
-              <Link
-                href="/eventos"
-                className="inline-flex items-center gap-2 px-5 py-3 rounded-sm bg-brand-primary hover:bg-brand-primary/90 text-white text-xs font-black uppercase tracking-wider transition-all shadow-md hover:scale-[1.02] active:scale-[0.98]"
-              >
-                <Calendar className="w-4 h-4" />
-                <span>Explorar Eventos</span>
-              </Link>
-
-              <Link
-                href="/conexoes"
-                className="inline-flex items-center gap-2 px-5 py-3 rounded-sm border border-white/20 bg-white/10 hover:bg-white/20 text-white text-xs font-black uppercase tracking-wider backdrop-blur-sm transition-all"
-              >
-                <Users className="w-4 h-4" />
-                <span>Ver Conexões</span>
-              </Link>
-
-              <Link
-                href="/hospedagens"
-                className="inline-flex items-center gap-2 px-5 py-3 rounded-sm border border-white/20 bg-white/10 hover:bg-white/20 text-white text-xs font-black uppercase tracking-wider backdrop-blur-sm transition-all"
-              >
-                <MapPin className="w-4 h-4 text-brand-primary" />
-                <span>Catálogo de Hospedagens</span>
-              </Link>
-            </div>
           </div>
         </Container>
       </section>
 
-      <Container className="relative z-10 flex-1 py-10 space-y-12">
-        <div className="relative w-full rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] text-zinc-900 dark:text-white p-6 sm:p-8 lg:p-10 overflow-hidden shadow-md">
+      <Container className="relative z-10 flex-1 py-10 space-y-14">
+        <div className="relative w-full rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] text-zinc-900 dark:text-white p-6 sm:p-8 lg:p-10 overflow-hidden shadow-xs">
           {nextEvent.image && (
             <div className="absolute inset-0 z-0">
               <Image
@@ -221,7 +214,36 @@ export function PortalHome(): React.JSX.Element {
           </div>
         </div>
 
-        <UniverseOrbit />
+        <section className="space-y-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <span className="text-[10px] font-bold uppercase tracking-widest text-brand-primary block mb-0.5">
+                Tarifa de Membro
+              </span>
+              <h2 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-zinc-900 dark:text-white font-heading">
+                Hospedagens em destaque
+              </h2>
+            </div>
+            <Link
+              href="/hospedagens"
+              className="text-xs font-bold uppercase tracking-wider text-brand-primary hover:translate-x-0.5 transition-transform flex items-center gap-1"
+            >
+              <span>Ver todas</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {featuredRooms.map((room) => (
+              <RoomCard
+                key={room.id}
+                room={room}
+                isFav={!!favorites[room.id]}
+                onToggleFav={toggleFavorite}
+              />
+            ))}
+          </div>
+        </section>
 
         <section className="space-y-4">
           <div className="flex items-center justify-between">
@@ -230,7 +252,7 @@ export function PortalHome(): React.JSX.Element {
                 Curadoria
               </span>
               <h2 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-zinc-900 dark:text-white font-heading">
-                Experiências em destaque
+                Experiências exclusivas
               </h2>
             </div>
             <Link
