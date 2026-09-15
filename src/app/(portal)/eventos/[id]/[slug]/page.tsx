@@ -1,24 +1,49 @@
 "use client"
 
 import * as React from "react"
+
 import Image from "next/image"
 import Link from "next/link"
-import { useParams, notFound } from "next/navigation"
-import { Calendar, Clock, MapPin, Users, Check, X, Plus, ArrowRight, ShieldCheck, CheckCircle } from "@phosphor-icons/react"
+import { notFound, useParams } from "next/navigation"
 
-import { EVENTS, MEMBERS, getInitials, getMemberSlug, getEventSlug } from "@/src/data/portalData"
+import {
+  EVENTS,
+  MEMBERS,
+  getEventSlug,
+  getInitials,
+  getMemberSlug,
+} from "@/src/data/portalData"
 import { usePortalStore } from "@/src/store/usePortalStore"
-import { MemberCard } from "@/src/components/portal/MemberCard"
-import { BackButton } from "@/src/components/portal/BackButton"
-import { ShareButton } from "@/src/components/portal/ShareButton"
-import { AddToCalendarButton } from "@/src/components/portal/AddToCalendarButton"
-import { Progress } from "@/src/components/ui/progress/progress"
+import {
+  ArrowRight,
+  Calendar,
+  Check,
+  CheckCircle,
+  Clock,
+  MapPin,
+  Plus,
+  ShieldCheck,
+  Users,
+  X,
+} from "@phosphor-icons/react"
+
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/src/components/ui/avatar/avatar"
 import { Button } from "@/src/components/ui/button/button"
-import { Avatar, AvatarImage, AvatarFallback } from "@/src/components/ui/avatar/avatar"
+import { Progress } from "@/src/components/ui/progress/progress"
 import { toast } from "@/src/components/ui/toast/toast"
+
 import { Container } from "@/src/components/common/container"
 import { CtaButton } from "@/src/components/common/ctaButton"
+import { AddToCalendarButton } from "@/src/components/portal/AddToCalendarButton"
+import { BackButton } from "@/src/components/portal/BackButton"
 import { GlassBadge } from "@/src/components/portal/GlassBadge"
+import { MemberCard } from "@/src/components/portal/MemberCard"
+import { ShareButton } from "@/src/components/portal/ShareButton"
+
 import { cn } from "@/src/lib/utils"
 
 export default function EventDetailPage(): React.JSX.Element {
@@ -41,15 +66,18 @@ export default function EventDetailPage(): React.JSX.Element {
     Math.round((currentCount / event.capacity) * 100)
   )
 
-  const organizer = MEMBERS.find((m) => m.id === event.organizerId) || MEMBERS[0]
+  const organizer =
+    MEMBERS.find((m) => m.id === event.organizerId) || MEMBERS[0]
 
   const attendees = event.participants
     .map((id: number) => MEMBERS.find((m) => m.id === id))
-    .filter((m): m is typeof MEMBERS[0] => Boolean(m))
+    .filter((m): m is (typeof MEMBERS)[0] => Boolean(m))
 
   const currentIndex = EVENTS.findIndex((e) => e.id === event.id)
-  const prevEvent = currentIndex > 0 ? EVENTS[currentIndex - 1] : EVENTS[EVENTS.length - 1]
-  const nextEvent = currentIndex < EVENTS.length - 1 ? EVENTS[currentIndex + 1] : EVENTS[0]
+  const prevEvent =
+    currentIndex > 0 ? EVENTS[currentIndex - 1] : EVENTS[EVENTS.length - 1]
+  const nextEvent =
+    currentIndex < EVENTS.length - 1 ? EVENTS[currentIndex + 1] : EVENTS[0]
 
   const handleToggleRSVP = () => {
     const next = toggleEventRSVP(event.id)
@@ -65,27 +93,27 @@ export default function EventDetailPage(): React.JSX.Element {
   const highlights = event.highlights || [
     {
       title: "Mesa Redonda Sem Palco",
-      desc: "Diálogo aberto e sem apresentações formais, onde cada membro compartilha um desafio estratégico real do trimestre."
+      desc: "Diálogo aberto e sem apresentações formais, onde cada membro compartilha um desafio estratégico real do trimestre.",
     },
     {
       title: "Regra Chatham House",
-      desc: "Segurança e sigilo absoluto para debater números, transações e planos de expansão com franqueza."
+      desc: "Segurança e sigilo absoluto para debater números, transações e planos de expansão com franqueza.",
     },
     {
       title: "Harmonização Gastronômica",
-      desc: "Jantar autoral em múltiplos tempos harmonizado com carta de vinhos curada exclusivamente para membros."
+      desc: "Jantar autoral em múltiplos tempos harmonizado com carta de vinhos curada exclusivamente para membros.",
     },
     {
       title: "Deal Flow & Mapeamento",
-      desc: "Síntese executiva das oportunidades e sinergias identificadas distribuída aos participantes pós-encontro."
-    }
+      desc: "Síntese executiva das oportunidades e sinergias identificadas distribuída aos participantes pós-encontro.",
+    },
   ]
 
   const inclusions = event.inclusions || [
     "Acesso exclusivo ao salão privativo reservado",
     "Gastronomia autoral & carta de vinhos harmonizada",
     "Síntese executiva de conexões pós-evento",
-    "Apoio e suporte dedicado do concierge ClubKey"
+    "Apoio e suporte dedicado do concierge ClubKey",
   ]
 
   return (
@@ -93,7 +121,9 @@ export default function EventDetailPage(): React.JSX.Element {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <BackButton fallbackHref="/eventos" label="Eventos" />
-          <span className="text-zinc-300 dark:text-zinc-700 hidden sm:inline">/</span>
+          <span className="text-zinc-300 dark:text-zinc-700 hidden sm:inline">
+            /
+          </span>
           <span className="text-xs font-bold text-zinc-500 dark:text-zinc-400 truncate max-w-xs sm:max-w-md hidden sm:inline">
             {event.title}
           </span>
@@ -140,7 +170,9 @@ export default function EventDetailPage(): React.JSX.Element {
         <div className="relative z-10 max-w-4xl space-y-4 pt-16">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-sm bg-brand-primary/90 text-white text-xs font-black uppercase tracking-widest">
             <Calendar className="w-3.5 h-3.5" />
-            <span>{event.weekday}, {event.day} de {event.month} • {event.time}</span>
+            <span>
+              {event.weekday}, {event.day} de {event.month} • {event.time}
+            </span>
           </div>
 
           <h1 className="text-3xl sm:text-5xl lg:text-6xl font-heading font-black uppercase tracking-tight text-white leading-[1.05] drop-shadow-md">
@@ -364,17 +396,14 @@ export default function EventDetailPage(): React.JSX.Element {
               </div>
 
               <div className="pt-2">
-                <Progress
-                  value={fillPercentage}
-                  color="primary"
-                  size="sm"
-                />
+                <Progress value={fillPercentage} color="primary" size="sm" />
               </div>
 
               <div className="flex items-center justify-between text-[11px] text-zinc-500 dark:text-zinc-400 pt-1">
                 <span>{fillPercentage}% preenchido</span>
                 <span className="font-bold text-zinc-800 dark:text-zinc-200">
-                  {remainingSpots} {remainingSpots === 1 ? "vaga restante" : "vagas restantes"}
+                  {remainingSpots}{" "}
+                  {remainingSpots === 1 ? "vaga restante" : "vagas restantes"}
                 </span>
               </div>
             </div>
@@ -416,7 +445,7 @@ export default function EventDetailPage(): React.JSX.Element {
 
               <Link
                 href={`/eventos/${event.id}/${eventSlug}/quem-vai`}
-                className="w-full h-11 px-4 rounded-sm border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-900 text-xs font-bold uppercase tracking-wider text-zinc-800 dark:text-zinc-200 hover:border-brand-primary transition-colors flex items-center justify-center gap-2"
+                className="w-full h-11 px-4 rounded-sm border border-zinc-200 dark:border-zinc-700 bg-[#F1F1F1] dark:bg-zinc-900 text-xs font-bold uppercase tracking-wider text-zinc-800 dark:text-zinc-200 hover:border-brand-primary transition-colors flex items-center justify-center gap-2"
               >
                 <Users className="w-3.5 h-3.5 text-brand-primary" />
                 <span>Ver participantes ({attendees.length})</span>
@@ -549,4 +578,3 @@ export default function EventDetailPage(): React.JSX.Element {
     </Container>
   )
 }
-

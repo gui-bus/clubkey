@@ -14,17 +14,19 @@ export interface ThemeToggleProps {
   duration?: number
 }
 
+const emptySubscribe = () => () => {}
+
 export function ThemeToggle({
   className,
   variant = "circle",
   duration = 500,
 }: ThemeToggleProps): React.JSX.Element {
   const { resolvedTheme, setTheme } = useTheme()
-  const [mounted, setMounted] = React.useState(false)
-
-  React.useEffect(() => {
-    setMounted(true)
-  }, [])
+  const mounted = React.useSyncExternalStore(
+    emptySubscribe,
+    () => true,
+    () => false
+  )
 
   if (!mounted) {
     return (

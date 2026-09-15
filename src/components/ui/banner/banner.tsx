@@ -69,7 +69,7 @@ export function Banner({
         `bloom-banner-dismissed-${storageKey}`,
       );
       if (dismissed === "true") {
-        setIsDismissed(true);
+        queueMicrotask(() => setIsDismissed(true));
       }
     }
   }, [storageKey]);
@@ -95,7 +95,7 @@ export function Banner({
     if (!hasCarousel || !autoPlay || count <= 1) return;
 
     if (showProgress) {
-      setProgress(0);
+      queueMicrotask(() => setProgress(0));
       const step = 50;
       const increment = (step / autoPlayInterval) * 100;
       const interval = setInterval(() => {

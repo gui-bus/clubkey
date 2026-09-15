@@ -2,12 +2,20 @@
 
 import * as React from "react"
 
-import Image from "next/image"
 import Link from "next/link"
 
 import { formatBRL } from "@/src/data/portalData"
 import { usePortalStore } from "@/src/store/usePortalStore"
-import { Calendar, CheckCircle, CreditCard, Download, FileText, Phone, Receipt, ShieldCheck } from "@phosphor-icons/react"
+import {
+  Calendar,
+  CheckCircle,
+  CreditCard,
+  Download,
+  FileText,
+  Phone,
+  Receipt,
+  ShieldCheck,
+} from "@phosphor-icons/react"
 
 import { Badge } from "@/src/components/ui/badge/badge"
 import { Button } from "@/src/components/ui/button/button"
@@ -15,6 +23,7 @@ import { toast } from "@/src/components/ui/toast/toast"
 
 import { Container } from "@/src/components/common/container"
 import { BackButton } from "@/src/components/portal/BackButton"
+import { PortalHero } from "@/src/components/portal/PortalHero"
 
 export default function MinhaAssinaturaPage(): React.JSX.Element {
   const { memberSubscription, userProfile } = usePortalStore()
@@ -41,36 +50,17 @@ export default function MinhaAssinaturaPage(): React.JSX.Element {
 
   return (
     <div className="w-full flex flex-col">
-      <section
-        id="hero"
-        className="relative z-30 w-full bg-[#0D0D0D] text-white min-h-[460px] md:min-h-[500px] flex flex-col justify-center"
-      >
-        <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none select-none">
-          <Image
-            src="/utils/banners/img_02.png"
-            alt="Minha Assinatura"
-            fill
-            priority
-            className="object-cover object-top"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-zinc-50 dark:from-[#161616]/85 dark:via-[#161616]/65 dark:to-[#0D0D0D] z-10" />
-        </div>
-
-        <Container className="relative z-20 pt-36 pb-14 md:pt-44 md:pb-16 flex flex-col justify-center items-center text-center">
-          <div className="max-w-4xl flex flex-col items-center text-center w-full">
-            <span className="text-xs sm:text-sm font-black uppercase tracking-widest text-brand-primary block mb-3">
-              Membro Titular • Gestão de Plano
-            </span>
-            <h1 className="text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-black uppercase tracking-tight text-white leading-[1.05] mb-4 font-heading drop-shadow-md">
-              Minha <span className="text-brand-primary">Assinatura</span>
-            </h1>
-            <p className="text-base sm:text-lg md:text-xl text-zinc-200 font-light leading-relaxed drop-shadow-sm max-w-2xl">
-              Gerencie os detalhes do seu plano, forma de pagamento cadastrada e
-              histórico financeiro.
-            </p>
-          </div>
-        </Container>
-      </section>
+      <PortalHero
+        badge="Membro Titular • Gestão de Plano"
+        title={
+          <>
+            Minha <span className="text-brand-primary">Assinatura</span>
+          </>
+        }
+        description="Gerencie os detalhes do seu plano, forma de pagamento cadastrada e histórico financeiro."
+        imageSrc="/utils/banners/img_02.png"
+        imageAlt="Minha Assinatura"
+      />
 
       <Container className="relative z-10 flex-1 py-10 space-y-8 bg-[#F1F1F1] dark:bg-[#161616]">
         <BackButton fallbackHref="/perfil" label="Voltar para Meu Perfil" />
@@ -119,7 +109,7 @@ export default function MinhaAssinaturaPage(): React.JSX.Element {
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="p-4 rounded-sm bg-zinc-50 dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 space-y-1">
+                <div className="p-4 rounded-sm bg-[#F1F1F1] dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 space-y-1">
                   <span className="text-[10px] font-black uppercase tracking-widest text-brand-primary block">
                     Próxima Renovação
                   </span>
@@ -132,7 +122,7 @@ export default function MinhaAssinaturaPage(): React.JSX.Element {
                   </p>
                 </div>
 
-                <div className="p-4 rounded-sm bg-zinc-50 dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 space-y-1">
+                <div className="p-4 rounded-sm bg-[#F1F1F1] dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 space-y-1">
                   <span className="text-[10px] font-black uppercase tracking-widest text-brand-primary block">
                     Método de Cobrança
                   </span>
@@ -183,7 +173,7 @@ export default function MinhaAssinaturaPage(): React.JSX.Element {
                 {memberSubscription.invoices.map((inv) => (
                   <div
                     key={inv.id}
-                    className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 rounded-sm border border-zinc-100 dark:border-zinc-800/80 bg-zinc-50/50 dark:bg-zinc-900/40 gap-3"
+                    className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 rounded-sm border border-zinc-100 dark:border-zinc-800/80 bg-[#F1F1F1]/50 dark:bg-zinc-900/40 gap-3"
                   >
                     <div className="flex items-center gap-3">
                       <div className="w-9 h-9 rounded-sm bg-brand-primary/10 text-brand-primary flex items-center justify-center shrink-0">

@@ -1,10 +1,25 @@
 "use client"
 
 import * as React from "react"
-import { Calendar, CaretDown, CaretLeft, CaretRight, Flame, Lock, MapPin, Minus, Plus, MagnifyingGlass, Users, X } from "@phosphor-icons/react"
+
+import { destinationOptions } from "@/src/data/mockDestinations"
+import {
+  Calendar,
+  CaretDown,
+  CaretLeft,
+  CaretRight,
+  Flame,
+  Lock,
+  MagnifyingGlass,
+  MapPin,
+  Minus,
+  Plus,
+  Users,
+  X,
+} from "@phosphor-icons/react"
 
 import { CtaButton } from "@/src/components/common/ctaButton"
-import { destinationOptions } from "@/src/data/mockDestinations"
+
 import { cn } from "@/src/lib/utils"
 
 const monthNames = [
@@ -243,7 +258,7 @@ export function RoomsSearchFilterBar({
               return (
                 <div
                   key={date.toISOString()}
-                  className="relative w-8 h-8 sm:w-9 sm:h-9 mx-auto flex items-center justify-center text-xs font-normal text-zinc-300 dark:text-zinc-600 bg-zinc-50/50 dark:bg-zinc-900/30 rounded-sm cursor-not-allowed select-none"
+                  className="relative w-8 h-8 sm:w-9 sm:h-9 mx-auto flex items-center justify-center text-xs font-normal text-zinc-300 dark:text-zinc-600 bg-[#F1F1F1]/50 dark:bg-zinc-900/30 rounded-sm cursor-not-allowed select-none"
                 >
                   <span>{date.getDate()}</span>
                   <Lock className="w-2 h-2 text-zinc-300 dark:text-zinc-600 absolute top-1 right-1" />
@@ -325,7 +340,7 @@ export function RoomsSearchFilterBar({
               onSearchDestinationChange(dest.label)
               setDestinationOpen(false)
             }}
-            className="w-full px-4 py-2.5 flex items-center justify-between hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors text-xs sm:text-sm font-medium text-zinc-800 dark:text-zinc-200 cursor-pointer text-left"
+            className="w-full px-4 py-2.5 flex items-center justify-between hover:bg-[#F1F1F1] dark:hover:bg-zinc-800 transition-colors text-xs sm:text-sm font-medium text-zinc-800 dark:text-zinc-200 cursor-pointer text-left"
           >
             <div className="flex items-center gap-2.5 truncate">
               <MapPin className="w-3.5 h-3.5 text-brand-primary shrink-0" />
@@ -358,7 +373,7 @@ export function RoomsSearchFilterBar({
               setDestinationOpen((prev) => !prev)
               setCalendarOpen(false)
             }}
-            className="w-full flex items-center justify-between gap-3 p-2.5 rounded-sm bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-200/80 dark:border-zinc-700/80 hover:border-zinc-300 dark:hover:border-zinc-600 transition-colors text-left cursor-pointer"
+            className="w-full flex items-center justify-between gap-3 p-2.5 rounded-sm bg-[#F1F1F1] dark:bg-zinc-800/60 border border-zinc-200/80 dark:border-zinc-700/80 hover:border-zinc-300 dark:hover:border-zinc-600 transition-colors text-left cursor-pointer"
           >
             <div className="flex items-center gap-2.5 min-w-0">
               <div className="w-7 h-7 rounded-sm bg-brand-primary/10 text-brand-primary flex items-center justify-center shrink-0">
@@ -390,7 +405,7 @@ export function RoomsSearchFilterBar({
               setCalendarOpen((prev) => !prev)
               setDestinationOpen(false)
             }}
-            className="flex items-center gap-2.5 p-2.5 rounded-sm bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-200/80 dark:border-zinc-700/80 hover:border-zinc-300 dark:hover:border-zinc-600 transition-colors text-left cursor-pointer min-w-0"
+            className="flex items-center gap-2.5 p-2.5 rounded-sm bg-[#F1F1F1] dark:bg-zinc-800/60 border border-zinc-200/80 dark:border-zinc-700/80 hover:border-zinc-300 dark:hover:border-zinc-600 transition-colors text-left cursor-pointer min-w-0"
           >
             <div className="w-7 h-7 rounded-sm bg-zinc-200/60 dark:bg-zinc-700/60 text-zinc-600 dark:text-zinc-300 flex items-center justify-center shrink-0">
               <Calendar className="w-3.5 h-3.5" />
@@ -416,7 +431,7 @@ export function RoomsSearchFilterBar({
               setCalendarOpen((prev) => !prev)
               setDestinationOpen(false)
             }}
-            className="flex items-center gap-2.5 p-2.5 rounded-sm bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-200/80 dark:border-zinc-700/80 hover:border-zinc-300 dark:hover:border-zinc-600 transition-colors text-left cursor-pointer min-w-0"
+            className="flex items-center gap-2.5 p-2.5 rounded-sm bg-[#F1F1F1] dark:bg-zinc-800/60 border border-zinc-200/80 dark:border-zinc-700/80 hover:border-zinc-300 dark:hover:border-zinc-600 transition-colors text-left cursor-pointer min-w-0"
           >
             <div className="w-7 h-7 rounded-sm bg-zinc-200/60 dark:bg-zinc-700/60 text-zinc-600 dark:text-zinc-300 flex items-center justify-center shrink-0">
               <Calendar className="w-3.5 h-3.5" />
@@ -437,7 +452,7 @@ export function RoomsSearchFilterBar({
           </button>
         </div>
 
-        <div className="w-full flex items-center justify-between p-2 px-3 rounded-sm bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-200/80 dark:border-zinc-700/80">
+        <div className="w-full flex items-center justify-between p-2 px-3 rounded-sm bg-[#F1F1F1] dark:bg-zinc-800/60 border border-zinc-200/80 dark:border-zinc-700/80">
           <div className="flex items-center gap-2.5">
             <div className="w-7 h-7 rounded-sm bg-zinc-200/60 dark:bg-zinc-700/60 text-zinc-600 dark:text-zinc-300 flex items-center justify-center shrink-0">
               <Users className="w-3.5 h-3.5" />
@@ -500,7 +515,7 @@ export function RoomsSearchFilterBar({
               setDestinationOpen((prev) => !prev)
               setCalendarOpen(false)
             }}
-            className="w-full flex items-center justify-between gap-2.5 px-4 py-2 rounded-full hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors text-left cursor-pointer"
+            className="w-full flex items-center justify-between gap-2.5 px-4 py-2 rounded-full hover:bg-[#F1F1F1] dark:hover:bg-zinc-800/50 transition-colors text-left cursor-pointer"
           >
             <div className="flex items-center gap-2.5 truncate">
               <MapPin className="w-4 h-4 text-brand-primary shrink-0" />
@@ -526,7 +541,7 @@ export function RoomsSearchFilterBar({
             setCalendarOpen((prev) => !prev)
             setDestinationOpen(false)
           }}
-          className="flex-1 flex items-center gap-2.5 px-4 py-2 rounded-full hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors text-left cursor-pointer"
+          className="flex-1 flex items-center gap-2.5 px-4 py-2 rounded-full hover:bg-[#F1F1F1] dark:hover:bg-zinc-800/50 transition-colors text-left cursor-pointer"
         >
           <Calendar className="w-4 h-4 text-zinc-500 dark:text-zinc-400 shrink-0" />
           <span className="text-sm font-semibold text-zinc-800 dark:text-zinc-200 whitespace-nowrap">
@@ -547,7 +562,7 @@ export function RoomsSearchFilterBar({
             setCalendarOpen((prev) => !prev)
             setDestinationOpen(false)
           }}
-          className="flex-1 flex items-center gap-2.5 px-4 py-2 rounded-full hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors text-left cursor-pointer"
+          className="flex-1 flex items-center gap-2.5 px-4 py-2 rounded-full hover:bg-[#F1F1F1] dark:hover:bg-zinc-800/50 transition-colors text-left cursor-pointer"
         >
           <Calendar className="w-4 h-4 text-zinc-500 dark:text-zinc-400 shrink-0" />
           <span className="text-sm font-semibold text-zinc-800 dark:text-zinc-200 whitespace-nowrap">
@@ -565,9 +580,7 @@ export function RoomsSearchFilterBar({
         <div className="flex items-center gap-2.5 px-3 py-1">
           <button
             type="button"
-            onClick={() =>
-              onGuestCountChange((prev) => Math.max(1, prev - 1))
-            }
+            onClick={() => onGuestCountChange((prev) => Math.max(1, prev - 1))}
             disabled={guestCount <= 1}
             className="w-7 h-7 rounded-full border border-zinc-300 dark:border-zinc-700 flex items-center justify-center text-zinc-600 dark:text-zinc-300 hover:border-zinc-400 dark:hover:border-zinc-500 disabled:opacity-30 disabled:cursor-not-allowed transition-colors cursor-pointer"
             aria-label="Diminuir hóspedes"
@@ -584,9 +597,7 @@ export function RoomsSearchFilterBar({
 
           <button
             type="button"
-            onClick={() =>
-              onGuestCountChange((prev) => Math.min(10, prev + 1))
-            }
+            onClick={() => onGuestCountChange((prev) => Math.min(10, prev + 1))}
             disabled={guestCount >= 10}
             className="w-7 h-7 rounded-full border border-zinc-300 dark:border-zinc-700 flex items-center justify-center text-zinc-600 dark:text-zinc-300 hover:border-zinc-400 dark:hover:border-zinc-500 disabled:opacity-30 disabled:cursor-not-allowed transition-colors cursor-pointer"
             aria-label="Aumentar hóspedes"

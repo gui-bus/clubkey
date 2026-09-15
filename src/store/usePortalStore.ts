@@ -31,6 +31,7 @@ interface PortalState {
   getConnectionStatus: (memberId: number) => MemberConnectionStatus
   buyExperience: (experienceId: number) => void
   cancelStay: (stayReservationId: string) => void
+  resetStays: () => void
   updateProfile: (profile: Partial<UserProfile>) => void
   addSeekingTag: (tag: string) => void
   removeSeekingTag: (index: number) => void
@@ -142,6 +143,12 @@ export const usePortalStore = create<PortalState>()(
         }))
       },
 
+      resetStays: () => {
+        set({
+          memberStays: DEFAULT_MEMBER_STAYS
+        })
+      },
+
       updateProfile: (profileUpdates: Partial<UserProfile>) => {
         set((state) => ({
           userProfile: {
@@ -192,14 +199,17 @@ export const usePortalStore = create<PortalState>()(
       }
     }),
     {
-      name: "clubkey-portal-storage-v3",
-      version: 3,
+      name: "clubkey-portal-storage-v4",
+      version: 4,
       migrate: (persistedState: unknown) => {
         const state = persistedState as PortalState
         if (!state) return state
         const migratedState = { ...state }
         if (migratedState.userProfile?.name === "Marina Duarte" || !migratedState.userProfile?.name) {
           migratedState.userProfile = DEFAULT_USER
+        }
+        if (!migratedState.memberStays || migratedState.memberStays.length < DEFAULT_MEMBER_STAYS.length) {
+          migratedState.memberStays = DEFAULT_MEMBER_STAYS
         }
         if (migratedState.connectedMembers) {
           const raw = migratedState.connectedMembers as Record<number, unknown>
@@ -220,6 +230,9 @@ export const usePortalStore = create<PortalState>()(
         if (state) {
           if (state.userProfile?.name === "Marina Duarte" || !state.userProfile?.name) {
             state.userProfile = DEFAULT_USER
+          }
+          if (!state.memberStays || state.memberStays.length < DEFAULT_MEMBER_STAYS.length) {
+            state.memberStays = DEFAULT_MEMBER_STAYS
           }
         }
       }

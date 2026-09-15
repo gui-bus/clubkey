@@ -88,7 +88,6 @@ const DrawerContent = React.forwardRef<
     const [isDragging, setIsDragging] = React.useState(false);
 
     const startCoordRef = React.useRef<number>(0);
-    const _contentRef = React.useRef<HTMLDivElement>(null);
     const closeButtonRef = React.useRef<HTMLButtonElement>(null);
 
     const handleTouchStart = (e: React.TouchEvent) => {
@@ -206,7 +205,7 @@ const DrawerContent = React.forwardRef<
             </div>
             {position === "top" && handleBar}
             <DialogPrimitive.Close
-              ref={closeButtonRef as any}
+              ref={closeButtonRef}
               className="absolute right-4 top-4 rounded-full p-2 opacity-70 transition-opacity hover:opacity-100 focus:outline-none disabled:pointer-events-none hover:bg-zinc-100 dark:hover:bg-zinc-800 cursor-pointer shrink-0 z-10"
             >
               <Icon

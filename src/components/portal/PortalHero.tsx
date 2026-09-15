@@ -15,7 +15,7 @@ export interface PortalHeroProps {
   imageSrc: string
   imageAlt: string
   imageClassName?: string
-className?: string
+  className?: string
   children?: React.ReactNode
 }
 
@@ -33,7 +33,7 @@ export function PortalHero({
     <section
       id="hero"
       className={cn(
-        "relative z-30 w-full bg-[#0D0D0D] text-white min-h-[520px] md:min-h-[560px] flex flex-col justify-center",
+        "relative z-30 w-full bg-[#161616] text-white min-h-[520px] md:min-h-[560px] flex flex-col justify-center",
         className
       )}
     >

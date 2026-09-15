@@ -1,22 +1,47 @@
 "use client"
 
 import * as React from "react"
+
 import Image from "next/image"
 import Link from "next/link"
-import { useParams, notFound } from "next/navigation"
-import { MapPin, Check, Hourglass, UserPlus, PaperPlaneRight, ArrowSquareOut, Globe, ArrowRight, Medal, Target, ShieldCheck } from "@phosphor-icons/react"
+import { notFound, useParams } from "next/navigation"
 
-import { MEMBERS, EVENTS, getInitials, getMemberSlug, getEventSlug } from "@/src/data/portalData"
+import {
+  EVENTS,
+  MEMBERS,
+  getEventSlug,
+  getInitials,
+  getMemberSlug,
+} from "@/src/data/portalData"
 import { usePortalStore } from "@/src/store/usePortalStore"
-import { BackButton } from "@/src/components/portal/BackButton"
-import { ShareButton } from "@/src/components/portal/ShareButton"
-import { Avatar, AvatarImage, AvatarFallback } from "@/src/components/ui/avatar/avatar"
+import {
+  ArrowRight,
+  ArrowSquareOut,
+  Check,
+  Globe,
+  Hourglass,
+  MapPin,
+  Medal,
+  PaperPlaneRight,
+  ShieldCheck,
+  Target,
+  UserPlus,
+} from "@phosphor-icons/react"
+
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/src/components/ui/avatar/avatar"
 import { Badge } from "@/src/components/ui/badge/badge"
 import { Button } from "@/src/components/ui/button/button"
 import { Textarea } from "@/src/components/ui/textarea/textarea"
 import { toast } from "@/src/components/ui/toast/toast"
+
 import { Container } from "@/src/components/common/container"
 import { CtaButton } from "@/src/components/common/ctaButton"
+import { BackButton } from "@/src/components/portal/BackButton"
+import { ShareButton } from "@/src/components/portal/ShareButton"
 
 export default function MemberProfileDetailPage(): React.JSX.Element {
   const params = useParams()
@@ -32,13 +57,13 @@ export default function MemberProfileDetailPage(): React.JSX.Element {
   const status = getConnectionStatus(member.id)
   const [messageText, setMessageText] = React.useState("")
 
-  const memberEvents = EVENTS.filter((e) =>
-    e.participants.includes(member.id)
-  )
+  const memberEvents = EVENTS.filter((e) => e.participants.includes(member.id))
 
   const currentIndex = MEMBERS.findIndex((m) => m.id === member.id)
-  const prevMember = currentIndex > 0 ? MEMBERS[currentIndex - 1] : MEMBERS[MEMBERS.length - 1]
-  const nextMember = currentIndex < MEMBERS.length - 1 ? MEMBERS[currentIndex + 1] : MEMBERS[0]
+  const prevMember =
+    currentIndex > 0 ? MEMBERS[currentIndex - 1] : MEMBERS[MEMBERS.length - 1]
+  const nextMember =
+    currentIndex < MEMBERS.length - 1 ? MEMBERS[currentIndex + 1] : MEMBERS[0]
 
   const firstName = member.name.split(" ")[0]
 
@@ -72,7 +97,9 @@ export default function MemberProfileDetailPage(): React.JSX.Element {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <BackButton fallbackHref="/conexoes" label="Conexões" />
-          <span className="text-zinc-300 dark:text-zinc-700 hidden sm:inline">/</span>
+          <span className="text-zinc-300 dark:text-zinc-700 hidden sm:inline">
+            /
+          </span>
           <span className="text-xs font-bold text-zinc-500 dark:text-zinc-400 truncate max-w-xs sm:max-w-md hidden sm:inline">
             {member.name}
           </span>
@@ -154,13 +181,15 @@ export default function MemberProfileDetailPage(): React.JSX.Element {
                 <MapPin className="w-3.5 h-3.5 text-brand-primary shrink-0" />
                 {member.city}
               </span>
-              <span className="text-zinc-300 dark:text-zinc-700 hidden sm:inline">•</span>
-              <span>
-                Membro desde {member.since || 2021}
+              <span className="text-zinc-300 dark:text-zinc-700 hidden sm:inline">
+                •
               </span>
+              <span>Membro desde {member.since || 2021}</span>
               {member.socials?.linkedin && (
                 <>
-                  <span className="text-zinc-300 dark:text-zinc-700 hidden sm:inline">•</span>
+                  <span className="text-zinc-300 dark:text-zinc-700 hidden sm:inline">
+                    •
+                  </span>
                   <a
                     href={member.socials.linkedin}
                     target="_blank"
@@ -173,7 +202,9 @@ export default function MemberProfileDetailPage(): React.JSX.Element {
               )}
               {member.socials?.website && (
                 <>
-                  <span className="text-zinc-300 dark:text-zinc-700 hidden sm:inline">•</span>
+                  <span className="text-zinc-300 dark:text-zinc-700 hidden sm:inline">
+                    •
+                  </span>
                   <a
                     href={member.socials.website}
                     target="_blank"
@@ -197,7 +228,10 @@ export default function MemberProfileDetailPage(): React.JSX.Element {
                 Visão Geral
               </span>
               <p className="text-lg sm:text-xl font-light text-zinc-800 dark:text-zinc-200 leading-relaxed">
-                {member.name} é {member.role.toLowerCase()} na {member.company}, atuando em {member.city}. Faz parte do círculo restrito de membros com foco em geração de negócios, parcerias institucionais e expansão do ecossistema.
+                {member.name} é {member.role.toLowerCase()} na {member.company},
+                atuando em {member.city}. Faz parte do círculo restrito de
+                membros com foco em geração de negócios, parcerias
+                institucionais e expansão do ecossistema.
               </p>
             </div>
           </section>
@@ -326,7 +360,8 @@ export default function MemberProfileDetailPage(): React.JSX.Element {
             {memberEvents.length === 0 ? (
               <div className="p-8 text-center rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416]">
                 <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                  {firstName} ainda não possui encontros confirmados neste trimestre.
+                  {firstName} ainda não possui encontros confirmados neste
+                  trimestre.
                 </p>
               </div>
             ) : (
@@ -375,14 +410,19 @@ export default function MemberProfileDetailPage(): React.JSX.Element {
               </span>
               <div className="flex items-baseline justify-between gap-2 pt-1">
                 <span className="text-2xl sm:text-3xl font-black text-zinc-900 dark:text-white font-heading leading-none">
-                  {status === "connected" ? "Conectado" : status === "pending" ? "Aguardando" : "Disponível"}
+                  {status === "connected"
+                    ? "Conectado"
+                    : status === "pending"
+                      ? "Aguardando"
+                      : "Disponível"}
                 </span>
                 <span className="text-xs font-bold uppercase tracking-wider text-zinc-400">
                   {member.since ? `Desde ${member.since}` : "Membro Ativo"}
                 </span>
               </div>
               <p className="text-xs text-zinc-500 dark:text-zinc-400 pt-1 leading-relaxed">
-                Ao conectar, {firstName} receberá seu perfil com suas tags de busca e oferta para abertura de diálogo.
+                Ao conectar, {firstName} receberá seu perfil com suas tags de
+                busca e oferta para abertura de diálogo.
               </p>
             </div>
 
@@ -453,7 +493,7 @@ export default function MemberProfileDetailPage(): React.JSX.Element {
             </div>
 
             <div className="grid grid-cols-2 gap-3 pt-4 border-t border-zinc-100 dark:border-zinc-800 text-center">
-              <div className="p-3 rounded-sm bg-zinc-50 dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800">
+              <div className="p-3 rounded-sm bg-[#F1F1F1] dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800">
                 <span className="text-xl font-heading font-black text-zinc-900 dark:text-white block">
                   {memberEvents.length}
                 </span>
@@ -462,7 +502,7 @@ export default function MemberProfileDetailPage(): React.JSX.Element {
                 </span>
               </div>
 
-              <div className="p-3 rounded-sm bg-zinc-50 dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800">
+              <div className="p-3 rounded-sm bg-[#F1F1F1] dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800">
                 <span className="text-xl font-heading font-black text-brand-primary block">
                   {member.since || 2021}
                 </span>

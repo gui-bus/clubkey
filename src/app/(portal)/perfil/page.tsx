@@ -2,12 +2,19 @@
 
 import * as React from "react"
 
-import Image from "next/image"
 import Link from "next/link"
 
 import { getInitials } from "@/src/data/portalData"
 import { usePortalStore } from "@/src/store/usePortalStore"
-import { ArrowRight, Briefcase, Building, CreditCard, MapPin, FloppyDisk, User } from "@phosphor-icons/react"
+import {
+  ArrowRight,
+  Briefcase,
+  Building,
+  CreditCard,
+  FloppyDisk,
+  MapPin,
+  User,
+} from "@phosphor-icons/react"
 
 import {
   Avatar,
@@ -19,6 +26,7 @@ import { TagInput } from "@/src/components/ui/tagInput/tagInput"
 import { toast } from "@/src/components/ui/toast/toast"
 
 import { Container } from "@/src/components/common/container"
+import { PortalHero } from "@/src/components/portal/PortalHero"
 
 export default function ProfilePage(): React.JSX.Element {
   const { userProfile, updateProfile, getActiveClub } = usePortalStore()
@@ -33,7 +41,9 @@ export default function ProfilePage(): React.JSX.Element {
     bio: userProfile.bio,
   })
 
-  React.useEffect(() => {
+  const [prevProfile, setPrevProfile] = React.useState(userProfile)
+  if (userProfile !== prevProfile) {
+    setPrevProfile(userProfile)
     setFormData({
       name: userProfile.name,
       role: userProfile.role,
@@ -41,13 +51,7 @@ export default function ProfilePage(): React.JSX.Element {
       city: userProfile.city,
       bio: userProfile.bio,
     })
-  }, [
-    userProfile.name,
-    userProfile.role,
-    userProfile.company,
-    userProfile.city,
-    userProfile.bio,
-  ])
+  }
 
   const handleChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }))
@@ -63,37 +67,18 @@ export default function ProfilePage(): React.JSX.Element {
 
   return (
     <div className="w-full flex flex-col">
-      <section
-        id="hero"
-        className="relative z-30 w-full bg-[#0D0D0D] text-white min-h-[440px] md:min-h-[480px] flex flex-col justify-center"
-      >
-        <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none select-none">
-          <Image
-            src="/utils/banners/img_03.png"
-            alt="Perfil do Membro"
-            fill
-            priority
-            className="object-cover object-top"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-zinc-50 dark:from-[#161616]/85 dark:via-[#161616]/65 dark:to-[#0D0D0D] z-10" />
-        </div>
-
-        <Container className="relative z-20 pt-36 pb-14 md:pt-44 md:pb-16 flex flex-col justify-center items-center text-center">
-          <div className="max-w-4xl flex flex-col items-center text-center w-full">
-            <span className="text-xs sm:text-sm font-black uppercase tracking-widest text-brand-primary block mb-3">
-              Configurações de Conta
-            </span>
-            <h1 className="text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-black uppercase tracking-tight text-white leading-[1.05] mb-4 font-heading drop-shadow-md">
-              Meu perfil de{" "}
-              <span className="text-brand-primary">associado</span>
-            </h1>
-            <p className="text-base sm:text-lg md:text-xl text-zinc-200 font-light leading-relaxed drop-shadow-sm max-w-2xl">
-              Mantenha suas informações e interesses atualizados para
-              recomendações de conexões assertivas.
-            </p>
-          </div>
-        </Container>
-      </section>
+      <PortalHero
+        badge="Configurações de Conta"
+        title={
+          <>
+            Meu perfil de{" "}
+            <span className="text-brand-primary">associado</span>
+          </>
+        }
+        description="Mantenha suas informações e interesses atualizados para recomendações de conexões assertivas."
+        imageSrc="/utils/banners/img_03.png"
+        imageAlt="Perfil do Membro"
+      />
 
       <Container className="relative z-10 flex-1 py-10 space-y-8 bg-[#F1F1F1] dark:bg-[#161616]">
         <div className="rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] p-6 sm:p-8 space-y-8 shadow-xs">
@@ -136,7 +121,7 @@ export default function ProfilePage(): React.JSX.Element {
 
             <Link
               href="/perfil/minha-assinatura"
-              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-sm border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 hover:border-brand-primary/60 text-xs font-bold uppercase tracking-wider text-zinc-800 dark:text-zinc-200 transition-colors shadow-2xs"
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-sm border border-zinc-200 dark:border-zinc-800 bg-[#F1F1F1] dark:bg-zinc-900 hover:border-brand-primary/60 text-xs font-bold uppercase tracking-wider text-zinc-800 dark:text-zinc-200 transition-colors shadow-2xs"
             >
               <CreditCard className="w-4 h-4 text-brand-primary" />
               <span>Gerenciar Assinatura</span>

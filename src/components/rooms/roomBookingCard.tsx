@@ -1,12 +1,21 @@
 "use client"
 
 import * as React from "react"
+
 import Image from "next/image"
 import Link from "next/link"
+
+import {
+  CaretRight,
+  Minus,
+  Percent,
+  Plus,
+  ShieldCheck,
+} from "@phosphor-icons/react"
 import { AnimatePresence, motion } from "framer-motion"
-import { Percent, CaretRight, Minus, Plus, ShieldCheck } from "@phosphor-icons/react"
 
 import { CtaButton } from "@/src/components/common/ctaButton"
+
 import { cn } from "@/src/lib/utils"
 
 export interface RoomBookingCardProps {
@@ -84,7 +93,15 @@ export function RoomBookingCard({
         url: trivagoUrl,
       },
     ],
-    [airbnbPrice, bookingPrice, trivagoPrice, nights, airbnbUrl, bookingUrl, trivagoUrl]
+    [
+      airbnbPrice,
+      bookingPrice,
+      trivagoPrice,
+      nights,
+      airbnbUrl,
+      bookingUrl,
+      trivagoUrl,
+    ]
   )
 
   React.useEffect(() => {
@@ -137,7 +154,9 @@ export function RoomBookingCard({
                         "object-contain opacity-90 group-hover/src:opacity-100"
                       )}
                     />
-                    <span className="font-semibold">R$ {comp.pricePerNight}</span>
+                    <span className="font-semibold">
+                      R$ {comp.pricePerNight}
+                    </span>
                   </Link>
                 ))}
               </div>
@@ -212,7 +231,7 @@ export function RoomBookingCard({
 
           <div className="md:col-span-4 flex flex-col justify-center gap-3 md:border-r md:border-zinc-200 dark:md:border-zinc-800 md:pr-6">
             <div className="flex flex-col border border-zinc-200 dark:border-zinc-800 rounded-sm overflow-hidden divide-y divide-zinc-200 dark:divide-zinc-800">
-              <div className="grid grid-cols-2 p-3 bg-zinc-50/50 dark:bg-zinc-900/50">
+              <div className="grid grid-cols-2 p-3 bg-[#F1F1F1]/50 dark:bg-zinc-900/50">
                 <div className="flex flex-col">
                   <span className="text-[10px] uppercase font-bold text-zinc-400">
                     Check-in
@@ -239,7 +258,9 @@ export function RoomBookingCard({
                   <button
                     type="button"
                     disabled={nights <= 1}
-                    onClick={() => onNightsChange((prev) => Math.max(1, prev - 1))}
+                    onClick={() =>
+                      onNightsChange((prev) => Math.max(1, prev - 1))
+                    }
                     className="w-7 h-7 rounded-sm border border-zinc-200 dark:border-zinc-700 flex items-center justify-center text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 disabled:opacity-30 cursor-pointer"
                   >
                     <Minus className="w-3.5 h-3.5" />
@@ -265,7 +286,9 @@ export function RoomBookingCard({
                   <button
                     type="button"
                     disabled={guests <= 1}
-                    onClick={() => onGuestsChange((prev) => Math.max(1, prev - 1))}
+                    onClick={() =>
+                      onGuestsChange((prev) => Math.max(1, prev - 1))
+                    }
                     className="w-7 h-7 rounded-sm border border-zinc-200 dark:border-zinc-700 flex items-center justify-center text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 disabled:opacity-30 cursor-pointer"
                   >
                     <Minus className="w-3.5 h-3.5" />
@@ -276,7 +299,9 @@ export function RoomBookingCard({
                   <button
                     type="button"
                     disabled={guests >= maxGuests}
-                    onClick={() => onGuestsChange((prev) => Math.min(maxGuests, prev + 1))}
+                    onClick={() =>
+                      onGuestsChange((prev) => Math.min(maxGuests, prev + 1))
+                    }
                     className="w-7 h-7 rounded-sm border border-zinc-200 dark:border-zinc-700 flex items-center justify-center text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 disabled:opacity-30 cursor-pointer"
                   >
                     <Plus className="w-3.5 h-3.5" />
@@ -397,7 +422,7 @@ export function RoomBookingCard({
       </div>
 
       <div className="flex flex-col border border-zinc-200 dark:border-zinc-800 rounded-sm overflow-hidden divide-y divide-zinc-200 dark:divide-zinc-800">
-        <div className="grid grid-cols-2 p-3 bg-zinc-50/50 dark:bg-zinc-900/50">
+        <div className="grid grid-cols-2 p-3 bg-[#F1F1F1]/50 dark:bg-zinc-900/50">
           <div className="flex flex-col">
             <span className="text-[10px] uppercase font-bold text-zinc-400">
               Check-in
@@ -429,9 +454,7 @@ export function RoomBookingCard({
             >
               <Minus className="w-3.5 h-3.5" />
             </button>
-            <span className="text-xs font-bold w-4 text-center">
-              {nights}
-            </span>
+            <span className="text-xs font-bold w-4 text-center">{nights}</span>
             <button
               type="button"
               onClick={() => onNightsChange((prev) => prev + 1)}
@@ -455,13 +478,13 @@ export function RoomBookingCard({
             >
               <Minus className="w-3.5 h-3.5" />
             </button>
-            <span className="text-xs font-bold w-4 text-center">
-              {guests}
-            </span>
+            <span className="text-xs font-bold w-4 text-center">{guests}</span>
             <button
               type="button"
               disabled={guests >= maxGuests}
-              onClick={() => onGuestsChange((prev) => Math.min(maxGuests, prev + 1))}
+              onClick={() =>
+                onGuestsChange((prev) => Math.min(maxGuests, prev + 1))
+              }
               className="w-7 h-7 rounded-sm border border-zinc-200 dark:border-zinc-700 flex items-center justify-center text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 disabled:opacity-30 cursor-pointer"
             >
               <Plus className="w-3.5 h-3.5" />
@@ -481,9 +504,7 @@ export function RoomBookingCard({
         </div>
         <div className="flex items-center justify-between text-emerald-600 dark:text-emerald-400">
           <span>Desconto Exclusivo ClubKey</span>
-          <span className="font-bold">
-            -R$ {savingsPerNight * nights}
-          </span>
+          <span className="font-bold">-R$ {savingsPerNight * nights}</span>
         </div>
         <div className="flex items-center justify-between">
           <span>Taxa de limpeza</span>
@@ -552,12 +573,7 @@ export function RoomBookingCard({
         </AnimatePresence>
       </div>
 
-      <CtaButton
-        isFullWidth
-        size="lg"
-        onClick={onBook}
-        textClassName="gap-2"
-      >
+      <CtaButton isFullWidth size="lg" onClick={onBook} textClassName="gap-2">
         <span>Reservar com ClubKey</span>
         <CaretRight className="w-4 h-4 stroke-[2.5]" />
       </CtaButton>

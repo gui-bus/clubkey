@@ -1,19 +1,21 @@
-"use client";
+"use client"
 
-import { Icon } from "@iconify/react";
-import { cva } from "class-variance-authority";
-import * as React from "react";
-import { Badge } from "@/src/components/ui/badge/badge";
-import { designRadius } from "../../../lib/design-system";
-import { cn } from "../../../lib/utils";
+import * as React from "react"
 
-export interface TagInputProps
-  extends Omit<
-    React.InputHTMLAttributes<HTMLInputElement>,
-    "size" | "onChange" | "value"
-  > {
-  value?: string[];
-  onChange?: (value: string[]) => void;
+import { WarningCircle } from "@phosphor-icons/react"
+import { cva } from "class-variance-authority"
+
+import { Badge } from "@/src/components/ui/badge/badge"
+
+import { designRadius } from "../../../lib/design-system"
+import { cn } from "../../../lib/utils"
+
+export interface TagInputProps extends Omit<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  "size" | "onChange" | "value"
+> {
+  value?: string[]
+  onChange?: (value: string[]) => void
   variant?:
     | "default"
     | "bordered"
@@ -22,7 +24,7 @@ export interface TagInputProps
     | "filled"
     | "glassmorphism"
     | "gradient-border"
-    | "glow";
+    | "glow"
   color?:
     | "default"
     | "primary"
@@ -30,18 +32,18 @@ export interface TagInputProps
     | "accent"
     | "success"
     | "warning"
-    | "danger";
-  size?: "sm" | "md" | "lg";
-  radius?: keyof typeof designRadius;
-  label?: React.ReactNode;
-  description?: React.ReactNode;
-  errorMessage?: React.ReactNode;
-  isInvalid?: boolean;
-  maxTags?: number;
-  allowDuplicates?: boolean;
-  validate?: (tag: string) => boolean | string;
-  addOnBlur?: boolean;
-  delimiterKeys?: string[];
+    | "danger"
+  size?: "sm" | "md" | "lg"
+  radius?: keyof typeof designRadius
+  label?: React.ReactNode
+  description?: React.ReactNode
+  errorMessage?: React.ReactNode
+  isInvalid?: boolean
+  maxTags?: number
+  allowDuplicates?: boolean
+  validate?: (tag: string) => boolean | string
+  addOnBlur?: boolean
+  delimiterKeys?: string[]
   tagColor?:
     | "default"
     | "primary"
@@ -49,10 +51,10 @@ export interface TagInputProps
     | "accent"
     | "success"
     | "warning"
-    | "danger";
-  tagVariant?: "default" | "bordered" | "flat" | "ghost" | "shadow";
-  isDisabled?: boolean;
-  isRequired?: boolean;
+    | "danger"
+  tagVariant?: "default" | "bordered" | "flat" | "ghost" | "shadow"
+  isDisabled?: boolean
+  isRequired?: boolean
 }
 
 const tagInputVariants = cva(
@@ -85,8 +87,8 @@ const tagInputVariants = cva(
       variant: "default",
       size: "md",
     },
-  },
-);
+  }
+)
 
 export const TagInput = React.forwardRef<HTMLInputElement, TagInputProps>(
   (
@@ -114,75 +116,76 @@ export const TagInput = React.forwardRef<HTMLInputElement, TagInputProps>(
       isRequired = false,
       ...props
     },
-    ref,
+    ref
   ) => {
-    const [inputValue, setInputValue] = React.useState("");
-    const [localInvalid, setLocalInvalid] = React.useState(false);
-    const [localError, setLocalError] = React.useState<string | null>(null);
-    const inputRef = React.useRef<HTMLInputElement>(null);
+    const [inputValue, setInputValue] = React.useState("")
+    const [localInvalid, setLocalInvalid] = React.useState(false)
+    const [localError, setLocalError] = React.useState<string | null>(null)
+    const inputRef = React.useRef<HTMLInputElement>(null)
+    React.useImperativeHandle(ref, () => inputRef.current as HTMLInputElement)
 
     const handleAddTag = (tag: string) => {
-      const trimmed = tag.trim();
-      if (!trimmed) return;
+      const trimmed = tag.trim()
+      if (!trimmed) return
 
       if (maxTags !== undefined && value.length >= maxTags) {
-        setLocalInvalid(true);
-        setLocalError(`Maximum of ${maxTags} tags allowed.`);
-        return;
+        setLocalInvalid(true)
+        setLocalError(`Maximum of ${maxTags} tags allowed.`)
+        return
       }
 
       if (!allowDuplicates && value.includes(trimmed)) {
-        setLocalInvalid(true);
-        setLocalError("Duplicate tags are not allowed.");
-        return;
+        setLocalInvalid(true)
+        setLocalError("Duplicate tags are not allowed.")
+        return
       }
 
       if (validate) {
-        const validationResult = validate(trimmed);
+        const validationResult = validate(trimmed)
         if (typeof validationResult === "string") {
-          setLocalInvalid(true);
-          setLocalError(validationResult);
-          return;
+          setLocalInvalid(true)
+          setLocalError(validationResult)
+          return
         }
         if (validationResult === false) {
-          setLocalInvalid(true);
-          setLocalError("Invalid tag format.");
-          return;
+          setLocalInvalid(true)
+          setLocalError("Invalid tag format.")
+          return
         }
       }
 
-      setLocalInvalid(false);
-      setLocalError(null);
-      const updated = [...value, trimmed];
-      onChange?.(updated);
-      setInputValue("");
-    };
+      setLocalInvalid(false)
+      setLocalError(null)
+      const updated = [...value, trimmed]
+      onChange?.(updated)
+      setInputValue("")
+    }
 
     const handleRemoveTag = (index: number) => {
-      const updated = value.filter((_, i) => i !== index);
-      onChange?.(updated);
-      setLocalInvalid(false);
-      setLocalError(null);
-    };
+      const updated = value.filter((_, i) => i !== index)
+      onChange?.(updated)
+      setLocalInvalid(false)
+      setLocalError(null)
+    }
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
       if (delimiterKeys.includes(e.key)) {
-        e.preventDefault();
-        handleAddTag(inputValue);
+        e.preventDefault()
+        handleAddTag(inputValue)
       } else if (e.key === "Backspace" && !inputValue && value.length > 0) {
-        e.preventDefault();
-        handleRemoveTag(value.length - 1);
+        e.preventDefault()
+        handleRemoveTag(value.length - 1)
       }
-    };
+    }
 
     const handleBlur = () => {
       if (addOnBlur && inputValue) {
-        handleAddTag(inputValue);
+        handleAddTag(inputValue)
       }
-    };
+    }
 
-    const hasError = isInvalid || localInvalid;
-    const currentError = errorMessage || localError;
+    const hasError = isInvalid || localInvalid
+    const currentError = errorMessage || localError
 
     return (
       <div className={cn("w-full flex flex-col gap-1.5", className)}>
@@ -200,7 +203,7 @@ export const TagInput = React.forwardRef<HTMLInputElement, TagInputProps>(
             hasError &&
               "border-danger focus-within:border-danger focus-within:ring-danger/30 focus-within:shadow-[0_0_12px_rgba(239,68,68,0.35)]",
             isDisabled &&
-              "opacity-50 cursor-not-allowed pointer-events-none bg-zinc-50 dark:bg-zinc-900/50",
+              "opacity-50 cursor-not-allowed pointer-events-none bg-[#F1F1F1] dark:bg-zinc-900/50"
           )}
           onClick={() => inputRef.current?.focus()}
         >
@@ -220,22 +223,14 @@ export const TagInput = React.forwardRef<HTMLInputElement, TagInputProps>(
 
           <input
             {...props}
-            ref={
-              ref
-                ? (node) => {
-                    if (typeof ref === "function") ref(node);
-                    else (ref as any).current = node;
-                    (inputRef as any).current = node;
-                  }
-                : inputRef
-            }
+            ref={inputRef}
             type="text"
             value={inputValue}
             onChange={(e) => {
-              setInputValue(e.target.value);
+              setInputValue(e.target.value)
               if (localInvalid) {
-                setLocalInvalid(false);
-                setLocalError(null);
+                setLocalInvalid(false)
+                setLocalError(null)
               }
             }}
             onKeyDown={handleKeyDown}
@@ -246,14 +241,14 @@ export const TagInput = React.forwardRef<HTMLInputElement, TagInputProps>(
               "flex-1 min-w-[120px] bg-transparent outline-none border-none text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-500",
               size === "sm" && "text-xs py-0.5",
               size === "md" && "text-sm py-1",
-              size === "lg" && "text-base py-1.5",
+              size === "lg" && "text-base py-1.5"
             )}
           />
         </div>
 
         {currentError && (
           <p className="text-xs text-danger font-medium flex items-center gap-1">
-            <Icon icon="lucide:alert-circle" className="size-3.5" />
+            <WarningCircle className="size-3.5 shrink-0" />
             {currentError}
           </p>
         )}
@@ -264,8 +259,8 @@ export const TagInput = React.forwardRef<HTMLInputElement, TagInputProps>(
           </p>
         )}
       </div>
-    );
-  },
-);
+    )
+  }
+)
 
-TagInput.displayName = "TagInput";
+TagInput.displayName = "TagInput"

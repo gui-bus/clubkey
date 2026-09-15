@@ -1,7 +1,9 @@
 "use client"
 
 import * as React from "react"
+
 import Link from "next/link"
+
 import { CheckCircle, House, Key } from "@phosphor-icons/react"
 
 import { Container } from "@/src/components/common/container"
@@ -10,12 +12,13 @@ import { FloatingCta } from "@/src/components/landing/FloatingCta"
 import { Footer } from "@/src/components/landing/Footer"
 import { Navbar } from "@/src/components/landing/Navbar"
 import { TopBanner } from "@/src/components/landing/TopBanner"
+import { SubscriptionCartCard } from "@/src/components/subscription/subscriptionCartCard"
 import {
   type PaymentMethod,
-  type SubscriptionUser,
   SubscriptionForm,
+  type SubscriptionUser,
 } from "@/src/components/subscription/subscriptionForm"
-import { SubscriptionCartCard } from "@/src/components/subscription/subscriptionCartCard"
+
 import { brandConfig } from "@/src/config/brand.config"
 
 export default function SubscriptionPage(): React.JSX.Element {
@@ -63,11 +66,12 @@ export default function SubscriptionPage(): React.JSX.Element {
                   Parabéns, {user?.name || "Membro"}!
                 </h1>
                 <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 font-light leading-relaxed">
-                  Sua Key de membro {brandConfig.name} está ativa. Você já tem acesso imediato a todas as tarifas com até 60% de desconto.
+                  Sua Key de membro {brandConfig.name} está ativa. Você já tem
+                  acesso imediato a todas as tarifas com até 60% de desconto.
                 </p>
               </div>
 
-              <div className="w-full p-4 rounded-sm bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-200 dark:border-zinc-800 flex flex-col gap-2.5 text-left text-xs">
+              <div className="w-full p-4 rounded-sm bg-[#F1F1F1] dark:bg-zinc-800/60 border border-zinc-200 dark:border-zinc-800 flex flex-col gap-2.5 text-left text-xs">
                 <div className="flex justify-between items-center text-zinc-600 dark:text-zinc-400">
                   <span>Plano escolhido:</span>
                   <span className="font-bold text-zinc-900 dark:text-white">
@@ -91,10 +95,7 @@ export default function SubscriptionPage(): React.JSX.Element {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-3 w-full pt-2">
-                <CtaButton
-                  href="/hospedagens"
-                  className="flex-1 py-3.5"
-                >
+                <CtaButton href="/hospedagens" className="flex-1 py-3.5">
                   <Key className="w-4 h-4 mr-2" />
                   <span>Explorar Hospedagens</span>
                 </CtaButton>
@@ -118,7 +119,8 @@ export default function SubscriptionPage(): React.JSX.Element {
                   Seja um associado
                 </h1>
                 <p className="mt-2 text-sm sm:text-base text-zinc-600 dark:text-zinc-400 font-light leading-relaxed max-w-2xl">
-                  Garanta acesso imediato a descontos exclusivos de até 60% em mais de 4.500 hotéis e acomodações premium.
+                  Garanta acesso imediato a descontos exclusivos de até 60% em
+                  mais de 4.500 hotéis e acomodações premium.
                 </p>
               </div>
 

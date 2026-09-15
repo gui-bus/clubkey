@@ -1,9 +1,11 @@
-"use client";
+"use client"
 
-import { Icon } from "@iconify/react";
-import { cva } from "class-variance-authority";
-import * as React from "react";
-import { cn } from "../../../lib/utils";
+import * as React from "react"
+
+import { Icon } from "@iconify/react"
+import { cva } from "class-variance-authority"
+
+import { cn } from "../../../lib/utils"
 
 export const fileUploadDragVariants = cva(
   "relative flex flex-col items-center justify-center p-8 border-2 border-dashed rounded-2xl transition-all duration-300 cursor-pointer select-none group",
@@ -11,76 +13,76 @@ export const fileUploadDragVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-white dark:bg-zinc-950 border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50/50 dark:hover:bg-zinc-900/30",
+          "bg-white dark:bg-zinc-950 border-zinc-200 dark:border-zinc-800 hover:bg-[#F1F1F1]/50 dark:hover:bg-zinc-900/30",
         bordered:
-          "bg-transparent border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50/30 dark:hover:bg-zinc-900/10",
+          "bg-transparent border-zinc-200 dark:border-zinc-800 hover:bg-[#F1F1F1]/30 dark:hover:bg-zinc-900/10",
         flat: "bg-zinc-100 dark:bg-zinc-800/60 border-transparent hover:bg-zinc-200/70 dark:hover:bg-zinc-800",
         underlined:
-          "bg-transparent border-t-0 border-x-0 border-b-2 border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50/10 rounded-none",
+          "bg-transparent border-t-0 border-x-0 border-b-2 border-zinc-200 dark:border-zinc-800 hover:bg-[#F1F1F1]/10 rounded-none",
         filled:
           "bg-zinc-100 dark:bg-zinc-800/80 border-transparent hover:bg-zinc-200/50 dark:hover:bg-zinc-800/40",
         glassmorphism:
           "backdrop-blur-md bg-white/10 dark:bg-black/10 border-white/20 dark:border-white/10 hover:bg-white/20 dark:hover:bg-black/20 shadow-lg",
         "gradient-border":
-          "bg-white dark:bg-zinc-950 border-transparent before:absolute before:inset-0 before:-z-10 before:rounded-[inherit] before:p-[1px] before:bg-gradient-to-r before:from-sky-500 before:via-indigo-500 before:to-pink-500 hover:bg-zinc-50/50 dark:hover:bg-zinc-900/30",
+          "bg-white dark:bg-zinc-950 border-transparent before:absolute before:inset-0 before:-z-10 before:rounded-[inherit] before:p-[1px] before:bg-gradient-to-r before:from-sky-500 before:via-indigo-500 before:to-pink-500 hover:bg-[#F1F1F1]/50 dark:hover:bg-zinc-900/30",
         glow: "bg-white dark:bg-zinc-950 border-zinc-200 dark:border-zinc-800 shadow-xs hover:shadow-[0_0_12px_rgba(14,165,233,0.15)]",
       },
     },
     defaultVariants: {
       variant: "default",
     },
-  },
-);
+  }
+)
 
 const matchAcceptRule = (
   fileName: string,
   fileType: string,
-  accept: string,
+  accept: string
 ) => {
-  const rules = accept.split(",").map((r) => r.trim().toLowerCase());
+  const rules = accept.split(",").map((r) => r.trim().toLowerCase())
   return rules.some((rule) => {
     if (rule.startsWith(".")) {
-      return fileName.toLowerCase().endsWith(rule);
+      return fileName.toLowerCase().endsWith(rule)
     }
     if (rule.endsWith("/*")) {
-      const baseType = rule.replace("/*", "");
-      return fileType.toLowerCase().startsWith(baseType);
+      const baseType = rule.replace("/*", "")
+      return fileType.toLowerCase().startsWith(baseType)
     }
-    return fileType.toLowerCase() === rule;
-  });
-};
+    return fileType.toLowerCase() === rule
+  })
+}
 
 export interface FileItemState {
-  id: string;
-  file: File;
-  previewUrl?: string;
-  progress: number;
-  status: "uploading" | "paused" | "completed" | "error";
-  errorMessage?: string;
+  id: string
+  file: File
+  previewUrl?: string
+  progress: number
+  status: "uploading" | "paused" | "completed" | "error"
+  errorMessage?: string
 }
 
 export interface FileValidationRules {
-  minWidth?: number;
-  minHeight?: number;
-  maxWidth?: number;
-  maxHeight?: number;
-  aspectRatio?: number;
-  aspectRatioTolerance?: number;
+  minWidth?: number
+  minHeight?: number
+  maxWidth?: number
+  maxHeight?: number
+  aspectRatio?: number
+  aspectRatioTolerance?: number
 }
 
 export interface FileUploadProps {
-  onFilesSelected?: (files: File[]) => void;
-  accept?: string;
-  multiple?: boolean;
-  maxSizeMB?: number;
-  allowPaste?: boolean;
-  enableCrop?: boolean;
-  validationRules?: FileValidationRules;
-  label?: React.ReactNode;
-  description?: React.ReactNode;
-  disabled?: boolean;
-  showPreviews?: boolean;
-  simulateProgress?: boolean;
+  onFilesSelected?: (files: File[]) => void
+  accept?: string
+  multiple?: boolean
+  maxSizeMB?: number
+  allowPaste?: boolean
+  enableCrop?: boolean
+  validationRules?: FileValidationRules
+  label?: React.ReactNode
+  description?: React.ReactNode
+  disabled?: boolean
+  showPreviews?: boolean
+  simulateProgress?: boolean
   variant?:
     | "default"
     | "bordered"
@@ -89,9 +91,9 @@ export interface FileUploadProps {
     | "filled"
     | "glassmorphism"
     | "gradient-border"
-    | "glow";
-  isRequired?: boolean;
-  className?: string;
+    | "glow"
+  isRequired?: boolean
+  className?: string
 }
 
 export function FileUpload({
@@ -111,27 +113,27 @@ export function FileUpload({
   isRequired = false,
   className,
 }: FileUploadProps) {
-  const [dragActive, setDragActive] = React.useState(false);
-  const [fileItems, setFileItems] = React.useState<FileItemState[]>([]);
+  const [dragActive, setDragActive] = React.useState(false)
+  const [fileItems, setFileItems] = React.useState<FileItemState[]>([])
   const [cropFileItem, setCropFileItem] = React.useState<FileItemState | null>(
-    null,
-  );
-  const [cropRotation, setCropRotation] = React.useState<number>(0);
-  const [cropZoom, setCropZoom] = React.useState<number>(1);
-  const inputRef = React.useRef<HTMLInputElement>(null);
+    null
+  )
+  const [cropRotation, setCropRotation] = React.useState<number>(0)
+  const [cropZoom, setCropZoom] = React.useState<number>(1)
+  const inputRef = React.useRef<HTMLInputElement>(null)
 
   const _validateImageDimensions = (file: File): Promise<string | null> => {
     return new Promise((resolve) => {
       if (!validationRules || !file.type.startsWith("image/")) {
-        resolve(null);
-        return;
+        resolve(null)
+        return
       }
 
-      const img = new Image();
-      const objectUrl = URL.createObjectURL(file);
+      const img = new Image()
+      const objectUrl = URL.createObjectURL(file)
       img.onload = () => {
-        URL.revokeObjectURL(objectUrl);
-        const { width, height } = img;
+        URL.revokeObjectURL(objectUrl)
+        const { width, height } = img
         const {
           minWidth,
           minHeight,
@@ -139,70 +141,68 @@ export function FileUpload({
           maxHeight,
           aspectRatio,
           aspectRatioTolerance = 0.05,
-        } = validationRules;
+        } = validationRules
 
         if (minWidth && width < minWidth) {
           resolve(
-            `Image width (${width}px) is less than min allowed ${minWidth}px.`,
-          );
-          return;
+            `Image width (${width}px) is less than min allowed ${minWidth}px.`
+          )
+          return
         }
         if (minHeight && height < minHeight) {
           resolve(
-            `Image height (${height}px) is less than min allowed ${minHeight}px.`,
-          );
-          return;
+            `Image height (${height}px) is less than min allowed ${minHeight}px.`
+          )
+          return
         }
         if (maxWidth && width > maxWidth) {
-          resolve(
-            `Image width (${width}px) exceeds max allowed ${maxWidth}px.`,
-          );
-          return;
+          resolve(`Image width (${width}px) exceeds max allowed ${maxWidth}px.`)
+          return
         }
         if (maxHeight && height > maxHeight) {
           resolve(
-            `Image height (${height}px) exceeds max allowed ${maxHeight}px.`,
-          );
-          return;
+            `Image height (${height}px) exceeds max allowed ${maxHeight}px.`
+          )
+          return
         }
         if (aspectRatio) {
-          const currentRatio = width / height;
+          const currentRatio = width / height
           if (Math.abs(currentRatio - aspectRatio) > aspectRatioTolerance) {
             resolve(
-              `Aspect ratio (${currentRatio.toFixed(2)}) does not match required ratio (${aspectRatio.toFixed(2)}).`,
-            );
-            return;
+              `Aspect ratio (${currentRatio.toFixed(2)}) does not match required ratio (${aspectRatio.toFixed(2)}).`
+            )
+            return
           }
         }
-        resolve(null);
-      };
+        resolve(null)
+      }
       img.onerror = () => {
-        URL.revokeObjectURL(objectUrl);
-        resolve(null);
-      };
-      img.src = objectUrl;
-    });
-  };
+        URL.revokeObjectURL(objectUrl)
+        resolve(null)
+      }
+      img.src = objectUrl
+    })
+  }
 
   const processFiles = React.useCallback(
     async (filesList: File[]) => {
-      const newItems: FileItemState[] = [];
+      const newItems: FileItemState[] = []
 
       for (const file of filesList) {
-        let errorMessage: string | undefined;
+        let errorMessage: string | undefined
 
         if (file.size > maxSizeMB * 1024 * 1024) {
-          errorMessage = `File size exceeds ${maxSizeMB}MB limit.`;
+          errorMessage = `File size exceeds ${maxSizeMB}MB limit.`
         } else if (accept && !matchAcceptRule(file.name, file.type, accept)) {
-          errorMessage = `Invalid file type. Allowed: ${accept}`;
+          errorMessage = `Invalid file type. Allowed: ${accept}`
         } else {
-          const valError = await _validateImageDimensions(file);
-          if (valError) errorMessage = valError;
+          const valError = await _validateImageDimensions(file)
+          if (valError) errorMessage = valError
         }
 
-        let previewUrl: string | undefined;
+        let previewUrl: string | undefined
         if (file.type.startsWith("image/") || file.type.startsWith("video/")) {
-          previewUrl = URL.createObjectURL(file);
+          previewUrl = URL.createObjectURL(file)
         }
 
         const item: FileItemState = {
@@ -216,16 +216,16 @@ export function FileUpload({
               ? "uploading"
               : "completed",
           errorMessage,
-        };
+        }
 
-        newItems.push(item);
+        newItems.push(item)
       }
 
-      const updated = multiple ? [...fileItems, ...newItems] : newItems;
-      setFileItems(updated);
+      const updated = multiple ? [...fileItems, ...newItems] : newItems
+      setFileItems(updated)
       onFilesSelected?.(
-        updated.filter((i) => i.status !== "error").map((item) => item.file),
-      );
+        updated.filter((i) => i.status !== "error").map((item) => item.file)
+      )
 
       if (
         enableCrop &&
@@ -233,9 +233,9 @@ export function FileUpload({
         newItems[0].file.type.startsWith("image/") &&
         !newItems[0].errorMessage
       ) {
-        setCropFileItem(newItems[0]);
-        setCropRotation(0);
-        setCropZoom(1);
+        setCropFileItem(newItems[0])
+        setCropRotation(0)
+        setCropZoom(1)
       }
     },
     [
@@ -247,47 +247,47 @@ export function FileUpload({
       onFilesSelected,
       enableCrop,
       _validateImageDimensions,
-    ],
-  );
+    ]
+  )
 
   const handleFiles = (files: FileList | null) => {
-    if (!files) return;
-    processFiles(Array.from(files));
-  };
+    if (!files) return
+    processFiles(Array.from(files))
+  }
 
   React.useEffect(() => {
-    if (!allowPaste || disabled) return;
+    if (!allowPaste || disabled) return
 
     const handlePaste = (e: ClipboardEvent) => {
-      const items = e.clipboardData?.items;
-      if (!items) return;
+      const items = e.clipboardData?.items
+      if (!items) return
 
-      const pastedFiles: File[] = [];
+      const pastedFiles: File[] = []
       for (let i = 0; i < items.length; i++) {
         if (items[i].type.startsWith("image/")) {
-          const blob = items[i].getAsFile();
+          const blob = items[i].getAsFile()
           if (blob) {
             const pastedFile = new File(
               [blob],
               `pasted-image-${Date.now()}.png`,
-              { type: blob.type },
-            );
-            pastedFiles.push(pastedFile);
+              { type: blob.type }
+            )
+            pastedFiles.push(pastedFile)
           }
         }
       }
 
       if (pastedFiles.length > 0) {
-        processFiles(pastedFiles);
+        processFiles(pastedFiles)
       }
-    };
+    }
 
-    window.addEventListener("paste", handlePaste);
-    return () => window.removeEventListener("paste", handlePaste);
-  }, [allowPaste, disabled, processFiles]);
+    window.addEventListener("paste", handlePaste)
+    return () => window.removeEventListener("paste", handlePaste)
+  }, [allowPaste, disabled, processFiles])
 
   React.useEffect(() => {
-    if (!simulateProgress) return;
+    if (!simulateProgress) return
 
     const interval = setInterval(() => {
       setFileItems((prev) =>
@@ -295,74 +295,74 @@ export function FileUpload({
           if (item.status === "uploading" && item.progress < 100) {
             const nextProgress = Math.min(
               100,
-              item.progress + Math.floor(Math.random() * 25) + 10,
-            );
+              item.progress + Math.floor(Math.random() * 25) + 10
+            )
             return {
               ...item,
               progress: nextProgress,
               status: nextProgress === 100 ? "completed" : "uploading",
-            };
+            }
           }
-          return item;
-        }),
-      );
-    }, 400);
+          return item
+        })
+      )
+    }, 400)
 
-    return () => clearInterval(interval);
-  }, [simulateProgress]);
+    return () => clearInterval(interval)
+  }, [simulateProgress])
 
   const handleDrag = (e: React.DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
+    e.preventDefault()
+    e.stopPropagation()
     if (e.type === "dragenter" || e.type === "dragover") {
-      setDragActive(true);
+      setDragActive(true)
     } else if (e.type === "dragleave") {
-      setDragActive(false);
+      setDragActive(false)
     }
-  };
+  }
 
   const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragActive(false);
+    e.preventDefault()
+    e.stopPropagation()
+    setDragActive(false)
     if (e.dataTransfer.files?.[0]) {
-      handleFiles(e.dataTransfer.files);
+      handleFiles(e.dataTransfer.files)
     }
-  };
+  }
 
   const removeFile = (id: string) => {
-    const updated = fileItems.filter((item) => item.id !== id);
-    setFileItems(updated);
+    const updated = fileItems.filter((item) => item.id !== id)
+    setFileItems(updated)
     onFilesSelected?.(
-      updated.filter((i) => i.status !== "error").map((item) => item.file),
-    );
-  };
+      updated.filter((i) => i.status !== "error").map((item) => item.file)
+    )
+  }
 
   const togglePause = (id: string) => {
     setFileItems((prev) =>
       prev.map((item) => {
         if (item.id === id) {
-          const nextStatus = item.status === "paused" ? "uploading" : "paused";
-          return { ...item, status: nextStatus };
+          const nextStatus = item.status === "paused" ? "uploading" : "paused"
+          return { ...item, status: nextStatus }
         }
-        return item;
-      }),
-    );
-  };
+        return item
+      })
+    )
+  }
 
   const handleApplyCrop = () => {
-    if (!cropFileItem) return;
+    if (!cropFileItem) return
 
-    setCropFileItem(null);
-  };
+    setCropFileItem(null)
+  }
 
   const getFileIcon = (file: File) => {
-    if (file.type.startsWith("image/")) return "hugeicons:image-01";
-    if (file.type.startsWith("video/")) return "hugeicons:video-01";
-    if (file.type.startsWith("audio/")) return "hugeicons:music-note-01";
-    if (file.type.includes("pdf")) return "hugeicons:pdf-01";
-    return "hugeicons:file-02";
-  };
+    if (file.type.startsWith("image/")) return "hugeicons:image-01"
+    if (file.type.startsWith("video/")) return "hugeicons:video-01"
+    if (file.type.startsWith("audio/")) return "hugeicons:music-note-01"
+    if (file.type.includes("pdf")) return "hugeicons:pdf-01"
+    return "hugeicons:file-02"
+  }
 
   return (
     <div className={cn("flex flex-col gap-2 w-full", className)}>
@@ -383,7 +383,7 @@ export function FileUpload({
           fileUploadDragVariants({ variant }),
           dragActive &&
             "border-sky-500 bg-sky-500/10 dark:border-sky-400 dark:bg-sky-400/10 scale-[1.01]",
-          disabled && "opacity-50 cursor-not-allowed pointer-events-none",
+          disabled && "opacity-50 cursor-not-allowed pointer-events-none"
         )}
       >
         <input
@@ -416,7 +416,7 @@ export function FileUpload({
                 "flex flex-col gap-2 p-3 bg-white dark:bg-zinc-900 border rounded-2xl text-xs shadow-xs transition-all",
                 item.status === "error"
                   ? "border-rose-300 dark:border-rose-900/50 bg-rose-50/30 dark:bg-rose-950/10"
-                  : "border-zinc-200 dark:border-zinc-800",
+                  : "border-zinc-200 dark:border-zinc-800"
               )}
             >
               <div className="flex items-center justify-between gap-3">
@@ -459,7 +459,7 @@ export function FileUpload({
                           item.status === "paused" &&
                             "text-amber-500 font-semibold",
                           item.status === "error" &&
-                            "text-rose-600 dark:text-rose-400 font-semibold",
+                            "text-rose-600 dark:text-rose-400 font-semibold"
                         )}
                       >
                         {item.status === "error"
@@ -481,9 +481,9 @@ export function FileUpload({
                       <button
                         type="button"
                         onClick={() => {
-                          setCropFileItem(item);
-                          setCropRotation(0);
-                          setCropZoom(1);
+                          setCropFileItem(item)
+                          setCropRotation(0)
+                          setCropZoom(1)
                         }}
                         className="p-1.5 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg text-zinc-400 hover:text-sky-500 cursor-pointer transition-colors"
                         title="Crop & Rotate Image"
@@ -522,7 +522,7 @@ export function FileUpload({
                   <div
                     className={cn(
                       "h-full transition-all duration-300 rounded-full",
-                      item.status === "paused" ? "bg-amber-500" : "bg-sky-500",
+                      item.status === "paused" ? "bg-amber-500" : "bg-sky-500"
                     )}
                     style={{ width: `${item.progress}%` }}
                   />
@@ -616,5 +616,5 @@ export function FileUpload({
         </div>
       )}
     </div>
-  );
+  )
 }

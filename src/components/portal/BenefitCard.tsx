@@ -1,21 +1,31 @@
 "use client"
 
 import * as React from "react"
+
 import Image from "next/image"
-import { ArrowRight, Check, Copy, ArrowSquareOut, ShieldCheck, Gift } from "@phosphor-icons/react"
 
 import { BenefitItem, getInitials } from "@/src/data/portalData"
-import { CtaButton } from "@/src/components/common/ctaButton"
-import { GlassBadge } from "@/src/components/portal/GlassBadge"
-import { DiscountRibbon } from "@/src/components/common/discountRibbon"
+import {
+  ArrowRight,
+  ArrowSquareOut,
+  Check,
+  Copy,
+  Gift,
+  ShieldCheck,
+} from "@phosphor-icons/react"
+
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogDescription,
 } from "@/src/components/ui/dialog/dialog"
 import { toast } from "@/src/components/ui/toast/toast"
+
+import { CtaButton } from "@/src/components/common/ctaButton"
+import { DiscountRibbon } from "@/src/components/common/discountRibbon"
+import { GlassBadge } from "@/src/components/portal/GlassBadge"
 
 interface BenefitCardProps {
   benefit: BenefitItem
@@ -25,7 +35,10 @@ export function BenefitCard({ benefit }: BenefitCardProps): React.JSX.Element {
   const [isOpen, setIsOpen] = React.useState(false)
   const [copied, setCopied] = React.useState(false)
 
-  const promoCode = `KEY-${benefit.partner.replace(/[^a-zA-Z0-9]/g, "").toUpperCase().slice(0, 6)}-2026`
+  const promoCode = `KEY-${benefit.partner
+    .replace(/[^a-zA-Z0-9]/g, "")
+    .toUpperCase()
+    .slice(0, 6)}-2026`
 
   const handleCopyCode = (e: React.MouseEvent) => {
     e.preventDefault()
@@ -80,7 +93,7 @@ export function BenefitCard({ benefit }: BenefitCardProps): React.JSX.Element {
           </div>
         </div>
 
-        <div className="px-5 py-3.5 border-t border-zinc-100 dark:border-zinc-800/80 flex items-center justify-between bg-zinc-50/50 dark:bg-zinc-900/30">
+        <div className="px-5 py-3.5 border-t border-zinc-100 dark:border-zinc-800/80 flex items-center justify-between bg-[#F1F1F1]/50 dark:bg-zinc-900/30">
           <span className="text-[10px] font-black uppercase tracking-widest text-zinc-400 dark:text-zinc-500 flex items-center gap-1.5">
             <ShieldCheck className="w-3.5 h-3.5 text-brand-primary shrink-0" />
             <span>Membro VIP</span>
@@ -94,7 +107,10 @@ export function BenefitCard({ benefit }: BenefitCardProps): React.JSX.Element {
       </div>
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent size="md" className="p-0 overflow-hidden bg-white dark:bg-[#141416] border border-zinc-200 dark:border-zinc-800 rounded-sm">
+        <DialogContent
+          size="md"
+          className="p-0 overflow-hidden bg-white dark:bg-[#141416] border border-zinc-200 dark:border-zinc-800 rounded-sm"
+        >
           <div className="relative h-44 sm:h-48 w-full overflow-hidden bg-zinc-950">
             {benefit.image && (
               <Image
@@ -132,7 +148,7 @@ export function BenefitCard({ benefit }: BenefitCardProps): React.JSX.Element {
               </p>
             </div>
 
-            <div className="p-4 rounded-sm bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 space-y-3">
+            <div className="p-4 rounded-sm bg-[#F1F1F1] dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 space-y-3">
               <div className="flex items-center justify-between">
                 <span className="text-[10px] font-black uppercase tracking-widest text-brand-primary">
                   Código de Desconto VIP
@@ -172,11 +188,17 @@ export function BenefitCard({ benefit }: BenefitCardProps): React.JSX.Element {
             <div className="space-y-2.5 pt-2 border-t border-zinc-100 dark:border-zinc-800 text-xs text-zinc-500 dark:text-zinc-400">
               <div className="flex items-start gap-2">
                 <ShieldCheck className="w-4 h-4 text-brand-primary shrink-0 mt-0.5" />
-                <span>Apresente seu código ou sua Key digital de membro no momento do atendimento.</span>
+                <span>
+                  Apresente seu código ou sua Key digital de membro no momento
+                  do atendimento.
+                </span>
               </div>
               <div className="flex items-start gap-2">
                 <Gift className="w-4 h-4 text-zinc-400 shrink-0 mt-0.5" />
-                <span>Condição válida por tempo indeterminado enquanto sua anuidade estiver ativa.</span>
+                <span>
+                  Condição válida por tempo indeterminado enquanto sua anuidade
+                  estiver ativa.
+                </span>
               </div>
             </div>
           </div>

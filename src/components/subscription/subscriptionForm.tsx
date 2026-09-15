@@ -1,20 +1,37 @@
 "use client"
 
 import * as React from "react"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { Check, Copy, CreditCard, Lock, QrCode, ShieldCheck, UserCheck } from "@phosphor-icons/react"
-import Link from "next/link"
-import { Controller, useForm } from "react-hook-form"
-import { toast } from "sonner"
 
-import { CtaButton } from "@/src/components/common/ctaButton"
-import { Input } from "@/src/components/ui/input/input"
-import { maskCardExpiry, maskCardNumber, maskCpf, maskCvv } from "@/src/lib/masks"
-import { cn } from "@/src/lib/utils"
+import Link from "next/link"
+
 import {
   type CreditCardPaymentFormData,
   creditCardPaymentSchema,
 } from "@/src/schemas/subscription.schema"
+import { zodResolver } from "@hookform/resolvers/zod"
+import {
+  Check,
+  Copy,
+  CreditCard,
+  Lock,
+  QrCode,
+  ShieldCheck,
+  UserCheck,
+} from "@phosphor-icons/react"
+import { Controller, useForm } from "react-hook-form"
+import { toast } from "sonner"
+
+import { Input } from "@/src/components/ui/input/input"
+
+import { CtaButton } from "@/src/components/common/ctaButton"
+
+import {
+  maskCardExpiry,
+  maskCardNumber,
+  maskCpf,
+  maskCvv,
+} from "@/src/lib/masks"
+import { cn } from "@/src/lib/utils"
 
 export type PaymentMethod = "credit_card" | "pix"
 
@@ -114,7 +131,9 @@ export function SubscriptionForm({
               <span className="font-bold text-zinc-900 dark:text-white">
                 {user.name}
               </span>{" "}
-              <span className="text-zinc-600 dark:text-zinc-400">({user.email})</span>
+              <span className="text-zinc-600 dark:text-zinc-400">
+                ({user.email})
+              </span>
             </div>
           </div>
           {onLogout && (
@@ -148,7 +167,8 @@ export function SubscriptionForm({
                   Faça login ou crie sua conta
                 </h3>
                 <p className="text-xs text-zinc-600 dark:text-zinc-400 font-light leading-relaxed">
-                  Você precisa estar conectado para vincular sua assinatura e desbloquear tarifas exclusivas.
+                  Você precisa estar conectado para vincular sua assinatura e
+                  desbloquear tarifas exclusivas.
                 </p>
               </div>
 
@@ -178,7 +198,8 @@ export function SubscriptionForm({
         <div
           className={cn(
             "flex flex-col gap-6 transition-all duration-200",
-            isFormLocked && "opacity-50 filter blur-[2px] pointer-events-none select-none"
+            isFormLocked &&
+              "opacity-50 filter blur-[2px] pointer-events-none select-none"
           )}
         >
           <div className="flex flex-col gap-2">
@@ -240,10 +261,16 @@ export function SubscriptionForm({
                   render={({ field }) => (
                     <Input
                       value={field.value}
-                      onChange={(e) => field.onChange(maskCardNumber(e.target.value))}
+                      onChange={(e) =>
+                        field.onChange(maskCardNumber(e.target.value))
+                      }
                       onBlur={field.onBlur}
                       placeholder="0000 0000 0000 0000"
-                      variant={cardForm.formState.errors.cardNumber ? "error" : "default"}
+                      variant={
+                        cardForm.formState.errors.cardNumber
+                          ? "error"
+                          : "default"
+                      }
                       disabled={isLoading || isFormLocked}
                     />
                   )}
@@ -262,7 +289,9 @@ export function SubscriptionForm({
                 <Input
                   placeholder="NOME COMPLETO"
                   className="uppercase"
-                  variant={cardForm.formState.errors.holderName ? "error" : "default"}
+                  variant={
+                    cardForm.formState.errors.holderName ? "error" : "default"
+                  }
                   disabled={isLoading || isFormLocked}
                   {...cardForm.register("holderName")}
                 />
@@ -284,10 +313,16 @@ export function SubscriptionForm({
                     render={({ field }) => (
                       <Input
                         value={field.value}
-                        onChange={(e) => field.onChange(maskCardExpiry(e.target.value))}
+                        onChange={(e) =>
+                          field.onChange(maskCardExpiry(e.target.value))
+                        }
                         onBlur={field.onBlur}
                         placeholder="MM/AA"
-                        variant={cardForm.formState.errors.expirationDate ? "error" : "default"}
+                        variant={
+                          cardForm.formState.errors.expirationDate
+                            ? "error"
+                            : "default"
+                        }
                         disabled={isLoading || isFormLocked}
                       />
                     )}
@@ -309,10 +344,14 @@ export function SubscriptionForm({
                     render={({ field }) => (
                       <Input
                         value={field.value}
-                        onChange={(e) => field.onChange(maskCvv(e.target.value))}
+                        onChange={(e) =>
+                          field.onChange(maskCvv(e.target.value))
+                        }
                         onBlur={field.onBlur}
                         placeholder="123"
-                        variant={cardForm.formState.errors.cvv ? "error" : "default"}
+                        variant={
+                          cardForm.formState.errors.cvv ? "error" : "default"
+                        }
                         disabled={isLoading || isFormLocked}
                       />
                     )}
@@ -340,13 +379,20 @@ export function SubscriptionForm({
                         field.onChange(masked)
                         if (masked.length === 14) {
                           cardForm.trigger("holderCpf")
-                        } else if (cardForm.formState.errors.holderCpf && masked.length < 14) {
+                        } else if (
+                          cardForm.formState.errors.holderCpf &&
+                          masked.length < 14
+                        ) {
                           cardForm.clearErrors("holderCpf")
                         }
                       }}
                       onBlur={field.onBlur}
                       placeholder="000.000.000-00"
-                      variant={cardForm.formState.errors.holderCpf ? "error" : "default"}
+                      variant={
+                        cardForm.formState.errors.holderCpf
+                          ? "error"
+                          : "default"
+                      }
                       disabled={isLoading || isFormLocked}
                     />
                   )}
@@ -365,7 +411,9 @@ export function SubscriptionForm({
                   isFullWidth
                   size="lg"
                 >
-                  {isLoading ? "Processando assinatura..." : "Assinar plano mensal • R$ 19,90/mês"}
+                  {isLoading
+                    ? "Processando assinatura..."
+                    : "Assinar plano mensal • R$ 19,90/mês"}
                 </CtaButton>
               </div>
             </form>
@@ -377,8 +425,11 @@ export function SubscriptionForm({
                   <span>Desconto de 10% Aplicado no Plano Anual</span>
                 </div>
                 <p className="text-xs text-zinc-600 dark:text-zinc-300 font-light leading-relaxed">
-                  Pagando via PIX à vista, você garante 1 ano inteiro de acesso à ClubKey por apenas{" "}
-                  <strong className="font-bold text-zinc-900 dark:text-white">R$ 214,92</strong>{" "}
+                  Pagando via PIX à vista, você garante 1 ano inteiro de acesso
+                  à ClubKey por apenas{" "}
+                  <strong className="font-bold text-zinc-900 dark:text-white">
+                    R$ 214,92
+                  </strong>{" "}
                   (economia real de R$ 23,88 sobre a mensalidade de 12 meses).
                 </p>
               </div>
@@ -391,10 +442,12 @@ export function SubscriptionForm({
                   isFullWidth
                   size="lg"
                 >
-                  {isLoading ? "Gerando código PIX..." : "Gerar Código PIX • R$ 214,92"}
+                  {isLoading
+                    ? "Gerando código PIX..."
+                    : "Gerar Código PIX • R$ 214,92"}
                 </CtaButton>
               ) : (
-                <div className="flex flex-col items-center gap-5 p-5 rounded-sm bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700">
+                <div className="flex flex-col items-center gap-5 p-5 rounded-sm bg-[#F1F1F1] dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700">
                   <div className="text-center space-y-1">
                     <span className="text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
                       PIX Gerado com Sucesso
@@ -403,7 +456,8 @@ export function SubscriptionForm({
                       Pague R$ 214,92 para ativar
                     </h4>
                     <p className="text-xs text-zinc-500 dark:text-zinc-400 font-light">
-                      Abra o aplicativo do seu banco e escaneie o código ou copie a chave
+                      Abra o aplicativo do seu banco e escaneie o código ou
+                      copie a chave
                     </p>
                   </div>
 
@@ -461,7 +515,8 @@ export function SubscriptionForm({
           <div className="p-4 rounded-sm bg-zinc-100 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700 flex items-start gap-3">
             <ShieldCheck className="w-5 h-5 text-brand-primary shrink-0 mt-0.5" />
             <p className="text-xs text-zinc-600 dark:text-zinc-300 font-light leading-relaxed">
-              Pagamento seguro. Seus dados são criptografados e protegidos; usamos apenas o necessário para processar a assinatura.
+              Pagamento seguro. Seus dados são criptografados e protegidos;
+              usamos apenas o necessário para processar a assinatura.
             </p>
           </div>
         </div>

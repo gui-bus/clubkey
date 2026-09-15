@@ -1,15 +1,19 @@
 "use client"
 
 import * as React from "react"
+
 import Image from "next/image"
+
 import { ShieldCheck } from "@phosphor-icons/react"
 
 import { FloatingCta } from "@/src/components/landing/FloatingCta"
 import { Footer } from "@/src/components/landing/Footer"
 import { Navbar } from "@/src/components/landing/Navbar"
 import { TopBanner } from "@/src/components/landing/TopBanner"
-import { brandConfig } from "@/src/config/brand.config"
+
 import { cn } from "@/src/lib/utils"
+
+import { brandConfig } from "@/src/config/brand.config"
 
 export interface AuthSplitStat {
   value: string
@@ -40,7 +44,8 @@ export function AuthSplitLayout({
   bannerAlt = `${brandConfig.name} - Hospedagens Exclusivas`,
   bannerTitle = (
     <>
-      Sua chave para <span className="text-brand-primary">experiências únicas</span>
+      Sua chave para{" "}
+      <span className="text-brand-primary">experiências únicas</span>
     </>
   ),
   bannerDescription = "Acesse tarifas exclusivas de associado com até 60% OFF em mais de 4.500 vilas, resorts e hotéis boutique selecionados.",
@@ -57,7 +62,7 @@ export function AuthSplitLayout({
 
       <section className="flex-1 w-full flex items-stretch">
         <div className="w-full grid grid-cols-1 lg:grid-cols-12">
-          <div className="hidden lg:flex lg:col-span-6 xl:col-span-6 relative bg-[#0D0D0D] text-white flex-col justify-end p-12 xl:p-16 overflow-hidden">
+          <div className="hidden lg:flex lg:col-span-6 xl:col-span-6 relative bg-[#161616] text-white flex-col justify-end p-12 xl:p-16 overflow-hidden">
             <Image
               src={bannerImage}
               alt={bannerAlt}

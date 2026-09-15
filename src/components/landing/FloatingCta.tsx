@@ -11,13 +11,15 @@ import { CtaButton } from "@/src/components/common/ctaButton"
 import { brandConfig } from "@/src/config/brand.config"
 import { usePortalStore } from "@/src/store/usePortalStore"
 
-export function FloatingCta(): React.JSX.Element | null {
-  const [mounted, setMounted] = React.useState(false)
-  const isAuthenticated = usePortalStore((state) => state.isAuthenticated)
+const emptySubscribe = () => () => {}
 
-  React.useEffect(() => {
-    setMounted(true)
-  }, [])
+export function FloatingCta(): React.JSX.Element | null {
+  const mounted = React.useSyncExternalStore(
+    emptySubscribe,
+    () => true,
+    () => false
+  )
+  const isAuthenticated = usePortalStore((state) => state.isAuthenticated)
 
   if (!mounted || isAuthenticated) {
     return null

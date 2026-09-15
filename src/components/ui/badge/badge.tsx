@@ -177,6 +177,10 @@ const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
     },
     ref,
   ) => {
+    const keyboardProps = useKeyboardClick<HTMLSpanElement>(
+      isPressable && !isDisabled,
+    );
+
     if (isInvisible) return null;
 
     const isOnlyDotMode = isDot && !children;
@@ -208,9 +212,6 @@ const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
     }
 
     const Comp = asChild ? Slot : "span";
-    const keyboardProps = useKeyboardClick<HTMLSpanElement>(
-      isPressable && !isDisabled,
-    );
 
     return (
       <Comp

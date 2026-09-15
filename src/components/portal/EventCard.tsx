@@ -1,18 +1,40 @@
 "use client"
 
 import * as React from "react"
+
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { MapPin, Clock, Check, X, Plus, Users, ArrowUpRight } from "@phosphor-icons/react"
 
-import { EventItem, MEMBERS, getInitials, getEventSlug, getMemberSlug } from "@/src/data/portalData"
+import {
+  EventItem,
+  MEMBERS,
+  getEventSlug,
+  getInitials,
+  getMemberSlug,
+} from "@/src/data/portalData"
 import { usePortalStore } from "@/src/store/usePortalStore"
+import {
+  ArrowUpRight,
+  Check,
+  Clock,
+  MapPin,
+  Plus,
+  Users,
+  X,
+} from "@phosphor-icons/react"
+
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/src/components/ui/avatar/avatar"
 import { AvatarGroup } from "@/src/components/ui/avatarGroup/avatarGroup"
-import { Avatar, AvatarImage, AvatarFallback } from "@/src/components/ui/avatar/avatar"
 import { toast } from "@/src/components/ui/toast/toast"
+
 import { CtaButton } from "@/src/components/common/ctaButton"
 import { GlassBadge } from "@/src/components/portal/GlassBadge"
+
 import { cn } from "@/src/lib/utils"
 
 interface EventCardProps {
@@ -26,11 +48,12 @@ export function EventCard({ event }: EventCardProps): React.JSX.Element {
   const currentCount = event.initialConfirmed + (isConfirmed ? 1 : 0)
   const remainingSpots = Math.max(0, event.capacity - currentCount)
 
-  const organizer = MEMBERS.find((m) => m.id === event.organizerId) || MEMBERS[0]
+  const organizer =
+    MEMBERS.find((m) => m.id === event.organizerId) || MEMBERS[0]
 
   const participantMembers = event.participants
     .map((id: number) => MEMBERS.find((m) => m.id === id))
-    .filter((m): m is typeof MEMBERS[0] => Boolean(m))
+    .filter((m): m is (typeof MEMBERS)[0] => Boolean(m))
     .slice(-3)
 
   const handleRSVP = (e: React.MouseEvent) => {
@@ -138,7 +161,9 @@ export function EventCard({ event }: EventCardProps): React.JSX.Element {
                 <MapPin className="w-3.5 h-3.5 text-brand-primary shrink-0" />
                 <span className="truncate">{event.place}</span>
               </div>
-              <span className="text-zinc-300 dark:text-zinc-700 hidden sm:inline">•</span>
+              <span className="text-zinc-300 dark:text-zinc-700 hidden sm:inline">
+                •
+              </span>
               <div className="flex items-center gap-1.5 font-medium">
                 <Users className="w-3.5 h-3.5 text-brand-primary shrink-0" />
                 <span>{remainingSpots} vagas restantes</span>
@@ -162,7 +187,9 @@ export function EventCard({ event }: EventCardProps): React.JSX.Element {
                     onClick={(e) => {
                       e.preventDefault()
                       e.stopPropagation()
-                      router.push(`/conexoes/${member.id}/${getMemberSlug(member)}`)
+                      router.push(
+                        `/conexoes/${member.id}/${getMemberSlug(member)}`
+                      )
                     }}
                     className="cursor-pointer"
                   >
@@ -220,7 +247,7 @@ export function EventCard({ event }: EventCardProps): React.JSX.Element {
                 </CtaButton>
               )}
 
-              <div className="hidden sm:flex items-center justify-center w-9 h-9 rounded-sm border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 text-zinc-500 group-hover/card:text-zinc-900 dark:group-hover/card:text-white transition-colors">
+              <div className="hidden sm:flex items-center justify-center w-9 h-9 rounded-sm border border-zinc-200 dark:border-zinc-800 bg-[#F1F1F1] dark:bg-zinc-900 text-zinc-500 group-hover/card:text-zinc-900 dark:group-hover/card:text-white transition-colors">
                 <ArrowUpRight className="w-4 h-4" />
               </div>
             </div>
@@ -230,4 +257,3 @@ export function EventCard({ event }: EventCardProps): React.JSX.Element {
     </Link>
   )
 }
-

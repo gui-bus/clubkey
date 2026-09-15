@@ -1,20 +1,23 @@
 "use client"
 
 import * as React from "react"
+
 import Image from "next/image"
+
+import { destinationOptions } from "@/src/data/mockDestinations"
+import { catalogSections } from "@/src/data/mockRooms"
 import { Calendar, MapPin, Users } from "@phosphor-icons/react"
 
-import { PortalHero } from "@/src/components/portal/PortalHero"
-import { RoomsSearchFilterBar } from "@/src/components/rooms/roomsSearchFilterBar"
-import { SectionCarousel } from "@/src/components/rooms/sectionCarousel"
+import { toast } from "@/src/components/ui/toast/toast"
+
 import { Container } from "@/src/components/common/container"
 import { FloatingCta } from "@/src/components/landing/FloatingCta"
 import { Footer } from "@/src/components/landing/Footer"
 import { Navbar } from "@/src/components/landing/Navbar"
 import { TopBanner } from "@/src/components/landing/TopBanner"
-import { destinationOptions } from "@/src/data/mockDestinations"
-import { catalogSections } from "@/src/data/mockRooms"
-import { toast } from "@/src/components/ui/toast/toast"
+import { PortalHero } from "@/src/components/portal/PortalHero"
+import { RoomsSearchFilterBar } from "@/src/components/rooms/roomsSearchFilterBar"
+import { SectionCarousel } from "@/src/components/rooms/sectionCarousel"
 
 export default function HospedagensPage(): React.JSX.Element {
   const [searchDestination, setSearchDestination] = React.useState("")
@@ -131,7 +134,7 @@ export default function HospedagensPage(): React.JSX.Element {
   }
 
   return (
-    <main className="w-full bg-zinc-50 dark:bg-[#0D0D0D] text-zinc-900 dark:text-white flex flex-col font-sans selection:bg-brand-primary/20 selection:text-brand-primary min-h-screen">
+    <main className="w-full bg-[#F1F1F1] dark:bg-[#161616] text-zinc-900 dark:text-white flex flex-col font-sans selection:bg-brand-primary/20 selection:text-brand-primary min-h-screen">
       <TopBanner />
       <Navbar />
 
@@ -139,13 +142,16 @@ export default function HospedagensPage(): React.JSX.Element {
         badge="Catálogo de Hospedagens • Travel Club"
         title={
           <>
-            Viva momentos únicos em <span className="text-brand-primary">acomodações incríveis</span>
+            Viva momentos únicos em{" "}
+            <span className="text-brand-primary">acomodações incríveis</span>
           </>
         }
         description={
           <>
-            Com o benefício Club Key, viaje o ano todo pagando tarifas exclusivas de membro e até{" "}
-            <strong className="font-bold text-white">60% OFF</strong> em reservas last minute.
+            Com o benefício Club Key, viaje o ano todo pagando tarifas
+            exclusivas de membro e até{" "}
+            <strong className="font-bold text-white">60% OFF</strong> em
+            reservas last minute.
           </>
         }
         imageSrc="/utils/banners/img_01.png"
@@ -237,7 +243,8 @@ export default function HospedagensPage(): React.JSX.Element {
                 Nenhuma acomodação encontrada
               </p>
               <p className="text-xs text-zinc-600 dark:text-zinc-400 mb-6 max-w-md leading-relaxed">
-                Não encontramos hospedagens para os filtros selecionados. Tente alterar o destino ou reduzir o número de hóspedes.
+                Não encontramos hospedagens para os filtros selecionados. Tente
+                alterar o destino ou reduzir o número de hóspedes.
               </p>
               <button
                 type="button"

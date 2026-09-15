@@ -1,10 +1,11 @@
 "use client"
 
 import * as React from "react"
+
+import { type Country, countries } from "@/src/data/countries"
 import { CaretDown, MagnifyingGlass } from "@phosphor-icons/react"
 import ReactCountryFlag from "react-country-flag"
 
-import { countries, type Country } from "@/src/data/countries"
 import { maskPhone } from "@/src/lib/masks"
 import { cn } from "@/src/lib/utils"
 
@@ -34,20 +35,20 @@ export function PhoneInput({
   const [dropdownOpen, setDropdownOpen] = React.useState(false)
   const [searchQuery, setSearchQuery] = React.useState("")
   const [selectedCountry, setSelectedCountry] = React.useState<Country>(() => {
-    return (
-      countries.find((c) => c.dialCode === value?.dialCode) || countries[0]
-    )
+    return countries.find((c) => c.dialCode === value?.dialCode) || countries[0]
   })
 
   const dropdownRef = React.useRef<HTMLDivElement>(null)
   const searchInputRef = React.useRef<HTMLInputElement>(null)
 
-  React.useEffect(() => {
+  const [prevDialCode, setPrevDialCode] = React.useState(value?.dialCode)
+  if (value?.dialCode !== prevDialCode) {
+    setPrevDialCode(value?.dialCode)
     if (value?.dialCode && selectedCountry.dialCode !== value.dialCode) {
       const match = countries.find((c) => c.dialCode === value.dialCode)
       if (match) setSelectedCountry(match)
     }
-  }, [value?.dialCode, selectedCountry.dialCode])
+  }
 
   const filteredCountries = React.useMemo(() => {
     if (!searchQuery.trim()) return countries
@@ -137,7 +138,7 @@ export function PhoneInput({
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Buscar país..."
-                  className="w-full h-9 pl-8 pr-3 text-xs rounded-sm bg-zinc-50 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary/20"
+                  className="w-full h-9 pl-8 pr-3 text-xs rounded-sm bg-[#F1F1F1] dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary/20"
                 />
               </div>
 

@@ -31,16 +31,18 @@ const memberLinks = [
   { href: `mailto:${brandConfig.links.contactEmail}`, label: "Suporte & Concierge" },
 ] as const
 
+const emptySubscribe = () => () => {}
+
 export function Footer(): React.JSX.Element | null {
-  const [mounted, setMounted] = React.useState(false)
+  const mounted = React.useSyncExternalStore(
+    emptySubscribe,
+    () => true,
+    () => false
+  )
   const isAuthenticated = usePortalStore((state) => state.isAuthenticated)
   const isClubKey = brandConfig.id === "clubkey"
   const homeHref = isClubKey ? "/" : "/hospedagens"
   const activeNavLinks = isClubKey ? clubKeyNavLinks : genericNavLinks
-
-  React.useEffect(() => {
-    setMounted(true)
-  }, [])
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" })

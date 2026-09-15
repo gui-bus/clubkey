@@ -1,11 +1,13 @@
-"use client";
+"use client"
 
-import { Icon } from "@iconify/react";
-import * as TabsPrimitive from "@radix-ui/react-tabs";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import * as React from "react";
-import { designSizes } from "../../../lib/design-system";
-import { cn } from "../../../lib/utils";
+import * as React from "react"
+
+import { Icon } from "@iconify/react"
+import * as TabsPrimitive from "@radix-ui/react-tabs"
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion"
+
+import { designSizes } from "../../../lib/design-system"
+import { cn } from "../../../lib/utils"
 
 export type TabsVariant =
   | "default"
@@ -20,8 +22,8 @@ export type TabsVariant =
   | "filled"
   | "glassmorphism"
   | "gradient-border"
-  | "glow";
-export type TabsSize = "xs" | "sm" | "md" | "lg" | "xl";
+  | "glow"
+export type TabsSize = "xs" | "sm" | "md" | "lg" | "xl"
 export type TabsColor =
   | "default"
   | "primary"
@@ -29,49 +31,54 @@ export type TabsColor =
   | "success"
   | "warning"
   | "danger"
-  | "custom";
+  | "custom"
 
-export interface TabsProps
-  extends React.ComponentProps<typeof TabsPrimitive.Root> {
-  onTabChange?: (value: string) => void;
-  orientation?: "horizontal" | "vertical";
-  variant?: TabsVariant;
+export interface TabsProps extends React.ComponentProps<
+  typeof TabsPrimitive.Root
+> {
+  onTabChange?: (value: string) => void
+  orientation?: "horizontal" | "vertical"
+  variant?: TabsVariant
 }
 
-export interface TabsListProps
-  extends React.ComponentProps<typeof TabsPrimitive.List> {
-  background?: boolean;
-  isScrollable?: boolean;
-  addable?: boolean;
-  onAdd?: () => void;
-  label?: string;
+export interface TabsListProps extends React.ComponentProps<
+  typeof TabsPrimitive.List
+> {
+  background?: boolean
+  isScrollable?: boolean
+  addable?: boolean
+  onAdd?: () => void
+  label?: string
 }
 
-export interface TabsTriggerProps
-  extends React.ComponentProps<typeof TabsPrimitive.Trigger> {
-  startContent?: React.ReactNode;
-  endContent?: React.ReactNode;
-  badgeContent?: string;
-  badgePosition?: "start" | "end";
-  variant?: TabsVariant;
-  size?: TabsSize;
-  color?: TabsColor;
-  customColor?: string;
-  isDisabled?: boolean;
-  isLoading?: boolean;
-  isClosable?: boolean;
-  onClose?: (e: React.MouseEvent) => void;
+export interface TabsTriggerProps extends React.ComponentProps<
+  typeof TabsPrimitive.Trigger
+> {
+  startContent?: React.ReactNode
+  endContent?: React.ReactNode
+  badgeContent?: string
+  badgePosition?: "start" | "end"
+  variant?: TabsVariant
+  size?: TabsSize
+  color?: TabsColor
+  customColor?: string
+  isDisabled?: boolean
+  isLoading?: boolean
+  isClosable?: boolean
+  onClose?: (e: React.MouseEvent) => void
 }
 
-export type TabsContentProps = React.ComponentProps<typeof TabsPrimitive.Content>;
+export type TabsContentProps = React.ComponentProps<
+  typeof TabsPrimitive.Content
+>
 
 const TabsContext = React.createContext<{
-  orientation: "horizontal" | "vertical";
-  variant: TabsVariant;
+  orientation: "horizontal" | "vertical"
+  variant: TabsVariant
 }>({
   orientation: "horizontal",
   variant: "default",
-});
+})
 
 const colorClasses: Record<
   Exclude<TabsColor, "custom">,
@@ -233,7 +240,7 @@ const colorClasses: Record<
       "data-[state=active]:bg-rose-500 data-[state=active]:text-white dark:data-[state=active]:text-white",
     glow: "data-[state=active]:bg-rose-500 data-[state=active]:text-white dark:data-[state=active]:text-white",
   },
-};
+}
 
 const variantClasses: Record<TabsVariant, string> = {
   default:
@@ -241,7 +248,7 @@ const variantClasses: Record<TabsVariant, string> = {
   ghost:
     "bg-transparent text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-xl border border-transparent transition-all duration-200",
   bordered:
-    "bg-transparent text-zinc-700 dark:text-zinc-300 border-2 border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 rounded-xl transition-all duration-200",
+    "bg-transparent text-zinc-700 dark:text-zinc-300 border-2 border-zinc-200 dark:border-zinc-800 hover:bg-[#F1F1F1] dark:hover:bg-zinc-800/50 rounded-xl transition-all duration-200",
   underline:
     "bg-transparent text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 rounded-none transition-all duration-200 border-b-2 border-transparent",
   underlined:
@@ -260,20 +267,20 @@ const variantClasses: Record<TabsVariant, string> = {
   "gradient-border":
     "bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 rounded-xl relative [background-clip:padding-box] border border-transparent before:absolute before:inset-0 before:-z-10 before:rounded-[inherit] before:p-[1px] before:bg-gradient-to-r before:from-sky-500 before:via-indigo-500 before:to-pink-500 transition-all duration-200",
   glow: "bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 rounded-xl shadow-xs border border-zinc-200 dark:border-zinc-800 data-[state=active]:shadow-[0_0_12px_rgba(14,165,233,0.35)] data-[state=active]:border-sky-500 transition-all duration-200",
-};
+}
 
 const stateClasses = {
   disabled: "opacity-40 cursor-not-allowed pointer-events-none select-none",
   loading: "cursor-wait data-[state=active]:opacity-80",
-};
+}
 
 const Spinner = React.memo(() => (
   <span
     className="size-4 animate-spin rounded-full border-2 border-zinc-400 border-t-transparent"
     aria-hidden="true"
   />
-));
-Spinner.displayName = "Spinner";
+))
+Spinner.displayName = "Spinner"
 
 const Tabs = React.memo(
   ({
@@ -291,15 +298,15 @@ const Tabs = React.memo(
           orientation === "vertical"
             ? "flex flex-row gap-6 w-full"
             : "flex flex-col gap-4",
-          className,
+          className
         )}
         onValueChange={onTabChange}
         {...props}
       />
     </TabsContext.Provider>
-  ),
-);
-Tabs.displayName = "Tabs";
+  )
+)
+Tabs.displayName = "Tabs"
 
 const TabsList = React.memo(
   ({
@@ -312,24 +319,24 @@ const TabsList = React.memo(
     children,
     ...props
   }: TabsListProps) => {
-    const scrollRef = React.useRef<HTMLDivElement>(null);
-    const { orientation } = React.useContext(TabsContext);
+    const scrollRef = React.useRef<HTMLDivElement>(null)
+    const { orientation } = React.useContext(TabsContext)
 
     const scrollLeft = () => {
       if (scrollRef.current)
-        scrollRef.current.scrollBy({ left: -150, behavior: "smooth" });
-    };
+        scrollRef.current.scrollBy({ left: -150, behavior: "smooth" })
+    }
 
     const scrollRight = () => {
       if (scrollRef.current)
-        scrollRef.current.scrollBy({ left: 150, behavior: "smooth" });
-    };
+        scrollRef.current.scrollBy({ left: 150, behavior: "smooth" })
+    }
 
     return (
       <div
         className={cn(
           "relative flex items-center gap-2",
-          orientation === "vertical" && "flex-col items-start min-w-[200px]",
+          orientation === "vertical" && "flex-col items-start min-w-[200px]"
         )}
       >
         {isScrollable && orientation === "horizontal" && (
@@ -355,7 +362,7 @@ const TabsList = React.memo(
                 ? "flex-col items-stretch w-full"
                 : "flex-row",
               background && "bg-zinc-100 dark:bg-zinc-800/60",
-              className,
+              className
             )}
             {...props}
           >
@@ -383,10 +390,10 @@ const TabsList = React.memo(
           </button>
         )}
       </div>
-    );
-  },
-);
-TabsList.displayName = "TabsList";
+    )
+  }
+)
+TabsList.displayName = "TabsList"
 
 const TabsTrigger = React.memo(
   ({
@@ -406,17 +413,17 @@ const TabsTrigger = React.memo(
     children,
     ...props
   }: TabsTriggerProps) => {
-    const { variant: contextVariant } = React.useContext(TabsContext);
-    const activeVariant = propVariant || contextVariant;
-    const disabled = isDisabled || isLoading;
-    const isCustom = color === "custom" && !!customColor;
-    const isHex = isCustom && customColor.startsWith("#");
+    const { variant: contextVariant } = React.useContext(TabsContext)
+    const activeVariant = propVariant || contextVariant
+    const disabled = isDisabled || isLoading
+    const isCustom = color === "custom" && !!customColor
+    const isHex = isCustom && customColor.startsWith("#")
 
     const handleClose = (e: React.MouseEvent) => {
-      e.stopPropagation();
-      e.preventDefault();
-      onClose?.(e);
-    };
+      e.stopPropagation()
+      e.preventDefault()
+      onClose?.(e)
+    }
 
     return (
       <TabsPrimitive.Trigger
@@ -438,7 +445,7 @@ const TabsTrigger = React.memo(
             "data-[state=active]:bg-(--tabs-active-bg) data-[state=active]:border-(--tabs-active-border) data-[state=active]:text-(--tabs-active-text)",
           disabled && stateClasses.disabled,
           isLoading && stateClasses.loading,
-          className,
+          className
         )}
         disabled={isDisabled}
         aria-disabled={disabled || undefined}
@@ -492,14 +499,14 @@ const TabsTrigger = React.memo(
           </>
         )}
       </TabsPrimitive.Trigger>
-    );
-  },
-);
-TabsTrigger.displayName = "TabsTrigger";
+    )
+  }
+)
+TabsTrigger.displayName = "TabsTrigger"
 
 const TabsContent = React.memo(
   ({ className, children, ...props }: TabsContentProps) => {
-    const shouldReduceMotion = useReducedMotion();
+    const shouldReduceMotion = useReducedMotion()
 
     return (
       <TabsPrimitive.Content {...props} data-slot="tabs-content">
@@ -512,16 +519,16 @@ const TabsContent = React.memo(
             transition={{ duration: shouldReduceMotion ? 0 : 0.25 }}
             className={cn(
               "flex-1 outline-none transition-all duration-300 ease-in-out motion-reduce:transition-none motion-reduce:transform-none",
-              className,
+              className
             )}
           >
             {children}
           </motion.div>
         </AnimatePresence>
       </TabsPrimitive.Content>
-    );
-  },
-);
-TabsContent.displayName = "TabsContent";
+    )
+  }
+)
+TabsContent.displayName = "TabsContent"
 
-export { Tabs, TabsContent, TabsList, TabsTrigger };
+export { Tabs, TabsContent, TabsList, TabsTrigger }

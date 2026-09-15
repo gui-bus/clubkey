@@ -8,12 +8,22 @@ import { MEMBERS } from "@/src/data/portalData"
 import { MagnifyingGlass, Users } from "@phosphor-icons/react"
 
 import { Button } from "@/src/components/ui/button/button"
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/src/components/ui/pagination/pagination"
 
 import { Container } from "@/src/components/common/container"
 import { MatchCard } from "@/src/components/portal/MatchCard"
 import { MemberCard } from "@/src/components/portal/MemberCard"
 import { PortalHero } from "@/src/components/portal/PortalHero"
 import { PortalHeroFilterBar } from "@/src/components/portal/PortalHeroFilterBar"
+
+const ITEMS_PER_PAGE = 6
 
 const MEMBER_ROLES = [
   { value: "todos", label: "Todos" },
@@ -25,6 +35,7 @@ const MEMBER_ROLES = [
 export default function ConexoesPage(): React.JSX.Element {
   const [searchQuery, setSearchQuery] = React.useState("")
   const [activeTab, setActiveTab] = React.useState("todos")
+  const [currentPage, setCurrentPage] = React.useState(1)
 
   const suggestedMatch = MEMBERS[10]
   const matchReason =
@@ -124,11 +135,18 @@ export default function ConexoesPage(): React.JSX.Element {
     })
   }, [searchQuery, activeTab])
 
+  const totalPages = Math.max(1, Math.ceil(filteredMembers.length / ITEMS_PER_PAGE))
+  const paginatedMembers = React.useMemo(() => {
+    const start = (currentPage - 1) * ITEMS_PER_PAGE
+    return filteredMembers.slice(start, start + ITEMS_PER_PAGE)
+  }, [filteredMembers, currentPage])
+
   const hasActiveFilters = activeTab !== "todos" || Boolean(searchQuery)
 
   const handleClearFilters = () => {
     setSearchQuery("")
     setActiveTab("todos")
+    setCurrentPage(1)
   }
 
   return (
@@ -148,10 +166,16 @@ export default function ConexoesPage(): React.JSX.Element {
           categoryLabel="Segmento"
           categoryIcon={Users}
           activeCategory={activeTab}
-          onCategoryChange={setActiveTab}
+          onCategoryChange={(tab) => {
+            setActiveTab(tab)
+            setCurrentPage(1)
+          }}
           categories={roleOptions}
           searchQuery={searchQuery}
-          onSearchQueryChange={setSearchQuery}
+          onSearchQueryChange={(q) => {
+            setSearchQuery(q)
+            setCurrentPage(1)
+          }}
           searchPlaceholder="Buscar conexões por nome, empresa, cargo, cidade ou especialidade..."
         />
       </PortalHero>
@@ -227,10 +251,59 @@ export default function ConexoesPage(): React.JSX.Element {
               </Button>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredMembers.map((member) => (
-                <MemberCard key={member.id} member={member} />
-              ))}
+            <div className="space-y-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {paginatedMembers.map((member) => (
+                  <MemberCard key={member.id} member={member} />
+                ))}
+              </div>
+
+              {totalPages > 1 && (
+                <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-zinc-200 dark:border-zinc-800">
+                  <span className="text-xs text-zinc-500 dark:text-zinc-400">
+                    Mostrando <strong>{(currentPage - 1) * ITEMS_PER_PAGE + 1}</strong> a{" "}
+                    <strong>{Math.min(currentPage * ITEMS_PER_PAGE, filteredMembers.length)}</strong> de{" "}
+                    <strong>{filteredMembers.length}</strong> membros
+                  </span>
+                  <Pagination radius="sm" color="primary" className="w-auto justify-center sm:justify-end">
+                    <PaginationContent>
+                      <PaginationItem>
+                        <PaginationPrevious
+                          label="Anterior"
+                          onClick={() => {
+                            setCurrentPage((p) => Math.max(1, p - 1))
+                            window.scrollTo({ top: 380, behavior: "smooth" })
+                          }}
+                          disabled={currentPage === 1}
+                        />
+                      </PaginationItem>
+                      {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                        <PaginationItem key={page}>
+                          <PaginationLink
+                            isActive={currentPage === page}
+                            onClick={() => {
+                              setCurrentPage(page)
+                              window.scrollTo({ top: 380, behavior: "smooth" })
+                            }}
+                          >
+                            {page}
+                          </PaginationLink>
+                        </PaginationItem>
+                      ))}
+                      <PaginationItem>
+                        <PaginationNext
+                          label="Próxima"
+                          onClick={() => {
+                            setCurrentPage((p) => Math.min(totalPages, p + 1))
+                            window.scrollTo({ top: 380, behavior: "smooth" })
+                          }}
+                          disabled={currentPage === totalPages}
+                        />
+                      </PaginationItem>
+                    </PaginationContent>
+                  </Pagination>
+                </div>
+              )}
             </div>
           )}
         </div>

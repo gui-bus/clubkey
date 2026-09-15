@@ -1,13 +1,22 @@
 "use client"
 
 import * as React from "react"
+
 import Image from "next/image"
 import Link from "next/link"
-import { MapPin, UserPlus, Check, Hourglass, ArrowRight } from "@phosphor-icons/react"
 
 import { Member, getInitials, getMemberSlug } from "@/src/data/portalData"
 import { usePortalStore } from "@/src/store/usePortalStore"
+import {
+  ArrowRight,
+  Check,
+  Hourglass,
+  MapPin,
+  UserPlus,
+} from "@phosphor-icons/react"
+
 import { toast } from "@/src/components/ui/toast/toast"
+
 import { cn } from "@/src/lib/utils"
 
 interface MemberCardProps {
@@ -16,7 +25,11 @@ interface MemberCardProps {
   className?: string
 }
 
-export function MemberCard({ member, isHost, className }: MemberCardProps): React.JSX.Element {
+export function MemberCard({
+  member,
+  isHost,
+  className,
+}: MemberCardProps): React.JSX.Element {
   const { toggleConnect, getConnectionStatus } = usePortalStore()
   const status = getConnectionStatus(member.id)
 
@@ -27,7 +40,7 @@ export function MemberCard({ member, isHost, className }: MemberCardProps): Reac
     const nextStatus = toggleConnect(member.id)
     if (nextStatus === "pending") {
       toast.success(`Solicitação enviada para ${member.name}!`, {
-        description: "Você poderá trocar mensagens antes do encontro."
+        description: "Você poderá trocar mensagens antes do encontro.",
       })
     } else if (prevStatus === "pending") {
       toast.info(`Solicitação para ${member.name} cancelada.`)
@@ -119,7 +132,7 @@ export function MemberCard({ member, isHost, className }: MemberCardProps): Reac
             <span className="truncate">{member.city}</span>
           </div>
 
-          <div className="p-2 sm:p-2.5 rounded-sm bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-100 dark:border-zinc-800/80 space-y-1.5">
+          <div className="p-2 sm:p-2.5 rounded-sm bg-[#F1F1F1] dark:bg-zinc-900/50 border border-zinc-100 dark:border-zinc-800/80 space-y-1.5">
             <div>
               <span className="text-[9px] font-black uppercase tracking-widest text-brand-primary block">
                 Oferece

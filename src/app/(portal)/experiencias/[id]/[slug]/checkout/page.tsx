@@ -1,21 +1,48 @@
 "use client"
 
 import * as React from "react"
+
 import Image from "next/image"
 import Link from "next/link"
-import { useParams, notFound } from "next/navigation"
-import { CreditCard, QrCode, ShieldCheck, CheckCircle, Calendar, MapPin, ArrowRight, ShoppingCart, Copy, Check, Clock, Key, Lock } from "@phosphor-icons/react"
+import { notFound, useParams } from "next/navigation"
 
-import { EXPERIENCES, formatBRL, getExperienceSlug } from "@/src/data/portalData"
+import {
+  EXPERIENCES,
+  formatBRL,
+  getExperienceSlug,
+} from "@/src/data/portalData"
 import { usePortalStore } from "@/src/store/usePortalStore"
-import { BackButton } from "@/src/components/portal/BackButton"
+import {
+  ArrowRight,
+  Calendar,
+  Check,
+  CheckCircle,
+  Clock,
+  Copy,
+  CreditCard,
+  Key,
+  Lock,
+  MapPin,
+  QrCode,
+  ShieldCheck,
+  ShoppingCart,
+} from "@phosphor-icons/react"
+
+import { Checkbox } from "@/src/components/ui/checkbox/checkbox"
 import { Input } from "@/src/components/ui/input/input"
 import { Select } from "@/src/components/ui/select/select"
-import { Checkbox } from "@/src/components/ui/checkbox/checkbox"
-import { CtaButton } from "@/src/components/common/ctaButton"
 import { toast } from "@/src/components/ui/toast/toast"
+
 import { Container } from "@/src/components/common/container"
-import { maskCardExpiry, maskCardNumber, maskCpf, maskCvv } from "@/src/lib/masks"
+import { CtaButton } from "@/src/components/common/ctaButton"
+import { BackButton } from "@/src/components/portal/BackButton"
+
+import {
+  maskCardExpiry,
+  maskCardNumber,
+  maskCpf,
+  maskCvv,
+} from "@/src/lib/masks"
 import { cn } from "@/src/lib/utils"
 
 export type PaymentMethod = "credit_card" | "pix"
@@ -36,7 +63,8 @@ export default function ExperienceCheckoutPage(): React.JSX.Element {
 
   const [isSuccess, setIsSuccess] = React.useState(isAlreadyBought)
   const [isProcessing, setIsProcessing] = React.useState(false)
-  const [paymentMethod, setPaymentMethod] = React.useState<PaymentMethod>("credit_card")
+  const [paymentMethod, setPaymentMethod] =
+    React.useState<PaymentMethod>("credit_card")
   const [copiedPix, setCopiedPix] = React.useState(false)
   const [agreeTerms, setAgreeTerms] = React.useState(true)
 
@@ -54,8 +82,14 @@ export default function ExperienceCheckoutPage(): React.JSX.Element {
 
   const installmentOptions = [
     { value: "1", label: `1x de ${formatBRL(totalAmount)} (à vista)` },
-    { value: "2", label: `2x de ${formatBRL(Math.round(totalAmount / 2))} sem juros` },
-    { value: "3", label: `3x de ${formatBRL(Math.round(totalAmount / 3))} sem juros` },
+    {
+      value: "2",
+      label: `2x de ${formatBRL(Math.round(totalAmount / 2))} sem juros`,
+    },
+    {
+      value: "3",
+      label: `3x de ${formatBRL(Math.round(totalAmount / 3))} sem juros`,
+    },
   ]
 
   const pixMockCode =
@@ -74,7 +108,9 @@ export default function ExperienceCheckoutPage(): React.JSX.Element {
     e.preventDefault()
 
     if (!agreeTerms) {
-      toast.info("Por favor, concorde com os termos de cancelamento para prosseguir.")
+      toast.info(
+        "Por favor, concorde com os termos de cancelamento para prosseguir."
+      )
       return
     }
 
@@ -115,7 +151,11 @@ export default function ExperienceCheckoutPage(): React.JSX.Element {
             Parabéns, {userProfile.name.split(" ")[0]}!
           </h1>
           <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed max-w-md mx-auto">
-            Sua vaga exclusiva para <span className="font-bold text-zinc-900 dark:text-white">{experience.title}</span> foi confirmada com sucesso.
+            Sua vaga exclusiva para{" "}
+            <span className="font-bold text-zinc-900 dark:text-white">
+              {experience.title}
+            </span>{" "}
+            foi confirmada com sucesso.
           </p>
         </div>
 
@@ -141,7 +181,9 @@ export default function ExperienceCheckoutPage(): React.JSX.Element {
           <div className="flex items-center justify-between text-xs sm:text-sm">
             <span className="text-zinc-500">Forma de pagamento</span>
             <span className="font-semibold text-zinc-800 dark:text-zinc-200">
-              {paymentMethod === "pix" ? "PIX (com 5% OFF)" : "Cartão de Crédito"}
+              {paymentMethod === "pix"
+                ? "PIX (com 5% OFF)"
+                : "Cartão de Crédito"}
             </span>
           </div>
           <div className="flex items-center justify-between text-xs sm:text-sm pt-2 border-t border-zinc-100 dark:border-zinc-800">
@@ -185,7 +227,9 @@ export default function ExperienceCheckoutPage(): React.JSX.Element {
             fallbackHref={`/experiencias/${experience.id}/${expSlug}`}
             label="Voltar para detalhes"
           />
-          <span className="text-zinc-300 dark:text-zinc-700 hidden sm:inline">/</span>
+          <span className="text-zinc-300 dark:text-zinc-700 hidden sm:inline">
+            /
+          </span>
           <span className="text-xs font-bold text-zinc-500 dark:text-zinc-400 truncate max-w-xs sm:max-w-md hidden sm:inline">
             Checkout de Reserva
           </span>
@@ -200,7 +244,8 @@ export default function ExperienceCheckoutPage(): React.JSX.Element {
           Revisar e Pagar
         </h1>
         <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 max-w-2xl leading-relaxed">
-          Garanta sua vaga exclusiva com curadoria de alto padrão, concierge dedicado e confirmação instantânea.
+          Garanta sua vaga exclusiva com curadoria de alto padrão, concierge
+          dedicado e confirmação instantânea.
         </p>
       </div>
 
@@ -254,7 +299,9 @@ export default function ExperienceCheckoutPage(): React.JSX.Element {
                   <Input
                     placeholder="0000 0000 0000 0000"
                     value={cardNumber}
-                    onChange={(e) => setCardNumber(maskCardNumber(e.target.value))}
+                    onChange={(e) =>
+                      setCardNumber(maskCardNumber(e.target.value))
+                    }
                     startIcon={<CreditCard className="w-4 h-4" />}
                     disabled={isProcessing}
                     className="h-11"
@@ -268,7 +315,9 @@ export default function ExperienceCheckoutPage(): React.JSX.Element {
                   <Input
                     placeholder="NOME COMPLETO"
                     value={holderName}
-                    onChange={(e) => setHolderName(e.target.value.toUpperCase())}
+                    onChange={(e) =>
+                      setHolderName(e.target.value.toUpperCase())
+                    }
                     className="h-11 uppercase"
                     disabled={isProcessing}
                   />
@@ -282,7 +331,9 @@ export default function ExperienceCheckoutPage(): React.JSX.Element {
                     <Input
                       placeholder="MM/AA"
                       value={expirationDate}
-                      onChange={(e) => setExpirationDate(maskCardExpiry(e.target.value))}
+                      onChange={(e) =>
+                        setExpirationDate(maskCardExpiry(e.target.value))
+                      }
                       disabled={isProcessing}
                       className="h-11"
                     />
@@ -344,7 +395,8 @@ export default function ExperienceCheckoutPage(): React.JSX.Element {
                       htmlFor="terms-check"
                       className="text-xs text-zinc-600 dark:text-zinc-400 cursor-pointer select-none leading-relaxed"
                     >
-                      Declaro que li e concordo com os termos de cancelamento em até 48h e as diretrizes do clube.
+                      Declaro que li e concordo com os termos de cancelamento em
+                      até 48h e as diretrizes do clube.
                     </label>
                   </div>
                 </div>
@@ -358,14 +410,18 @@ export default function ExperienceCheckoutPage(): React.JSX.Element {
                     disabled={isProcessing}
                     className="h-12 text-xs shadow-none hover:shadow-none"
                   >
-                    <span>{isProcessing ? "Processando pagamento..." : `Pagar ${formatBRL(totalAmount)}`}</span>
+                    <span>
+                      {isProcessing
+                        ? "Processando pagamento..."
+                        : `Pagar ${formatBRL(totalAmount)}`}
+                    </span>
                     {!isProcessing && <ArrowRight className="w-4 h-4 ml-2" />}
                   </CtaButton>
                 </div>
               </form>
             ) : (
               <div className="space-y-5">
-                <div className="p-5 rounded-sm bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 space-y-4 text-center">
+                <div className="p-5 rounded-sm bg-[#F1F1F1] dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 space-y-4 text-center">
                   <div className="w-12 h-12 rounded-sm bg-brand-primary/10 text-brand-primary flex items-center justify-center mx-auto">
                     <QrCode className="w-6 h-6" />
                   </div>
@@ -375,7 +431,8 @@ export default function ExperienceCheckoutPage(): React.JSX.Element {
                       Pague via PIX com 5% de desconto
                     </span>
                     <p className="text-xs text-zinc-500 dark:text-zinc-400 max-w-sm mx-auto">
-                      Copie o código abaixo e utilize o aplicativo do seu banco para efetuar o pagamento.
+                      Copie o código abaixo e utilize o aplicativo do seu banco
+                      para efetuar o pagamento.
                     </p>
                   </div>
 
@@ -419,7 +476,8 @@ export default function ExperienceCheckoutPage(): React.JSX.Element {
                       htmlFor="terms-check-pix"
                       className="text-xs text-zinc-600 dark:text-zinc-400 cursor-pointer select-none leading-relaxed"
                     >
-                      Declaro que li e concordo com os termos de cancelamento em até 48h e as diretrizes do clube.
+                      Declaro que li e concordo com os termos de cancelamento em
+                      até 48h e as diretrizes do clube.
                     </label>
                   </div>
                 </div>
@@ -433,7 +491,11 @@ export default function ExperienceCheckoutPage(): React.JSX.Element {
                   disabled={isProcessing}
                   className="h-12 text-xs shadow-none hover:shadow-none"
                 >
-                  <span>{isProcessing ? "Confirmando transação..." : `Confirmar Pagamento de ${formatBRL(totalAmount)}`}</span>
+                  <span>
+                    {isProcessing
+                      ? "Confirmando transação..."
+                      : `Confirmar Pagamento de ${formatBRL(totalAmount)}`}
+                  </span>
                   {!isProcessing && <ArrowRight className="w-4 h-4 ml-2" />}
                 </CtaButton>
               </div>
@@ -442,11 +504,17 @@ export default function ExperienceCheckoutPage(): React.JSX.Element {
             <div className="pt-2 border-t border-zinc-100 dark:border-zinc-800 text-xs text-zinc-500 dark:text-zinc-400 space-y-2">
               <p className="flex items-center gap-2">
                 <ShieldCheck className="w-4 h-4 text-brand-primary shrink-0" />
-                <span>Ambiente seguro com criptografia de ponta a ponta para membros.</span>
+                <span>
+                  Ambiente seguro com criptografia de ponta a ponta para
+                  membros.
+                </span>
               </p>
               <p className="flex items-center gap-2">
                 <Clock className="w-4 h-4 text-zinc-400 shrink-0" />
-                <span>Cancelamento gratuito e estorno integral até 48h antes da data.</span>
+                <span>
+                  Cancelamento gratuito e estorno integral até 48h antes da
+                  data.
+                </span>
               </p>
             </div>
           </div>
@@ -486,7 +554,9 @@ export default function ExperienceCheckoutPage(): React.JSX.Element {
 
                 <p className="text-[11px] text-zinc-500 dark:text-zinc-400 flex items-center gap-1">
                   <Calendar className="w-3 h-3 text-brand-primary shrink-0" />
-                  <span>{experience.date} • {experience.place}</span>
+                  <span>
+                    {experience.date} • {experience.place}
+                  </span>
                 </p>
 
                 <div className="flex items-center justify-between pt-1">
@@ -542,7 +612,9 @@ export default function ExperienceCheckoutPage(): React.JSX.Element {
                     Total do pedido
                   </span>
                   <span className="text-[10px] text-zinc-500 dark:text-zinc-400">
-                    {isPix ? "Pagamento à vista com PIX" : "Pagamento no cartão"}
+                    {isPix
+                      ? "Pagamento à vista com PIX"
+                      : "Pagamento no cartão"}
                   </span>
                 </div>
                 <div className="text-right">

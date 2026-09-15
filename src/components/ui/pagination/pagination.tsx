@@ -1,6 +1,12 @@
 "use client";
 
-import { Icon } from "@iconify/react";
+import {
+  CaretDoubleLeft,
+  CaretDoubleRight,
+  CaretLeft,
+  CaretRight,
+  DotsThree,
+} from "@phosphor-icons/react";
 import * as React from "react";
 import { designRadius } from "../../../lib/design-system";
 import { cn } from "../../../lib/utils";
@@ -87,7 +93,7 @@ export interface PaginationLinkProps extends React.ComponentProps<"button"> {
 const colorActiveMap: Record<PaginationColor, string> = {
   default:
     "bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 border-zinc-200 dark:border-zinc-700",
-  primary: "bg-sky-500 text-white border-sky-500",
+  primary: "bg-brand-primary text-white border-brand-primary",
   success: "bg-emerald-500 text-white border-emerald-500",
   warning: "bg-amber-500 text-white border-amber-500",
   danger: "bg-rose-500 text-white border-rose-500",
@@ -95,7 +101,7 @@ const colorActiveMap: Record<PaginationColor, string> = {
 
 const colorTextMap: Record<PaginationColor, string> = {
   default: "text-zinc-900 dark:text-zinc-100",
-  primary: "text-sky-600 dark:text-sky-400",
+  primary: "text-brand-primary",
   success: "text-emerald-600 dark:text-emerald-400",
   warning: "text-amber-600 dark:text-amber-400",
   danger: "text-rose-600 dark:text-rose-400",
@@ -179,7 +185,7 @@ const PaginationFirst = ({
     className={cn("gap-1 px-2.5", className)}
     {...props}
   >
-    <Icon icon="hugeicons:arrow-left-double" className="size-4" />
+    <CaretDoubleLeft className="size-4" />
     {label && <span>{label}</span>}
   </PaginationLink>
 );
@@ -196,7 +202,7 @@ const PaginationLast = ({
     {...props}
   >
     {label && <span>{label}</span>}
-    <Icon icon="hugeicons:arrow-right-double" className="size-4" />
+    <CaretDoubleRight className="size-4" />
   </PaginationLink>
 );
 PaginationLast.displayName = "PaginationLast";
@@ -211,7 +217,7 @@ const PaginationPrevious = ({
     className={cn("gap-1.5 pl-2.5", className)}
     {...props}
   >
-    <Icon icon="hugeicons:arrow-left-01" className="size-4" />
+    <CaretLeft className="size-4" />
     {label && <span>{label}</span>}
   </PaginationLink>
 );
@@ -228,7 +234,7 @@ const PaginationNext = ({
     {...props}
   >
     {label && <span>{label}</span>}
-    <Icon icon="hugeicons:arrow-right-01" className="size-4" />
+    <CaretRight className="size-4" />
   </PaginationLink>
 );
 PaginationNext.displayName = "PaginationNext";
@@ -245,7 +251,7 @@ const PaginationEllipsis = ({
     )}
     {...props}
   >
-    <Icon icon="hugeicons:more-horizontal" className="size-4" />
+    <DotsThree className="size-4" />
     <span className="sr-only">More pages</span>
   </span>
 );
@@ -293,10 +299,11 @@ export function PaginationToolbar({
   const endItem = Math.min(total, page * pageSize);
 
   const [jumperVal, setJumperVal] = React.useState(page.toString());
-
-  React.useEffect(() => {
+  const [prevPage, setPrevPage] = React.useState(page);
+  if (page !== prevPage) {
+    setPrevPage(page);
     setJumperVal(page.toString());
-  }, [page]);
+  }
 
   const handleJumperSubmit = (e: React.FormEvent) => {
     e.preventDefault();

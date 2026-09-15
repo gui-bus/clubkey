@@ -126,8 +126,10 @@ const Carousel = React.forwardRef<
 
     React.useEffect(() => {
       if (!api) return;
-      setScrollSnaps(api.scrollSnapList());
-      onSelect(api);
+      queueMicrotask(() => {
+        setScrollSnaps(api.scrollSnapList());
+        onSelect(api);
+      });
       api.on("reInit", onSelect);
       api.on("select", onSelect);
       if (setApi) setApi(api);

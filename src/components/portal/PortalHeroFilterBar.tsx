@@ -1,7 +1,9 @@
 "use client"
 
 import * as React from "react"
-import { CaretDown, MagnifyingGlass, X, type Icon } from "@phosphor-icons/react"
+
+import { CaretDown, type Icon, MagnifyingGlass, X } from "@phosphor-icons/react"
+
 import { cn } from "@/src/lib/utils"
 
 export interface FilterOption {
@@ -70,7 +72,7 @@ export function PortalHeroFilterBar({
           <button
             type="button"
             onClick={() => setDropdownOpen((prev) => !prev)}
-            className="w-full flex items-center justify-between gap-3 p-2.5 rounded-sm bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-200/80 dark:border-zinc-700/80 hover:border-zinc-300 dark:hover:border-zinc-600 transition-colors text-left cursor-pointer"
+            className="w-full flex items-center justify-between gap-3 p-2.5 rounded-sm bg-[#F1F1F1] dark:bg-zinc-800/60 border border-zinc-200/80 dark:border-zinc-700/80 hover:border-zinc-300 dark:hover:border-zinc-600 transition-colors text-left cursor-pointer"
           >
             <div className="flex items-center gap-2.5 min-w-0">
               <div className="w-7 h-7 rounded-sm bg-brand-primary/10 text-brand-primary flex items-center justify-center shrink-0">
@@ -109,7 +111,7 @@ export function PortalHeroFilterBar({
                       setDropdownOpen(false)
                     }}
                     className={cn(
-                      "w-full px-4 py-2.5 flex items-center justify-between hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors text-xs font-medium cursor-pointer text-left",
+                      "w-full px-4 py-2.5 flex items-center justify-between hover:bg-[#F1F1F1] dark:hover:bg-zinc-800 transition-colors text-xs font-medium cursor-pointer text-left",
                       activeCategory === cat.value
                         ? "text-brand-primary font-bold bg-brand-primary/5"
                         : "text-zinc-800 dark:text-zinc-200"
@@ -134,7 +136,7 @@ export function PortalHeroFilterBar({
             value={searchQuery}
             onChange={(e) => onSearchQueryChange(e.target.value)}
             placeholder={searchPlaceholder}
-            className="w-full pl-3.5 pr-9 py-2.5 rounded-sm bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-200/80 dark:border-zinc-700/80 text-xs text-zinc-900 dark:text-white placeholder:text-zinc-400 focus:outline-none focus:border-brand-primary"
+            className="w-full pl-3.5 pr-9 py-2.5 rounded-sm bg-[#F1F1F1] dark:bg-zinc-800/60 border border-zinc-200/80 dark:border-zinc-700/80 text-xs text-zinc-900 dark:text-white placeholder:text-zinc-400 focus:outline-none focus:border-brand-primary"
           />
           {searchQuery && (
             <button
@@ -162,7 +164,7 @@ export function PortalHeroFilterBar({
           <button
             type="button"
             onClick={() => setDropdownOpen((prev) => !prev)}
-            className="w-full flex items-center justify-between gap-2.5 px-4 py-2 rounded-full hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors text-left cursor-pointer"
+            className="w-full flex items-center justify-between gap-2.5 px-4 py-2 rounded-full hover:bg-[#F1F1F1] dark:hover:bg-zinc-800/50 transition-colors text-left cursor-pointer"
           >
             <div className="flex items-center gap-2.5 min-w-0">
               {CategoryIcon ? (
@@ -199,7 +201,7 @@ export function PortalHeroFilterBar({
                       setDropdownOpen(false)
                     }}
                     className={cn(
-                      "w-full px-4 py-2.5 flex items-center justify-between hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors text-xs font-medium cursor-pointer text-left",
+                      "w-full px-4 py-2.5 flex items-center justify-between hover:bg-[#F1F1F1] dark:hover:bg-zinc-800 transition-colors text-xs font-medium cursor-pointer text-left",
                       activeCategory === cat.value
                         ? "text-brand-primary font-bold bg-brand-primary/5"
                         : "text-zinc-800 dark:text-zinc-200"

@@ -9,12 +9,22 @@ import { ArrowRight, Buildings, Gift, MagnifyingGlass } from "@phosphor-icons/re
 
 import { Badge } from "@/src/components/ui/badge/badge"
 import { Button } from "@/src/components/ui/button/button"
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/src/components/ui/pagination/pagination"
 
 import { Container } from "@/src/components/common/container"
 import { CtaButton } from "@/src/components/common/ctaButton"
 import { BenefitCard } from "@/src/components/portal/BenefitCard"
 import { PortalHero } from "@/src/components/portal/PortalHero"
 import { PortalHeroFilterBar } from "@/src/components/portal/PortalHeroFilterBar"
+
+const ITEMS_PER_PAGE = 6
 
 const CATEGORIES = [
   "Todos",
@@ -29,6 +39,7 @@ const CATEGORIES = [
 export default function BenefitsPage(): React.JSX.Element {
   const [activeCategory, setActiveCategory] = React.useState("Todos")
   const [searchQuery, setSearchQuery] = React.useState("")
+  const [currentPage, setCurrentPage] = React.useState(1)
 
   const categoryOptions = React.useMemo(() => {
     return CATEGORIES.map((cat) => ({
@@ -59,11 +70,18 @@ export default function BenefitsPage(): React.JSX.Element {
     })
   }, [activeCategory, searchQuery])
 
+  const totalPages = Math.max(1, Math.ceil(filteredBenefits.length / ITEMS_PER_PAGE))
+  const paginatedBenefits = React.useMemo(() => {
+    const start = (currentPage - 1) * ITEMS_PER_PAGE
+    return filteredBenefits.slice(start, start + ITEMS_PER_PAGE)
+  }, [filteredBenefits, currentPage])
+
   const hasActiveFilters = activeCategory !== "Todos" || Boolean(searchQuery)
 
   const handleClearFilters = () => {
     setActiveCategory("Todos")
     setSearchQuery("")
+    setCurrentPage(1)
   }
 
   return (
@@ -84,10 +102,16 @@ export default function BenefitsPage(): React.JSX.Element {
           categoryLabel="Categoria"
           categoryIcon={Gift}
           activeCategory={activeCategory}
-          onCategoryChange={setActiveCategory}
+          onCategoryChange={(cat) => {
+            setActiveCategory(cat)
+            setCurrentPage(1)
+          }}
           categories={categoryOptions}
           searchQuery={searchQuery}
-          onSearchQueryChange={setSearchQuery}
+          onSearchQueryChange={(q) => {
+            setSearchQuery(q)
+            setCurrentPage(1)
+          }}
           searchPlaceholder="Buscar por parceiro, serviço, clínica ou palavra-chave..."
         />
       </PortalHero>
@@ -193,10 +217,59 @@ export default function BenefitsPage(): React.JSX.Element {
             </Button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredBenefits.map((benefit) => (
-              <BenefitCard key={benefit.id} benefit={benefit} />
-            ))}
+          <div className="space-y-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {paginatedBenefits.map((benefit) => (
+                <BenefitCard key={benefit.id} benefit={benefit} />
+              ))}
+            </div>
+
+            {totalPages > 1 && (
+              <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-zinc-200 dark:border-zinc-800">
+                <span className="text-xs text-zinc-500 dark:text-zinc-400">
+                  Mostrando <strong>{(currentPage - 1) * ITEMS_PER_PAGE + 1}</strong> a{" "}
+                  <strong>{Math.min(currentPage * ITEMS_PER_PAGE, filteredBenefits.length)}</strong> de{" "}
+                  <strong>{filteredBenefits.length}</strong> benefícios
+                </span>
+                <Pagination radius="sm" color="primary" className="w-auto justify-center sm:justify-end">
+                  <PaginationContent>
+                    <PaginationItem>
+                      <PaginationPrevious
+                        label="Anterior"
+                        onClick={() => {
+                          setCurrentPage((p) => Math.max(1, p - 1))
+                          window.scrollTo({ top: 380, behavior: "smooth" })
+                        }}
+                        disabled={currentPage === 1}
+                      />
+                    </PaginationItem>
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                      <PaginationItem key={page}>
+                        <PaginationLink
+                          isActive={currentPage === page}
+                          onClick={() => {
+                            setCurrentPage(page)
+                            window.scrollTo({ top: 380, behavior: "smooth" })
+                          }}
+                        >
+                          {page}
+                        </PaginationLink>
+                      </PaginationItem>
+                    ))}
+                    <PaginationItem>
+                      <PaginationNext
+                        label="Próxima"
+                        onClick={() => {
+                          setCurrentPage((p) => Math.min(totalPages, p + 1))
+                          window.scrollTo({ top: 380, behavior: "smooth" })
+                        }}
+                        disabled={currentPage === totalPages}
+                      />
+                    </PaginationItem>
+                  </PaginationContent>
+                </Pagination>
+              </div>
+            )}
           </div>
         )}
       </Container>

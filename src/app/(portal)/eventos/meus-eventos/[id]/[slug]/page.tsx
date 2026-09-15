@@ -1,19 +1,40 @@
 "use client"
 
 import * as React from "react"
+
 import Image from "next/image"
 import Link from "next/link"
-import { useParams, notFound } from "next/navigation"
-import { Calendar, Clock, MapPin, Users, CheckCircle, Building, ArrowRight, QrCode, ShareNetwork, XCircle, Download } from "@phosphor-icons/react"
+import { notFound, useParams } from "next/navigation"
 
-import { EVENTS, MEMBERS, getInitials, getMemberSlug, getEventSlug } from "@/src/data/portalData"
+import {
+  EVENTS,
+  MEMBERS,
+  getEventSlug,
+  getInitials,
+  getMemberSlug,
+} from "@/src/data/portalData"
 import { usePortalStore } from "@/src/store/usePortalStore"
-import { MemberCard } from "@/src/components/portal/MemberCard"
-import { BackButton } from "@/src/components/portal/BackButton"
+import {
+  ArrowRight,
+  Building,
+  Calendar,
+  CheckCircle,
+  Clock,
+  Download,
+  MapPin,
+  QrCode,
+  ShareNetwork,
+  Users,
+  XCircle,
+} from "@phosphor-icons/react"
+
 import { Badge } from "@/src/components/ui/badge/badge"
 import { Button } from "@/src/components/ui/button/button"
 import { toast } from "@/src/components/ui/toast/toast"
+
 import { Container } from "@/src/components/common/container"
+import { BackButton } from "@/src/components/portal/BackButton"
+import { MemberCard } from "@/src/components/portal/MemberCard"
 
 export default function MeuEventoDetailPage(): React.JSX.Element {
   const params = useParams()
@@ -29,10 +50,11 @@ export default function MeuEventoDetailPage(): React.JSX.Element {
   const { confirmedEvents, toggleEventRSVP, userProfile } = usePortalStore()
   const isConfirmed = !!confirmedEvents[event.id]
 
-  const organizer = MEMBERS.find((m) => m.id === event.organizerId) || MEMBERS[0]
+  const organizer =
+    MEMBERS.find((m) => m.id === event.organizerId) || MEMBERS[0]
   const attendees = event.participants
     .map((id: number) => MEMBERS.find((m) => m.id === id))
-    .filter((m): m is typeof MEMBERS[0] => Boolean(m))
+    .filter((m): m is (typeof MEMBERS)[0] => Boolean(m))
 
   const handleCancelRSVP = () => {
     toggleEventRSVP(event.id)
@@ -41,7 +63,7 @@ export default function MeuEventoDetailPage(): React.JSX.Element {
 
   const handleDownloadTicket = () => {
     toast.success("Credencial VIP baixada!", {
-      description: "Apresente o QR Code na recepção do encontro."
+      description: "Apresente o QR Code na recepção do encontro.",
     })
   }
 
@@ -71,7 +93,14 @@ export default function MeuEventoDetailPage(): React.JSX.Element {
                       <Calendar className="w-3.5 h-3.5" />
                       {event.weekday}, {event.day} de {event.month} de 2026
                     </span>
-                    <Badge color="success" variant="flat" size="sm" radius="sm" startContent={<CheckCircle className="w-3 h-3" />} className="font-bold uppercase tracking-wider">
+                    <Badge
+                      color="success"
+                      variant="flat"
+                      size="sm"
+                      radius="sm"
+                      startContent={<CheckCircle className="w-3 h-3" />}
+                      className="font-bold uppercase tracking-wider"
+                    >
                       Presença Garantida
                     </Badge>
                   </div>
@@ -88,7 +117,7 @@ export default function MeuEventoDetailPage(): React.JSX.Element {
               </p>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-6 border-t border-zinc-100 dark:border-zinc-800">
-                <div className="p-4 rounded-sm bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200/80 dark:border-zinc-800 space-y-1">
+                <div className="p-4 rounded-sm bg-[#F1F1F1] dark:bg-zinc-900/60 border border-zinc-200/80 dark:border-zinc-800 space-y-1">
                   <span className="text-[10px] font-bold uppercase tracking-widest text-brand-primary">
                     Local do Encontro
                   </span>
@@ -98,7 +127,7 @@ export default function MeuEventoDetailPage(): React.JSX.Element {
                   </p>
                 </div>
 
-                <div className="p-4 rounded-sm bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200/80 dark:border-zinc-800 space-y-1">
+                <div className="p-4 rounded-sm bg-[#F1F1F1] dark:bg-zinc-900/60 border border-zinc-200/80 dark:border-zinc-800 space-y-1">
                   <span className="text-[10px] font-bold uppercase tracking-widest text-brand-primary">
                     Horário de Início
                   </span>
@@ -108,7 +137,7 @@ export default function MeuEventoDetailPage(): React.JSX.Element {
                   </p>
                 </div>
 
-                <div className="p-4 rounded-sm bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200/80 dark:border-zinc-800 space-y-1">
+                <div className="p-4 rounded-sm bg-[#F1F1F1] dark:bg-zinc-900/60 border border-zinc-200/80 dark:border-zinc-800 space-y-1">
                   <span className="text-[10px] font-bold uppercase tracking-widest text-brand-primary">
                     Anfitrião / Organizador
                   </span>
@@ -118,7 +147,7 @@ export default function MeuEventoDetailPage(): React.JSX.Element {
                   </p>
                 </div>
 
-                <div className="p-4 rounded-sm bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200/80 dark:border-zinc-800 space-y-1">
+                <div className="p-4 rounded-sm bg-[#F1F1F1] dark:bg-zinc-900/60 border border-zinc-200/80 dark:border-zinc-800 space-y-1">
                   <span className="text-[10px] font-bold uppercase tracking-widest text-brand-primary">
                     Titular do Acesso
                   </span>
@@ -167,7 +196,7 @@ export default function MeuEventoDetailPage(): React.JSX.Element {
             <span className="text-[10px] font-black uppercase tracking-widest text-brand-primary block">
               Credencial Digital
             </span>
-            <div className="w-36 h-36 mx-auto rounded-sm border-2 border-dashed border-zinc-300 dark:border-zinc-700 flex flex-col items-center justify-center p-3 bg-zinc-50 dark:bg-zinc-900/80">
+            <div className="w-36 h-36 mx-auto rounded-sm border-2 border-dashed border-zinc-300 dark:border-zinc-700 flex flex-col items-center justify-center p-3 bg-[#F1F1F1] dark:bg-zinc-900/80">
               <QrCode className="w-24 h-24 text-zinc-900 dark:text-white" />
               <span className="font-mono text-[9px] font-bold text-zinc-500 dark:text-zinc-400 mt-1">
                 CK-EV-{event.id}88
@@ -193,7 +222,7 @@ export default function MeuEventoDetailPage(): React.JSX.Element {
 
             <Link
               href={`/eventos/${event.id}/${eventSlug}/quem-vai`}
-              className="w-full py-3 px-4 rounded-sm border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-900 text-xs font-bold uppercase tracking-wider text-zinc-800 dark:text-zinc-200 hover:border-brand-primary/60 transition-colors flex items-center justify-center gap-1.5"
+              className="w-full py-3 px-4 rounded-sm border border-zinc-200 dark:border-zinc-700 bg-[#F1F1F1] dark:bg-zinc-900 text-xs font-bold uppercase tracking-wider text-zinc-800 dark:text-zinc-200 hover:border-brand-primary/60 transition-colors flex items-center justify-center gap-1.5"
             >
               <Users className="w-3.5 h-3.5 text-brand-primary" />
               <span>Ver quem vai estar lá</span>

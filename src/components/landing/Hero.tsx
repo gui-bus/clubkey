@@ -1,12 +1,15 @@
 "use client"
 
 import * as React from "react"
+
 import Image from "next/image"
 import Link from "next/link"
+
 import { motion } from "framer-motion"
 
 import { Container } from "@/src/components/common/container"
 import { CtaButton } from "@/src/components/common/ctaButton"
+
 import { brandConfig } from "@/src/config/brand.config"
 
 const marqueePhrases = [
@@ -23,7 +26,7 @@ export function Hero(): React.JSX.Element {
   return (
     <section
       id="hero"
-      className="relative z-30 w-full overflow-hidden bg-[#0D0D0D] text-white min-h-[560px] md:min-h-[620px] flex flex-col justify-between"
+      className="relative z-30 w-full overflow-hidden bg-[#161616] text-white min-h-[560px] md:min-h-[620px] flex flex-col justify-between"
     >
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none select-none">
         <Image
@@ -68,10 +71,7 @@ export function Hero(): React.JSX.Element {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full sm:w-auto"
           >
-            <CtaButton
-              href={brandConfig.links.subscription}
-              size="lg"
-            >
+            <CtaButton href={brandConfig.links.subscription} size="lg">
               Solicite agora
             </CtaButton>
 

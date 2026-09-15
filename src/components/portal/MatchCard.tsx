@@ -1,10 +1,23 @@
 "use client"
 
 import * as React from "react"
-import { Lightning, ArrowRight, MapPin, Target, CheckCircle, Medal } from "@phosphor-icons/react"
 
 import { Member, getInitials, getMemberSlug } from "@/src/data/portalData"
-import { Avatar, AvatarImage, AvatarFallback } from "@/src/components/ui/avatar/avatar"
+import {
+  ArrowRight,
+  CheckCircle,
+  Lightning,
+  MapPin,
+  Medal,
+  Target,
+} from "@phosphor-icons/react"
+
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/src/components/ui/avatar/avatar"
+
 import { CtaButton } from "@/src/components/common/ctaButton"
 
 interface MatchCardProps {
@@ -12,7 +25,10 @@ interface MatchCardProps {
   reason: string
 }
 
-export function MatchCard({ member, reason }: MatchCardProps): React.JSX.Element {
+export function MatchCard({
+  member,
+  reason,
+}: MatchCardProps): React.JSX.Element {
   const firstName = member.name.split(" ")[0]
   const memberSlug = getMemberSlug(member)
 
@@ -72,7 +88,9 @@ export function MatchCard({ member, reason }: MatchCardProps): React.JSX.Element
                 <MapPin className="w-3.5 h-3.5 text-brand-primary shrink-0" />
                 {member.city}
               </span>
-              <span className="text-zinc-300 dark:text-zinc-700 hidden sm:inline">•</span>
+              <span className="text-zinc-300 dark:text-zinc-700 hidden sm:inline">
+                •
+              </span>
               <span>Membro desde {member.since || 2021}</span>
             </div>
           </div>
@@ -91,7 +109,7 @@ export function MatchCard({ member, reason }: MatchCardProps): React.JSX.Element
         </div>
       </div>
 
-      <div className="p-4 sm:p-5 rounded-sm bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200/80 dark:border-zinc-800/80 space-y-1.5">
+      <div className="p-4 sm:p-5 rounded-sm bg-[#F1F1F1] dark:bg-zinc-900/60 border border-zinc-200/80 dark:border-zinc-800/80 space-y-1.5">
         <span className="text-[10px] font-black uppercase tracking-widest text-brand-primary block">
           Por que conectar com {firstName}:
         </span>
@@ -101,7 +119,7 @@ export function MatchCard({ member, reason }: MatchCardProps): React.JSX.Element
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="p-4 sm:p-5 rounded-sm bg-zinc-50/50 dark:bg-zinc-900/40 border border-zinc-200/80 dark:border-zinc-800 space-y-2.5">
+        <div className="p-4 sm:p-5 rounded-sm bg-[#F1F1F1]/50 dark:bg-zinc-900/40 border border-zinc-200/80 dark:border-zinc-800 space-y-2.5">
           <div className="flex items-center gap-2">
             <Medal className="w-3.5 h-3.5 text-brand-primary shrink-0" />
             <span className="text-[10px] font-black uppercase tracking-widest text-brand-primary">
@@ -120,7 +138,7 @@ export function MatchCard({ member, reason }: MatchCardProps): React.JSX.Element
           </div>
         </div>
 
-        <div className="p-4 sm:p-5 rounded-sm bg-zinc-50/50 dark:bg-zinc-900/40 border border-zinc-200/80 dark:border-zinc-800 space-y-2.5">
+        <div className="p-4 sm:p-5 rounded-sm bg-[#F1F1F1]/50 dark:bg-zinc-900/40 border border-zinc-200/80 dark:border-zinc-800 space-y-2.5">
           <div className="flex items-center gap-2">
             <Target className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
             <span className="text-[10px] font-black uppercase tracking-widest text-zinc-500 dark:text-zinc-400">

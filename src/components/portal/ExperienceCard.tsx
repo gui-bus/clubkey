@@ -1,12 +1,18 @@
 "use client"
 
 import * as React from "react"
+
 import Image from "next/image"
 import Link from "next/link"
-import { MapPin, Calendar, Check, Gift } from "@phosphor-icons/react"
 
-import { ExperienceItem, formatBRL, getExperienceSlug } from "@/src/data/portalData"
+import {
+  ExperienceItem,
+  formatBRL,
+  getExperienceSlug,
+} from "@/src/data/portalData"
 import { usePortalStore } from "@/src/store/usePortalStore"
+import { Calendar, Check, Gift, MapPin } from "@phosphor-icons/react"
+
 import { GlassBadge } from "@/src/components/portal/GlassBadge"
 
 interface ExperienceCardProps {
@@ -14,7 +20,7 @@ interface ExperienceCardProps {
 }
 
 export function ExperienceCard({
-  experience
+  experience,
 }: ExperienceCardProps): React.JSX.Element {
   const { boughtExperiences } = usePortalStore()
   const isBought = !!boughtExperiences[experience.id]
@@ -77,7 +83,7 @@ export function ExperienceCard({
         </div>
       </div>
 
-      <div className="px-5 py-3.5 border-t border-zinc-100 dark:border-zinc-800/80 flex items-center justify-between bg-zinc-50/70 dark:bg-zinc-900/50">
+      <div className="px-5 py-3.5 border-t border-zinc-100 dark:border-zinc-800/80 flex items-center justify-between bg-[#F1F1F1]/70 dark:bg-zinc-900/50">
         <div>
           <span className="text-[10px] uppercase font-bold text-zinc-400 tracking-wider block">
             {isFree ? "Condição" : "Investimento"}

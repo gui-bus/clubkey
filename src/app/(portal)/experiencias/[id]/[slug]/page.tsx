@@ -1,30 +1,48 @@
 "use client"
 
 import * as React from "react"
+
 import Image from "next/image"
 import Link from "next/link"
-import { useParams, notFound } from "next/navigation"
-import { Calendar, Clock, MapPin, Users, Check, Plus, ArrowRight, ShieldCheck, CheckCircle, Gift } from "@phosphor-icons/react"
+import { notFound, useParams } from "next/navigation"
 
 import {
   EXPERIENCES,
   MEMBERS,
   formatBRL,
+  getExperienceSlug,
   getInitials,
   getMemberSlug,
-  getExperienceSlug
 } from "@/src/data/portalData"
 import { usePortalStore } from "@/src/store/usePortalStore"
-import { MemberCard } from "@/src/components/portal/MemberCard"
-import { BackButton } from "@/src/components/portal/BackButton"
-import { ShareButton } from "@/src/components/portal/ShareButton"
-import { AddToCalendarButton } from "@/src/components/portal/AddToCalendarButton"
-import { Avatar, AvatarImage, AvatarFallback } from "@/src/components/ui/avatar/avatar"
+import {
+  ArrowRight,
+  Calendar,
+  Check,
+  CheckCircle,
+  Clock,
+  Gift,
+  MapPin,
+  Plus,
+  ShieldCheck,
+  Users,
+} from "@phosphor-icons/react"
+
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/src/components/ui/avatar/avatar"
 import { Button } from "@/src/components/ui/button/button"
-import { CtaButton } from "@/src/components/common/ctaButton"
-import { GlassBadge } from "@/src/components/portal/GlassBadge"
 import { toast } from "@/src/components/ui/toast/toast"
+
 import { Container } from "@/src/components/common/container"
+import { CtaButton } from "@/src/components/common/ctaButton"
+import { AddToCalendarButton } from "@/src/components/portal/AddToCalendarButton"
+import { BackButton } from "@/src/components/portal/BackButton"
+import { GlassBadge } from "@/src/components/portal/GlassBadge"
+import { MemberCard } from "@/src/components/portal/MemberCard"
+import { ShareButton } from "@/src/components/portal/ShareButton"
 
 export default function ExperienceDetailPage(): React.JSX.Element {
   const params = useParams()
@@ -43,11 +61,17 @@ export default function ExperienceDetailPage(): React.JSX.Element {
 
   const attendees = experience.participants
     .map((id: number) => MEMBERS.find((m) => m.id === id))
-    .filter((m): m is typeof MEMBERS[0] => Boolean(m))
+    .filter((m): m is (typeof MEMBERS)[0] => Boolean(m))
 
   const currentIndex = EXPERIENCES.findIndex((e) => e.id === experience.id)
-  const prevExp = currentIndex > 0 ? EXPERIENCES[currentIndex - 1] : EXPERIENCES[EXPERIENCES.length - 1]
-  const nextExp = currentIndex < EXPERIENCES.length - 1 ? EXPERIENCES[currentIndex + 1] : EXPERIENCES[0]
+  const prevExp =
+    currentIndex > 0
+      ? EXPERIENCES[currentIndex - 1]
+      : EXPERIENCES[EXPERIENCES.length - 1]
+  const nextExp =
+    currentIndex < EXPERIENCES.length - 1
+      ? EXPERIENCES[currentIndex + 1]
+      : EXPERIENCES[0]
 
   const handleFreeParticipation = () => {
     buyExperience(experience.id)
@@ -61,7 +85,9 @@ export default function ExperienceDetailPage(): React.JSX.Element {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <BackButton fallbackHref="/experiencias" label="Experiências" />
-          <span className="text-zinc-300 dark:text-zinc-700 hidden sm:inline">/</span>
+          <span className="text-zinc-300 dark:text-zinc-700 hidden sm:inline">
+            /
+          </span>
           <span className="text-xs font-bold text-zinc-500 dark:text-zinc-400 truncate max-w-xs sm:max-w-md hidden sm:inline">
             {experience.title}
           </span>
@@ -229,7 +255,9 @@ export default function ExperienceDetailPage(): React.JSX.Element {
                 </div>
                 <div className="pt-1">
                   <p className="text-sm sm:text-base font-bold text-zinc-900 dark:text-white">
-                    {isFree ? "Gratuita (Cortesia)" : formatBRL(experience.price)}
+                    {isFree
+                      ? "Gratuita (Cortesia)"
+                      : formatBRL(experience.price)}
                   </p>
                   <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
                     Curadoria e garantia oficial ClubKey
@@ -292,7 +320,9 @@ export default function ExperienceDetailPage(): React.JSX.Element {
           <div className="rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] p-6 sm:p-8 space-y-6">
             <div className="space-y-1">
               <span className="text-[10px] font-black uppercase tracking-widest text-brand-primary block">
-                {isFree ? "Condição de Membro" : "Investimento por Participante"}
+                {isFree
+                  ? "Condição de Membro"
+                  : "Investimento por Participante"}
               </span>
               <div className="flex items-baseline justify-between gap-2 pt-1">
                 <span className="text-3xl sm:text-4xl font-black text-zinc-900 dark:text-white font-heading leading-none">
@@ -310,7 +340,7 @@ export default function ExperienceDetailPage(): React.JSX.Element {
               </p>
             </div>
 
-            <div className="p-4 rounded-sm bg-zinc-50 dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 space-y-2 text-xs">
+            <div className="p-4 rounded-sm bg-[#F1F1F1] dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 space-y-2 text-xs">
               <div className="flex justify-between text-zinc-500 dark:text-zinc-400">
                 <span>Capacidade total</span>
                 <span className="font-bold text-zinc-900 dark:text-white">
@@ -422,7 +452,9 @@ export default function ExperienceDetailPage(): React.JSX.Element {
               <div>
                 <div className="flex items-center justify-between gap-2 text-[11px] font-bold text-zinc-400 mb-1.5">
                   <span className="inline-flex items-center px-2 py-0.5 rounded-xs bg-zinc-100 dark:bg-zinc-800 text-[10px] font-black uppercase tracking-wider text-zinc-600 dark:text-zinc-300">
-                    {prevExp.price === 0 ? "Gratuita" : formatBRL(prevExp.price)}
+                    {prevExp.price === 0
+                      ? "Gratuita"
+                      : formatBRL(prevExp.price)}
                   </span>
                   <span className="text-zinc-500 font-medium">
                     {prevExp.date}
@@ -464,7 +496,9 @@ export default function ExperienceDetailPage(): React.JSX.Element {
               <div>
                 <div className="flex items-center justify-between gap-2 text-[11px] font-bold text-zinc-400 mb-1.5">
                   <span className="inline-flex items-center px-2 py-0.5 rounded-xs bg-zinc-100 dark:bg-zinc-800 text-[10px] font-black uppercase tracking-wider text-zinc-600 dark:text-zinc-300">
-                    {nextExp.price === 0 ? "Gratuita" : formatBRL(nextExp.price)}
+                    {nextExp.price === 0
+                      ? "Gratuita"
+                      : formatBRL(nextExp.price)}
                   </span>
                   <span className="text-zinc-500 font-medium">
                     {nextExp.date}

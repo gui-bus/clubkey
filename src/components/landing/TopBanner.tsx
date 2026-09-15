@@ -10,15 +10,17 @@ import { cn } from "@/src/lib/utils"
 
 import { usePortalStore } from "@/src/store/usePortalStore"
 
+const emptySubscribe = () => () => {}
+
 export function TopBanner(): React.JSX.Element | null {
-  const [mounted, setMounted] = React.useState(false)
+  const mounted = React.useSyncExternalStore(
+    emptySubscribe,
+    () => true,
+    () => false
+  )
   const isAuthenticated = usePortalStore((state) => state.isAuthenticated)
   const [isVisible, setIsVisible] = React.useState(true)
   const lastScrollY = React.useRef(0)
-
-  React.useEffect(() => {
-    setMounted(true)
-  }, [])
 
   React.useEffect(() => {
     if (!mounted || isAuthenticated) return
