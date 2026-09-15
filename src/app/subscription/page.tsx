@@ -133,7 +133,7 @@ export default function SubscriptionPage(): React.JSX.Element {
                   />
                 </div>
 
-                <div className="lg:col-span-5 xl:col-span-5 w-full">
+                <div className="lg:col-span-5 xl:col-span-5 w-full lg:sticky lg:top-24">
                   <SubscriptionCartCard paymentMethod={paymentMethod} />
                 </div>
               </div>
