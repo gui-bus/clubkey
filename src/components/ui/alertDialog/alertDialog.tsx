@@ -43,7 +43,7 @@ const AlertDialogContent = React.forwardRef<
         <DialogPrimitive.Content
           ref={ref}
           className={cn(
-            "pointer-events-auto relative z-50 grid w-full max-w-lg gap-4 border border-zinc-200/80 dark:border-zinc-800/80 bg-white dark:bg-zinc-900 p-6 shadow-2xl duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 rounded-3xl text-zinc-900 dark:text-zinc-100",
+            "pointer-events-auto relative z-50 grid w-full max-w-lg gap-4 border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] p-6 shadow-2xl duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 rounded-sm text-zinc-900 dark:text-white",
             className,
           )}
           {...props}
@@ -91,7 +91,7 @@ const AlertDialogTitle = React.forwardRef<
   <DialogPrimitive.Title
     ref={ref}
     className={cn(
-      "text-lg font-bold text-zinc-900 dark:text-zinc-100 tracking-tight flex items-center gap-2",
+      "text-base font-heading font-black uppercase tracking-tight text-zinc-900 dark:text-white flex items-center gap-2",
       className,
     )}
     {...props}
@@ -106,7 +106,7 @@ const AlertDialogDescription = React.forwardRef<
   <DialogPrimitive.Description
     ref={ref}
     className={cn(
-      "text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed",
+      "text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed",
       className,
     )}
     {...props}
@@ -128,11 +128,11 @@ export interface AlertDialogActionProps
 }
 
 const actionColorMap: Record<AlertDialogActionColor, string> = {
-  danger: "bg-danger hover:opacity-90 text-danger-foreground",
-  info: "bg-primary hover:opacity-90 text-primary-foreground",
-  success: "bg-success hover:opacity-90 text-success-foreground",
-  warning: "bg-warning hover:opacity-95 text-warning-foreground",
-  default: "bg-default hover:bg-default/80 text-default-foreground",
+  danger: "bg-rose-600 hover:bg-rose-700 text-white shadow-xs",
+  info: "bg-brand-primary hover:bg-brand-primary-hover text-white shadow-xs",
+  success: "bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs",
+  warning: "bg-amber-600 hover:bg-amber-700 text-white shadow-xs",
+  default: "bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-white dark:hover:bg-zinc-100 dark:text-zinc-900 shadow-xs",
 };
 
 const AlertDialogAction = React.forwardRef<
@@ -156,7 +156,7 @@ const AlertDialogAction = React.forwardRef<
         ref={ref}
         disabled={disabled || isLoading}
         className={cn(
-          "inline-flex h-9 items-center justify-center gap-2 rounded-xl px-4 text-sm font-semibold cursor-pointer transition-all duration-200 shadow-md disabled:opacity-50 disabled:cursor-not-allowed select-none",
+          "inline-flex h-9 items-center justify-center gap-2 rounded-sm px-4 text-xs font-bold uppercase tracking-wider cursor-pointer transition-all duration-200 shadow-xs disabled:opacity-50 disabled:cursor-not-allowed select-none",
           actionColorMap[color],
           className,
         )}
@@ -193,7 +193,7 @@ const AlertDialogCancel = React.forwardRef<
     <button
       ref={ref}
       className={cn(
-        "inline-flex h-9 items-center justify-center rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-4 text-sm font-semibold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 cursor-pointer transition-all duration-200 mt-2 sm:mt-0 select-none",
+        "inline-flex h-9 items-center justify-center rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] px-4 text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 cursor-pointer transition-all duration-200 mt-2 sm:mt-0 select-none",
         className,
       )}
       {...props}
