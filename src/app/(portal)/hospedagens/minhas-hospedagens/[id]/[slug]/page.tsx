@@ -3,7 +3,7 @@
 import * as React from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { notFound, useParams } from "next/navigation"
+import { notFound, useParams, useRouter } from "next/navigation"
 import { AnimatePresence, motion } from "framer-motion"
 import {
   ArrowLeft,
@@ -31,14 +31,26 @@ import { Container } from "@/src/components/common/container"
 import { BackButton } from "@/src/components/portal/BackButton"
 import { GlassBadge } from "@/src/components/portal/GlassBadge"
 import { ShareButton } from "@/src/components/portal/ShareButton"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/src/components/ui/alertDialog/alertDialog"
 import { toast } from "@/src/components/ui/toast/toast"
 import { cn } from "@/src/lib/utils"
 
 export default function MinhaHospedagemDetailPage(): React.JSX.Element {
   const params = useParams()
+  const router = useRouter()
   const idParam = Array.isArray(params?.id) ? params.id[0] : params?.id
   const stayReservationId = String(idParam)
-  const { memberStays, cancelStay, userProfile } = usePortalStore()
+  const { memberStays, cancelStay, resetStays, userProfile } = usePortalStore()
 
   const stay = memberStays.find((s) => s.id === stayReservationId)
 
@@ -59,8 +71,13 @@ export default function MinhaHospedagemDetailPage(): React.JSX.Element {
 
   const handleCancel = () => {
     cancelStay(stay.id)
+    router.push("/hospedagens/minhas-hospedagens")
     toast.info(`Reserva em ${stay.stayName} cancelada.`, {
       description: "Nossa equipe foi notificada para o cancelamento e estorno.",
+      action: {
+        label: "Desfazer",
+        onClick: () => resetStays(),
+      },
     })
   }
 
@@ -105,13 +122,10 @@ export default function MinhaHospedagemDetailPage(): React.JSX.Element {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-black/20" />
 
-            <div className="absolute top-4 left-4 right-4 z-10 flex items-center justify-between gap-2">
-              <GlassBadge>Tarifa de Membro ClubKey</GlassBadge>
-
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-sm bg-emerald-500 text-white text-[10px] font-black uppercase tracking-widest shadow-xs">
-                <Check className="w-3.5 h-3.5 stroke-[2.5]" />
-                <span>Reserva Confirmada</span>
-              </span>
+            <div className="absolute top-4 left-4 z-10">
+              <GlassBadge icon={<Check className="w-3.5 h-3.5 text-emerald-400 stroke-[2.5]" />}>
+                Reserva Confirmada
+              </GlassBadge>
             </div>
 
             <div className="absolute bottom-4 left-4 right-4 z-10 flex items-center gap-3 p-3 rounded-sm bg-black/60 backdrop-blur-md border border-white/15 text-white">
@@ -258,7 +272,7 @@ export default function MinhaHospedagemDetailPage(): React.JSX.Element {
               </div>
 
               <span className="px-2.5 py-1 rounded-sm bg-brand-primary/10 text-brand-primary text-[10px] font-bold uppercase tracking-wider">
-                Tarifa VIP
+                Benefício ClubKey
               </span>
             </div>
 
@@ -343,14 +357,36 @@ export default function MinhaHospedagemDetailPage(): React.JSX.Element {
                 </AnimatePresence>
               </button>
 
-              <button
-                type="button"
-                onClick={handleCancel}
-                className="w-full text-center text-xs font-semibold text-zinc-400 hover:text-rose-500 dark:hover:text-rose-400 transition-colors py-2 cursor-pointer flex items-center justify-center gap-1.5 rounded-sm hover:bg-rose-500/5"
-              >
-                <XCircle className="w-3.5 h-3.5" />
-                <span>Solicitar cancelamento da reserva</span>
-              </button>
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <button
+                    type="button"
+                    className="w-full text-center text-xs font-semibold text-zinc-400 hover:text-rose-500 dark:hover:text-rose-400 transition-colors py-2 cursor-pointer flex items-center justify-center gap-1.5 rounded-sm hover:bg-rose-500/5"
+                  >
+                    <XCircle className="w-3.5 h-3.5" />
+                    <span>Solicitar cancelamento da reserva</span>
+                  </button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>
+                      Cancelar reserva em {stay.stayName}?
+                    </AlertDialogTitle>
+                    <AlertDialogDescription>
+                      Tem certeza que deseja solicitar o cancelamento desta reserva ({stay.roomType} • {stay.checkIn})? Nossa equipe de atendimento será notificada para o processo de estorno.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Manter reserva</AlertDialogCancel>
+                    <AlertDialogAction
+                      color="danger"
+                      onClick={handleCancel}
+                    >
+                      Confirmar cancelamento
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             </div>
           </div>
         </div>

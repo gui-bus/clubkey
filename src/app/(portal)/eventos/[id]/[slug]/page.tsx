@@ -461,7 +461,7 @@ export default function EventDetailPage(): React.JSX.Element {
                 className="w-full h-11 px-4 rounded-sm border border-zinc-200 dark:border-zinc-700 bg-[#F1F1F1] dark:bg-zinc-900 text-xs font-bold uppercase tracking-wider text-zinc-800 dark:text-zinc-200 hover:border-brand-primary transition-colors flex items-center justify-center gap-2"
               >
                 <Users className="w-3.5 h-3.5 text-brand-primary" />
-                <span>Ver participantes ({attendees.length})</span>
+                <span>Ver todos os participantes ({attendees.length})</span>
               </Link>
             </div>
 

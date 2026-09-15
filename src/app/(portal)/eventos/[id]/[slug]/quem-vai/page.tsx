@@ -5,7 +5,7 @@ import Link from "next/link"
 import { useParams, notFound } from "next/navigation"
 import { MapPin, MagnifyingGlass, Users, Check, Calendar, ArrowRight } from "@phosphor-icons/react"
 
-import { EVENTS, MEMBERS } from "@/src/data/portalData"
+import { EVENTS, MEMBERS, getEventSlug } from "@/src/data/portalData"
 import { usePortalStore } from "@/src/store/usePortalStore"
 import { BackButton } from "@/src/components/portal/BackButton"
 import { PortalHeroFilterBar } from "@/src/components/portal/PortalHeroFilterBar"
@@ -154,7 +154,7 @@ export default function EventParticipantsPage(): React.JSX.Element {
         />
 
         <Link
-          href={`/eventos/${event.id}/${event.title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`}
+          href={`/eventos/${event.id}/${getEventSlug(event)}`}
           className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] text-xs font-bold uppercase tracking-wider text-zinc-800 dark:text-zinc-200 hover:border-brand-primary transition-colors self-start sm:self-auto"
         >
           <span>Ver Detalhes do Evento</span>

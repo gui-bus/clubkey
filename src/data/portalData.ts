@@ -1207,3 +1207,33 @@ export const MONTH_MAP: Record<string, string> = {
   NOV: "novembro",
   DEZ: "dezembro",
 }
+
+export const MONTH_LABELS: Record<string, string> = {
+  JAN: "Janeiro 2026",
+  FEV: "Fevereiro 2026",
+  MAR: "Março 2026",
+  ABR: "Abril 2026",
+  MAI: "Maio 2026",
+  JUN: "Junho 2026",
+  JUL: "Julho 2026",
+  AGO: "Agosto 2026",
+  SET: "Setembro 2026",
+  OUT: "Outubro 2026",
+  NOV: "Novembro 2026",
+  DEZ: "Dezembro 2026",
+}
+
+export const MONTH_ORDER = [
+  "JAN",
+  "FEV",
+  "MAR",
+  "ABR",
+  "MAI",
+  "JUN",
+  "JUL",
+  "AGO",
+  "SET",
+  "OUT",
+  "NOV",
+  "DEZ",
+]

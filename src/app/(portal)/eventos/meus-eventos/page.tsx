@@ -4,7 +4,7 @@ import * as React from "react"
 
 import Link from "next/link"
 
-import { EVENTS, MONTH_MAP, MONTH_OPTIONS } from "@/src/data/portalData"
+import { EVENTS, MONTH_LABELS, MONTH_MAP, MONTH_OPTIONS } from "@/src/data/portalData"
 import { usePortalStore } from "@/src/store/usePortalStore"
 import { Calendar, MagnifyingGlass } from "@phosphor-icons/react"
 
@@ -14,21 +14,6 @@ import { Container } from "@/src/components/common/container"
 import { EventCard } from "@/src/components/portal/EventCard"
 import { PortalHero } from "@/src/components/portal/PortalHero"
 import { PortalHeroFilterBar } from "@/src/components/portal/PortalHeroFilterBar"
-
-const MONTH_LABELS: Record<string, string> = {
-  JAN: "Janeiro 2026",
-  FEV: "Fevereiro 2026",
-  MAR: "Março 2026",
-  ABR: "Abril 2026",
-  MAI: "Maio 2026",
-  JUN: "Junho 2026",
-  JUL: "Julho 2026",
-  AGO: "Agosto 2026",
-  SET: "Setembro 2026",
-  OUT: "Outubro 2026",
-  NOV: "Novembro 2026",
-  DEZ: "Dezembro 2026",
-}
 
 export default function MeusEventosPage(): React.JSX.Element {
   const [activeMonth, setActiveMonth] = React.useState("todos")

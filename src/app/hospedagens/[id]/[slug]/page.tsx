@@ -81,7 +81,9 @@ export default function HospedagemDetailPage(): React.JSX.Element {
   }
 
   const handleBook = () => {
-    alert(`Reserva simulada com sucesso para ${room.title}!`)
+    toast.success("Reserva simulada com sucesso!", {
+      description: `Sua solicitação de reserva para ${room.title} foi enviada para processamento.`,
+    })
   }
 
   return (

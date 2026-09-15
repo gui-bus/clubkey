@@ -4,7 +4,7 @@ import * as React from "react"
 
 import Image from "next/image"
 import Link from "next/link"
-import { notFound, useParams } from "next/navigation"
+import { notFound, useParams, useRouter } from "next/navigation"
 
 import {
   EVENTS,
@@ -30,6 +30,17 @@ import {
 
 import { Badge } from "@/src/components/ui/badge/badge"
 import { Button } from "@/src/components/ui/button/button"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/src/components/ui/alertDialog/alertDialog"
 import { toast } from "@/src/components/ui/toast/toast"
 
 import { Container } from "@/src/components/common/container"
@@ -38,6 +49,7 @@ import { MemberCard } from "@/src/components/portal/MemberCard"
 
 export default function MeuEventoDetailPage(): React.JSX.Element {
   const params = useParams()
+  const router = useRouter()
   const idParam = Array.isArray(params?.id) ? params.id[0] : params?.id
   const eventId = Number(idParam)
   const event = EVENTS.find((e) => e.id === eventId)
@@ -58,7 +70,14 @@ export default function MeuEventoDetailPage(): React.JSX.Element {
 
   const handleCancelRSVP = () => {
     toggleEventRSVP(event.id)
-    toast.info(`Presença cancelada em: ${event.title}`)
+    router.push("/eventos/meus-eventos")
+    toast.info(`Presença cancelada em: ${event.title}`, {
+      description: "Sua vaga foi liberada para a lista do clube.",
+      action: {
+        label: "Desfazer",
+        onClick: () => toggleEventRSVP(event.id),
+      },
+    })
   }
 
   const handleDownloadTicket = () => {
@@ -241,14 +260,36 @@ export default function MeuEventoDetailPage(): React.JSX.Element {
               <span>Ver todos os participantes ({attendees.length})</span>
             </Link>
 
-            <button
-              type="button"
-              onClick={handleCancelRSVP}
-              className="w-full text-center text-xs font-semibold text-zinc-400 hover:text-rose-500 dark:hover:text-rose-400 transition-colors py-1 cursor-pointer flex items-center justify-center gap-1"
-            >
-              <XCircle className="w-3.5 h-3.5" />
-              <span>Cancelar minha presença</span>
-            </button>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <button
+                  type="button"
+                  className="w-full text-center text-xs font-semibold text-zinc-400 hover:text-rose-500 dark:hover:text-rose-400 transition-colors py-1 cursor-pointer flex items-center justify-center gap-1"
+                >
+                  <XCircle className="w-3.5 h-3.5" />
+                  <span>Cancelar minha presença</span>
+                </button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>
+                    Cancelar presença no encontro?
+                  </AlertDialogTitle>
+                  <AlertDialogDescription>
+                    Tem certeza que deseja cancelar sua presença em &ldquo;{event.title}&rdquo; ({event.day} de {event.month})? Sua vaga será liberada para outros membros do clube.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Manter presença</AlertDialogCancel>
+                  <AlertDialogAction
+                    color="danger"
+                    onClick={handleCancelRSVP}
+                  >
+                    Confirmar cancelamento
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </div>
         </div>
       </div>

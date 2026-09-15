@@ -2,7 +2,7 @@
 
 import * as React from "react"
 
-import { EXPERIENCES } from "@/src/data/portalData"
+import { EXPERIENCES, MONTH_LABELS, MONTH_ORDER } from "@/src/data/portalData"
 import { Compass, MagnifyingGlass } from "@phosphor-icons/react"
 
 import { Button } from "@/src/components/ui/button/button"
@@ -16,36 +16,6 @@ const EXPERIENCE_TYPES = [
   { value: "todas", label: "Todas" },
   { value: "gratuitas", label: "Gratuitas" },
   { value: "pagas", label: "Pagas" },
-]
-
-const MONTH_LABELS: Record<string, string> = {
-  JAN: "Janeiro 2026",
-  FEV: "Fevereiro 2026",
-  MAR: "Março 2026",
-  ABR: "Abril 2026",
-  MAI: "Maio 2026",
-  JUN: "Junho 2026",
-  JUL: "Julho 2026",
-  AGO: "Agosto 2026",
-  SET: "Setembro 2026",
-  OUT: "Outubro 2026",
-  NOV: "Novembro 2026",
-  DEZ: "Dezembro 2026",
-}
-
-const MONTH_ORDER = [
-  "JAN",
-  "FEV",
-  "MAR",
-  "ABR",
-  "MAI",
-  "JUN",
-  "JUL",
-  "AGO",
-  "SET",
-  "OUT",
-  "NOV",
-  "DEZ",
 ]
 
 export default function ExperiencesPage(): React.JSX.Element {
