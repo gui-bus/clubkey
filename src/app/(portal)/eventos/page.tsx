@@ -8,6 +8,7 @@ import { Calendar, Search } from "lucide-react"
 import { usePortalStore } from "@/src/store/usePortalStore"
 import { EVENTS } from "@/src/data/portalData"
 import { EventCard } from "@/src/components/portal/EventCard"
+import { PortalHero } from "@/src/components/portal/PortalHero"
 import { PortalHeroFilterBar } from "@/src/components/portal/PortalHeroFilterBar"
 import { Button } from "@/src/components/ui/button/button"
 import { Container } from "@/src/components/common/container"
@@ -107,46 +108,28 @@ export default function EventsPage(): React.JSX.Element {
 
   return (
     <div className="w-full flex flex-col">
-      <section
-        id="hero"
-        className="relative z-30 w-full bg-[#0D0D0D] text-white min-h-[520px] md:min-h-[560px] flex flex-col justify-center"
+      <PortalHero
+        badge="Eventos do Clube • Encontros Exclusivos"
+        title={
+          <>
+            Onde o clube se <span className="text-brand-primary">encontra</span>
+          </>
+        }
+        description="Encontros mensais, jantares de networking, visitas técnicas e rodas de conversa exclusivas para membros."
+        imageSrc="/utils/banners/agenda.webp"
+        imageAlt="Eventos do Clube"
       >
-        <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none select-none">
-          <Image
-            src="/utils/banners/agenda.webp"
-            alt="Eventos do Clube"
-            fill
-            priority
-            className="object-cover object-top"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-zinc-50 dark:from-[#161616]/85 dark:via-[#161616]/65 dark:to-[#0D0D0D] z-10" />
-        </div>
-
-        <Container className="relative z-20 pt-36 pb-16 md:pt-44 md:pb-20 flex flex-col justify-center items-center text-center">
-          <div className="max-w-5xl flex flex-col items-center text-center w-full">
-            <span className="text-xs sm:text-sm font-black uppercase tracking-widest text-brand-primary block mb-3">
-              Eventos do Clube • Encontros Exclusivos
-            </span>
-            <h1 className="text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-black uppercase tracking-tight text-white leading-[1.05] mb-4 font-heading drop-shadow-md">
-              Onde o clube se <span className="text-brand-primary">encontra</span>
-            </h1>
-            <p className="text-base sm:text-lg md:text-xl text-zinc-200 font-light mb-8 leading-relaxed drop-shadow-sm max-w-2xl">
-              Encontros mensais, jantares de networking, visitas técnicas e rodas de conversa exclusivas para membros.
-            </p>
-
-            <PortalHeroFilterBar
-              categoryLabel="Exibição"
-              categoryIcon={Calendar}
-              activeCategory={activeFilter}
-              onCategoryChange={setActiveFilter}
-              categories={viewOptions}
-              searchQuery={searchQuery}
-              onSearchQueryChange={setSearchQuery}
-              searchPlaceholder="Buscar encontros por título, tema, cidade ou local..."
-            />
-          </div>
-        </Container>
-      </section>
+        <PortalHeroFilterBar
+          categoryLabel="Exibição"
+          categoryIcon={Calendar}
+          activeCategory={activeFilter}
+          onCategoryChange={setActiveFilter}
+          categories={viewOptions}
+          searchQuery={searchQuery}
+          onSearchQueryChange={setSearchQuery}
+          searchPlaceholder="Buscar encontros por título, tema, cidade ou local..."
+        />
+      </PortalHero>
 
       <Container className="relative z-10 flex-1 py-10 space-y-8">
         {hasActiveFilters && (

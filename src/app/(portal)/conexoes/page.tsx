@@ -7,6 +7,7 @@ import { Search, Users } from "lucide-react"
 import { MEMBERS } from "@/src/data/portalData"
 import { MemberCard } from "@/src/components/portal/MemberCard"
 import { MatchCard } from "@/src/components/portal/MatchCard"
+import { PortalHero } from "@/src/components/portal/PortalHero"
 import { PortalHeroFilterBar } from "@/src/components/portal/PortalHeroFilterBar"
 import { Button } from "@/src/components/ui/button/button"
 import { Container } from "@/src/components/common/container"
@@ -129,46 +130,28 @@ export default function ConexoesPage(): React.JSX.Element {
 
   return (
     <div className="w-full flex flex-col">
-      <section
-        id="hero"
-        className="relative z-30 w-full bg-[#0D0D0D] text-white min-h-[520px] md:min-h-[560px] flex flex-col justify-center"
+      <PortalHero
+        badge="Rede de Conexões • Ecossistema"
+        title={
+          <>
+            Suas <span className="text-brand-primary">Conexões</span>
+          </>
+        }
+        description="Conecte-se com fundadores, executivos C-Level e investidores ativos do ecossistema."
+        imageSrc="/utils/banners/pessoas.webp"
+        imageAlt="Conexões e Networking"
       >
-        <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none select-none">
-          <Image
-            src="/utils/banners/pessoas.webp"
-            alt="Conexões e Networking"
-            fill
-            priority
-            className="object-cover object-top"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-zinc-50  dark:from-[#161616]/85 dark:via-[#161616]/65 dark:to-[#0D0D0D] z-10" />
-        </div>
-
-        <Container className="relative z-20 pt-36 pb-16 md:pt-44 md:pb-20 flex flex-col justify-center items-center text-center">
-          <div className="max-w-5xl flex flex-col items-center text-center w-full">
-            <span className="text-xs sm:text-sm font-black uppercase tracking-widest text-brand-primary block mb-3">
-              Rede de Conexões • Ecossistema
-            </span>
-            <h1 className="text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-black uppercase tracking-tight text-white leading-[1.05] mb-4 font-heading drop-shadow-md">
-              Suas <span className="text-brand-primary">Conexões</span>
-            </h1>
-            <p className="text-base sm:text-lg md:text-xl text-zinc-200 font-light mb-8 leading-relaxed drop-shadow-sm max-w-2xl">
-              Conecte-se com fundadores, executivos C-Level e investidores ativos do ecossistema.
-            </p>
-
-            <PortalHeroFilterBar
-              categoryLabel="Segmento"
-              categoryIcon={Users}
-              activeCategory={activeTab}
-              onCategoryChange={setActiveTab}
-              categories={roleOptions}
-              searchQuery={searchQuery}
-              onSearchQueryChange={setSearchQuery}
-              searchPlaceholder="Buscar conexões por nome, empresa, cargo, cidade ou especialidade..."
-            />
-          </div>
-        </Container>
-      </section>
+        <PortalHeroFilterBar
+          categoryLabel="Segmento"
+          categoryIcon={Users}
+          activeCategory={activeTab}
+          onCategoryChange={setActiveTab}
+          categories={roleOptions}
+          searchQuery={searchQuery}
+          onSearchQueryChange={setSearchQuery}
+          searchPlaceholder="Buscar conexões por nome, empresa, cargo, cidade ou especialidade..."
+        />
+      </PortalHero>
 
       <Container className="relative z-10 flex-1 py-10 space-y-8">
         {hasActiveFilters && (

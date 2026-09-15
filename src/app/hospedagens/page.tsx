@@ -4,6 +4,7 @@ import * as React from "react"
 import Image from "next/image"
 import { Calendar, MapPin, Users } from "lucide-react"
 
+import { PortalHero } from "@/src/components/portal/PortalHero"
 import { RoomsSearchFilterBar } from "@/src/components/rooms/roomsSearchFilterBar"
 import { SectionCarousel } from "@/src/components/rooms/sectionCarousel"
 import { Container } from "@/src/components/common/container"
@@ -134,48 +135,33 @@ export default function HospedagensPage(): React.JSX.Element {
       <TopBanner />
       <Navbar />
 
-      <section
-        id="hero"
-        className="relative z-30 w-full bg-[#0D0D0D] text-white min-h-[520px] md:min-h-[580px] flex flex-col justify-center"
+      <PortalHero
+        badge="Catálogo de Hospedagens • Travel Club"
+        title={
+          <>
+            Viva momentos únicos em <span className="text-brand-primary">acomodações incríveis</span>
+          </>
+        }
+        description={
+          <>
+            Com o benefício Club Key, viaje o ano todo pagando tarifas exclusivas de membro e até{" "}
+            <strong className="font-bold text-white">60% OFF</strong> em reservas last minute.
+          </>
+        }
+        imageSrc="/utils/banners/img_01.png"
+        imageAlt="ClubKey Hospedagens"
       >
-        <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none select-none">
-          <Image
-            src="/utils/banners/img_01.png"
-            alt="ClubKey Hospedagens"
-            fill
-            priority
-            className="object-cover object-top"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-zinc-50 dark:from-[#161616]/85 dark:via-[#161616]/65 dark:to-[#0D0D0D] z-10" />
-        </div>
-
-        <Container className="relative z-20 pt-36 pb-16 md:pt-44 md:pb-20 flex flex-col justify-center items-center text-center">
-          <div className="max-w-5xl flex flex-col items-center text-center w-full">
-            <span className="text-xs sm:text-sm font-black uppercase tracking-widest text-brand-primary block mb-3">
-              Catálogo de Hospedagens • Travel Club
-            </span>
-            <h1 className="text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-black uppercase tracking-tight text-white leading-[1.05] mb-4 font-heading drop-shadow-md">
-              Viva momentos únicos em <span className="text-brand-primary">acomodações incríveis</span>
-            </h1>
-
-            <p className="text-base sm:text-lg md:text-xl text-zinc-200 font-light mb-8 leading-relaxed drop-shadow-sm max-w-2xl">
-              Com o benefício Club Key, viaje o ano todo pagando tarifas exclusivas de membro e até{" "}
-              <strong className="font-bold text-white">60% OFF</strong> em reservas last minute.
-            </p>
-
-            <RoomsSearchFilterBar
-              searchDestination={searchDestination}
-              onSearchDestinationChange={setSearchDestination}
-              checkInDate={checkInDate}
-              onCheckInDateChange={setCheckInDate}
-              checkOutDate={checkOutDate}
-              onCheckOutDateChange={setCheckOutDate}
-              guestCount={guestCount}
-              onGuestCountChange={setGuestCount}
-            />
-          </div>
-        </Container>
-      </section>
+        <RoomsSearchFilterBar
+          searchDestination={searchDestination}
+          onSearchDestinationChange={setSearchDestination}
+          checkInDate={checkInDate}
+          onCheckInDateChange={setCheckInDate}
+          checkOutDate={checkOutDate}
+          onCheckOutDateChange={setCheckOutDate}
+          guestCount={guestCount}
+          onGuestCountChange={setGuestCount}
+        />
+      </PortalHero>
 
       <Container className="relative z-10 flex-1 py-10 space-y-12">
         <div className="w-full flex flex-col gap-12 sm:gap-16">
