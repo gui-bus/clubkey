@@ -14,7 +14,7 @@ const clubKeyNavLinks = [
   { href: "/#parceiros", label: "Parceiros" },
   { href: "/#experiencia", label: "Experiência" },
   { href: "/#como-funciona", label: "Como Funciona" },
-  { href: "/hospedagens", label: "Catálogo" },
+  { href: "/hospedagens", label: "Hospedagens" },
   { href: "/#faq", label: "Perguntas Frequentes" },
 ] as const
 

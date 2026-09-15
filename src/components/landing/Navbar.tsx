@@ -47,14 +47,14 @@ const PUBLIC_NAV_LINKS = isClubKey
       { name: "Parceiros", href: "/#parceiros" },
       { name: "Experiência", href: "/#experiencia" },
       { name: "Como Funciona", href: "/#como-funciona" },
-      { name: "Catálogo", href: "/hospedagens" },
+      { name: "Hospedagens", href: "/hospedagens" },
       { name: "FAQ", href: "/#faq" },
     ]
   : []
 
 const PORTAL_NAV_LINKS = [
   { name: "Home", href: "/" },
-  { name: "Catálogo", href: "/hospedagens" },
+  { name: "Hospedagens", href: "/hospedagens" },
   { name: "Eventos", href: "/eventos" },
   { name: "Experiências", href: "/experiencias" },
   { name: "Conexões", href: "/conexoes" },
