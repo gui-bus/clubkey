@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import Image from "next/image"
+import Link from "next/link"
 import { Calendar, Search } from "lucide-react"
 
 import { usePortalStore } from "@/src/store/usePortalStore"
@@ -149,7 +150,7 @@ export default function EventsPage(): React.JSX.Element {
 
       <Container className="relative z-10 flex-1 py-10 space-y-8">
         {hasActiveFilters && (
-          <div className="flex flex-wrap items-center justify-between gap-3 bg-white dark:bg-[#141416] px-4 py-3 rounded-sm border border-zinc-200 dark:border-zinc-800 shadow-sm text-zinc-900 dark:text-white">
+          <div className="flex flex-wrap items-center justify-between gap-3 text-zinc-900 dark:text-white">
             <div className="flex flex-wrap items-center gap-2 text-xs text-zinc-600 dark:text-zinc-300">
               <span className="font-semibold text-zinc-900 dark:text-white">
                 Filtros aplicados:
@@ -185,6 +186,13 @@ export default function EventsPage(): React.JSX.Element {
             {filteredEvents.length}{" "}
             {filteredEvents.length === 1 ? "encontro encontrado" : "encontros na agenda"}
           </span>
+
+          <Link
+            href="/eventos/meus-eventos"
+            className="text-xs font-bold uppercase tracking-wider text-brand-primary hover:underline"
+          >
+            Ver meus eventos confirmados →
+          </Link>
         </div>
 
         {filteredEvents.length === 0 ? (

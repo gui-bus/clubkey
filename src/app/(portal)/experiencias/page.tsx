@@ -112,7 +112,7 @@ export default function ExperiencesPage(): React.JSX.Element {
 
       <Container className="relative z-10 flex-1 py-10 space-y-8">
         {hasActiveFilters && (
-          <div className="flex flex-wrap items-center justify-between gap-3 bg-white dark:bg-[#141416] px-4 py-3 rounded-sm border border-zinc-200 dark:border-zinc-800 shadow-sm text-zinc-900 dark:text-white">
+          <div className="flex flex-wrap items-center justify-between gap-3 text-zinc-900 dark:text-white">
             <div className="flex flex-wrap items-center gap-2 text-xs text-zinc-600 dark:text-zinc-300">
               <span className="font-semibold text-zinc-900 dark:text-white">
                 Filtros aplicados:
