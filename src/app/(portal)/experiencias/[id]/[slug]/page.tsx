@@ -309,7 +309,7 @@ export default function ExperienceDetailPage(): React.JSX.Element {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {attendees.map((attendee) => (
+              {attendees.slice(0, 6).map((attendee) => (
                 <MemberCard key={attendee.id} member={attendee} />
               ))}
             </div>

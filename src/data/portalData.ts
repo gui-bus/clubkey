@@ -1177,4 +1177,33 @@ export function getStaySlug(stay: StayItem | { name?: string; stayName?: string 
   return "reserva"
 }
 
+export const MONTH_OPTIONS = [
+  { value: "todos", label: "Todos os meses" },
+  { value: "JAN", label: "Janeiro" },
+  { value: "FEV", label: "Fevereiro" },
+  { value: "MAR", label: "Março" },
+  { value: "ABR", label: "Abril" },
+  { value: "MAI", label: "Maio" },
+  { value: "JUN", label: "Junho" },
+  { value: "JUL", label: "Julho" },
+  { value: "AGO", label: "Agosto" },
+  { value: "SET", label: "Setembro" },
+  { value: "OUT", label: "Outubro" },
+  { value: "NOV", label: "Novembro" },
+  { value: "DEZ", label: "Dezembro" },
+]
 
+export const MONTH_MAP: Record<string, string> = {
+  JAN: "janeiro",
+  FEV: "fevereiro",
+  MAR: "março",
+  ABR: "abril",
+  MAI: "maio",
+  JUN: "junho",
+  JUL: "julho",
+  AGO: "agosto",
+  SET: "setembro",
+  OUT: "outubro",
+  NOV: "novembro",
+  DEZ: "dezembro",
+}

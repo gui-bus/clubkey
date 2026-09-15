@@ -4,7 +4,7 @@ import * as React from "react"
 
 import Link from "next/link"
 
-import { EVENTS } from "@/src/data/portalData"
+import { EVENTS, MONTH_MAP, MONTH_OPTIONS } from "@/src/data/portalData"
 import { usePortalStore } from "@/src/store/usePortalStore"
 import { Calendar, MagnifyingGlass } from "@phosphor-icons/react"
 
@@ -14,12 +14,6 @@ import { Container } from "@/src/components/common/container"
 import { EventCard } from "@/src/components/portal/EventCard"
 import { PortalHero } from "@/src/components/portal/PortalHero"
 import { PortalHeroFilterBar } from "@/src/components/portal/PortalHeroFilterBar"
-
-const MY_EVENTS_VIEWS = [
-  { value: "todos", label: "Todos confirmados" },
-  { value: "proximos", label: "Próximos" },
-  { value: "calendario", label: "Calendário" },
-]
 
 const MONTH_LABELS: Record<string, string> = {
   JAN: "Janeiro 2026",
@@ -37,7 +31,7 @@ const MONTH_LABELS: Record<string, string> = {
 }
 
 export default function MeusEventosPage(): React.JSX.Element {
-  const [activeFilter, setActiveFilter] = React.useState("todos")
+  const [activeMonth, setActiveMonth] = React.useState("todos")
   const [searchQuery, setSearchQuery] = React.useState("")
   const { confirmedEvents } = usePortalStore()
 
@@ -45,18 +39,31 @@ export default function MeusEventosPage(): React.JSX.Element {
     return EVENTS.filter((e) => !!confirmedEvents[e.id])
   }, [confirmedEvents])
 
-  const viewOptions = React.useMemo(() => {
-    return MY_EVENTS_VIEWS.map((v) => ({
+  const monthFilterOptions = React.useMemo(() => {
+    return MONTH_OPTIONS.map((v) => ({
       value: v.value,
       label: v.label,
-      count: confirmedList.length,
+      count:
+        v.value === "todos"
+          ? confirmedList.length
+          : confirmedList.filter(
+              (e) =>
+                e.month?.toUpperCase() === v.value ||
+                (MONTH_MAP[v.value] &&
+                  e.month?.toLowerCase() === MONTH_MAP[v.value])
+            ).length,
     }))
-  }, [confirmedList.length])
+  }, [confirmedList])
 
   const filteredEvents = React.useMemo(() => {
     let list = confirmedList
-    if (activeFilter === "calendario") {
-      list = [...list].sort((a, b) => Number(a.day) - Number(b.day))
+    if (activeMonth !== "todos") {
+      list = list.filter(
+        (e) =>
+          e.month?.toUpperCase() === activeMonth ||
+          (MONTH_MAP[activeMonth] &&
+            e.month?.toLowerCase() === MONTH_MAP[activeMonth])
+      )
     }
 
     const q = searchQuery.trim().toLowerCase()
@@ -78,7 +85,7 @@ export default function MeusEventosPage(): React.JSX.Element {
         .toLowerCase()
       return fullText.includes(q)
     })
-  }, [activeFilter, confirmedList, searchQuery])
+  }, [activeMonth, confirmedList, searchQuery])
 
   const groupedEventsByMonth = React.useMemo(() => {
     const groups: {
@@ -104,10 +111,10 @@ export default function MeusEventosPage(): React.JSX.Element {
     return groups
   }, [filteredEvents])
 
-  const hasActiveFilters = activeFilter !== "todos" || Boolean(searchQuery)
+  const hasActiveFilters = activeMonth !== "todos" || Boolean(searchQuery)
 
   const handleClearFilters = () => {
-    setActiveFilter("todos")
+    setActiveMonth("todos")
     setSearchQuery("")
   }
 
@@ -125,11 +132,11 @@ export default function MeusEventosPage(): React.JSX.Element {
         imageAlt="Meus Eventos do Clube"
       >
         <PortalHeroFilterBar
-          categoryLabel="Exibição"
+          categoryLabel="Mês"
           categoryIcon={Calendar}
-          activeCategory={activeFilter}
-          onCategoryChange={setActiveFilter}
-          categories={viewOptions}
+          activeCategory={activeMonth}
+          onCategoryChange={setActiveMonth}
+          categories={monthFilterOptions}
           searchQuery={searchQuery}
           onSearchQueryChange={setSearchQuery}
           searchPlaceholder="Buscar entre seus encontros confirmados..."
@@ -143,12 +150,12 @@ export default function MeusEventosPage(): React.JSX.Element {
               <span className="font-semibold text-zinc-900 dark:text-white">
                 Filtros aplicados:
               </span>
-              {activeFilter !== "todos" && (
+              {activeMonth !== "todos" && (
                 <span className="px-2.5 py-1 rounded-sm bg-brand-primary/10 text-brand-primary font-bold flex items-center gap-1.5">
                   <Calendar className="w-3 h-3" />
                   <span>
                     {
-                      MY_EVENTS_VIEWS.find((v) => v.value === activeFilter)
+                      MONTH_OPTIONS.find((v) => v.value === activeMonth)
                         ?.label
                     }
                   </span>

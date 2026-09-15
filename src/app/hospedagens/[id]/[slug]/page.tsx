@@ -4,7 +4,7 @@ import * as React from "react"
 import Link from "next/link"
 import { useParams } from "next/navigation"
 import { AnimatePresence, motion } from "framer-motion"
-import { CaretLeft, Clock, Heart, MapPin, ShieldWarning } from "@phosphor-icons/react"
+import { Bookmark, CaretLeft, Clock, MapPin, ShieldWarning } from "@phosphor-icons/react"
 
 import { RoomAmenities } from "@/src/components/rooms/roomAmenities"
 import { RoomBookingCard } from "@/src/components/rooms/roomBookingCard"
@@ -30,7 +30,7 @@ export default function HospedagemDetailPage(): React.JSX.Element {
   const room = React.useMemo(() => getRoomDetail(id, slug), [id, slug])
 
   const [isFav, setIsFav] = React.useState(false)
-  const [heartPop, setHeartPop] = React.useState(false)
+  const [bookmarkPop, setBookmarkPop] = React.useState(false)
 
   const [guests, setGuests] = React.useState(2)
   const [nights, setNights] = React.useState(3)
@@ -66,15 +66,15 @@ export default function HospedagemDetailPage(): React.JSX.Element {
   const handleToggleFav = () => {
     const nextFav = !isFav
     setIsFav(nextFav)
-    setHeartPop(true)
-    setTimeout(() => setHeartPop(false), 600)
+    setBookmarkPop(true)
+    setTimeout(() => setBookmarkPop(false), 600)
 
     if (nextFav) {
-      toast.success("Acomodação favoritada!", {
-        description: `${room.title} foi adicionado à sua lista de desejos.`,
+      toast.success("Acomodação salva!", {
+        description: `${room.title} foi adicionada à sua lista de salvos.`,
       })
     } else {
-      toast.info("Removido dos favoritos", {
+      toast.info("Removido dos salvos", {
         description: "Acomodação removida da sua lista.",
       })
     }
@@ -109,15 +109,15 @@ export default function HospedagemDetailPage(): React.JSX.Element {
               <div className="relative flex items-center justify-center">
                 <motion.div
                   animate={
-                    heartPop
+                    bookmarkPop
                       ? { scale: [1, 1.45, 0.85, 1.15, 1] }
                       : { scale: 1 }
                   }
                   transition={{ duration: 0.45 }}
                 >
-                  <Heart
+                  <Bookmark
                     className={cn(
-                      "w-3.5 h-3.5 transition-all duration-300",
+                      "w-3.5 h-3.5 transition-all duration-300 stroke-[2.2]",
                       isFav
                         ? "fill-brand-primary text-brand-primary drop-shadow-[0_0_6px_var(--brand-primary-glow)]"
                         : "text-zinc-600 dark:text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-white"
@@ -125,7 +125,7 @@ export default function HospedagemDetailPage(): React.JSX.Element {
                   />
                 </motion.div>
                 <AnimatePresence>
-                  {heartPop && isFav && (
+                  {bookmarkPop && isFav && (
                     <motion.span
                       initial={{ scale: 0, opacity: 1 }}
                       animate={{ scale: 2.2, opacity: 0 }}

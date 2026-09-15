@@ -174,13 +174,13 @@ export default function MeuEventoDetailPage(): React.JSX.Element {
                 href={`/eventos/${event.id}/${eventSlug}/quem-vai`}
                 className="text-xs font-bold uppercase tracking-wider text-brand-primary hover:translate-x-0.5 transition-transform flex items-center gap-1"
               >
-                <span>Ver lista completa com ofertas</span>
+                <span>Ver todos os participantes</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </Link>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {attendees.map((attendee) => (
+              {attendees.slice(0, 6).map((attendee) => (
                 <MemberCard
                   key={attendee.id}
                   member={attendee}
@@ -188,6 +188,19 @@ export default function MeuEventoDetailPage(): React.JSX.Element {
                 />
               ))}
             </div>
+
+            {attendees.length > 6 && (
+              <div className="pt-2 text-center">
+                <Link
+                  href={`/eventos/${event.id}/${eventSlug}/quem-vai`}
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] hover:border-zinc-300 dark:hover:border-zinc-700 text-xs font-bold uppercase tracking-wider text-zinc-800 dark:text-zinc-200 transition-all hover:bg-zinc-50 dark:hover:bg-zinc-800/60"
+                >
+                  <Users className="w-4 h-4 text-brand-primary" />
+                  <span>Ver todos os participantes ({attendees.length})</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+              </div>
+            )}
           </div>
         </div>
 
@@ -225,7 +238,7 @@ export default function MeuEventoDetailPage(): React.JSX.Element {
               className="w-full py-3 px-4 rounded-sm border border-zinc-200 dark:border-zinc-700 bg-[#F1F1F1] dark:bg-zinc-900 text-xs font-bold uppercase tracking-wider text-zinc-800 dark:text-zinc-200 hover:border-brand-primary/60 transition-colors flex items-center justify-center gap-1.5"
             >
               <Users className="w-3.5 h-3.5 text-brand-primary" />
-              <span>Ver quem vai estar lá</span>
+              <span>Ver todos os participantes ({attendees.length})</span>
             </Link>
 
             <button
