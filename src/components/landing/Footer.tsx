@@ -7,6 +7,7 @@ import { ArrowUp, Mail, ShieldCheck } from "lucide-react"
 
 import { Container } from "@/src/components/common/container"
 import { brandConfig } from "@/src/config/brand.config"
+import { usePortalStore } from "@/src/store/usePortalStore"
 
 const clubKeyNavLinks = [
   { href: "/#sobre-a-club-key", label: `Sobre a ${brandConfig.name}` },
@@ -30,13 +31,23 @@ const memberLinks = [
   { href: `mailto:${brandConfig.links.contactEmail}`, label: "Suporte & Concierge" },
 ] as const
 
-export function Footer(): React.JSX.Element {
+export function Footer(): React.JSX.Element | null {
+  const [mounted, setMounted] = React.useState(false)
+  const isAuthenticated = usePortalStore((state) => state.isAuthenticated)
   const isClubKey = brandConfig.id === "clubkey"
   const homeHref = isClubKey ? "/" : "/hospedagens"
   const activeNavLinks = isClubKey ? clubKeyNavLinks : genericNavLinks
 
+  React.useEffect(() => {
+    setMounted(true)
+  }, [])
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" })
+  }
+
+  if (!mounted || isAuthenticated) {
+    return null
   }
 
   return (
