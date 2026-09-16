@@ -87,7 +87,7 @@ export function SignUpForm({ onSuccess }: SignUpFormProps): React.JSX.Element {
           <label className="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
             Nacionalidade <span className="text-red-500 font-bold">*</span>
           </label>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-5">
             <button
               type="button"
               onClick={() => {
