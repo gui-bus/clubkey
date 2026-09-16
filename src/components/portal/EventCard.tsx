@@ -35,6 +35,7 @@ import { toast } from "@/src/components/ui/toast/toast"
 
 import { CtaButton } from "@/src/components/common/ctaButton"
 
+import { useMounted } from "@/src/hooks/useMounted"
 import { cn } from "@/src/lib/utils"
 
 interface EventCardProps {
@@ -44,7 +45,9 @@ interface EventCardProps {
 export function EventCard({ event }: EventCardProps): React.JSX.Element {
   const router = useRouter()
   const { confirmedEvents, toggleEventRSVP } = usePortalStore()
-  const isConfirmed = !!confirmedEvents[event.id]
+  const mounted = useMounted()
+
+  const isConfirmed = mounted && !!confirmedEvents[event.id]
   const currentCount = event.initialConfirmed + (isConfirmed ? 1 : 0)
   const remainingSpots = Math.max(0, event.capacity - currentCount)
 
@@ -69,9 +72,13 @@ export function EventCard({ event }: EventCardProps): React.JSX.Element {
     }
   }
 
+  const handleCardClick = () => {
+    router.push(`/eventos/${event.id}/${getEventSlug(event)}`)
+  }
+
   return (
-    <Link
-      href={`/eventos/${event.id}/${getEventSlug(event)}`}
+    <div
+      onClick={handleCardClick}
       className="group/card relative block rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] overflow-hidden hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors duration-200 cursor-pointer"
     >
       <div className="flex flex-col md:flex-row items-stretch">
@@ -246,15 +253,10 @@ export function EventCard({ event }: EventCardProps): React.JSX.Element {
               )}
 
               <CtaButton
-                type="button"
+                href={`/eventos/${event.id}/${getEventSlug(event)}`}
                 variant="secondary"
                 size="xs"
-                onClick={(e) => {
-                  e.preventDefault()
-                  e.stopPropagation()
-                }}
                 className="hidden sm:flex w-9 h-9 px-0 items-center justify-center shadow-none hover:shadow-none shrink-0"
-                disableRipple
               >
                 <ArrowUpRight className="w-4 h-4" />
               </CtaButton>
@@ -262,6 +264,6 @@ export function EventCard({ event }: EventCardProps): React.JSX.Element {
           </div>
         </div>
       </div>
-    </Link>
+    </div>
   )
 }

@@ -118,29 +118,8 @@ export default function EventDetailPage(): React.JSX.Element {
   ]
 
   return (
-    <Container className="pt-6 sm:pt-8 pb-20 space-y-10">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <BackButton fallbackHref="/eventos" label="Eventos" />
-          <span className="text-zinc-300 dark:text-zinc-700 hidden sm:inline">
-            /
-          </span>
-          <span className="text-xs font-bold text-zinc-500 dark:text-zinc-400 truncate max-w-xs sm:max-w-md hidden sm:inline">
-            {event.title}
-          </span>
-        </div>
-
-        <div className="flex items-center gap-2 self-start sm:self-auto">
-          <ShareButton />
-          <AddToCalendarButton
-            title={event.title}
-            description={event.desc}
-            location={event.place}
-          />
-        </div>
-      </div>
-
-      <div className="relative rounded-sm overflow-hidden bg-zinc-950 border border-zinc-200 dark:border-zinc-800 shadow-lg min-h-[380px] sm:min-h-[460px] lg:min-h-[500px] flex flex-col justify-between p-6 sm:p-10">
+    <div className="w-full flex flex-col pb-20 space-y-10">
+      <div className="relative w-full min-h-[380px] sm:min-h-[460px] lg:min-h-[500px] bg-zinc-950 overflow-hidden flex flex-col justify-between py-6 sm:py-8">
         {event.image && (
           <div className="absolute inset-0 z-0">
             <Image
@@ -155,78 +134,106 @@ export default function EventDetailPage(): React.JSX.Element {
           </div>
         )}
 
-        <div className="relative z-10 flex items-center justify-between gap-3">
-          <GlassBadge size="md">
-            {event.category || "Exclusivo Membros"}
-          </GlassBadge>
-
-          {isConfirmed && (
-            <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-sm bg-emerald-500 text-white text-[11px] font-black uppercase tracking-widest shadow-md">
-              <Check className="w-3.5 h-3.5" />
-              <span>Presença Confirmada</span>
-            </span>
-          )}
-        </div>
-
-        <div className="relative z-10 max-w-4xl space-y-4 pt-16">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-sm bg-brand-primary/90 text-white text-xs font-black uppercase tracking-widest">
-            <Calendar className="w-3.5 h-3.5" />
-            <span>
-              {event.weekday}, {event.day} de {event.month} • {event.time}
-            </span>
-          </div>
-
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-heading font-black uppercase tracking-tight text-white leading-[1.05] drop-shadow-md">
-            {event.title}
-          </h1>
-
-          <div className="flex flex-wrap items-center gap-4 text-xs sm:text-sm text-zinc-300 pt-1">
-            <span className="flex items-center gap-1.5 font-medium text-white">
-              <MapPin className="w-4 h-4 text-brand-primary shrink-0" />
-              {event.place}
-            </span>
-            <span className="text-zinc-500 hidden sm:inline">•</span>
-            <Link
-              href={`/conexoes/${organizer.id}/${getMemberSlug(organizer)}`}
-              className="group/host inline-flex items-center gap-2 text-zinc-300 hover:text-white transition-colors"
-            >
-              <span className="text-zinc-400 font-medium">Host:</span>
-              <Avatar
-                size="xs"
-                radius="full"
-                className="border border-white/20 group-hover/host:border-brand-primary transition-colors cursor-pointer"
-              >
-                {organizer.avatar && (
-                  <AvatarImage src={organizer.avatar} alt={organizer.name} />
-                )}
-                <AvatarFallback className="font-bold text-[9px] bg-zinc-800 text-white">
-                  {getInitials(organizer.name)}
-                </AvatarFallback>
-              </Avatar>
-              <span className="font-semibold text-white group-hover/host:text-brand-primary group-hover/host:underline transition-colors">
-                {organizer.name}
+        <Container className="relative z-10 w-full h-full flex flex-col justify-between space-y-10">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <BackButton
+                fallbackHref="/eventos"
+                label="Eventos"
+                className="text-white hover:text-white/80"
+              />
+              <span className="text-white/60 hidden sm:inline">
+                /
               </span>
-              <span className="text-zinc-400 text-xs">
-                ({organizer.company})
+              <span className="text-xs font-bold text-white truncate max-w-xs sm:max-w-md hidden sm:inline">
+                {event.title}
               </span>
-            </Link>
-            <span className="text-zinc-500 hidden sm:inline">•</span>
-            <div className="inline-flex items-center gap-1.5 text-white/90 text-xs font-medium">
-              <div className="relative w-3.5 h-3.5 shrink-0">
-                <Image
-                  src="/utils/gamification/utils/xp.webp"
-                  alt="XP"
-                  fill
-                  className="object-contain"
-                />
-              </div>
-              <span>+{event.xp || 200} XP</span>
+            </div>
+
+            <div className="flex items-center gap-2 self-start sm:self-auto">
+              <ShareButton />
+              <AddToCalendarButton
+                title={event.title}
+                description={event.desc}
+                location={event.place}
+              />
             </div>
           </div>
-        </div>
+
+          <div className="flex items-center justify-between gap-3">
+            <GlassBadge size="md">
+              {event.category || "Exclusivo Membros"}
+            </GlassBadge>
+
+            {isConfirmed && (
+              <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-sm bg-emerald-500 text-white text-[11px] font-black uppercase tracking-widest shadow-md">
+                <Check className="w-3.5 h-3.5" />
+                <span>Presença Confirmada</span>
+              </span>
+            )}
+          </div>
+
+          <div className="max-w-4xl space-y-4">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-sm bg-brand-primary/90 text-white text-xs font-black uppercase tracking-widest">
+              <Calendar className="w-3.5 h-3.5" />
+              <span>
+                {event.weekday}, {event.day} de {event.month} • {event.time}
+              </span>
+            </div>
+
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-heading font-black uppercase tracking-tight text-white leading-[1.05] drop-shadow-md">
+              {event.title}
+            </h1>
+
+            <div className="flex flex-wrap items-center gap-4 text-xs sm:text-sm text-zinc-300 pt-1">
+              <span className="flex items-center gap-1.5 font-medium text-white">
+                <MapPin className="w-4 h-4 text-brand-primary shrink-0" />
+                {event.place}
+              </span>
+              <span className="text-zinc-500 hidden sm:inline">•</span>
+              <Link
+                href={`/conexoes/${organizer.id}/${getMemberSlug(organizer)}`}
+                className="group/host inline-flex items-center gap-2 text-zinc-300 hover:text-white transition-colors"
+              >
+                <span className="text-zinc-400 font-medium">Host:</span>
+                <Avatar
+                  size="xs"
+                  radius="full"
+                  className="border border-white/20 group-hover/host:border-brand-primary transition-colors cursor-pointer"
+                >
+                  {organizer.avatar && (
+                    <AvatarImage src={organizer.avatar} alt={organizer.name} />
+                  )}
+                  <AvatarFallback className="font-bold text-[9px] bg-zinc-800 text-white">
+                    {getInitials(organizer.name)}
+                  </AvatarFallback>
+                </Avatar>
+                <span className="font-semibold text-white group-hover/host:text-brand-primary group-hover/host:underline transition-colors">
+                  {organizer.name}
+                </span>
+                <span className="text-zinc-400 text-xs">
+                  ({organizer.company})
+                </span>
+              </Link>
+              <span className="text-zinc-500 hidden sm:inline">•</span>
+              <div className="inline-flex items-center gap-1.5 text-white/90 text-xs font-medium">
+                <div className="relative w-3.5 h-3.5 shrink-0">
+                  <Image
+                    src="/utils/gamification/utils/xp.webp"
+                    alt="XP"
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+                <span>+{event.xp || 200} XP</span>
+              </div>
+            </div>
+          </div>
+        </Container>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 items-start">
+      <Container className="space-y-12">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 items-start">
         <div className="lg:col-span-2 space-y-12">
           <section className="space-y-4">
             <div className="space-y-3">
@@ -249,82 +256,106 @@ export default function EventDetailPage(): React.JSX.Element {
               </h2>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="p-4 sm:p-5 rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] space-y-2 hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-sm bg-brand-primary/10 flex items-center justify-center shrink-0">
-                    <Calendar className="w-4 h-4 text-brand-primary" />
-                  </div>
-                  <span className="text-[11px] font-black uppercase tracking-widest text-zinc-400">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
+              <div className="space-y-1.5">
+                <div className="flex items-center gap-2">
+                  <Calendar className="w-4 h-4 text-brand-primary shrink-0" />
+                  <span className="text-xs font-black uppercase tracking-widest text-brand-primary">
                     Data & Dia
                   </span>
                 </div>
-                <div className="pt-1">
+                <div>
                   <p className="text-sm sm:text-base font-bold text-zinc-900 dark:text-white">
                     {event.weekday}, {event.day} de {event.month}
                   </p>
-                  <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
+                  <p className="text-xs text-zinc-900 dark:text-white font-medium mt-0.5">
                     Ano 2026 • Programação oficial
                   </p>
                 </div>
               </div>
 
-              <div className="p-4 sm:p-5 rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] space-y-2 hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-sm bg-brand-primary/10 flex items-center justify-center shrink-0">
-                    <Clock className="w-4 h-4 text-brand-primary" />
-                  </div>
-                  <span className="text-[11px] font-black uppercase tracking-widest text-zinc-400">
+              <div className="space-y-1.5">
+                <div className="flex items-center gap-2">
+                  <Clock className="w-4 h-4 text-brand-primary shrink-0" />
+                  <span className="text-xs font-black uppercase tracking-widest text-brand-primary">
                     Horário de Início
                   </span>
                 </div>
-                <div className="pt-1">
+                <div>
                   <p className="text-sm sm:text-base font-bold text-zinc-900 dark:text-white">
                     {event.time}
                   </p>
-                  <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
+                  <p className="text-xs text-zinc-900 dark:text-white font-medium mt-0.5">
                     Chegada recomendada com 15 min de antecedência
                   </p>
                 </div>
               </div>
 
-              <div className="p-4 sm:p-5 rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] space-y-2 hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-sm bg-brand-primary/10 flex items-center justify-center shrink-0">
-                    <MapPin className="w-4 h-4 text-brand-primary" />
-                  </div>
-                  <span className="text-[11px] font-black uppercase tracking-widest text-zinc-400">
+              <div className="space-y-1.5">
+                <div className="flex items-center gap-2">
+                  <MapPin className="w-4 h-4 text-brand-primary shrink-0" />
+                  <span className="text-xs font-black uppercase tracking-widest text-brand-primary">
                     Localização
                   </span>
                 </div>
-                <div className="pt-1">
-                  <p className="text-sm sm:text-base font-bold text-zinc-900 dark:text-white truncate">
+                <div>
+                  <p className="text-sm sm:text-base font-bold text-zinc-900 dark:text-white">
                     {event.place}
                   </p>
-                  <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
+                  <p className="text-xs text-zinc-900 dark:text-white font-medium mt-0.5">
                     Serviço de valet & estacionamento no local
                   </p>
                 </div>
               </div>
 
-              <div className="p-4 sm:p-5 rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] space-y-2 hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-sm bg-brand-primary/10 flex items-center justify-center shrink-0">
-                    <ShieldCheck className="w-4 h-4 text-brand-primary" />
-                  </div>
-                  <span className="text-[11px] font-black uppercase tracking-widest text-zinc-400">
+              <div className="space-y-1.5">
+                <div className="flex items-center gap-2">
+                  <ShieldCheck className="w-4 h-4 text-brand-primary shrink-0" />
+                  <span className="text-xs font-black uppercase tracking-widest text-brand-primary">
                     Dress Code & Formato
                   </span>
                 </div>
-                <div className="pt-1">
+                <div>
                   <p className="text-sm sm:text-base font-bold text-zinc-900 dark:text-white">
                     {event.dressCode || "Smart Casual"}
                   </p>
-                  <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
+                  <p className="text-xs text-zinc-900 dark:text-white font-medium mt-0.5">
                     {event.format || "Presencial VIP"}
                   </p>
                 </div>
               </div>
+            </div>
+          </section>
+
+          <section className="space-y-6 pt-8 border-t border-zinc-200 dark:border-zinc-800">
+            <div>
+              <span className="text-xs font-black uppercase tracking-widest text-brand-primary block mb-1">
+                Itens Inclusos
+              </span>
+              <h2 className="text-2xl font-heading font-black uppercase tracking-tight text-zinc-900 dark:text-white">
+                O que está incluso neste encontro
+              </h2>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-5">
+              {inclusions.map((item, index) => (
+                <div
+                  key={index}
+                  className="flex items-center gap-3.5"
+                >
+                  <div className="relative w-7 h-7 sm:w-8 sm:h-8 shrink-0">
+                    <Image
+                      src="/utils/icons/check.webp"
+                      alt="Check"
+                      fill
+                      className="object-contain"
+                    />
+                  </div>
+                  <span className="text-sm font-semibold text-zinc-900 dark:text-white">
+                    {item}
+                  </span>
+                </div>
+              ))}
             </div>
           </section>
 
@@ -469,15 +500,22 @@ export default function EventDetailPage(): React.JSX.Element {
             </div>
 
             <div className="space-y-3 pt-5 border-t border-zinc-100 dark:border-zinc-800">
-              <span className="text-[10px] font-black uppercase tracking-widest text-zinc-400 block">
+              <span className="text-[10px] font-black uppercase tracking-widest text-brand-primary block">
                 Inclusões da Sessão
               </span>
 
-              <ul className="space-y-2.5 text-xs text-zinc-600 dark:text-zinc-300">
+              <ul className="space-y-3 text-xs text-zinc-900 dark:text-white">
                 {inclusions.map((item, index) => (
-                  <li key={index} className="flex items-start gap-2">
-                    <CheckCircle className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
-                    <span>{item}</span>
+                  <li key={index} className="flex items-center gap-2.5">
+                    <div className="relative w-5 h-5 sm:w-6 sm:h-6 shrink-0">
+                      <Image
+                        src="/utils/icons/check.webp"
+                        alt="Check"
+                        fill
+                        className="object-contain"
+                      />
+                    </div>
+                    <span className="font-medium text-zinc-900 dark:text-white">{item}</span>
                   </li>
                 ))}
               </ul>
@@ -511,5 +549,6 @@ export default function EventDetailPage(): React.JSX.Element {
         </div>
       </section>
     </Container>
+  </div>
   )
 }

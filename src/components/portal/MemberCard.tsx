@@ -12,40 +12,63 @@ import {
   Check,
   Hourglass,
   MapPin,
+  UserMinus,
   UserPlus,
+  X,
 } from "@phosphor-icons/react"
 
 import { toast } from "@/src/components/ui/toast/toast"
-
+import { CtaButton } from "@/src/components/common/ctaButton"
+import { useMounted } from "@/src/hooks/useMounted"
 import { cn } from "@/src/lib/utils"
 
 interface MemberCardProps {
   member: Member
   isHost?: boolean
   className?: string
+  onRemove?: (member: Member) => void
+  onAccept?: (member: Member) => void
+  onDecline?: (member: Member) => void
+  onCancel?: (member: Member) => void
 }
 
 export function MemberCard({
   member,
   isHost,
   className,
+  onRemove,
+  onAccept,
+  onDecline,
+  onCancel,
 }: MemberCardProps): React.JSX.Element {
   const { toggleConnect, getConnectionStatus } = usePortalStore()
-  const status = getConnectionStatus(member.id)
+  const mounted = useMounted()
 
-  const handleConnect = (e: React.MouseEvent) => {
+  const status = mounted ? getConnectionStatus(member.id) : "none"
+
+  const handleConnect = (e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => {
     e.preventDefault()
     e.stopPropagation()
-    const prevStatus = status
-    const nextStatus = toggleConnect(member.id)
-    if (nextStatus === "pending") {
-      toast.success(`Solicitação enviada para ${member.name}!`, {
-        description: "Você poderá trocar mensagens antes do encontro.",
-      })
-    } else if (prevStatus === "pending") {
-      toast.info(`Solicitação para ${member.name} cancelada.`)
-    } else if (prevStatus === "connected") {
-      toast.info(`Conexão com ${member.name} desfeita.`)
+    if (status !== "none") return
+    toggleConnect(member.id)
+    toast.success(`Solicitação enviada para ${member.name}!`, {
+      description: "Você poderá trocar mensagens antes do encontro.",
+    })
+  }
+
+  const handleRemove = (e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => {
+    e.preventDefault()
+    e.stopPropagation()
+    if (onRemove) {
+      onRemove(member)
+    }
+  }
+
+  const handleCancel = (e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => {
+    e.preventDefault()
+    e.stopPropagation()
+    if (onCancel) {
+      onCancel(member)
     }
   }
 
@@ -53,7 +76,7 @@ export function MemberCard({
     <Link
       href={`/conexoes/${member.id}/${getMemberSlug(member)}`}
       className={cn(
-        "group flex flex-row rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors duration-200 overflow-hidden cursor-pointer",
+        "group/card flex flex-row rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors duration-200 overflow-hidden cursor-pointer",
         className
       )}
     >
@@ -64,14 +87,14 @@ export function MemberCard({
             alt={member.name}
             fill
             sizes="(max-width: 640px) 112px, 144px"
-            className="object-cover group-hover:scale-105 transition-transform duration-500"
+            className="object-cover group-hover/card:scale-105 transition-transform duration-500"
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center font-black text-xl bg-zinc-900 text-white dark:bg-zinc-800">
             {getInitials(member.name)}
           </div>
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover/card:opacity-40 transition-opacity" />
 
         {isHost && (
           <div className="absolute top-2 left-2 z-10">
@@ -84,70 +107,42 @@ export function MemberCard({
 
       <div className="flex-1 p-3.5 sm:p-4 flex flex-col justify-between min-w-0 space-y-3">
         <div className="space-y-2.5">
-          <div className="flex items-start justify-between gap-2">
-            <div className="min-w-0 flex-1">
-              <h3 className="text-xs sm:text-sm font-bold uppercase tracking-tight text-zinc-900 dark:text-white truncate group-hover:text-brand-primary transition-colors">
-                {member.name}
-              </h3>
-              <p className="text-[11px] text-zinc-500 dark:text-zinc-400 truncate">
+          <div className="min-w-0">
+            <h3 className="text-xs sm:text-sm font-bold uppercase tracking-tight text-zinc-900 dark:text-white truncate group-hover/card:text-brand-primary transition-colors">
+              {member.name}
+            </h3>
+            <p className="text-[11px] truncate">
+              <span className="font-medium text-zinc-900 dark:text-zinc-100">
                 {member.role}
-              </p>
-              <p className="text-[11px] font-semibold text-zinc-700 dark:text-zinc-300 truncate">
+              </span>
+              <span className="mx-1.5 text-zinc-400 dark:text-zinc-500">•</span>
+              <span className="font-bold text-zinc-900 dark:text-white">
                 {member.company}
-              </p>
-            </div>
-
-            <button
-              type="button"
-              onClick={handleConnect}
-              className={cn(
-                "p-1.5 rounded-sm transition-all cursor-pointer shrink-0 z-10",
-                status === "connected" &&
-                  "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 hover:bg-emerald-500/25",
-                status === "pending" &&
-                  "bg-sky-500/15 text-sky-600 dark:text-sky-400 border border-sky-500/30 hover:bg-sky-500/25",
-                status === "none" &&
-                  "bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 hover:bg-brand-primary hover:text-white dark:hover:bg-brand-primary"
-              )}
-              title={
-                status === "connected"
-                  ? "Conectado (clique para desfazer)"
-                  : status === "pending"
-                    ? "Aguardando resposta (clique para cancelar)"
-                    : "Conectar"
-              }
-            >
-              {status === "connected" ? (
-                <Check className="w-3.5 h-3.5" />
-              ) : status === "pending" ? (
-                <Hourglass className="w-3.5 h-3.5" />
-              ) : (
-                <UserPlus className="w-3.5 h-3.5" />
-              )}
-            </button>
+              </span>
+            </p>
           </div>
 
-          <div className="flex items-center gap-1.5 text-[11px] text-zinc-400">
+          <div className="flex items-center gap-1.5 text-[11px] font-medium text-zinc-800 dark:text-zinc-200">
             <MapPin className="w-3 h-3 text-brand-primary shrink-0" />
             <span className="truncate">{member.city}</span>
           </div>
 
-          <div className="p-2 sm:p-2.5 rounded-sm bg-[#F1F1F1] dark:bg-zinc-900/50 border border-zinc-100 dark:border-zinc-800/80 space-y-1.5">
-            <div>
-              <span className="text-[9px] font-black uppercase tracking-widest text-brand-primary block">
+          <div className="space-y-2 pt-1 border-t border-zinc-100 dark:border-zinc-800/80">
+            <div className="space-y-0.5">
+              <span className="text-[9px] font-black uppercase tracking-widest text-zinc-900 dark:text-white block">
                 Oferece
               </span>
-              <p className="text-[11px] font-medium text-zinc-800 dark:text-zinc-200 line-clamp-1 mt-0.5">
+              <p className="text-[11px] font-normal text-zinc-800 dark:text-zinc-200 line-clamp-1">
                 {member.offering.join(" • ")}
               </p>
             </div>
 
             {member.seeking.length > 0 && (
-              <div className="pt-1 border-t border-zinc-200/60 dark:border-zinc-800">
-                <span className="text-[9px] font-black uppercase tracking-widest text-zinc-400 block">
+              <div className="space-y-0.5">
+                <span className="text-[9px] font-black uppercase tracking-widest text-zinc-900 dark:text-white block">
                   Busca
                 </span>
-                <p className="text-[11px] text-zinc-500 dark:text-zinc-400 line-clamp-1 mt-0.5">
+                <p className="text-[11px] font-normal text-zinc-800 dark:text-zinc-200 line-clamp-1">
                   {member.seeking.join(" • ")}
                 </p>
               </div>
@@ -155,11 +150,124 @@ export function MemberCard({
           </div>
         </div>
 
-        <div className="pt-2 border-t border-zinc-100 dark:border-zinc-800/70">
-          <div className="text-[11px] font-bold uppercase tracking-wider text-zinc-600 dark:text-zinc-400 group-hover:text-brand-primary flex items-center justify-between transition-colors">
-            <span>Ver perfil</span>
-            <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-          </div>
+        <div className="pt-1 flex items-center gap-2">
+          {onAccept && onDecline ? (
+            <div className="flex items-center gap-2 w-full">
+              <CtaButton
+                type="button"
+                variant="primary"
+                size="xs"
+                onClick={(e) => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                  onAccept(member)
+                }}
+                className="flex-1 h-8 text-[11px] font-bold shadow-none hover:shadow-none"
+              >
+                <Check className="w-3.5 h-3.5 mr-1" />
+                <span>Aceitar (+50 XP)</span>
+              </CtaButton>
+              <CtaButton
+                type="button"
+                variant="secondary"
+                size="xs"
+                onClick={(e) => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                  onDecline(member)
+                }}
+                className="h-8 px-2.5 text-[11px] font-medium shadow-none hover:shadow-none text-zinc-900 dark:text-white"
+                title="Recusar convite"
+              >
+                <X className="w-3.5 h-3.5" />
+              </CtaButton>
+            </div>
+          ) : (
+            <>
+              <CtaButton
+                type="button"
+                variant="secondary"
+                size="xs"
+                className="flex-1 h-8 text-[11px] font-bold uppercase tracking-wider shadow-none hover:shadow-none"
+                textClassName="flex items-center justify-between w-full"
+              >
+                <span>Ver perfil</span>
+                <ArrowRight className="w-3.5 h-3.5 shrink-0" />
+              </CtaButton>
+
+              {onCancel ? (
+                <CtaButton
+                  type="button"
+                  variant="secondary"
+                  size="xs"
+                  onClick={handleCancel}
+                  className="w-8 h-8 px-0 rounded-sm shrink-0 z-10 shadow-none hover:shadow-none flex items-center justify-center border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-white"
+                  sliderClassName="bg-red-500/15"
+                  textClassName="text-zinc-900 dark:text-white group-hover:text-red-500 transition-colors"
+                  title="Cancelar convite"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </CtaButton>
+              ) : onRemove ? (
+                <CtaButton
+                  type="button"
+                  variant="secondary"
+                  size="xs"
+                  onClick={handleRemove}
+                  className="w-8 h-8 px-0 rounded-sm shrink-0 z-10 shadow-none hover:shadow-none flex items-center justify-center border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-white"
+                  sliderClassName="bg-red-500/15"
+                  textClassName="text-zinc-900 dark:text-white group-hover:text-red-500 transition-colors"
+                  title="Desfazer conexão"
+                >
+                  <UserMinus className="w-3.5 h-3.5" />
+                </CtaButton>
+              ) : (
+                <CtaButton
+                  type="button"
+                  variant={status === "connected" ? "secondary" : status === "pending" ? "secondary" : "primary"}
+                  size="xs"
+                  onClick={handleConnect}
+                  disabled={status !== "none"}
+                  className={cn(
+                    "w-8 h-8 px-0 rounded-sm shrink-0 z-10 shadow-none hover:shadow-none flex items-center justify-center border",
+                    status === "connected" &&
+                      "bg-emerald-500/15 border-emerald-500/30 text-emerald-600 dark:text-emerald-400 opacity-100 cursor-default",
+                    status === "pending" &&
+                      "bg-sky-500/15 border-sky-500/30 text-sky-600 dark:text-sky-400 opacity-100 cursor-default",
+                    status === "none" &&
+                      "border-transparent"
+                  )}
+                  sliderClassName={
+                    status === "connected"
+                      ? "bg-emerald-500/20"
+                      : status === "pending"
+                        ? "bg-sky-500/20"
+                        : undefined
+                  }
+                  textClassName={cn(
+                    status === "connected" && "text-emerald-600 dark:text-emerald-400",
+                    status === "pending" && "text-sky-600 dark:text-sky-400",
+                    status === "none" && "text-white"
+                  )}
+                  title={
+                    status === "connected"
+                      ? "Conectado"
+                      : status === "pending"
+                        ? "Aguardando resposta"
+                        : "Conectar"
+                  }
+                >
+                  {status === "connected" ? (
+                    <Check className="w-3.5 h-3.5" />
+                  ) : status === "pending" ? (
+                    <Hourglass className="w-3.5 h-3.5" />
+                  ) : (
+                    <UserPlus className="w-3.5 h-3.5" />
+                  )}
+                </CtaButton>
+              )}
+            </>
+          )}
         </div>
       </div>
     </Link>

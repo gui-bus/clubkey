@@ -129,30 +129,34 @@ const PaginationLink = ({
 
   const variantClasses = {
     default: isActive
-      ? `${colorActiveMap[color]} font-semibold shadow-xs`
-      : "border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800",
+      ? `${colorActiveMap[color]} font-bold shadow-xs`
+      : "border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-800 dark:text-zinc-200",
     bordered: isActive
       ? `border-2 ${colorActiveMap[color]} bg-transparent ${colorTextMap[color]} font-bold`
-      : "border border-zinc-200 dark:border-zinc-800 bg-transparent text-zinc-900 dark:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800",
+      : "border border-zinc-200 dark:border-zinc-800 bg-transparent text-zinc-900 dark:text-zinc-100",
     flat: isActive
       ? `bg-sky-500/10 dark:bg-sky-400/10 ${colorTextMap[color]} font-bold`
-      : "border-transparent bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-700",
+      : "border-transparent bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100",
     underlined: isActive
       ? `border-b-2 ${color === "default" ? "border-zinc-900 dark:border-zinc-100" : `border-${color === "primary" ? "sky" : color}-500`} ${colorTextMap[color]} font-bold rounded-none`
       : "border-b-2 border-transparent bg-transparent text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 rounded-none",
     filled: isActive
-      ? `${colorActiveMap[color]} font-semibold`
-      : "border-transparent bg-zinc-150 dark:bg-zinc-800/60 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-750",
+      ? `${colorActiveMap[color]} font-bold`
+      : "border-transparent bg-zinc-150 dark:bg-zinc-800/60 text-zinc-700 dark:text-zinc-300",
     glassmorphism: isActive
       ? "bg-zinc-950/20 dark:bg-white/10 backdrop-blur-md border border-zinc-200/30 dark:border-white/10 shadow-md font-bold text-zinc-900 dark:text-zinc-100"
-      : "bg-zinc-100/30 dark:bg-white/5 backdrop-blur-xs border border-zinc-200/20 dark:border-white/5 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100/50 dark:hover:bg-white/10",
+      : "bg-zinc-100/30 dark:bg-white/5 backdrop-blur-xs border border-zinc-200/20 dark:border-white/5 text-zinc-700 dark:text-zinc-300",
     "gradient-border": isActive
-      ? `border-2 ${colorActiveMap[color]} font-semibold`
-      : "border border-zinc-200 dark:border-zinc-800 bg-transparent text-zinc-900 dark:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800",
+      ? `border-2 ${colorActiveMap[color]} font-bold`
+      : "border border-zinc-200 dark:border-zinc-800 bg-transparent text-zinc-900 dark:text-zinc-100",
     glow: isActive
-      ? `${colorActiveMap[color]} shadow-[0_0_15px_rgba(56,189,248,0.5)] font-semibold`
-      : "border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800",
+      ? `${colorActiveMap[color]} shadow-[0_0_15px_rgba(56,189,248,0.5)] font-bold`
+      : "border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100",
   };
+
+  const sliderClasses = isActive
+    ? "bg-brand-primary-dark"
+    : "bg-zinc-100 dark:bg-zinc-800";
 
   return (
     <button
@@ -161,7 +165,8 @@ const PaginationLink = ({
       aria-current={isActive ? "page" : undefined}
       onClick={handleClick}
       className={cn(
-        "inline-flex items-center justify-center font-medium transition-all duration-200 cursor-pointer select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/20 disabled:pointer-events-none disabled:opacity-50",
+        "group relative inline-flex items-center justify-center overflow-hidden cursor-pointer select-none transition-all duration-300 ease-out active:scale-[0.98] will-change-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary/20 disabled:pointer-events-none disabled:opacity-40",
+        isActive ? "font-bold" : "font-normal",
         sizeMap[size],
         variant !== "underlined" && designRadius[radius],
         variantClasses[variant],
@@ -169,7 +174,15 @@ const PaginationLink = ({
       )}
       {...props}
     >
-      {children}
+      <span
+        className={cn(
+          "absolute inset-0 w-full h-full translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-none",
+          sliderClasses
+        )}
+      />
+      <span className="relative z-10 inline-flex items-center justify-center gap-1.5 transition-colors duration-300 pointer-events-none">
+        {children}
+      </span>
     </button>
   );
 };

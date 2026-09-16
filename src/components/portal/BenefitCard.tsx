@@ -3,11 +3,11 @@
 import * as React from "react"
 
 import Image from "next/image"
+import { useQueryState, parseAsInteger } from "nuqs"
 
 import { BenefitItem, getInitials } from "@/src/data/portalData"
 import {
   ArrowRight,
-  ArrowSquareOut,
   Check,
   Copy,
   Gift,
@@ -17,23 +17,25 @@ import {
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogHeader,
   DialogTitle,
 } from "@/src/components/ui/dialog/dialog"
 import { toast } from "@/src/components/ui/toast/toast"
 
 import { CtaButton } from "@/src/components/common/ctaButton"
 import { DiscountRibbon } from "@/src/components/common/discountRibbon"
-import { GlassBadge } from "@/src/components/portal/GlassBadge"
 
 interface BenefitCardProps {
   benefit: BenefitItem
 }
 
 export function BenefitCard({ benefit }: BenefitCardProps): React.JSX.Element {
-  const [isOpen, setIsOpen] = React.useState(false)
+  const [activeBenefitId, setActiveBenefitId] = useQueryState(
+    "beneficio",
+    parseAsInteger.withOptions({ shallow: true })
+  )
   const [copied, setCopied] = React.useState(false)
+
+  const isOpen = activeBenefitId === benefit.id
 
   const promoCode = `KEY-${benefit.partner
     .replace(/[^a-zA-Z0-9]/g, "")
@@ -55,8 +57,8 @@ export function BenefitCard({ benefit }: BenefitCardProps): React.JSX.Element {
   return (
     <>
       <div
-        onClick={() => setIsOpen(true)}
-        className="group flex flex-col justify-between rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] overflow-hidden hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors duration-200 cursor-pointer"
+        onClick={() => setActiveBenefitId(benefit.id)}
+        className="group/card flex flex-col justify-between rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] overflow-hidden hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors duration-200 cursor-pointer"
       >
         <div>
           <div className="relative h-44 w-full overflow-hidden bg-zinc-950">
@@ -65,7 +67,7 @@ export function BenefitCard({ benefit }: BenefitCardProps): React.JSX.Element {
                 src={benefit.image}
                 alt={benefit.partner}
                 fill
-                className="object-cover group-hover:scale-105 transition-transform duration-500 opacity-90"
+                className="object-cover group-hover/card:scale-105 transition-transform duration-500 opacity-90"
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               />
             ) : (
@@ -76,14 +78,14 @@ export function BenefitCard({ benefit }: BenefitCardProps): React.JSX.Element {
             <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
 
             <DiscountRibbon>{benefit.discount}</DiscountRibbon>
-
-            <div className="absolute top-3.5 left-3.5 z-10">
-              <GlassBadge>{benefit.category}</GlassBadge>
-            </div>
           </div>
 
           <div className="p-5 space-y-2">
-            <h3 className="text-base font-heading font-black uppercase tracking-tight text-zinc-900 dark:text-white group-hover:text-brand-primary transition-colors line-clamp-1">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-brand-primary block">
+              {benefit.category}
+            </span>
+
+            <h3 className="text-base font-heading font-black uppercase tracking-tight text-zinc-900 dark:text-white group-hover/card:text-brand-primary transition-colors line-clamp-1">
               {benefit.partner}
             </h3>
 
@@ -93,23 +95,40 @@ export function BenefitCard({ benefit }: BenefitCardProps): React.JSX.Element {
           </div>
         </div>
 
-        <div className="px-5 py-3.5 border-t border-zinc-100 dark:border-zinc-800/80 flex items-center justify-between bg-[#F1F1F1]/50 dark:bg-zinc-900/30">
+        <div className="px-5 py-3.5 border-t border-zinc-100 dark:border-zinc-800/80 flex items-center justify-between gap-3 bg-[#F1F1F1]/50 dark:bg-zinc-900/30">
           <span className="text-[10px] font-black uppercase tracking-widest text-zinc-400 dark:text-zinc-500 flex items-center gap-1.5">
             <ShieldCheck className="w-3.5 h-3.5 text-brand-primary shrink-0" />
             <span>Membro VIP</span>
           </span>
 
-          <span className="text-xs font-bold uppercase tracking-wider text-brand-primary flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
+          <CtaButton
+            type="button"
+            variant="primary"
+            size="xs"
+            onClick={(e) => {
+              e.stopPropagation()
+              setActiveBenefitId(benefit.id)
+            }}
+            className="px-4 h-9 text-[11px] font-bold uppercase tracking-wider whitespace-nowrap shadow-none hover:shadow-none shrink-0"
+            textClassName="whitespace-nowrap"
+          >
             <span>Resgatar</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </span>
+            <ArrowRight className="w-3.5 h-3.5 ml-1.5 shrink-0" />
+          </CtaButton>
         </div>
       </div>
 
-      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <Dialog
+        open={isOpen}
+        onOpenChange={(open) => {
+          if (!open) {
+            setActiveBenefitId(null)
+          }
+        }}
+      >
         <DialogContent
           size="md"
-          className="p-0 overflow-hidden bg-white dark:bg-[#141416] border border-zinc-200 dark:border-zinc-800 rounded-sm"
+          className="p-0 overflow-hidden bg-white dark:bg-[#141416] border-0 shadow-2xl rounded-sm"
         >
           <div className="relative h-44 sm:h-48 w-full overflow-hidden bg-zinc-950">
             {benefit.image && (
@@ -124,13 +143,9 @@ export function BenefitCard({ benefit }: BenefitCardProps): React.JSX.Element {
 
             <DiscountRibbon>{benefit.discount}</DiscountRibbon>
 
-            <div className="absolute top-4 left-4 z-10">
-              <GlassBadge>{benefit.category}</GlassBadge>
-            </div>
-
             <div className="absolute bottom-4 left-4 right-4 z-10">
               <span className="text-[10px] font-black uppercase tracking-widest text-brand-primary block mb-0.5">
-                Benefício do Membro
+                {benefit.category}
               </span>
               <DialogTitle className="text-2xl font-heading font-black uppercase tracking-tight text-white">
                 {benefit.partner}
@@ -140,7 +155,7 @@ export function BenefitCard({ benefit }: BenefitCardProps): React.JSX.Element {
 
           <div className="p-6 space-y-6">
             <div className="space-y-1.5">
-              <span className="text-xs font-black uppercase tracking-widest text-zinc-400 block">
+              <span className="text-xs font-black uppercase tracking-widest text-zinc-900 dark:text-white block">
                 Sobre a parceria
               </span>
               <p className="text-xs sm:text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed font-normal">

@@ -82,29 +82,8 @@ export default function ExperienceDetailPage(): React.JSX.Element {
   }
 
   return (
-    <Container className="pt-6 sm:pt-8 pb-20 space-y-10">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <BackButton fallbackHref="/experiencias" label="Experiências" />
-          <span className="text-zinc-300 dark:text-zinc-700 hidden sm:inline">
-            /
-          </span>
-          <span className="text-xs font-bold text-zinc-500 dark:text-zinc-400 truncate max-w-xs sm:max-w-md hidden sm:inline">
-            {experience.title}
-          </span>
-        </div>
-
-        <div className="flex items-center gap-2 self-start sm:self-auto">
-          <ShareButton />
-          <AddToCalendarButton
-            title={experience.title}
-            description={experience.desc}
-            location={experience.place}
-          />
-        </div>
-      </div>
-
-      <div className="relative rounded-sm overflow-hidden bg-zinc-950 border border-zinc-200 dark:border-zinc-800 shadow-lg min-h-[380px] sm:min-h-[460px] lg:min-h-[500px] flex flex-col justify-between p-6 sm:p-10">
+    <div className="w-full flex flex-col pb-20 space-y-10">
+      <div className="relative w-full min-h-[380px] sm:min-h-[460px] lg:min-h-[500px] bg-zinc-950 overflow-hidden flex flex-col justify-between py-6 sm:py-8">
         {experience.image && (
           <div className="absolute inset-0 z-0">
             <Image
@@ -119,48 +98,75 @@ export default function ExperienceDetailPage(): React.JSX.Element {
           </div>
         )}
 
-        <div className="relative z-10 flex items-center justify-between gap-3">
-          <GlassBadge size="md">
-            {isFree ? "Cortesia Membro" : "Experiência Exclusiva"}
-          </GlassBadge>
+        <Container className="relative z-10 w-full h-full flex flex-col justify-between space-y-10">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <BackButton
+                fallbackHref="/experiencias"
+                label="Experiências"
+                className="text-white hover:text-white/80"
+              />
+              <span className="text-white/60 hidden sm:inline">
+                /
+              </span>
+              <span className="text-xs font-bold text-white truncate max-w-xs sm:max-w-md hidden sm:inline">
+                {experience.title}
+              </span>
+            </div>
 
-          {isBought && (
-            <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-sm bg-emerald-500 text-white text-[11px] font-black uppercase tracking-widest shadow-md">
-              <Check className="w-3.5 h-3.5" />
-              <span>Vaga Garantida</span>
-            </span>
-          )}
-        </div>
-
-        <div className="relative z-10 max-w-4xl space-y-4 pt-16">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-sm bg-brand-primary/90 text-white text-xs font-black uppercase tracking-widest">
-            <Calendar className="w-3.5 h-3.5" />
-            <span>{experience.date}</span>
+            <div className="flex items-center gap-2 self-start sm:self-auto">
+              <ShareButton />
+              <AddToCalendarButton
+                title={experience.title}
+                description={experience.desc}
+                location={experience.place}
+              />
+            </div>
           </div>
 
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-heading font-black uppercase tracking-tight text-white leading-[1.05] drop-shadow-md">
-            {experience.title}
-          </h1>
+          <div className="flex items-center justify-between gap-3">
+            <GlassBadge size="md">
+              {isFree ? "Cortesia Membro" : "Experiência Exclusiva"}
+            </GlassBadge>
 
-          <div className="flex flex-wrap items-center gap-4 text-xs sm:text-sm text-zinc-300 pt-1">
-            <span className="flex items-center gap-1.5 font-medium text-white">
-              <MapPin className="w-4 h-4 text-brand-primary shrink-0" />
-              {experience.place}
-            </span>
-            <span className="text-zinc-500 hidden sm:inline">•</span>
-            <span className="flex items-center gap-1.5 font-medium text-zinc-300">
-              <Users className="w-4 h-4 text-brand-primary shrink-0" />
-              {experience.sub}
-            </span>
-            <span className="text-zinc-500 hidden sm:inline">•</span>
-            <span className="font-semibold text-white">
-              {isFree ? "Gratuita para membros" : formatBRL(experience.price)}
-            </span>
-            <span className="text-zinc-500 hidden sm:inline">•</span>
-            <GlassBadge
-              size="sm"
-              className="bg-black/60 text-white border-white/20 text-[10px] font-bold px-2.5 py-1"
-              icon={
+            {isBought && (
+              <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-sm bg-emerald-500 text-white text-[11px] font-black uppercase tracking-widest shadow-md">
+                <Check className="w-3.5 h-3.5" />
+                <span>Vaga Garantida</span>
+              </span>
+            )}
+          </div>
+
+          <div className="max-w-4xl space-y-4">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-sm bg-brand-primary/90 text-white text-xs font-black uppercase tracking-widest">
+              <Calendar className="w-3.5 h-3.5" />
+              <span>
+                {experience.weekday && experience.day && experience.month
+                  ? `${experience.weekday}, ${experience.day} de ${experience.month}${experience.time ? ` • ${experience.time}` : ""}`
+                  : experience.date}
+              </span>
+            </div>
+
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-heading font-black uppercase tracking-tight text-white leading-[1.05] drop-shadow-md">
+              {experience.title}
+            </h1>
+
+            <div className="flex flex-wrap items-center gap-4 text-xs sm:text-sm text-zinc-300 pt-1">
+              <span className="flex items-center gap-1.5 font-medium text-white">
+                <MapPin className="w-4 h-4 text-brand-primary shrink-0" />
+                {experience.place}
+              </span>
+              <span className="text-zinc-500 hidden sm:inline">•</span>
+              <span className="flex items-center gap-1.5 font-medium text-zinc-300">
+                <Users className="w-4 h-4 text-brand-primary shrink-0" />
+                {experience.sub}
+              </span>
+              <span className="text-zinc-500 hidden sm:inline">•</span>
+              <span className="font-semibold text-white">
+                {isFree ? "Gratuita para membros" : formatBRL(experience.price)}
+              </span>
+              <span className="text-zinc-500 hidden sm:inline">•</span>
+              <div className="inline-flex items-center gap-1.5 text-white/90 text-xs font-medium">
                 <div className="relative w-3.5 h-3.5 shrink-0">
                   <Image
                     src="/utils/gamification/utils/xp.webp"
@@ -169,15 +175,15 @@ export default function ExperienceDetailPage(): React.JSX.Element {
                     className="object-contain"
                   />
                 </div>
-              }
-            >
-              +{experience.xp || 300} XP
-            </GlassBadge>
+                <span>+{experience.xp || 300} XP</span>
+              </div>
+            </div>
           </div>
-        </div>
+        </Container>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 items-start">
+      <Container className="space-y-12">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 items-start">
         <div className="lg:col-span-2 space-y-12">
           <section className="space-y-4">
             <div className="space-y-3">
@@ -200,84 +206,76 @@ export default function ExperienceDetailPage(): React.JSX.Element {
               </h2>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="p-4 sm:p-5 rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] space-y-2 hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-sm bg-brand-primary/10 flex items-center justify-center shrink-0">
-                    <Calendar className="w-4 h-4 text-brand-primary" />
-                  </div>
-                  <span className="text-[11px] font-black uppercase tracking-widest text-zinc-400">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
+              <div className="space-y-1.5">
+                <div className="flex items-center gap-2">
+                  <Calendar className="w-4 h-4 text-brand-primary shrink-0" />
+                  <span className="text-xs font-black uppercase tracking-widest text-brand-primary">
                     Data & Período
                   </span>
                 </div>
-                <div className="pt-1">
+                <div>
                   <p className="text-sm sm:text-base font-bold text-zinc-900 dark:text-white">
                     {experience.date}
                   </p>
-                  <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
+                  <p className="text-xs text-zinc-900 dark:text-white font-medium mt-0.5">
                     Programação oficial exclusiva do clube
                   </p>
                 </div>
               </div>
 
-              <div className="p-4 sm:p-5 rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] space-y-2 hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-sm bg-brand-primary/10 flex items-center justify-center shrink-0">
-                    <MapPin className="w-4 h-4 text-brand-primary" />
-                  </div>
-                  <span className="text-[11px] font-black uppercase tracking-widest text-zinc-400">
+              <div className="space-y-1.5">
+                <div className="flex items-center gap-2">
+                  <MapPin className="w-4 h-4 text-brand-primary shrink-0" />
+                  <span className="text-xs font-black uppercase tracking-widest text-brand-primary">
                     Localização
                   </span>
                 </div>
-                <div className="pt-1">
+                <div>
                   <p className="text-sm sm:text-base font-bold text-zinc-900 dark:text-white truncate">
                     {experience.place}
                   </p>
-                  <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
+                  <p className="text-xs text-zinc-900 dark:text-white font-medium mt-0.5">
                     Acesso reservado e suporte do concierge
                   </p>
                 </div>
               </div>
 
-              <div className="p-4 sm:p-5 rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] space-y-2 hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-sm bg-brand-primary/10 flex items-center justify-center shrink-0">
-                    <Users className="w-4 h-4 text-brand-primary" />
-                  </div>
-                  <span className="text-[11px] font-black uppercase tracking-widest text-zinc-400">
+              <div className="space-y-1.5">
+                <div className="flex items-center gap-2">
+                  <Users className="w-4 h-4 text-brand-primary shrink-0" />
+                  <span className="text-xs font-black uppercase tracking-widest text-brand-primary">
                     Capacidade & Formato
                   </span>
                 </div>
-                <div className="pt-1">
+                <div>
                   <p className="text-sm sm:text-base font-bold text-zinc-900 dark:text-white">
                     {experience.sub}
                   </p>
-                  <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
+                  <p className="text-xs text-zinc-900 dark:text-white font-medium mt-0.5">
                     Vagas limitadas para garantir exclusividade
                   </p>
                 </div>
               </div>
 
-              <div className="p-4 sm:p-5 rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] space-y-2 hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-sm bg-brand-primary/10 flex items-center justify-center shrink-0">
-                    {isFree ? (
-                      <Gift className="w-4 h-4 text-brand-primary" />
-                    ) : (
-                      <ShieldCheck className="w-4 h-4 text-brand-primary" />
-                    )}
-                  </div>
-                  <span className="text-[11px] font-black uppercase tracking-widest text-zinc-400">
+              <div className="space-y-1.5">
+                <div className="flex items-center gap-2">
+                  {isFree ? (
+                    <Gift className="w-4 h-4 text-brand-primary shrink-0" />
+                  ) : (
+                    <ShieldCheck className="w-4 h-4 text-brand-primary shrink-0" />
+                  )}
+                  <span className="text-xs font-black uppercase tracking-widest text-brand-primary">
                     Condição de Membro
                   </span>
                 </div>
-                <div className="pt-1">
+                <div>
                   <p className="text-sm sm:text-base font-bold text-zinc-900 dark:text-white">
                     {isFree
                       ? "Gratuita (Cortesia)"
                       : formatBRL(experience.price)}
                   </p>
-                  <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
+                  <p className="text-xs text-zinc-900 dark:text-white font-medium mt-0.5">
                     Curadoria e garantia oficial ClubKey
                   </p>
                 </div>
@@ -295,14 +293,21 @@ export default function ExperienceDetailPage(): React.JSX.Element {
               </h2>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-5">
               {experience.includes.map((item, index) => (
                 <div
                   key={index}
-                  className="p-4 sm:p-5 rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] flex items-start gap-3 hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors"
+                  className="flex items-center gap-3.5"
                 >
-                  <CheckCircle className="w-4 h-4 text-brand-primary shrink-0 mt-0.5" />
-                  <span className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+                  <div className="relative w-7 h-7 sm:w-8 sm:h-8 shrink-0">
+                    <Image
+                      src="/utils/icons/check.webp"
+                      alt="Check"
+                      fill
+                      className="object-contain"
+                    />
+                  </div>
+                  <span className="text-sm font-semibold text-zinc-900 dark:text-white">
                     {item}
                   </span>
                 </div>
@@ -362,14 +367,14 @@ export default function ExperienceDetailPage(): React.JSX.Element {
               </p>
             </div>
 
-            <div className="p-4 rounded-sm bg-[#F1F1F1] dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 space-y-2 text-xs">
-              <div className="flex justify-between text-zinc-500 dark:text-zinc-400">
+            <div className="space-y-2 text-xs pt-1">
+              <div className="flex justify-between text-zinc-700 dark:text-zinc-300">
                 <span>Capacidade total</span>
                 <span className="font-bold text-zinc-900 dark:text-white">
                   {experience.sub}
                 </span>
               </div>
-              <div className="flex justify-between text-zinc-500 dark:text-zinc-400">
+              <div className="flex justify-between text-zinc-700 dark:text-zinc-300">
                 <span>Participantes confirmados</span>
                 <span className="font-bold text-zinc-900 dark:text-white">
                   {attendees.length + (isBought ? 1 : 0)} membros
@@ -470,5 +475,6 @@ export default function ExperienceDetailPage(): React.JSX.Element {
         </div>
       </section>
     </Container>
+  </div>
   )
 }

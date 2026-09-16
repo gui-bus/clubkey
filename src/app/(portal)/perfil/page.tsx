@@ -6,6 +6,7 @@ import Link from "next/link"
 
 import { getInitials } from "@/src/data/portalData"
 import { usePortalStore } from "@/src/store/usePortalStore"
+import { useMounted } from "@/src/hooks/useMounted"
 import { cn } from "@/src/lib/utils"
 import {
   ArrowRight,
@@ -69,7 +70,7 @@ export default function ProfilePage(): React.JSX.Element {
   } = usePortalStore()
   const currentTier = getUserTier()
 
-  const [mounted, setMounted] = React.useState(false)
+  const mounted = useMounted()
   const [isModalOpen, setIsModalOpen] = React.useState(false)
   const [is2FAModalOpen, setIs2FAModalOpen] = React.useState(false)
   const [otpCode, setOtpCode] = React.useState("")
@@ -86,20 +87,6 @@ export default function ProfilePage(): React.JSX.Element {
     city: userProfile.city,
     bio: userProfile.bio,
   })
-
-  React.useEffect(() => {
-    setMounted(true)
-    if (userProfile.coverImage) {
-      setPendingCover(userProfile.coverImage)
-    }
-    setFormData({
-      name: userProfile.name,
-      role: userProfile.role,
-      company: userProfile.company,
-      city: userProfile.city,
-      bio: userProfile.bio,
-    })
-  }, [userProfile])
 
   const handleChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }))

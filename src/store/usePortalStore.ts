@@ -15,6 +15,8 @@ import {
   XpActivity,
   TierDefinition,
   getTierByXp,
+  ChatMessage,
+  DEFAULT_CHAT_MESSAGES,
 } from "@/src/data/portalData"
 
 export type MemberConnectionStatus = "none" | "pending" | "connected"
@@ -37,6 +39,10 @@ interface PortalState {
   isTierFrozen: boolean
   missions: MissionItem[]
   xpHistory: XpActivity[]
+  chatMessages: Record<number, ChatMessage[]>
+  activeChatMemberId: number | null
+  isChatOpen: boolean
+  isChatMinimized: boolean
   login: (email?: string, name?: string) => void
   logout: () => void
   setActiveClubId: (id: string) => void
@@ -67,6 +73,13 @@ interface PortalState {
   claimMission: (missionId: string) => void
   updateMissionProgress: (missionId: string, progressDelta: number) => void
   getUserTier: () => TierDefinition
+  openChat: (memberId?: number) => void
+  closeChat: () => void
+  minimizeChat: () => void
+  maximizeChat: () => void
+  toggleChat: (memberId?: number) => void
+  sendChatMessage: (memberId: number, text: string) => void
+  markChatAsRead: (memberId: number) => void
 }
 
 export const usePortalStore = create<PortalState>()(
@@ -96,6 +109,10 @@ export const usePortalStore = create<PortalState>()(
       isTierFrozen: false,
       missions: DEFAULT_MISSIONS,
       xpHistory: DEFAULT_XP_ACTIVITIES,
+      chatMessages: DEFAULT_CHAT_MESSAGES,
+      activeChatMemberId: 2,
+      isChatOpen: false,
+      isChatMinimized: false,
 
       login: (email?: string, name?: string) => {
         const updatedProfile = { ...get().userProfile }
@@ -490,14 +507,105 @@ export const usePortalStore = create<PortalState>()(
           },
         }))
       },
+
+      openChat: (memberId?: number) => {
+        const targetId = memberId ?? get().activeChatMemberId ?? 2
+        set((state) => {
+          const currentList = state.chatMessages[targetId] || []
+          const updatedList = currentList.map((msg) => ({ ...msg, read: true }))
+          return {
+            isChatOpen: true,
+            isChatMinimized: false,
+            activeChatMemberId: targetId,
+            chatMessages: {
+              ...state.chatMessages,
+              [targetId]: updatedList,
+            },
+          }
+        })
+      },
+
+      closeChat: () => {
+        set({ isChatOpen: false, isChatMinimized: false })
+      },
+
+      minimizeChat: () => {
+        set({ isChatMinimized: true })
+      },
+
+      maximizeChat: () => {
+        set({ isChatMinimized: false, isChatOpen: true })
+      },
+
+      toggleChat: (memberId?: number) => {
+        const currentOpen = get().isChatOpen
+        const currentMinimized = get().isChatMinimized
+        const currentActive = get().activeChatMemberId
+        if (memberId && memberId !== currentActive) {
+          get().openChat(memberId)
+          return
+        }
+        if (currentOpen && !currentMinimized) {
+          set({ isChatOpen: false })
+        } else {
+          get().openChat(memberId ?? currentActive ?? 2)
+        }
+      },
+
+      sendChatMessage: (memberId: number, text: string) => {
+        const trimmed = text.trim()
+        if (!trimmed) return
+        const now = new Date()
+        const timeStr = `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`
+        const newMsg: ChatMessage = {
+          id: `msg-${Date.now()}`,
+          senderId: "user",
+          text: trimmed,
+          timestamp: timeStr,
+          read: true,
+        }
+        set((state) => ({
+          chatMessages: {
+            ...state.chatMessages,
+            [memberId]: [...(state.chatMessages[memberId] || []), newMsg],
+          },
+          isChatOpen: true,
+          isChatMinimized: false,
+          activeChatMemberId: memberId,
+        }))
+      },
+
+      markChatAsRead: (memberId: number) => {
+        set((state) => {
+          const currentList = state.chatMessages[memberId] || []
+          return {
+            chatMessages: {
+              ...state.chatMessages,
+              [memberId]: currentList.map((m) => ({ ...m, read: true })),
+            },
+          }
+        })
+      },
     }),
     {
-      name: "clubkey-portal-storage-v5",
-      version: 5,
+      name: "clubkey-portal-storage-v6",
+      version: 6,
       migrate: (persistedState: unknown) => {
         const state = persistedState as PortalState
         if (!state) return state
         const migratedState = { ...state }
+        if (!migratedState.chatMessages || Object.keys(migratedState.chatMessages).length === 0) {
+          migratedState.chatMessages = DEFAULT_CHAT_MESSAGES
+        }
+        if (typeof migratedState.activeChatMemberId !== "number") {
+          migratedState.activeChatMemberId = 2
+        }
+        if (typeof migratedState.isChatOpen !== "boolean") {
+          migratedState.isChatOpen = false
+        }
+        if (typeof migratedState.isChatMinimized !== "boolean") {
+          migratedState.isChatMinimized = false
+        }
         if (
           migratedState.userProfile?.name === "Marina Duarte" ||
           !migratedState.userProfile?.name

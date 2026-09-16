@@ -7,14 +7,10 @@ import { usePathname, useRouter } from "next/navigation"
 import {
   List,
   User,
-  CaretDown,
   SignOut,
   Calendar,
-  Gift,
   MapPin,
   CreditCard,
-  Trophy,
-  Lightning,
 } from "@phosphor-icons/react"
 
 import { Container } from "@/src/components/common/container"
@@ -27,13 +23,6 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/src/components/ui/sheet/sheet"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-  DropdownMenuSeparator,
-} from "@/src/components/ui/dropdownMenu/dropdownMenu"
 import { Avatar, AvatarImage, AvatarFallback } from "@/src/components/ui/avatar/avatar"
 import { Badge } from "@/src/components/ui/badge/badge"
 import { brandConfig } from "@/src/config/brand.config"
@@ -44,6 +33,9 @@ import {
   calculateTierProgress,
   TIERS_CONFIG,
 } from "@/src/data/portalData"
+import { NotificationsDropdown } from "@/src/components/portal/NotificationsDropdown"
+import { UserDropdownMenu } from "@/src/components/portal/UserDropdownMenu"
+import { ScrollArea } from "@/src/components/ui/scrollArea/scrollArea"
 
 const isClubKey = brandConfig.id === "clubkey"
 
@@ -334,7 +326,7 @@ export function Navbar({
 
           {!isAuthenticated ? (
             PUBLIC_NAV_LINKS.length > 0 && (
-              <nav className="hidden xl:flex items-center gap-1">
+              <nav className="hidden 2xl:flex items-center gap-1.5">
                 {PUBLIC_NAV_LINKS.map((link) => {
                   const linkHash = link.href.startsWith("/#")
                     ? link.href.replace("/", "")
@@ -350,18 +342,16 @@ export function Navbar({
                       key={link.name}
                       href={link.href}
                       className={cn(
-                        "relative px-3.5 py-1.5 text-xs font-bold uppercase tracking-wider transition-colors duration-200 group whitespace-nowrap",
+                        "relative px-3 py-1.5 text-xs uppercase tracking-wider transition-colors duration-200 group whitespace-nowrap",
                         isActive
-                          ? "text-brand-primary font-extrabold"
-                          : isDarkBar
-                          ? "text-zinc-300 hover:text-white"
-                          : "text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white"
+                          ? "text-brand-primary font-bold"
+                          : "text-white font-normal hover:text-white/80"
                       )}
                     >
                       <span>{link.name}</span>
                       <span
                         className={cn(
-                          "absolute bottom-0 left-3.5 right-3.5 h-0.5 transition-transform duration-300 origin-center bg-brand-primary",
+                          "absolute bottom-0 left-3 right-3 h-0.5 transition-transform duration-300 origin-center bg-brand-primary",
                           isActive
                             ? "scale-x-100"
                             : "scale-x-0 group-hover:scale-x-100"
@@ -373,7 +363,7 @@ export function Navbar({
               </nav>
             )
           ) : (
-            <nav className="hidden lg:flex items-center gap-1">
+            <nav className="hidden 2xl:flex items-center gap-1.5">
               {PORTAL_NAV_LINKS.map((item) => {
                 const isCatalogPath =
                   item.href === "/hospedagens" &&
@@ -392,18 +382,16 @@ export function Navbar({
                     key={item.name}
                     href={item.href}
                     className={cn(
-                      "relative px-3.5 py-1.5 text-xs font-bold uppercase tracking-wider transition-colors duration-200 group whitespace-nowrap",
+                      "relative px-3 py-1.5 text-xs uppercase tracking-wider transition-colors duration-200 group whitespace-nowrap",
                       isActive
-                        ? "text-brand-primary font-black"
-                        : isDarkBar
-                        ? "text-zinc-300 hover:text-white"
-                        : "text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white"
+                        ? "text-brand-primary font-bold"
+                        : "text-white font-normal hover:text-white/80"
                     )}
                   >
                     <span>{item.name}</span>
                     <span
                       className={cn(
-                        "absolute bottom-0 left-3.5 right-3.5 h-0.5 transition-transform duration-300 origin-center bg-brand-primary",
+                        "absolute bottom-0 left-3 right-3 h-0.5 transition-transform duration-300 origin-center bg-brand-primary",
                         isActive
                           ? "scale-x-100"
                           : "scale-x-0 group-hover:scale-x-100"
@@ -468,7 +456,11 @@ export function Navbar({
               </Link>
             )}
 
-              <ThemeToggle />
+              {isAuthenticated && (
+                <NotificationsDropdown isDarkBar={isDarkBar} />
+              )}
+
+              <ThemeToggle className="hidden sm:flex" />
 
             {!isAuthenticated ? (
               <Link
@@ -487,166 +479,10 @@ export function Navbar({
                 <span>Já sou associado</span>
               </Link>
             ) : (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <button
-                    id="navbar-profile-dropdown-trigger"
-                    type="button"
-                    suppressHydrationWarning
-                    className="cursor-pointer outline-none select-none text-left flex items-center gap-2.5 transition-opacity hover:opacity-90 py-1 bg-transparent border-0"
-                  >
-                    <Avatar
-                      size="sm"
-                    >
-                      {userProfile.avatar && (
-                        <AvatarImage
-                          src={userProfile.avatar}
-                          alt={userProfile.name}
-                        />
-                      )}
-                      <AvatarFallback className="font-bold text-[10px] bg-zinc-900 text-white dark:bg-zinc-800">
-                        {userInitials}
-                      </AvatarFallback>
-                    </Avatar>
-
-                    <div className="hidden sm:flex flex-col min-w-0 max-w-[140px] leading-tight">
-                      <span
-                        className={cn(
-                          "text-xs font-semibold uppercase tracking-tight truncate",
-                          isDarkBar
-                            ? "text-white"
-                            : "text-zinc-900 dark:text-white"
-                        )}
-                      >
-                        {userProfile.name}
-                      </span>
-                      <span className="text-[10px] font-normal text-zinc-400 dark:text-zinc-400 truncate">
-                        {userEmail}
-                      </span>
-                    </div>
-
-                    <CaretDown
-                      className={cn(
-                        "w-3 h-3 shrink-0 hidden sm:block",
-                        isDarkBar ? "text-zinc-300" : "text-zinc-400"
-                      )}
-                    />
-                  </button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent
-                  align="end"
-                  className="w-64 bg-white/95 dark:bg-[#141416]/95 backdrop-blur-xl border border-zinc-200 dark:border-zinc-800 p-2 rounded-sm shadow-2xl space-y-1"
-                >
-                  <div className="px-3 py-2.5 border-b border-zinc-100 dark:border-zinc-800/80 mb-1 flex items-center gap-3">
-                    <Avatar size="sm">
-                      {userProfile.avatar && (
-                        <AvatarImage
-                          src={userProfile.avatar}
-                          alt={userProfile.name}
-                        />
-                      )}
-                      <AvatarFallback className="font-bold text-[10px] bg-zinc-900 text-white dark:bg-zinc-800">
-                        {userInitials}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div className="min-w-0 flex-1">
-                      <p className="text-xs font-bold text-zinc-900 dark:text-white truncate">
-                        {userProfile.name}
-                      </p>
-                      <p className="text-[10px] text-zinc-500 dark:text-zinc-400 truncate">
-                        {userEmail}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="space-y-0.5">
-                    <DropdownMenuItem asChild>
-                      <Link
-                        href="/perfil"
-                        className="flex items-center gap-2.5 px-3 py-2 rounded-sm text-xs font-semibold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800/80 hover:text-brand-primary dark:hover:text-brand-primary cursor-pointer transition-colors"
-                      >
-                        <User className="w-3.5 h-3.5 text-zinc-400" />
-                        <span>Meu Perfil</span>
-                      </Link>
-                    </DropdownMenuItem>
-
-                    <DropdownMenuItem asChild>
-                      <Link
-                        href="/hospedagens/minhas-hospedagens"
-                        className="flex items-center justify-between px-3 py-2 rounded-sm text-xs font-semibold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800/80 hover:text-brand-primary dark:hover:text-brand-primary cursor-pointer transition-colors group"
-                      >
-                        <div className="flex items-center gap-2.5">
-                          <MapPin className="w-3.5 h-3.5 text-zinc-400" />
-                          <span>Minhas Hospedagens</span>
-                        </div>
-                        <Badge
-                          color="primary"
-                          variant="flat"
-                          size="sm"
-                          radius="sm"
-                          className="font-black text-[10px] px-1.5 py-0 min-w-4 h-4 flex items-center justify-center leading-none"
-                        >
-                          {staysCount}
-                        </Badge>
-                      </Link>
-                    </DropdownMenuItem>
-
-                    <DropdownMenuItem asChild>
-                      <Link
-                        href="/eventos/meus-eventos"
-                        className="flex items-center justify-between px-3 py-2 rounded-sm text-xs font-semibold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800/80 hover:text-brand-primary dark:hover:text-brand-primary cursor-pointer transition-colors group"
-                      >
-                        <div className="flex items-center gap-2.5">
-                          <Calendar className="w-3.5 h-3.5 text-zinc-400" />
-                          <span>Meus Eventos</span>
-                        </div>
-                        <Badge
-                          color="primary"
-                          variant="flat"
-                          size="sm"
-                          radius="sm"
-                          className="font-black text-[10px] px-1.5 py-0 min-w-4 h-4 flex items-center justify-center leading-none"
-                        >
-                          {eventsCount}
-                        </Badge>
-                      </Link>
-                    </DropdownMenuItem>
-
-                    <DropdownMenuItem asChild>
-                      <Link
-                        href="/perfil/minha-assinatura"
-                        className="flex items-center gap-2.5 px-3 py-2 rounded-sm text-xs font-semibold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800/80 hover:text-brand-primary dark:hover:text-brand-primary cursor-pointer transition-colors"
-                      >
-                        <CreditCard className="w-3.5 h-3.5 text-zinc-400" />
-                        <span>Minha Assinatura</span>
-                      </Link>
-                    </DropdownMenuItem>
-
-                    <DropdownMenuItem asChild>
-                      <Link
-                        href="/keypass"
-                        className="flex items-center gap-2.5 px-3 py-2 rounded-sm text-xs font-semibold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800/80 hover:text-brand-primary dark:hover:text-brand-primary cursor-pointer transition-colors"
-                      >
-                        <Trophy className="w-3.5 h-3.5 text-zinc-400" />
-                        <span>KeyPass & Recompensas</span>
-                      </Link>
-                    </DropdownMenuItem>
-                  </div>
-
-                  <DropdownMenuSeparator className="my-1.5 bg-zinc-100 dark:bg-zinc-800" />
-
-                  <DropdownMenuItem
-                    onClick={handleLogout}
-                    className="flex items-center gap-2.5 px-3 py-2 rounded-sm text-xs font-semibold text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30 cursor-pointer transition-colors"
-                  >
-                    <SignOut className="w-3.5 h-3.5 text-rose-500" />
-                    <span>Sair do Portal</span>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <UserDropdownMenu isDarkBar={isDarkBar} />
             )}
 
-            <div className={isAuthenticated ? "flex lg:hidden" : "flex xl:hidden"}>
+            <div className="flex 2xl:hidden">
               <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
                 <SheetTrigger asChild>
                   <button
@@ -657,7 +493,7 @@ export function Navbar({
                         ? "bg-white/10 hover:bg-white/20 text-white"
                         : "bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-900 dark:text-white"
                     )}
-                    aria-label="Abrir List"
+                    aria-label="Abrir Menu"
                   >
                     <List className="w-5 h-5" />
                   </button>
@@ -666,10 +502,10 @@ export function Navbar({
                 <SheetContent
                   side="right"
                   backdrop="blur"
-                  className="w-full max-w-xs sm:max-w-sm bg-white dark:bg-[#101012] backdrop-blur-2xl border-l border-zinc-200 dark:border-zinc-800 p-6 flex flex-col justify-between overflow-y-auto text-zinc-900 dark:text-white"
+                  className="w-full max-w-xs sm:max-w-sm bg-white dark:bg-[#101012] backdrop-blur-2xl border-l border-zinc-200 dark:border-zinc-800 p-0 flex flex-col h-full text-zinc-900 dark:text-white"
                 >
-                  <div>
-                    <SheetHeader className="pb-6 border-b border-zinc-200 dark:border-zinc-800/80">
+                  <SheetHeader className="px-6 pt-6 pb-4 border-b border-zinc-200 dark:border-zinc-800/80 shrink-0">
+                    <div className="flex items-center justify-between gap-4">
                       <SheetTitle className="text-left font-heading font-black text-xl uppercase tracking-wider">
                         {brandConfig.assets.logoMain ? (
                           <div className="flex items-center gap-2.5">
@@ -709,232 +545,240 @@ export function Navbar({
                           </span>
                         )}
                       </SheetTitle>
-                    </SheetHeader>
 
-                    {isAuthenticated && (
-                      <div className="py-3 px-1 my-2 flex items-center gap-3 bg-transparent border-0">
-                        <Avatar size="sm">
-                          {userProfile.avatar && (
-                            <AvatarImage
-                              src={userProfile.avatar}
-                              alt={userProfile.name}
-                            />
+                      <ThemeToggle className="text-zinc-700 hover:text-zinc-950 dark:text-zinc-300 dark:hover:text-white" />
+                    </div>
+                  </SheetHeader>
+
+                  <ScrollArea className="flex-1 h-full w-full">
+                    <div className="flex flex-col justify-between min-h-full px-6 py-4 pr-3.5 space-y-6">
+                      <div className="space-y-4">
+                        {isAuthenticated && (
+                          <div className="py-2.5 px-3 rounded-lg bg-zinc-100/70 dark:bg-zinc-800/40 border border-zinc-200/70 dark:border-zinc-800 flex items-center gap-3">
+                            <Avatar size="sm">
+                              {userProfile.avatar && (
+                                <AvatarImage
+                                  src={userProfile.avatar}
+                                  alt={userProfile.name}
+                                />
+                              )}
+                              <AvatarFallback className="font-bold text-[10px] bg-zinc-900 text-white dark:bg-zinc-800">
+                                {userInitials}
+                              </AvatarFallback>
+                            </Avatar>
+                            <div className="flex flex-col min-w-0">
+                              <span className="text-xs font-bold text-zinc-900 dark:text-white uppercase tracking-tight truncate">
+                                {userProfile.name}
+                              </span>
+                              <span className="text-[10px] font-normal text-zinc-500 dark:text-zinc-400 truncate">
+                                {userEmail}
+                              </span>
+                            </div>
+                          </div>
+                        )}
+
+                        {isAuthenticated && (
+                          <Link
+                            href="/keypass"
+                            onClick={() => setMobileMenuOpen(false)}
+                            className="flex items-center justify-between py-2.5 px-3 rounded-lg bg-zinc-50 dark:bg-zinc-900/50 hover:bg-zinc-100 dark:hover:bg-zinc-800/50 border border-zinc-200/60 dark:border-zinc-800 text-zinc-900 dark:text-white transition-colors select-none"
+                          >
+                            <div className="flex items-center gap-2">
+                              <div className="relative w-5 h-5 shrink-0">
+                                <Image
+                                  src={currentTier.image}
+                                  alt={currentTier.name}
+                                  fill
+                                  className="object-contain"
+                                />
+                              </div>
+                              <span className="text-xs font-heading font-black uppercase text-zinc-900 dark:text-white">
+                                {currentTier.name}
+                              </span>
+                            </div>
+
+                            <div className="flex items-center gap-1 shrink-0">
+                              <div className="relative w-4 h-4 shrink-0">
+                                <Image
+                                  src="/utils/gamification/utils/RIB.svg"
+                                  alt="RIB Token"
+                                  fill
+                                  className="object-contain"
+                                />
+                              </div>
+                              <span className="text-xs font-heading font-black tracking-tight text-zinc-900 dark:text-white">
+                                {ribTokens} RIB
+                              </span>
+                            </div>
+                          </Link>
+                        )}
+
+                        <div className="flex flex-col gap-1">
+                          {isAuthenticated ? (
+                            <>
+                              <div className="text-[10px] font-black uppercase tracking-widest text-brand-primary px-3 pt-1 pb-1">
+                                Menu do Membro
+                              </div>
+                              {MOBILE_PORTAL_NAV_LINKS.map((link) => {
+                                const isCatalogPath =
+                                  link.href === "/hospedagens" &&
+                                  (pathname === "/hospedagens" ||
+                                    pathname === "/rooms")
+
+                                const isActive =
+                                  link.href === "/"
+                                    ? pathname === "/"
+                                    : isCatalogPath ||
+                                      pathname === link.href ||
+                                      (link.href !== "/hospedagens" &&
+                                        pathname.startsWith(link.href))
+
+                                return (
+                                  <Link
+                                    key={link.name}
+                                    href={link.href}
+                                    onClick={() => setMobileMenuOpen(false)}
+                                    className={cn(
+                                      "px-3.5 py-2.5 rounded-lg text-xs uppercase tracking-wider transition-all flex items-center justify-between group",
+                                      isActive
+                                        ? "text-zinc-900 dark:text-white bg-zinc-100 dark:bg-white/10 font-black shadow-xs"
+                                        : "text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100/60 dark:hover:bg-white/5 font-semibold"
+                                    )}
+                                  >
+                                    <span>{link.name}</span>
+                                    {isActive && (
+                                      <span className="w-1.5 h-1.5 rounded-full bg-brand-primary shrink-0 shadow-xs" />
+                                    )}
+                                  </Link>
+                                )
+                              })}
+                            </>
+                          ) : (
+                            PUBLIC_NAV_LINKS.map((link) => {
+                              const linkHash = link.href.startsWith("/#")
+                                ? link.href.replace("/", "")
+                                : link.href
+                              const isCatalogPath =
+                                pathname === "/hospedagens" ||
+                                pathname === "/rooms"
+                              const isActive = isCatalogPath
+                                ? link.href === "/hospedagens" ||
+                                  link.href === "/rooms"
+                                : activeSection === linkHash ||
+                                  activeSection === link.href
+
+                              return (
+                                <Link
+                                  key={link.name}
+                                  href={link.href}
+                                  onClick={() => setMobileMenuOpen(false)}
+                                  className={cn(
+                                    "px-3.5 py-2.5 rounded-lg text-xs uppercase tracking-wider transition-all flex items-center justify-between group",
+                                    isActive
+                                      ? "text-zinc-900 dark:text-white bg-zinc-100 dark:bg-white/10 font-black shadow-xs"
+                                      : "text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100/60 dark:hover:bg-white/5 font-semibold"
+                                  )}
+                                >
+                                  <span>{link.name}</span>
+                                  {isActive && (
+                                    <span className="w-1.5 h-1.5 rounded-full bg-brand-primary shrink-0 shadow-xs" />
+                                  )}
+                                </Link>
+                              )
+                            })
                           )}
-                          <AvatarFallback className="font-bold text-[10px] bg-zinc-900 text-white dark:bg-zinc-800">
-                            {userInitials}
-                          </AvatarFallback>
-                        </Avatar>
-                        <div className="flex flex-col min-w-0">
-                          <span className="text-xs font-bold text-zinc-900 dark:text-white uppercase tracking-tight truncate">
-                            {userProfile.name}
-                          </span>
-                          <span className="text-[10px] font-normal text-zinc-500 dark:text-zinc-400 truncate">
-                            {userEmail}
-                          </span>
                         </div>
                       </div>
-                    )}
 
-                    {isAuthenticated && (
-                      <Link
-                        href="/keypass"
-                        onClick={() => setMobileMenuOpen(false)}
-                        className="flex items-center justify-between py-2 px-1 text-zinc-900 dark:text-white hover:text-brand-primary dark:hover:text-brand-primary transition-colors select-none border-b border-zinc-100 dark:border-zinc-800/80 mb-2"
-                      >
-                        <div className="flex items-center gap-2">
-                          <div className="relative w-5 h-5 shrink-0">
-                            <Image
-                              src={currentTier.image}
-                              alt={currentTier.name}
-                              fill
-                              className="object-contain"
-                            />
-                          </div>
-                          <span className="text-xs font-heading font-black uppercase text-zinc-900 dark:text-white">
-                            {currentTier.name}
-                          </span>
-                        </div>
-
-                        <div className="flex items-center gap-1 shrink-0">
-                          <div className="relative w-4 h-4 shrink-0">
-                            <Image
-                              src="/utils/gamification/utils/RIB.svg"
-                              alt="RIB Token"
-                              fill
-                              className="object-contain"
-                            />
-                          </div>
-                          <span className="text-xs font-heading font-black tracking-tight text-zinc-900 dark:text-white">
-                            {ribTokens} RIB
-                          </span>
-                        </div>
-                      </Link>
-                    )}
-
-                    <div className="flex flex-col gap-1 pt-2">
-                      {isAuthenticated ? (
-                        <>
-                          <div className="text-[10px] font-black uppercase tracking-widest text-brand-primary px-3 pt-2 pb-1">
-                            List do Membro
-                          </div>
-                          {MOBILE_PORTAL_NAV_LINKS.map((link) => {
-                            const isCatalogPath =
-                              link.href === "/hospedagens" &&
-                              (pathname === "/hospedagens" ||
-                                pathname === "/rooms")
-
-                            const isActive =
-                              link.href === "/"
-                                ? pathname === "/"
-                                : isCatalogPath ||
-                                  pathname === link.href ||
-                                  (link.href !== "/hospedagens" &&
-                                    pathname.startsWith(link.href))
-
-                            return (
-                              <Link
-                                key={link.name}
-                                href={link.href}
-                                onClick={() => setMobileMenuOpen(false)}
-                                className={cn(
-                                  "px-3.5 py-2.5 rounded-sm text-xs uppercase tracking-wider transition-all flex items-center justify-between group",
-                                  isActive
-                                    ? "text-zinc-900 dark:text-white bg-zinc-100 dark:bg-white/10 font-black shadow-xs"
-                                    : "text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100/60 dark:hover:bg-white/5 font-semibold"
-                                )}
-                              >
-                                <span>{link.name}</span>
-                                {isActive && (
-                                  <span className="w-1.5 h-1.5 rounded-full bg-brand-primary shrink-0 shadow-xs" />
-                                )}
-                              </Link>
-                            )
-                          })}
-                        </>
-                      ) : (
-                        PUBLIC_NAV_LINKS.map((link) => {
-                          const linkHash = link.href.startsWith("/#")
-                            ? link.href.replace("/", "")
-                            : link.href
-                          const isCatalogPath =
-                            pathname === "/hospedagens" ||
-                            pathname === "/rooms"
-                          const isActive = isCatalogPath
-                            ? link.href === "/hospedagens" ||
-                              link.href === "/rooms"
-                            : activeSection === linkHash ||
-                              activeSection === link.href
-
-                          return (
+                      <div className="flex flex-col gap-2.5 pt-5 border-t border-zinc-200 dark:border-zinc-800/80">
+                        {!isAuthenticated ? (
+                          <>
                             <Link
-                              key={link.name}
-                              href={link.href}
+                              href={brandConfig.links.login}
                               onClick={() => setMobileMenuOpen(false)}
-                              className={cn(
-                                "px-3.5 py-2.5 rounded-sm text-xs uppercase tracking-wider transition-all flex items-center justify-between group",
-                                isActive
-                                  ? "text-zinc-900 dark:text-white bg-zinc-100 dark:bg-white/10 font-black shadow-xs"
-                                  : "text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100/60 dark:hover:bg-white/5 font-semibold"
-                              )}
+                              className="flex items-center justify-center gap-2 w-full py-3 rounded-lg border border-zinc-300 dark:border-zinc-700/80 text-xs font-bold uppercase tracking-wider text-zinc-900 dark:text-white hover:bg-zinc-100 dark:hover:bg-white/5 transition-all"
                             >
-                              <span>{link.name}</span>
-                              {isActive && (
-                                <span className="w-1.5 h-1.5 rounded-full bg-brand-primary shrink-0 shadow-xs" />
-                              )}
+                              <User className="w-3.5 h-3.5" />
+                              <span>Já sou associado (Login)</span>
                             </Link>
-                          )
-                        })
-                      )}
+
+                            <CtaButton
+                              href={brandConfig.links.subscription}
+                              onClick={() => setMobileMenuOpen(false)}
+                              isFullWidth
+                              size="md"
+                            >
+                              Quero ser associado
+                            </CtaButton>
+                          </>
+                        ) : (
+                          <>
+                            <div className="grid grid-cols-1 gap-2 mb-1">
+                              <Link
+                                href="/hospedagens/minhas-hospedagens"
+                                onClick={() => setMobileMenuOpen(false)}
+                                className="flex items-center justify-between p-2.5 rounded-lg border border-zinc-200 dark:border-zinc-800 text-[11px] font-bold uppercase tracking-tight text-zinc-800 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-white/5 transition-all"
+                              >
+                                <span className="flex items-center gap-1.5 truncate">
+                                  <MapPin className="w-3.5 h-3.5 text-brand-primary shrink-0" />
+                                  Hospedagens
+                                </span>
+                                <Badge color="primary" variant="flat" size="sm" radius="sm" className="text-[9px] px-1.5 h-4 leading-none">
+                                  {staysCount}
+                                </Badge>
+                              </Link>
+
+                              <Link
+                                href="/eventos/meus-eventos"
+                                onClick={() => setMobileMenuOpen(false)}
+                                className="flex items-center justify-between p-2.5 rounded-lg border border-zinc-200 dark:border-zinc-800 text-[11px] font-bold uppercase tracking-tight text-zinc-800 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-white/5 transition-all"
+                              >
+                                <span className="flex items-center gap-1.5 truncate">
+                                  <Calendar className="w-3.5 h-3.5 text-brand-primary shrink-0" />
+                                  Eventos
+                                </span>
+                                <Badge color="primary" variant="flat" size="sm" radius="sm" className="text-[9px] px-1.5 h-4 leading-none">
+                                  {eventsCount}
+                                </Badge>
+                              </Link>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-2">
+                              <Link
+                                href="/perfil"
+                                onClick={() => setMobileMenuOpen(false)}
+                                className="flex items-center justify-center gap-1.5 w-full py-2 rounded-lg border border-zinc-200 dark:border-zinc-800 text-[11px] font-bold uppercase tracking-wider text-zinc-800 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-white/5 transition-all"
+                              >
+                                <User className="w-3.5 h-3.5 text-zinc-500 dark:text-zinc-400" />
+                                <span>Perfil</span>
+                              </Link>
+
+                              <Link
+                                href="/perfil/minha-assinatura"
+                                onClick={() => setMobileMenuOpen(false)}
+                                className="flex items-center justify-center gap-1.5 w-full py-2 rounded-lg border border-zinc-200 dark:border-zinc-800 text-[11px] font-bold uppercase tracking-wider text-zinc-800 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-white/5 transition-all"
+                              >
+                                <CreditCard className="w-3.5 h-3.5 text-zinc-500 dark:text-zinc-400" />
+                                <span>Assinatura</span>
+                              </Link>
+                            </div>
+
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setMobileMenuOpen(false)
+                                handleLogout()
+                              }}
+                              className="flex items-center justify-center gap-2 w-full py-2.5 rounded-lg bg-rose-500/10 border border-rose-500/20 text-xs font-bold uppercase tracking-wider text-rose-600 dark:text-rose-400 hover:bg-rose-500/20 transition-all cursor-pointer"
+                            >
+                              <SignOut className="w-3.5 h-3.5" />
+                              <span>Sair do Portal</span>
+                            </button>
+                          </>
+                        )}
+                      </div>
                     </div>
-                  </div>
-
-                  <div className="flex flex-col gap-2.5 pt-6 border-t border-zinc-200 dark:border-zinc-800/80">
-                    {!isAuthenticated ? (
-                      <>
-                        <Link
-                          href={brandConfig.links.login}
-                          onClick={() => setMobileMenuOpen(false)}
-                          className="flex items-center justify-center gap-2 w-full py-3 rounded-sm border border-zinc-300 dark:border-zinc-700/80 text-xs font-bold uppercase tracking-wider text-zinc-900 dark:text-white hover:bg-zinc-100 dark:hover:bg-white/5 transition-all"
-                        >
-                          <User className="w-3.5 h-3.5" />
-                          <span>Já sou associado (Login)</span>
-                        </Link>
-
-                        <CtaButton
-                          href={brandConfig.links.subscription}
-                          onClick={() => setMobileMenuOpen(false)}
-                          isFullWidth
-                          size="md"
-                        >
-                          Quero ser associado
-                        </CtaButton>
-                      </>
-                    ) : (
-                      <>
-                        <div className="grid grid-cols-1 gap-2 mb-1">
-                          <Link
-                            href="/hospedagens/minhas-hospedagens"
-                            onClick={() => setMobileMenuOpen(false)}
-                            className="flex items-center justify-between p-2.5 rounded-sm border border-zinc-200 dark:border-zinc-800 text-[11px] font-bold uppercase tracking-tight text-zinc-800 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-white/5 transition-all"
-                          >
-                            <span className="flex items-center gap-1.5 truncate">
-                              <MapPin className="w-3.5 h-3.5 text-brand-primary shrink-0" />
-                              Hospedagens
-                            </span>
-                            <Badge color="primary" variant="flat" size="sm" radius="sm" className="text-[9px] px-1.5 h-4 leading-none">
-                              {staysCount}
-                            </Badge>
-                          </Link>
-
-                          <Link
-                            href="/eventos/meus-eventos"
-                            onClick={() => setMobileMenuOpen(false)}
-                            className="flex items-center justify-between p-2.5 rounded-sm border border-zinc-200 dark:border-zinc-800 text-[11px] font-bold uppercase tracking-tight text-zinc-800 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-white/5 transition-all"
-                          >
-                            <span className="flex items-center gap-1.5 truncate">
-                              <Calendar className="w-3.5 h-3.5 text-brand-primary shrink-0" />
-                              Eventos
-                            </span>
-                            <Badge color="primary" variant="flat" size="sm" radius="sm" className="text-[9px] px-1.5 h-4 leading-none">
-                              {eventsCount}
-                            </Badge>
-                          </Link>
-                        </div>
-
-                        <div className="grid grid-cols-2 gap-2">
-                          <Link
-                            href="/perfil"
-                            onClick={() => setMobileMenuOpen(false)}
-                            className="flex items-center justify-center gap-1.5 w-full py-2 rounded-sm border border-zinc-200 dark:border-zinc-800 text-[11px] font-bold uppercase tracking-wider text-zinc-800 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-white/5 transition-all"
-                          >
-                            <User className="w-3.5 h-3.5 text-zinc-500 dark:text-zinc-400" />
-                            <span>Perfil</span>
-                          </Link>
-
-                          <Link
-                            href="/perfil/minha-assinatura"
-                            onClick={() => setMobileMenuOpen(false)}
-                            className="flex items-center justify-center gap-1.5 w-full py-2 rounded-sm border border-zinc-200 dark:border-zinc-800 text-[11px] font-bold uppercase tracking-wider text-zinc-800 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-white/5 transition-all"
-                          >
-                            <CreditCard className="w-3.5 h-3.5 text-zinc-500 dark:text-zinc-400" />
-                            <span>Assinatura</span>
-                          </Link>
-                        </div>
-
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setMobileMenuOpen(false)
-                            handleLogout()
-                          }}
-                          className="flex items-center justify-center gap-2 w-full py-2 rounded-sm bg-rose-500/10 border border-rose-500/20 text-xs font-bold uppercase tracking-wider text-rose-600 dark:text-rose-400 hover:bg-rose-500/20 transition-all cursor-pointer"
-                        >
-                          <SignOut className="w-3.5 h-3.5" />
-                          <span>Sair do Portal</span>
-                        </button>
-                      </>
-                    )}
-                  </div>
+                  </ScrollArea>
                 </SheetContent>
               </Sheet>
             </div>

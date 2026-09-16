@@ -62,6 +62,10 @@ export interface ExperienceItem {
   id: number
   title: string
   date: string
+  day?: string
+  month?: string
+  weekday?: string
+  time?: string
   place: string
   price: number
   sub: string
@@ -673,6 +677,10 @@ export const EXPERIENCES: ExperienceItem[] = [
     price: 780,
     place: "Adega Bonvivant, SP",
     date: "12 SET",
+    day: "12",
+    month: "SET",
+    weekday: "Sexta",
+    time: "20h00",
     xp: 450,
     image: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=800&auto=format&fit=crop&q=80",
     includes: [
@@ -691,6 +699,10 @@ export const EXPERIENCES: ExperienceItem[] = [
     price: 1450,
     place: "Aeroporto de Jundiaí, SP",
     date: "20 SET",
+    day: "20",
+    month: "SET",
+    weekday: "Sábado",
+    time: "09h30",
     xp: 650,
     image: "https://images.unsplash.com/photo-1508614589041-895b88991e3e?w=800&auto=format&fit=crop&q=80",
     includes: [
@@ -709,6 +721,10 @@ export const EXPERIENCES: ExperienceItem[] = [
     price: 2200,
     place: "Ilhabela, SP",
     date: "27 SET",
+    day: "27",
+    month: "SET",
+    weekday: "Sábado",
+    time: "10h00",
     xp: 900,
     image: "https://images.unsplash.com/photo-1500917293891-ef795e70e1f6?w=800&auto=format&fit=crop&q=80",
     includes: [
@@ -727,6 +743,10 @@ export const EXPERIENCES: ExperienceItem[] = [
     price: 0,
     place: "Cotia, SP",
     date: "04 OUT",
+    day: "04",
+    month: "OUT",
+    weekday: "Sábado",
+    time: "08h00",
     xp: 250,
     image: "https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&auto=format&fit=crop&q=80",
     includes: [
@@ -745,6 +765,10 @@ export const EXPERIENCES: ExperienceItem[] = [
     price: 620,
     place: "Bar Kioi, SP",
     date: "11 OUT",
+    day: "11",
+    month: "OUT",
+    weekday: "Sábado",
+    time: "19h30",
     xp: 400,
     image: "https://images.unsplash.com/photo-1527281400683-1aae777175f8?w=800&auto=format&fit=crop&q=80",
     includes: [
@@ -763,6 +787,10 @@ export const EXPERIENCES: ExperienceItem[] = [
     price: 0,
     place: "Paranapiacaba, SP",
     date: "18 OUT",
+    day: "18",
+    month: "OUT",
+    weekday: "Sábado",
+    time: "07h30",
     xp: 300,
     image: "https://images.unsplash.com/photo-1551632811-561732d1e306?w=800&auto=format&fit=crop&q=80",
     includes: [
@@ -781,6 +809,10 @@ export const EXPERIENCES: ExperienceItem[] = [
     price: 950,
     place: "Theatro Municipal, SP",
     date: "25 OUT",
+    day: "25",
+    month: "OUT",
+    weekday: "Sábado",
+    time: "20h00",
     xp: 500,
     image: "https://images.unsplash.com/photo-1507676184212-d03ab07a01bf?w=800&auto=format&fit=crop&q=80",
     includes: [
@@ -799,6 +831,8 @@ export const EXPERIENCES: ExperienceItem[] = [
     price: 3400,
     place: "Sua residência, SP",
     date: "Sob agendamento",
+    weekday: "Personalizado",
+    time: "Sob agendamento",
     xp: 1200,
     image: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&auto=format&fit=crop&q=80",
     includes: [
@@ -817,6 +851,10 @@ export const EXPERIENCES: ExperienceItem[] = [
     price: 1890,
     place: "Autódromo de Interlagos, SP",
     date: "08 NOV",
+    day: "08",
+    month: "NOV",
+    weekday: "Sábado",
+    time: "08h30",
     xp: 800,
     image: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=800&auto=format&fit=crop&q=80",
     includes: [
@@ -835,6 +873,10 @@ export const EXPERIENCES: ExperienceItem[] = [
     price: 5600,
     place: "Trancoso, BA",
     date: "20 NOV",
+    day: "20",
+    month: "NOV",
+    weekday: "Quinta",
+    time: "Três dias",
     xp: 1500,
     image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&auto=format&fit=crop&q=80",
     includes: [
@@ -1903,3 +1945,46 @@ export const DEFAULT_XP_ACTIVITIES: XpActivity[] = [
     category: "bonus",
   },
 ]
+
+export interface ChatMessage {
+  id: string
+  senderId: "user" | number
+  text: string
+  timestamp: string
+  read: boolean
+}
+
+export const DEFAULT_CHAT_MESSAGES: Record<number, ChatMessage[]> = {
+  2: [
+    {
+      id: "msg-2-1",
+      senderId: 2,
+      text: "Olá William! Vi seu perfil aqui no ClubKey e notei sua experiência com estruturação e venture capital. Achei excelente a tese da sua empresa!",
+      timestamp: "10:42",
+      read: false,
+    },
+    {
+      id: "msg-2-2",
+      senderId: 2,
+      text: "Você vai participar do próximo encontro em São Paulo? Se for, adoraria marcar um café para trocarmos sinergias sobre captação institucional.",
+      timestamp: "10:44",
+      read: false,
+    },
+  ],
+  3: [
+    {
+      id: "msg-3-1",
+      senderId: "user",
+      text: "Olá Eduardo, prazer em conectar! Acompanho os investimentos da Horizon Capital no setor de logística.",
+      timestamp: "Ontem, 16:20",
+      read: true,
+    },
+    {
+      id: "msg-3-2",
+      senderId: 3,
+      text: "Fala William! Tudo ótimo por aqui. Vamos marcar um almoço sim, estou avaliando duas rodadas no setor que podem fazer muito sentido para co-investimento.",
+      timestamp: "Ontem, 16:35",
+      read: true,
+    },
+  ],
+}

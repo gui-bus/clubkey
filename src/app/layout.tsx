@@ -10,8 +10,10 @@ import { cn } from "@/src/lib/utils"
 import { fontVariables } from "@/src/config/fonts"
 import { siteConfig } from "@/src/config/site"
 
+import { Suspense } from "react"
 import { NuqsAdapter } from "nuqs/adapters/next/app"
 import { Toast } from "@/src/components/ui/toast/toast"
+import { MemberMessengerWidget } from "@/src/components/portal/MemberMessengerWidget"
 import "@/src/app/globals.css"
 
 export const viewport: Viewport = {
@@ -93,8 +95,15 @@ export default async function RootLayout({
       </head>
       <body className="mx-auto w-full max-w-440 bg-background text-foreground selection:bg-brand-primary/20 selection:text-brand-primary">
         <ThemeProvider>
-          <NuqsAdapter>{children}</NuqsAdapter>
-          <Toast position="bottom-right" />
+          <NuqsAdapter>
+            <Suspense fallback={<div className="min-h-screen w-full" />}>
+              {children}
+            </Suspense>
+            <Toast position="bottom-right" />
+            <Suspense fallback={null}>
+              <MemberMessengerWidget />
+            </Suspense>
+          </NuqsAdapter>
         </ThemeProvider>
         {siteConfig.analytics.google && (
           <GoogleAnalytics gaId={siteConfig.analytics.google} />

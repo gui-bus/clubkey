@@ -102,7 +102,7 @@ const ScrollArea = React.forwardRef<
 
         <ScrollAreaPrimitive.Viewport
           ref={viewportRef}
-          className="size-full rounded-[inherit] [-webkit-overflow-scrolling:touch]"
+          className="size-full max-h-[inherit] rounded-[inherit] [-webkit-overflow-scrolling:touch] overscroll-contain"
         >
           {children}
         </ScrollAreaPrimitive.Viewport>

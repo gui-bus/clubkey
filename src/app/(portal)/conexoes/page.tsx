@@ -48,7 +48,13 @@ export default function ConexoesPage(): React.JSX.Element {
 
   const receivedInvitesCount = receivedPendingInvites.length
 
-  const suggestedMatch = MEMBERS[10]
+  const availableMembers = React.useMemo(() => {
+    return MEMBERS.filter((m) => connectedMembers[m.id] !== "connected")
+  }, [connectedMembers])
+
+  const suggestedMatch = React.useMemo(() => {
+    return availableMembers.find((m) => m.id === 11) || availableMembers[0] || MEMBERS[10]
+  }, [availableMembers])
   const matchReason =
     "Renata lidera rodadas no ticket que você busca para as marcas do seu portfólio e já co-investiu com dois membros do clube."
 
@@ -58,16 +64,16 @@ export default function ConexoesPage(): React.JSX.Element {
       label: r.label,
       count:
         r.value === "todos"
-          ? MEMBERS.length
+          ? availableMembers.length
           : r.value === "fundadores"
-            ? MEMBERS.filter(
+            ? availableMembers.filter(
                 (m) =>
                   m.role.toLowerCase().includes("founder") ||
                   m.role.toLowerCase().includes("fundador") ||
                   m.role.toLowerCase().includes("co-founder")
               ).length
             : r.value === "c-level"
-              ? MEMBERS.filter(
+              ? availableMembers.filter(
                   (m) =>
                     m.role.toLowerCase().includes("ceo") ||
                     m.role.toLowerCase().includes("cto") ||
@@ -76,7 +82,7 @@ export default function ConexoesPage(): React.JSX.Element {
                     m.role.toLowerCase().includes("vp") ||
                     m.role.toLowerCase().includes("diretor")
                 ).length
-              : MEMBERS.filter(
+              : availableMembers.filter(
                   (m) =>
                     m.role.toLowerCase().includes("investidor") ||
                     m.role.toLowerCase().includes("partner") ||
@@ -90,10 +96,10 @@ export default function ConexoesPage(): React.JSX.Element {
                     )
                 ).length,
     }))
-  }, [])
+  }, [availableMembers])
 
   const filteredMembers = React.useMemo(() => {
-    let list = MEMBERS
+    let list = availableMembers
 
     if (activeTab === "fundadores") {
       list = list.filter(
@@ -144,7 +150,7 @@ export default function ConexoesPage(): React.JSX.Element {
         .toLowerCase()
       return fullText.includes(q)
     })
-  }, [searchQuery, activeTab])
+  }, [searchQuery, activeTab, availableMembers])
 
   const totalPages = Math.max(1, Math.ceil(filteredMembers.length / ITEMS_PER_PAGE))
   const paginatedMembers = React.useMemo(() => {
@@ -163,13 +169,13 @@ export default function ConexoesPage(): React.JSX.Element {
   return (
     <div className="w-full flex flex-col">
       <PortalHero
-        badge="Rede de Conexões • Ecossistema"
+        badge="Rede de Membros • Ecossistema"
         title={
           <>
-            Suas <span className="text-brand-primary">Conexões</span>
+            Descobrir <span className="text-brand-primary">Conexões</span>
           </>
         }
-        description="Conecte-se com fundadores, executivos C-Level e investidores ativos do ecossistema."
+        description="Explore e conecte-se com novos fundadores, executivos C-Level e investidores do ecossistema."
         imageSrc="/utils/banners/pessoas.webp"
         imageAlt="Conexões e Networking"
       >
@@ -224,13 +230,13 @@ export default function ConexoesPage(): React.JSX.Element {
           </div>
         )}
 
-        {!searchQuery && activeTab === "todos" && (
+        {!searchQuery && activeTab === "todos" && suggestedMatch && connectedMembers[suggestedMatch.id] !== "connected" && (
           <MatchCard member={suggestedMatch} reason={matchReason} />
         )}
 
         <div className="space-y-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <span className="text-xs font-black uppercase tracking-widest text-zinc-400">
+            <span className="text-xs font-black uppercase tracking-widest text-zinc-900 dark:text-white">
               {filteredMembers.length}{" "}
               {filteredMembers.length === 1
                 ? "membro encontrado"
