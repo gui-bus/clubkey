@@ -69,18 +69,23 @@ export function SignUpForm({ onSuccess }: SignUpFormProps): React.JSX.Element {
   return (
     <form noValidate onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-10 w-full">
       <div className="space-y-6 w-full">
-        <div className="border-b border-zinc-200 dark:border-zinc-800 pb-3">
-          <h2 className="text-base font-bold uppercase tracking-wider text-zinc-900 dark:text-white font-heading">
-            Dados Pessoais
-          </h2>
-          <p className="text-xs text-zinc-500 dark:text-zinc-400 font-light mt-0.5">
-            Preencha suas informações de identificação
+        <div className="border-b border-zinc-200 dark:border-zinc-800 pb-3 flex flex-col sm:flex-row sm:items-end justify-between gap-2">
+          <div>
+            <h2 className="text-base font-bold uppercase tracking-wider text-zinc-900 dark:text-white font-heading">
+              Dados Pessoais
+            </h2>
+            <p className="text-xs text-zinc-500 dark:text-zinc-400 font-light mt-0.5">
+              Preencha suas informações de identificação
+            </p>
+          </div>
+          <p className="text-xs text-zinc-500 dark:text-zinc-400">
+            Campos marcados com <span className="text-red-500 font-bold">*</span> são obrigatórios
           </p>
         </div>
 
         <div className="flex flex-col gap-1.5 w-full">
           <label className="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
-            Nacionalidade
+            Nacionalidade <span className="text-red-500 font-bold">*</span>
           </label>
           <div className="grid grid-cols-2 gap-3">
             <button
@@ -121,7 +126,7 @@ export function SignUpForm({ onSuccess }: SignUpFormProps): React.JSX.Element {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <div className="flex flex-col gap-1.5">
             <label className="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
-              Nome completo
+              Nome completo <span className="text-red-500 font-bold">*</span>
             </label>
             <Input
               placeholder="Nome completo"
@@ -136,7 +141,7 @@ export function SignUpForm({ onSuccess }: SignUpFormProps): React.JSX.Element {
 
           <div className="flex flex-col gap-1.5">
             <label className="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
-              E-mail
+              E-mail <span className="text-red-500 font-bold">*</span>
             </label>
             <Input
               type="email"
@@ -152,7 +157,7 @@ export function SignUpForm({ onSuccess }: SignUpFormProps): React.JSX.Element {
 
           <div className="flex flex-col gap-1.5">
             <label className="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
-              {nationality === "brasileiro" ? "CPF" : "Documento de Identificação"}
+              {nationality === "brasileiro" ? "CPF" : "Documento de Identificação"} <span className="text-red-500 font-bold">*</span>
             </label>
             <Controller
               name="cpf"
@@ -192,7 +197,7 @@ export function SignUpForm({ onSuccess }: SignUpFormProps): React.JSX.Element {
 
           <div className="flex flex-col gap-1.5">
             <label className="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
-              Data de nascimento
+              Data de nascimento <span className="text-red-500 font-bold">*</span>
             </label>
             <Controller
               name="birthDate"
@@ -214,7 +219,7 @@ export function SignUpForm({ onSuccess }: SignUpFormProps): React.JSX.Element {
 
           <div className="flex flex-col gap-1.5 md:col-span-2">
             <label className="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
-              Telefone celular
+              Telefone celular <span className="text-red-500 font-bold">*</span>
             </label>
             <Controller
               name="phone"
@@ -233,18 +238,13 @@ export function SignUpForm({ onSuccess }: SignUpFormProps): React.JSX.Element {
       </div>
 
       <div className="space-y-6 w-full">
-        <div className="border-b border-zinc-200 dark:border-zinc-800 pb-3 flex items-center justify-between">
-          <div>
-            <h2 className="text-base font-bold uppercase tracking-wider text-zinc-900 dark:text-white font-heading">
-              Dados da Empresa
-            </h2>
-            <p className="text-xs text-zinc-500 dark:text-zinc-400 font-light mt-0.5">
-              Opcional — preencha caso queira vincular sua empresa
-            </p>
-          </div>
-          <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">
-            Opcional
-          </span>
+        <div className="border-b border-zinc-200 dark:border-zinc-800 pb-3">
+          <h2 className="text-base font-bold uppercase tracking-wider text-zinc-900 dark:text-white font-heading">
+            Dados da Empresa
+          </h2>
+          <p className="text-xs text-zinc-500 dark:text-zinc-400 font-light mt-0.5">
+            Preencha caso queira vincular sua empresa
+          </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -253,7 +253,7 @@ export function SignUpForm({ onSuccess }: SignUpFormProps): React.JSX.Element {
               Razão social
             </label>
             <Input
-              placeholder="Razão social da empresa (opcional)"
+              placeholder="Razão social da empresa"
               variant={errors.companyName ? "error" : "default"}
               disabled={isLoading}
               {...register("companyName")}
@@ -283,7 +283,7 @@ export function SignUpForm({ onSuccess }: SignUpFormProps): React.JSX.Element {
                     }
                   }}
                   onBlur={field.onBlur}
-                  placeholder="00.000.000/0000-00 (opcional)"
+                  placeholder="00.000.000/0000-00"
                   variant={errors.cnpj ? "error" : "default"}
                   disabled={isLoading}
                 />
@@ -300,7 +300,7 @@ export function SignUpForm({ onSuccess }: SignUpFormProps): React.JSX.Element {
             </label>
             <Input
               type="email"
-              placeholder="contato@empresa.com (opcional)"
+              placeholder="contato@empresa.com"
               variant={errors.corporateEmail ? "error" : "default"}
               disabled={isLoading}
               {...register("corporateEmail")}
@@ -321,7 +321,7 @@ export function SignUpForm({ onSuccess }: SignUpFormProps): React.JSX.Element {
                 <Input
                   value={field.value || ""}
                   onChange={(e) => field.onChange(maskDate(e.target.value))}
-                  placeholder="DD/MM/AAAA (opcional)"
+                  placeholder="DD/MM/AAAA"
                   variant={errors.openingDate ? "error" : "default"}
                   disabled={isLoading}
                 />
@@ -347,7 +347,7 @@ export function SignUpForm({ onSuccess }: SignUpFormProps): React.JSX.Element {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 items-start">
           <div className="flex flex-col gap-1.5">
             <label className="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
-              Senha
+              Senha <span className="text-red-500 font-bold">*</span>
             </label>
             <PasswordInput
               placeholder="Digite sua senha"
@@ -369,7 +369,7 @@ export function SignUpForm({ onSuccess }: SignUpFormProps): React.JSX.Element {
 
           <div className="flex flex-col gap-1.5">
             <label className="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
-              Confirmar senha
+              Confirmar senha <span className="text-red-500 font-bold">*</span>
             </label>
             <PasswordInput
               placeholder="Confirme sua senha"
