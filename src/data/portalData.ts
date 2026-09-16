@@ -98,6 +98,14 @@ export interface StayItem {
 export interface UserProfile {
   name: string
   email?: string
+  nationality?: "brasileiro" | "estrangeiro"
+  cpf?: string
+  birthDate?: string
+  phone?: { dialCode: string; number: string }
+  companyName?: string
+  cnpj?: string
+  corporateEmail?: string
+  openingDate?: string
   role: string
   company: string
   city: string
@@ -1067,6 +1075,14 @@ export const STAYS: StayItem[] = [
 export const DEFAULT_USER: UserProfile = {
   name: "William Tabata",
   email: "william@tabatacapital.com",
+  nationality: "brasileiro",
+  cpf: "123.456.789-00",
+  birthDate: "15/04/1988",
+  phone: { dialCode: "55", number: "11999998888" },
+  companyName: "Tabata Capital Gestão e Participações Ltda",
+  cnpj: "12.345.678/0001-90",
+  corporateEmail: "contato@tabatacapital.com",
+  openingDate: "10/05/2018",
   role: "Sócio-diretor",
   company: "Tabata Capital",
   city: "São Paulo",
