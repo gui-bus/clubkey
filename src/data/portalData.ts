@@ -96,6 +96,7 @@ export interface UserProfile {
   company: string
   city: string
   avatar: string
+  coverImage?: string
   bio: string
   seeking: string[]
   offering: string[]
@@ -1008,6 +1009,7 @@ export const DEFAULT_USER: UserProfile = {
   company: "Tabata Capital",
   city: "São Paulo",
   avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80",
+  coverImage: "/utils/banners/pessoas.webp",
   bio: "Investidor em negócios inovadores e tecnologia. Conectando founders e gerando oportunidades estratégicas de alto impacto.",
   seeking: [
     "Novos modelos de investimento",

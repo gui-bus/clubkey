@@ -2,7 +2,22 @@
 
 import * as React from "react"
 
-import { Icon } from "@iconify/react"
+import {
+  ArrowClockwise,
+  ArrowCounterClockwise,
+  CheckCircle,
+  CloudArrowUp,
+  Crop,
+  File as FileIcon,
+  FileAudio,
+  FileImage,
+  FilePdf,
+  FileVideo,
+  Pause,
+  Play,
+  WarningCircle,
+  X,
+} from "@phosphor-icons/react"
 import { cva } from "class-variance-authority"
 
 import { cn } from "../../../lib/utils"
@@ -105,7 +120,7 @@ export function FileUpload({
   enableCrop = false,
   validationRules,
   label,
-  description = "Drag & drop files here, paste image, or click to browse",
+  description = "Arraste e solte arquivos aqui, cole uma imagem ou clique para selecionar",
   disabled = false,
   showPreviews = true,
   simulateProgress = true,
@@ -145,23 +160,25 @@ export function FileUpload({
 
         if (minWidth && width < minWidth) {
           resolve(
-            `Image width (${width}px) is less than min allowed ${minWidth}px.`
+            `A largura da imagem (${width}px) é menor que o mínimo de ${minWidth}px.`
           )
           return
         }
         if (minHeight && height < minHeight) {
           resolve(
-            `Image height (${height}px) is less than min allowed ${minHeight}px.`
+            `A altura da imagem (${height}px) é menor que o mínimo de ${minHeight}px.`
           )
           return
         }
         if (maxWidth && width > maxWidth) {
-          resolve(`Image width (${width}px) exceeds max allowed ${maxWidth}px.`)
+          resolve(
+            `A largura da imagem (${width}px) excede o máximo de ${maxWidth}px.`
+          )
           return
         }
         if (maxHeight && height > maxHeight) {
           resolve(
-            `Image height (${height}px) exceeds max allowed ${maxHeight}px.`
+            `A altura da imagem (${height}px) excede o máximo de ${maxHeight}px.`
           )
           return
         }
@@ -169,7 +186,7 @@ export function FileUpload({
           const currentRatio = width / height
           if (Math.abs(currentRatio - aspectRatio) > aspectRatioTolerance) {
             resolve(
-              `Aspect ratio (${currentRatio.toFixed(2)}) does not match required ratio (${aspectRatio.toFixed(2)}).`
+              `A proporção (${currentRatio.toFixed(2)}) não corresponde à proporção exigida (${aspectRatio.toFixed(2)}).`
             )
             return
           }
@@ -192,9 +209,9 @@ export function FileUpload({
         let errorMessage: string | undefined
 
         if (file.size > maxSizeMB * 1024 * 1024) {
-          errorMessage = `File size exceeds ${maxSizeMB}MB limit.`
+          errorMessage = `O arquivo excede o limite de ${maxSizeMB}MB.`
         } else if (accept && !matchAcceptRule(file.name, file.type, accept)) {
-          errorMessage = `Invalid file type. Allowed: ${accept}`
+          errorMessage = `Tipo de arquivo inválido. Permitido: ${accept}`
         } else {
           const valError = await _validateImageDimensions(file)
           if (valError) errorMessage = valError
@@ -356,12 +373,12 @@ export function FileUpload({
     setCropFileItem(null)
   }
 
-  const getFileIcon = (file: File) => {
-    if (file.type.startsWith("image/")) return "hugeicons:image-01"
-    if (file.type.startsWith("video/")) return "hugeicons:video-01"
-    if (file.type.startsWith("audio/")) return "hugeicons:music-note-01"
-    if (file.type.includes("pdf")) return "hugeicons:pdf-01"
-    return "hugeicons:file-02"
+  const renderFileIcon = (file: File) => {
+    if (file.type.startsWith("image/")) return <FileImage className="size-5" />
+    if (file.type.startsWith("video/")) return <FileVideo className="size-5" />
+    if (file.type.startsWith("audio/")) return <FileAudio className="size-5" />
+    if (file.type.includes("pdf")) return <FilePdf className="size-5" />
+    return <FileIcon className="size-5" />
   }
 
   return (
@@ -382,7 +399,7 @@ export function FileUpload({
         className={cn(
           fileUploadDragVariants({ variant }),
           dragActive &&
-            "border-sky-500 bg-sky-500/10 dark:border-sky-400 dark:bg-sky-400/10 scale-[1.01]",
+            "border-brand-primary bg-brand-primary/5 dark:border-brand-primary dark:bg-brand-primary/10 scale-[1.01]",
           disabled && "opacity-50 cursor-not-allowed pointer-events-none"
         )}
       >
@@ -395,15 +412,15 @@ export function FileUpload({
           onChange={(e) => handleFiles(e.target.files)}
           className="hidden"
         />
-        <div className="p-3.5 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-2xl shadow-xs mb-3 text-sky-500 dark:text-sky-400 group-hover:scale-110 transition-transform duration-200">
-          <Icon icon="hugeicons:cloud-upload" className="size-6" />
+        <div className="p-3.5 bg-zinc-50 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700 rounded-2xl shadow-xs mb-3 text-brand-primary group-hover:scale-110 transition-transform duration-200">
+          <CloudArrowUp className="size-7 text-brand-primary" />
         </div>
         <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-100 text-center">
           {description}
         </p>
         <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">
-          Max file size: {maxSizeMB}MB{" "}
-          {allowPaste && "• Paste supported (Ctrl+V)"}
+          Tamanho máx.: {maxSizeMB}MB{" "}
+          {allowPaste && "• Suporta colar (Ctrl+V)"}
         </p>
       </div>
 
@@ -441,7 +458,7 @@ export function FileUpload({
                     </div>
                   ) : (
                     <div className="size-10 rounded-xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center shrink-0 border border-zinc-200 dark:border-zinc-700 text-zinc-500">
-                      <Icon icon={getFileIcon(item.file)} className="size-5" />
+                      {renderFileIcon(item.file)}
                     </div>
                   )}
 
@@ -454,21 +471,29 @@ export function FileUpload({
                       <span
                         className={cn(
                           item.status === "completed" &&
-                            "text-emerald-500 font-semibold",
-                          item.status === "uploading" && "text-sky-500",
+                            "text-emerald-500 font-semibold inline-flex items-center gap-1",
+                          item.status === "uploading" && "text-brand-primary font-semibold",
                           item.status === "paused" &&
-                            "text-amber-500 font-semibold",
+                            "text-amber-500 font-semibold inline-flex items-center gap-1",
                           item.status === "error" &&
-                            "text-rose-600 dark:text-rose-400 font-semibold"
+                            "text-rose-600 dark:text-rose-400 font-semibold inline-flex items-center gap-1"
                         )}
                       >
-                        {item.status === "error"
-                          ? (item.errorMessage ?? "Validation Error")
-                          : item.status === "completed"
-                            ? "Completed"
-                            : item.status === "paused"
-                              ? "Paused"
-                              : `${item.progress}%`}
+                        {item.status === "error" ? (
+                          <>
+                            <WarningCircle className="size-3.5 shrink-0" />
+                            <span>{item.errorMessage ?? "Erro de validação"}</span>
+                          </>
+                        ) : item.status === "completed" ? (
+                          <>
+                            <CheckCircle className="size-3.5 shrink-0" />
+                            <span>Concluído</span>
+                          </>
+                        ) : item.status === "paused" ? (
+                          <span>Pausado</span>
+                        ) : (
+                          `${item.progress}%`
+                        )}
                       </span>
                     </span>
                   </div>
@@ -485,10 +510,10 @@ export function FileUpload({
                           setCropRotation(0)
                           setCropZoom(1)
                         }}
-                        className="p-1.5 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg text-zinc-400 hover:text-sky-500 cursor-pointer transition-colors"
-                        title="Crop & Rotate Image"
+                        className="p-1.5 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg text-zinc-400 hover:text-brand-primary cursor-pointer transition-colors"
+                        title="Recortar e girar imagem"
                       >
-                        <Icon icon="hugeicons:crop" className="size-4" />
+                        <Crop className="size-4" />
                       </button>
                     )}
                   {item.status !== "completed" && item.status !== "error" && (
@@ -496,23 +521,22 @@ export function FileUpload({
                       type="button"
                       onClick={() => togglePause(item.id)}
                       className="p-1.5 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 cursor-pointer transition-colors"
+                      title={item.status === "paused" ? "Continuar" : "Pausar"}
                     >
-                      <Icon
-                        icon={
-                          item.status === "paused"
-                            ? "hugeicons:play"
-                            : "hugeicons:pause"
-                        }
-                        className="size-4"
-                      />
+                      {item.status === "paused" ? (
+                        <Play className="size-4" />
+                      ) : (
+                        <Pause className="size-4" />
+                      )}
                     </button>
                   )}
                   <button
                     type="button"
                     onClick={() => removeFile(item.id)}
                     className="p-1.5 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg text-zinc-400 hover:text-rose-500 cursor-pointer transition-colors"
+                    title="Remover arquivo"
                   >
-                    <Icon icon="hugeicons:cancel-01" className="size-4" />
+                    <X className="size-4" />
                   </button>
                 </div>
               </div>
@@ -522,7 +546,7 @@ export function FileUpload({
                   <div
                     className={cn(
                       "h-full transition-all duration-300 rounded-full",
-                      item.status === "paused" ? "bg-amber-500" : "bg-sky-500"
+                      item.status === "paused" ? "bg-amber-500" : "bg-brand-primary"
                     )}
                     style={{ width: `${item.progress}%` }}
                   />
@@ -538,14 +562,15 @@ export function FileUpload({
           <div className="w-full max-w-md bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-6 shadow-2xl flex flex-col gap-4">
             <div className="flex items-center justify-between">
               <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-100">
-                Crop & Rotate Image
+                Recortar e Girar Imagem
               </h3>
               <button
                 type="button"
                 onClick={() => setCropFileItem(null)}
-                className="p-1 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-400"
+                className="p-1 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-400 cursor-pointer"
+                title="Fechar"
               >
-                <Icon icon="hugeicons:cancel-01" className="size-4" />
+                <X className="size-4" />
               </button>
             </div>
 
@@ -553,7 +578,7 @@ export function FileUpload({
               {cropFileItem.previewUrl && (
                 <img
                   src={cropFileItem.previewUrl}
-                  alt="Crop preview"
+                  alt="Pré-visualização de recorte"
                   className="max-h-full max-w-full object-contain transition-transform duration-200"
                   style={{
                     transform: `rotate(${cropRotation}deg) scale(${cropZoom})`,
@@ -567,18 +592,18 @@ export function FileUpload({
                 <button
                   type="button"
                   onClick={() => setCropRotation((r) => (r - 90) % 360)}
-                  className="p-2 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300"
-                  title="Rotate Left"
+                  className="p-2 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 cursor-pointer"
+                  title="Girar para a esquerda"
                 >
-                  <Icon icon="hugeicons:rotate-left" className="size-4" />
+                  <ArrowCounterClockwise className="size-4" />
                 </button>
                 <button
                   type="button"
                   onClick={() => setCropRotation((r) => (r + 90) % 360)}
-                  className="p-2 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300"
-                  title="Rotate Right"
+                  className="p-2 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 cursor-pointer"
+                  title="Girar para a direita"
                 >
-                  <Icon icon="hugeicons:rotate-right" className="size-4" />
+                  <ArrowClockwise className="size-4" />
                 </button>
               </div>
 
@@ -591,7 +616,7 @@ export function FileUpload({
                   step="0.1"
                   value={cropZoom}
                   onChange={(e) => setCropZoom(Number(e.target.value))}
-                  className="w-24 accent-sky-500"
+                  className="w-24 accent-brand-primary"
                 />
               </div>
             </div>
@@ -600,16 +625,16 @@ export function FileUpload({
               <button
                 type="button"
                 onClick={() => setCropFileItem(null)}
-                className="px-4 py-2 text-xs font-semibold rounded-xl border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+                className="px-4 py-2 text-xs font-semibold rounded-xl border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
               >
-                Cancel
+                Cancelar
               </button>
               <button
                 type="button"
                 onClick={handleApplyCrop}
-                className="px-4 py-2 text-xs font-semibold rounded-xl bg-sky-600 hover:bg-sky-500 text-white transition-colors"
+                className="px-4 py-2 text-xs font-semibold rounded-xl bg-brand-primary hover:bg-brand-primary/90 text-white transition-colors cursor-pointer"
               >
-                Apply Changes
+                Aplicar Alterações
               </button>
             </div>
           </div>

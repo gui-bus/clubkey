@@ -89,7 +89,8 @@ export function Navbar({
       (pathname?.startsWith("/agenda/") && pathname !== "/agenda") ||
       (pathname?.startsWith("/experiencias/") && pathname !== "/experiencias") ||
       (pathname?.startsWith("/conexoes/") && pathname !== "/conexoes") ||
-      (pathname?.startsWith("/pessoas/") && pathname !== "/pessoas"))
+      (pathname?.startsWith("/pessoas/") && pathname !== "/pessoas") ||
+      pathname === "/perfil")
   )
 
   const isPortalRoute = Boolean(
@@ -363,7 +364,9 @@ export function Navbar({
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <button
+                    id="navbar-profile-dropdown-trigger"
                     type="button"
+                    suppressHydrationWarning
                     className="cursor-pointer outline-none select-none text-left flex items-center gap-2.5 transition-opacity hover:opacity-90 py-1 bg-transparent border-0"
                   >
                     <Avatar

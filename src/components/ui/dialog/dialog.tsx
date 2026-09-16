@@ -1,6 +1,6 @@
 "use client";
 
-import { Icon } from "@iconify/react";
+import { X } from "@phosphor-icons/react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import * as React from "react";
 import { cn } from "../../../lib/utils";
@@ -91,10 +91,7 @@ const DialogContent = React.forwardRef<
         >
           {children}
           <DialogPrimitive.Close className="absolute right-4 top-4 rounded-full p-2 opacity-70 transition-all hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-sky-500/40 disabled:pointer-events-none hover:bg-zinc-100 dark:hover:bg-zinc-800 cursor-pointer">
-            <Icon
-              icon="hugeicons:cancel-01"
-              className="size-4 text-zinc-500 dark:text-zinc-400"
-            />
+            <X className="size-4 text-zinc-500 dark:text-zinc-400" />
             <span className="sr-only">Close</span>
           </DialogPrimitive.Close>
         </DialogPrimitive.Content>
