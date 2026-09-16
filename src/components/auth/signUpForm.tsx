@@ -13,36 +13,39 @@ import { CtaButton } from "@/src/components/common/ctaButton"
 import { Input } from "@/src/components/ui/input/input"
 import { PasswordInput } from "@/src/components/ui/passwordInput/passwordInput"
 import { maskCpf, maskCnpj, maskDate } from "@/src/lib/masks"
-import { type SignUpPjFormData, signUpPjSchema } from "@/src/schemas/auth.schema"
+import { cn } from "@/src/lib/utils"
+import { type SignUpFormData, signUpSchema } from "@/src/schemas/auth.schema"
 
-export interface SignUpPjFormProps {
+export interface SignUpFormProps {
   onSuccess: (email: string) => void
 }
 
-export function SignUpPjForm({ onSuccess }: SignUpPjFormProps): React.JSX.Element {
+export function SignUpForm({ onSuccess }: SignUpFormProps): React.JSX.Element {
   const [isLoading, setIsLoading] = React.useState(false)
 
   const {
     register,
-    control,
     handleSubmit,
+    control,
     watch,
     setValue,
     clearErrors,
     trigger,
     formState: { errors },
-  } = useForm<SignUpPjFormData>({
-    resolver: zodResolver(signUpPjSchema),
+  } = useForm<SignUpFormData>({
+    resolver: zodResolver(signUpSchema),
     mode: "onSubmit",
     defaultValues: {
-      accountType: "pj",
-      companyName: "",
-      corporateEmail: "",
-      responsibleName: "",
-      cnpj: "",
-      responsibleCpf: "",
-      openingDate: "",
+      nationality: "brasileiro",
+      fullName: "",
+      email: "",
+      cpf: "",
+      birthDate: "",
       phone: { dialCode: "55", number: "" },
+      companyName: "",
+      cnpj: "",
+      corporateEmail: "",
+      openingDate: "",
       password: "",
       confirmPassword: "",
       hasReferral: false,
@@ -51,14 +54,15 @@ export function SignUpPjForm({ onSuccess }: SignUpPjFormProps): React.JSX.Elemen
     },
   })
 
+  const nationality = watch("nationality")
   const hasReferral = watch("hasReferral")
 
-  const onSubmit = (data: SignUpPjFormData) => {
+  const onSubmit = (data: SignUpFormData) => {
     setIsLoading(true)
     setTimeout(() => {
       setIsLoading(false)
-      toast.success("Conta empresarial criada com sucesso! Verifique seu e-mail corporativo.")
-      onSuccess(data.corporateEmail)
+      toast.success("Conta criada com sucesso! Verifique seu e-mail.")
+      onSuccess(data.email)
     }, 800)
   }
 
@@ -67,147 +71,150 @@ export function SignUpPjForm({ onSuccess }: SignUpPjFormProps): React.JSX.Elemen
       <div className="space-y-6 w-full">
         <div className="border-b border-zinc-200 dark:border-zinc-800 pb-3">
           <h2 className="text-base font-bold uppercase tracking-wider text-zinc-900 dark:text-white font-heading">
-            Dados da Empresa & Responsável
+            Dados Pessoais
           </h2>
           <p className="text-xs text-zinc-500 dark:text-zinc-400 font-light mt-0.5">
-            Preencha as informações corporativas e do representante legal
+            Preencha suas informações de identificação
           </p>
+        </div>
+
+        <div className="flex flex-col gap-1.5 w-full">
+          <label className="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
+            Nacionalidade
+          </label>
+          <div className="grid grid-cols-2 gap-3">
+            <button
+              type="button"
+              onClick={() => {
+                setValue("nationality", "brasileiro")
+                setValue("cpf", "")
+                clearErrors("cpf")
+              }}
+              className={cn(
+                "h-11 px-4 rounded-sm border text-xs font-bold uppercase tracking-wider transition-all cursor-pointer",
+                nationality === "brasileiro"
+                  ? "border-brand-primary bg-brand-primary/10 text-brand-primary"
+                  : "border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 hover:border-zinc-300"
+              )}
+            >
+              Brasileiro
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setValue("nationality", "estrangeiro")
+                setValue("cpf", "")
+                clearErrors("cpf")
+              }}
+              className={cn(
+                "h-11 px-4 rounded-sm border text-xs font-bold uppercase tracking-wider transition-all cursor-pointer",
+                nationality === "estrangeiro"
+                  ? "border-brand-primary bg-brand-primary/10 text-brand-primary"
+                  : "border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 hover:border-zinc-300"
+              )}
+            >
+              Estrangeiro
+            </button>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <div className="flex flex-col gap-1.5">
             <label className="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
-              Razão social
+              Nome completo
             </label>
             <Input
-              placeholder="Razão social da empresa"
-              variant={errors.companyName ? "error" : "default"}
+              placeholder="Nome completo"
+              variant={errors.fullName ? "error" : "default"}
               disabled={isLoading}
-              {...register("companyName")}
+              {...register("fullName")}
             />
-            {errors.companyName && (
-              <span className="text-xs text-red-500">{errors.companyName.message}</span>
+            {errors.fullName && (
+              <span className="text-xs text-red-500">{errors.fullName.message}</span>
             )}
           </div>
 
           <div className="flex flex-col gap-1.5">
             <label className="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
-              E-mail corporativo
+              E-mail
             </label>
             <Input
               type="email"
-              placeholder="contato@empresa.com"
-              variant={errors.corporateEmail ? "error" : "default"}
+              placeholder="seu@email.com"
+              variant={errors.email ? "error" : "default"}
               disabled={isLoading}
-              {...register("corporateEmail")}
+              {...register("email")}
             />
-            {errors.corporateEmail && (
-              <span className="text-xs text-red-500">{errors.corporateEmail.message}</span>
+            {errors.email && (
+              <span className="text-xs text-red-500">{errors.email.message}</span>
             )}
           </div>
 
           <div className="flex flex-col gap-1.5">
             <label className="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
-              CNPJ da empresa
+              {nationality === "brasileiro" ? "CPF" : "Documento de Identificação"}
             </label>
             <Controller
-              name="cnpj"
+              name="cpf"
               control={control}
               render={({ field }) => (
                 <Input
                   value={field.value}
                   onChange={(e) => {
-                    const formatted = maskCnpj(e.target.value)
+                    const formatted =
+                      nationality === "brasileiro" ? maskCpf(e.target.value) : e.target.value
                     field.onChange(formatted)
-                    if (formatted.length === 18) {
-                      trigger("cnpj")
-                    } else if (errors.cnpj && formatted.length < 18) {
-                      clearErrors("cnpj")
+                    if (nationality === "brasileiro") {
+                      if (formatted.length === 14) {
+                        trigger("cpf")
+                      } else if (errors.cpf && formatted.length < 14) {
+                        clearErrors("cpf")
+                      }
+                    } else {
+                      if (errors.cpf && formatted.trim().length >= 4) {
+                        clearErrors("cpf")
+                      }
                     }
                   }}
                   onBlur={field.onBlur}
-                  placeholder="00.000.000/0000-00"
-                  variant={errors.cnpj ? "error" : "default"}
+                  placeholder={
+                    nationality === "brasileiro" ? "000.000.000-00" : "Número do documento"
+                  }
+                  variant={errors.cpf ? "error" : "default"}
                   disabled={isLoading}
                 />
               )}
             />
-            {errors.cnpj && (
-              <span className="text-xs text-red-500">{errors.cnpj.message}</span>
+            {errors.cpf && (
+              <span className="text-xs text-red-500">{errors.cpf.message}</span>
             )}
           </div>
 
           <div className="flex flex-col gap-1.5">
             <label className="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
-              Data de abertura
+              Data de nascimento
             </label>
             <Controller
-              name="openingDate"
+              name="birthDate"
               control={control}
               render={({ field }) => (
                 <Input
                   value={field.value}
                   onChange={(e) => field.onChange(maskDate(e.target.value))}
                   placeholder="DD/MM/AAAA"
-                  variant={errors.openingDate ? "error" : "default"}
+                  variant={errors.birthDate ? "error" : "default"}
                   disabled={isLoading}
                 />
               )}
             />
-            {errors.openingDate && (
-              <span className="text-xs text-red-500">{errors.openingDate.message}</span>
-            )}
-          </div>
-
-          <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
-              Nome completo do responsável
-            </label>
-            <Input
-              placeholder="Nome do responsável"
-              variant={errors.responsibleName ? "error" : "default"}
-              disabled={isLoading}
-              {...register("responsibleName")}
-            />
-            {errors.responsibleName && (
-              <span className="text-xs text-red-500">{errors.responsibleName.message}</span>
-            )}
-          </div>
-
-          <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
-              CPF do responsável
-            </label>
-            <Controller
-              name="responsibleCpf"
-              control={control}
-              render={({ field }) => (
-                <Input
-                  value={field.value}
-                  onChange={(e) => {
-                    const formatted = maskCpf(e.target.value)
-                    field.onChange(formatted)
-                    if (formatted.length === 14) {
-                      trigger("responsibleCpf")
-                    } else if (errors.responsibleCpf && formatted.length < 14) {
-                      clearErrors("responsibleCpf")
-                    }
-                  }}
-                  onBlur={field.onBlur}
-                  placeholder="000.000.000-00"
-                  variant={errors.responsibleCpf ? "error" : "default"}
-                  disabled={isLoading}
-                />
-              )}
-            />
-            {errors.responsibleCpf && (
-              <span className="text-xs text-red-500">{errors.responsibleCpf.message}</span>
+            {errors.birthDate && (
+              <span className="text-xs text-red-500">{errors.birthDate.message}</span>
             )}
           </div>
 
           <div className="flex flex-col gap-1.5 md:col-span-2">
             <label className="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
-              Telefone corporativo
+              Telefone celular
             </label>
             <Controller
               name="phone"
@@ -221,6 +228,108 @@ export function SignUpPjForm({ onSuccess }: SignUpPjFormProps): React.JSX.Elemen
                 />
               )}
             />
+          </div>
+        </div>
+      </div>
+
+      <div className="space-y-6 w-full">
+        <div className="border-b border-zinc-200 dark:border-zinc-800 pb-3 flex items-center justify-between">
+          <div>
+            <h2 className="text-base font-bold uppercase tracking-wider text-zinc-900 dark:text-white font-heading">
+              Dados da Empresa
+            </h2>
+            <p className="text-xs text-zinc-500 dark:text-zinc-400 font-light mt-0.5">
+              Opcional — preencha caso queira vincular sua empresa
+            </p>
+          </div>
+          <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">
+            Opcional
+          </span>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div className="flex flex-col gap-1.5">
+            <label className="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
+              Razão social
+            </label>
+            <Input
+              placeholder="Razão social da empresa (opcional)"
+              variant={errors.companyName ? "error" : "default"}
+              disabled={isLoading}
+              {...register("companyName")}
+            />
+            {errors.companyName && (
+              <span className="text-xs text-red-500">{errors.companyName.message}</span>
+            )}
+          </div>
+
+          <div className="flex flex-col gap-1.5">
+            <label className="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
+              CNPJ da empresa
+            </label>
+            <Controller
+              name="cnpj"
+              control={control}
+              render={({ field }) => (
+                <Input
+                  value={field.value || ""}
+                  onChange={(e) => {
+                    const formatted = maskCnpj(e.target.value)
+                    field.onChange(formatted)
+                    if (formatted.length === 18) {
+                      trigger("cnpj")
+                    } else if (errors.cnpj && formatted.length < 18) {
+                      clearErrors("cnpj")
+                    }
+                  }}
+                  onBlur={field.onBlur}
+                  placeholder="00.000.000/0000-00 (opcional)"
+                  variant={errors.cnpj ? "error" : "default"}
+                  disabled={isLoading}
+                />
+              )}
+            />
+            {errors.cnpj && (
+              <span className="text-xs text-red-500">{errors.cnpj.message}</span>
+            )}
+          </div>
+
+          <div className="flex flex-col gap-1.5">
+            <label className="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
+              E-mail corporativo
+            </label>
+            <Input
+              type="email"
+              placeholder="contato@empresa.com (opcional)"
+              variant={errors.corporateEmail ? "error" : "default"}
+              disabled={isLoading}
+              {...register("corporateEmail")}
+            />
+            {errors.corporateEmail && (
+              <span className="text-xs text-red-500">{errors.corporateEmail.message}</span>
+            )}
+          </div>
+
+          <div className="flex flex-col gap-1.5">
+            <label className="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
+              Data de abertura
+            </label>
+            <Controller
+              name="openingDate"
+              control={control}
+              render={({ field }) => (
+                <Input
+                  value={field.value || ""}
+                  onChange={(e) => field.onChange(maskDate(e.target.value))}
+                  placeholder="DD/MM/AAAA (opcional)"
+                  variant={errors.openingDate ? "error" : "default"}
+                  disabled={isLoading}
+                />
+              )}
+            />
+            {errors.openingDate && (
+              <span className="text-xs text-red-500">{errors.openingDate.message}</span>
+            )}
           </div>
         </div>
       </div>
@@ -279,12 +388,12 @@ export function SignUpPjForm({ onSuccess }: SignUpPjFormProps): React.JSX.Elemen
         <div className="flex flex-col gap-3 pt-2">
           <div className="flex items-center gap-2.5">
             <Checkbox
-              id="pj-referral-check"
+              id="referral-check"
               checked={hasReferral}
               onCheckedChange={(checked) => setValue("hasReferral", checked === true, { shouldValidate: true })}
             />
             <label
-              htmlFor="pj-referral-check"
+              htmlFor="referral-check"
               className="text-xs font-bold uppercase tracking-wider text-zinc-800 dark:text-zinc-200 cursor-pointer select-none"
             >
               Possuo uma indicação

@@ -49,9 +49,8 @@ export const resetPasswordSchema = z
 
 export type ResetPasswordFormData = z.infer<typeof resetPasswordSchema>
 
-export const signUpPfSchema = z
+export const signUpSchema = z
   .object({
-    accountType: z.literal("pf"),
     nationality: z.enum(["brasileiro", "estrangeiro"]),
     fullName: z.string().min(3, "Informe seu nome completo."),
     email: z
@@ -61,6 +60,10 @@ export const signUpPfSchema = z
     cpf: z.string().min(1, "Informe seu CPF ou documento."),
     birthDate: z.string().min(10, "Informe a data de nascimento (DD/MM/AAAA)."),
     phone: phoneSchema,
+    companyName: z.string().optional(),
+    cnpj: z.string().optional(),
+    corporateEmail: z.string().optional(),
+    openingDate: z.string().optional(),
     password: passwordSchema,
     confirmPassword: z.string().min(1, "Confirme sua senha."),
     hasReferral: z.boolean(),
@@ -90,57 +93,6 @@ export const signUpPfSchema = z
       }
     }
 
-    if (data.password !== data.confirmPassword) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "As senhas não coincidem.",
-        path: ["confirmPassword"],
-      })
-    }
-
-    if (data.hasReferral) {
-      if (!data.referralCode || data.referralCode.trim().length === 0) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: "Informe o e-mail de quem indicou.",
-          path: ["referralCode"],
-        })
-      } else if (
-        !z.string().email().safeParse(data.referralCode.trim()).success
-      ) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: "Informe um e-mail válido para a indicação.",
-          path: ["referralCode"],
-        })
-      }
-    }
-  })
-
-export type SignUpPfFormData = z.infer<typeof signUpPfSchema>
-
-export const signUpPjSchema = z
-  .object({
-    accountType: z.literal("pj"),
-    companyName: z.string().min(2, "Informe a razão social."),
-    corporateEmail: z
-      .string()
-      .min(1, "Informe o e-mail corporativo.")
-      .email("Informe um e-mail corporativo válido."),
-    responsibleName: z.string().min(3, "Informe o nome do responsável."),
-    cnpj: z.string().min(1, "Informe o CNPJ da empresa."),
-    responsibleCpf: z.string().min(1, "Informe o CPF do responsável."),
-    openingDate: z.string().min(10, "Informe a data de abertura (DD/MM/AAAA)."),
-    phone: phoneSchema,
-    password: passwordSchema,
-    confirmPassword: z.string().min(1, "Confirme sua senha."),
-    hasReferral: z.boolean(),
-    referralCode: z.string().optional(),
-    acceptedTerms: z.boolean().refine((val) => val === true, {
-      message: "Você precisa aceitar os termos e políticas para prosseguir.",
-    }),
-  })
-  .superRefine((data, ctx) => {
     if (data.cnpj && data.cnpj.trim().length > 0) {
       if (!isValidCnpj(data.cnpj)) {
         ctx.addIssue({
@@ -151,12 +103,12 @@ export const signUpPjSchema = z
       }
     }
 
-    if (data.responsibleCpf && data.responsibleCpf.trim().length > 0) {
-      if (!isValidCpf(data.responsibleCpf)) {
+    if (data.corporateEmail && data.corporateEmail.trim().length > 0) {
+      if (!z.string().email().safeParse(data.corporateEmail.trim()).success) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          message: "CPF do responsável inválido.",
-          path: ["responsibleCpf"],
+          message: "Informe um e-mail corporativo válido.",
+          path: ["corporateEmail"],
         })
       }
     }
@@ -188,4 +140,7 @@ export const signUpPjSchema = z
     }
   })
 
-export type SignUpPjFormData = z.infer<typeof signUpPjSchema>
+export type SignUpFormData = z.infer<typeof signUpSchema>
+
+export const signUpPfSchema = signUpSchema
+export type SignUpPfFormData = SignUpFormData

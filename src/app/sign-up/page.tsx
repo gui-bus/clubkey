@@ -1,23 +1,17 @@
 "use client"
 
 import * as React from "react"
-import { Buildings, User } from "@phosphor-icons/react"
 
 import { EmailVerification } from "@/src/components/auth/emailVerification"
-import { SignUpPfForm } from "@/src/components/auth/signUpPfForm"
-import { SignUpPjForm } from "@/src/components/auth/signUpPjForm"
+import { SignUpForm } from "@/src/components/auth/signUpForm"
 import { Container } from "@/src/components/common/container"
 import { FloatingCta } from "@/src/components/landing/FloatingCta"
 import { Footer } from "@/src/components/landing/Footer"
 import { Navbar } from "@/src/components/landing/Navbar"
 import { TopBanner } from "@/src/components/landing/TopBanner"
 import { brandConfig } from "@/src/config/brand.config"
-import { cn } from "@/src/lib/utils"
-
-type AccountType = "pf" | "pj"
 
 export default function SignUpPage(): React.JSX.Element {
-  const [accountType, setAccountType] = React.useState<AccountType>("pf")
   const [isVerifyingEmail, setIsVerifyingEmail] = React.useState(false)
   const [registeredEmail, setRegisteredEmail] = React.useState("")
 
@@ -49,45 +43,7 @@ export default function SignUpPage(): React.JSX.Element {
                   </p>
                 </div>
 
-                <div className="flex flex-col gap-3 w-full">
-                  <label className="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
-                    Escolha o tipo de conta
-                  </label>
-                  <div className="grid grid-cols-2 gap-3 p-1.5 rounded-sm bg-zinc-200/70 dark:bg-zinc-800/60 border border-zinc-300/80 dark:border-zinc-700 w-full">
-                    <button
-                      type="button"
-                      onClick={() => setAccountType("pf")}
-                      className={cn(
-                        "py-3 px-4 rounded-sm font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all cursor-pointer",
-                        accountType === "pf"
-                          ? "bg-white dark:bg-zinc-900 text-brand-primary shadow-sm"
-                          : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white"
-                      )}
-                    >
-                      <User className="w-4 h-4" />
-                      <span>Pessoa Física</span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setAccountType("pj")}
-                      className={cn(
-                        "py-3 px-4 rounded-sm font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all cursor-pointer",
-                        accountType === "pj"
-                          ? "bg-white dark:bg-zinc-900 text-brand-primary shadow-sm"
-                          : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white"
-                      )}
-                    >
-                      <Buildings className="w-4 h-4" />
-                      <span>Pessoa Jurídica</span>
-                    </button>
-                  </div>
-                </div>
-
-                {accountType === "pf" ? (
-                  <SignUpPfForm onSuccess={handleSuccess} />
-                ) : (
-                  <SignUpPjForm onSuccess={handleSuccess} />
-                )}
+                <SignUpForm onSuccess={handleSuccess} />
               </div>
             )}
           </div>

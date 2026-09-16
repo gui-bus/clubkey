@@ -46,6 +46,7 @@ import {
   DialogTitle,
 } from "@/src/components/ui/dialog/dialog"
 import { FileUpload } from "@/src/components/ui/fileUpload/fileUpload"
+import { ImageCropper, type ImageCropperRef } from "@/src/components/ui/imageCropper/imageCropper"
 import { InputOtp } from "@/src/components/ui/inputOtp/inputOtp"
 import { TagInput } from "@/src/components/ui/tagInput/tagInput"
 import { toast } from "@/src/components/ui/toast/toast"
@@ -72,6 +73,7 @@ export default function ProfilePage(): React.JSX.Element {
 
   const mounted = useMounted()
   const [isModalOpen, setIsModalOpen] = React.useState(false)
+  const [isAvatarModalOpen, setIsAvatarModalOpen] = React.useState(false)
   const [is2FAModalOpen, setIs2FAModalOpen] = React.useState(false)
   const [otpCode, setOtpCode] = React.useState("")
   const [otpError, setOtpError] = React.useState(false)
@@ -79,6 +81,9 @@ export default function ProfilePage(): React.JSX.Element {
   const [pendingCover, setPendingCover] = React.useState(
     userProfile.coverImage || "/utils/banners/pessoas.webp"
   )
+  const [uploadedAvatarSrc, setUploadedAvatarSrc] = React.useState<string | null>(null)
+  const [croppedAvatarBase64, setCroppedAvatarBase64] = React.useState<string | null>(null)
+  const cropperRef = React.useRef<ImageCropperRef>(null)
 
   const [formData, setFormData] = React.useState({
     name: userProfile.name,
@@ -156,25 +161,63 @@ export default function ProfilePage(): React.JSX.Element {
     }
   }
 
-  return (
-    <div className="w-full flex flex-col">
-      <Container className="py-8 sm:py-10 space-y-8">
-        <div className="relative rounded-sm overflow-hidden border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] shadow-xs">
-          <div className="relative w-full h-44 sm:h-56 md:h-64 bg-zinc-950 overflow-hidden">
-            {mounted ? (
-              <Image
-                src={userProfile.coverImage || "/utils/banners/pessoas.webp"}
-                alt="Capa do perfil"
-                fill
-                priority
-                className="object-cover object-center opacity-40 dark:opacity-30 transition-opacity duration-300"
-              />
-            ) : (
-              <div className="w-full h-full bg-zinc-950" />
-            )}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/20" />
+  const handleAvatarFilesSelected = (files: File[]) => {
+    if (files.length > 0) {
+      const file = files[0]
+      const reader = new FileReader()
+      reader.onload = (event) => {
+        if (typeof event.target?.result === "string") {
+          setUploadedAvatarSrc(event.target.result)
+          setCroppedAvatarBase64(null)
+        }
+      }
+      reader.readAsDataURL(file)
+    }
+  }
 
-            <div className="absolute top-4 right-4 z-10">
+  const handleSaveAvatar = () => {
+    const cropped =
+      cropperRef.current?.crop() || croppedAvatarBase64 || uploadedAvatarSrc
+    if (cropped) {
+      updateProfile({ avatar: cropped })
+      setIsAvatarModalOpen(false)
+      setUploadedAvatarSrc(null)
+      setCroppedAvatarBase64(null)
+      toast.success("Foto de perfil atualizada!", {
+        description: "Sua nova foto já está visível em todo o portal.",
+      })
+    }
+  }
+
+  return (
+    <div className="w-full flex flex-col pb-20 space-y-10">
+      <div className="relative w-full h-56 sm:h-72 md:h-80 bg-zinc-950 overflow-hidden">
+        {mounted ? (
+          <Image
+            src={userProfile.coverImage || "/utils/banners/pessoas.webp"}
+            alt="Capa do perfil"
+            fill
+            priority
+            className="object-cover object-center opacity-40 dark:opacity-30 transition-opacity duration-300"
+          />
+        ) : (
+          <div className="w-full h-full bg-zinc-950" />
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/20" />
+
+        <Container className="relative z-10 h-full flex flex-col justify-between py-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <span className="text-xs font-black uppercase tracking-widest text-brand-primary">
+                Meu Perfil
+              </span>
+              <span className="text-white/60 hidden sm:inline">/</span>
+              <span className="text-xs font-bold text-white truncate max-w-xs sm:max-w-md hidden sm:inline">
+                {userProfile.name}
+              </span>
+            </div>
+
+            <div className="flex items-center gap-2 self-start sm:self-auto">
               <CtaButton
                 type="button"
                 variant="secondary"
@@ -195,52 +238,75 @@ export default function ProfilePage(): React.JSX.Element {
               </CtaButton>
             </div>
           </div>
+        </Container>
+      </div>
 
-          <div className="px-6 sm:px-8 pb-6 sm:pb-8 pt-0">
-            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-5 -mt-14 sm:-mt-16 relative z-10 mb-5">
-              <Avatar
-                size="3xl"
-                radius="full"
-                className="w-28 h-28 sm:w-32 sm:h-32 ring-4 ring-white dark:ring-[#141416] shadow-lg shrink-0 border border-zinc-200 dark:border-zinc-700 bg-zinc-900"
-              >
-                {mounted && userProfile.avatar ? (
-                  <AvatarImage
-                    src={userProfile.avatar}
-                    alt={userProfile.name}
-                    className="object-cover object-top"
-                  />
-                ) : null}
-                <AvatarFallback className="font-black text-2xl bg-zinc-900 text-white dark:bg-zinc-800">
-                  {getInitials(userProfile.name)}
-                </AvatarFallback>
-              </Avatar>
-
-              <div className="flex items-center gap-2 self-start sm:self-auto">
-                <CtaButton
-                  href="/perfil/minha-assinatura"
-                  variant="secondary"
-                  size="sm"
-                  className="text-xs"
+      <Container className="space-y-10">
+        <div className="space-y-6">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-5 -mt-20 sm:-mt-24 relative z-20">
+            <div className="flex flex-col sm:flex-row sm:items-end gap-5">
+              <div className="relative group/avatar inline-block shrink-0">
+                <Avatar
+                  size="3xl"
+                  radius="full"
+                  className="w-28 h-28 sm:w-36 sm:h-36 ring-4 ring-[#F1F1F1] dark:ring-[#161616] shadow-xl shrink-0 border border-zinc-200 dark:border-zinc-700 bg-zinc-900 overflow-hidden cursor-pointer"
                 >
-                  <CreditCard className="w-4 h-4 mr-2 text-brand-primary" />
-                  <span>Gerenciar Assinatura</span>
-                  <ArrowRight className="w-3.5 h-3.5 ml-2" />
-                </CtaButton>
-              </div>
-            </div>
+                  {mounted && userProfile.avatar ? (
+                    <AvatarImage
+                      src={userProfile.avatar}
+                      alt={userProfile.name}
+                      className="object-cover object-top"
+                    />
+                  ) : null}
+                  <AvatarFallback className="font-black text-2xl bg-zinc-900 text-white dark:bg-zinc-800">
+                    {getInitials(userProfile.name)}
+                  </AvatarFallback>
+                </Avatar>
 
-            <div className="space-y-3 pb-6 border-b border-zinc-100 dark:border-zinc-800">
-              <div>
-                <h2 className="text-xl sm:text-2xl font-heading font-black uppercase tracking-tight text-zinc-900 dark:text-white">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setUploadedAvatarSrc(null)
+                    setCroppedAvatarBase64(null)
+                    setIsAvatarModalOpen(true)
+                  }}
+                  className="absolute inset-0 rounded-full bg-black/60 backdrop-blur-xs opacity-0 group-hover/avatar:opacity-100 transition-all duration-200 flex flex-col items-center justify-center gap-1 text-white cursor-pointer z-10"
+                  aria-label="Alterar foto de perfil"
+                >
+                  <PencilSimple className="w-5 h-5 text-white animate-fade-in" />
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-white drop-shadow-sm">
+                    Alterar
+                  </span>
+                </button>
+              </div>
+
+              <div className="min-w-0 pb-1">
+                <h1 className="text-2xl sm:text-3xl md:text-4xl font-heading font-black uppercase tracking-tight text-zinc-900 dark:text-white truncate">
                   {userProfile.name}
-                </h2>
-                <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400">
-                  {userProfile.role} • {userProfile.company}
+                </h1>
+                <p className="text-sm sm:text-base font-semibold text-zinc-900 dark:text-white mt-0.5 truncate">
+                  {userProfile.role} na {userProfile.company}
                 </p>
               </div>
             </div>
 
-          <form onSubmit={handleSave} className="space-y-6 pt-6">
+            <div className="flex items-center gap-2 self-start sm:self-auto">
+              <CtaButton
+                href="/perfil/minha-assinatura"
+                variant="secondary"
+                size="sm"
+                className="text-xs"
+              >
+                <CreditCard className="w-4 h-4 mr-2 text-brand-primary" />
+                <span>Gerenciar Assinatura</span>
+                <ArrowRight className="w-3.5 h-3.5 ml-2" />
+              </CtaButton>
+            </div>
+          </div>
+        </div>
+
+        <div className="p-6 sm:p-8 rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] shadow-xs space-y-8">
+          <form onSubmit={handleSave} className="space-y-6">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
               <div className="space-y-1.5">
                 <label className="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 flex items-center gap-1.5">
@@ -489,7 +555,6 @@ export default function ProfilePage(): React.JSX.Element {
             </div>
           </div>
         </div>
-      </div>
       </Container>
 
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
@@ -617,20 +682,26 @@ export default function ProfilePage(): React.JSX.Element {
             </div>
           </div>
 
-          <DialogFooter className="pt-3 border-t border-zinc-100 dark:border-zinc-800">
+          <DialogFooter className="pt-3 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-end gap-2.5">
             <DialogClose asChild>
-              <Button variant="flat" size="sm" className="font-bold text-xs uppercase tracking-wider">
+              <CtaButton
+                type="button"
+                variant="secondary"
+                size="xs"
+                className="text-xs"
+              >
                 Cancelar
-              </Button>
+              </CtaButton>
             </DialogClose>
-            <Button
-              color="primary"
-              size="sm"
+            <CtaButton
+              type="button"
+              variant="primary"
+              size="xs"
               onClick={handleApplyCover}
-              className="font-bold text-xs uppercase tracking-wider"
+              className="text-xs"
             >
               Salvar Capa
-            </Button>
+            </CtaButton>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -744,6 +815,89 @@ export default function ProfilePage(): React.JSX.Element {
               </div>
               <span>Confirmar & Ativar (+250 XP)</span>
             </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={isAvatarModalOpen} onOpenChange={setIsAvatarModalOpen}>
+        <DialogContent size="lg" className="max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="text-xl font-heading font-black uppercase tracking-tight text-zinc-900 dark:text-white flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-sm bg-brand-primary/10 flex items-center justify-center text-brand-primary shrink-0">
+                <PencilSimple className="w-4 h-4" />
+              </div>
+              <span>Editar Foto de Perfil</span>
+            </DialogTitle>
+            <DialogDescription className="text-xs text-zinc-500 dark:text-zinc-400">
+              Selecione uma imagem e ajuste o enquadramento circular para o seu avatar.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-6 py-2">
+            {!uploadedAvatarSrc ? (
+              <FileUpload
+                label="Foto de Perfil"
+                description="Arraste ou selecione uma foto (PNG, JPG, WEBP até 10MB)"
+                accept="image/*"
+                maxSizeMB={10}
+                showPreviews={false}
+                simulateProgress={false}
+                onFilesSelected={handleAvatarFilesSelected}
+                variant="default"
+              />
+            ) : (
+              <div className="space-y-4">
+                <div className="flex items-center justify-between pb-2 border-b border-zinc-100 dark:border-zinc-800">
+                  <span className="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
+                    Ajustar Enquadramento
+                  </span>
+                  <Button
+                    type="button"
+                    variant="light"
+                    size="xs"
+                    onClick={() => {
+                      setUploadedAvatarSrc(null)
+                      setCroppedAvatarBase64(null)
+                    }}
+                    className="text-xs font-bold text-brand-primary hover:underline cursor-pointer"
+                  >
+                    Escolher outra foto
+                  </Button>
+                </div>
+
+                <ImageCropper
+                  ref={cropperRef}
+                  src={uploadedAvatarSrc}
+                  aspectRatio={1}
+                  circular={true}
+                  showCropButton={false}
+                  onCrop={(base64) => setCroppedAvatarBase64(base64)}
+                />
+              </div>
+            )}
+          </div>
+
+          <DialogFooter className="pt-3 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-end gap-2.5">
+            <DialogClose asChild>
+              <CtaButton
+                type="button"
+                variant="secondary"
+                size="xs"
+                className="text-xs"
+              >
+                Cancelar
+              </CtaButton>
+            </DialogClose>
+            <CtaButton
+              type="button"
+              variant="primary"
+              size="xs"
+              disabled={!uploadedAvatarSrc}
+              onClick={handleSaveAvatar}
+              className="text-xs disabled:opacity-50 disabled:pointer-events-none"
+            >
+              Salvar Foto
+            </CtaButton>
           </DialogFooter>
         </DialogContent>
       </Dialog>

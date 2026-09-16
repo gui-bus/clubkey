@@ -284,44 +284,48 @@ export function Navbar({
               )}
             </Link>
 
-            <div
-              className={cn(
-                "h-4 sm:h-4.5 w-px",
-                isDarkBar
-                  ? "bg-white/20"
-                  : "bg-zinc-300 dark:bg-zinc-700"
-              )}
-            />
+            {isAuthenticated && (
+              <>
+                <div
+                  className={cn(
+                    "h-4 sm:h-4.5 w-px",
+                    isDarkBar
+                      ? "bg-white/20"
+                      : "bg-zinc-300 dark:bg-zinc-700"
+                  )}
+                />
 
-            <Link
-              href="/keypass"
-              className="flex items-center transition-opacity hover:opacity-90"
-              title="KeyPass"
-              aria-label="KeyPass"
-            >
-              <div className="relative h-6 sm:h-7 w-20 sm:w-24">
-                <Image
-                  src="/logos/gamification/keypass_logo_black.svg"
-                  alt="KeyPass"
-                  fill
-                  priority
-                  className={cn(
-                    "object-contain object-left",
-                    isDarkBar ? "hidden" : "block dark:hidden"
-                  )}
-                />
-                <Image
-                  src="/logos/gamification/keypass_logo_white.svg"
-                  alt="KeyPass"
-                  fill
-                  priority
-                  className={cn(
-                    "object-contain object-left",
-                    isDarkBar ? "block" : "hidden dark:block"
-                  )}
-                />
-              </div>
-            </Link>
+                <Link
+                  href="/keypass"
+                  className="flex items-center transition-opacity hover:opacity-90"
+                  title="KeyPass"
+                  aria-label="KeyPass"
+                >
+                  <div className="relative h-6 sm:h-7 w-20 sm:w-24">
+                    <Image
+                      src="/logos/gamification/keypass_logo_black.svg"
+                      alt="KeyPass"
+                      fill
+                      priority
+                      className={cn(
+                        "object-contain object-left",
+                        isDarkBar ? "hidden" : "block dark:hidden"
+                      )}
+                    />
+                    <Image
+                      src="/logos/gamification/keypass_logo_white.svg"
+                      alt="KeyPass"
+                      fill
+                      priority
+                      className={cn(
+                        "object-contain object-left",
+                        isDarkBar ? "block" : "hidden dark:block"
+                      )}
+                    />
+                  </div>
+                </Link>
+              </>
+            )}
           </div>
 
           {!isAuthenticated ? (
@@ -523,21 +527,25 @@ export function Navbar({
                                 className="object-contain object-left hidden dark:block"
                               />
                             </div>
-                            <div className="h-3.5 w-px bg-zinc-300 dark:bg-zinc-700" />
-                            <div className="relative h-5 w-16">
-                              <Image
-                                src="/logos/gamification/keypass_logo_black.svg"
-                                alt="KeyPass"
-                                fill
-                                className="object-contain object-left block dark:hidden"
-                              />
-                              <Image
-                                src="/logos/gamification/keypass_logo_white.svg"
-                                alt="KeyPass"
-                                fill
-                                className="object-contain object-left hidden dark:block"
-                              />
-                            </div>
+                            {isAuthenticated && (
+                              <>
+                                <div className="h-3.5 w-px bg-zinc-300 dark:bg-zinc-700" />
+                                <div className="relative h-5 w-16">
+                                  <Image
+                                    src="/logos/gamification/keypass_logo_black.svg"
+                                    alt="KeyPass"
+                                    fill
+                                    className="object-contain object-left block dark:hidden"
+                                  />
+                                  <Image
+                                    src="/logos/gamification/keypass_logo_white.svg"
+                                    alt="KeyPass"
+                                    fill
+                                    className="object-contain object-left hidden dark:block"
+                                  />
+                                </div>
+                              </>
+                            )}
                           </div>
                         ) : (
                           <span className="text-zinc-900 dark:text-white">
