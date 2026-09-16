@@ -5,6 +5,7 @@ import Image from "next/image"
 import { AnimatePresence, motion } from "framer-motion"
 import { CaretLeft, CaretRight, SquaresFour, X } from "@phosphor-icons/react"
 
+import { CtaButton } from "@/src/components/common/ctaButton"
 import { cn } from "@/src/lib/utils"
 
 export interface RoomGalleryProps {
@@ -93,14 +94,16 @@ export function RoomGallery({ title, photos }: RoomGalleryProps): React.JSX.Elem
           </div>
         </div>
 
-        <button
-          type="button"
+        <CtaButton
+          variant="secondary"
+          size="sm"
           onClick={() => openLightbox(0)}
-          className="absolute bottom-4 right-4 z-20 px-3.5 py-2 rounded-sm bg-white/95 dark:bg-zinc-900/95 hover:bg-white dark:hover:bg-zinc-900 text-zinc-900 dark:text-white text-xs sm:text-sm font-bold shadow-lg flex items-center gap-2 border border-zinc-200/80 dark:border-zinc-700 backdrop-blur-xs transition-all hover:scale-103 cursor-pointer"
+          className="absolute bottom-4 right-4 z-20 shadow-lg"
+          textClassName="gap-2"
         >
-          <SquaresFour className="w-4 h-4" />
+          <SquaresFour className="w-4 h-4 shrink-0" weight="bold" />
           <span>Ver todas as fotos ({photos.length})</span>
-        </button>
+        </CtaButton>
       </div>
 
       <AnimatePresence>

@@ -4,8 +4,11 @@ import * as React from "react"
 
 import Image from "next/image"
 
+import Link from "next/link"
+
 import { MEMBERS } from "@/src/data/portalData"
-import { MagnifyingGlass, Users } from "@phosphor-icons/react"
+import { usePortalStore } from "@/src/store/usePortalStore"
+import { MagnifyingGlass, UserCheck, Users } from "@phosphor-icons/react"
 
 import { Button } from "@/src/components/ui/button/button"
 import {
@@ -18,6 +21,7 @@ import {
 } from "@/src/components/ui/pagination/pagination"
 
 import { Container } from "@/src/components/common/container"
+import { CtaButton } from "@/src/components/common/ctaButton"
 import { MatchCard } from "@/src/components/portal/MatchCard"
 import { MemberCard } from "@/src/components/portal/MemberCard"
 import { PortalHero } from "@/src/components/portal/PortalHero"
@@ -33,9 +37,16 @@ const MEMBER_ROLES = [
 ]
 
 export default function ConexoesPage(): React.JSX.Element {
+  const { connectedMembers, receivedPendingInvites } = usePortalStore()
   const [searchQuery, setSearchQuery] = React.useState("")
   const [activeTab, setActiveTab] = React.useState("todos")
   const [currentPage, setCurrentPage] = React.useState(1)
+
+  const activeConnectionsCount = React.useMemo(() => {
+    return Object.values(connectedMembers).filter((s) => s === "connected").length
+  }, [connectedMembers])
+
+  const receivedInvitesCount = receivedPendingInvites.length
 
   const suggestedMatch = MEMBERS[10]
   const matchReason =
@@ -218,13 +229,28 @@ export default function ConexoesPage(): React.JSX.Element {
         )}
 
         <div className="space-y-4">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <span className="text-xs font-black uppercase tracking-widest text-zinc-400">
               {filteredMembers.length}{" "}
               {filteredMembers.length === 1
                 ? "membro encontrado"
                 : "membros na rede"}
             </span>
+
+            <CtaButton
+              href="/conexoes/minhas-conexoes"
+              variant="secondary"
+              size="sm"
+              className="text-xs font-bold"
+            >
+              <UserCheck className="w-4 h-4 mr-2 text-brand-primary" />
+              <span>Minhas Conexões ({activeConnectionsCount})</span>
+              {receivedInvitesCount > 0 && (
+                <span className="ml-2 px-1.5 py-0.2 rounded-xs bg-brand-primary text-white text-[10px] font-black">
+                  {receivedInvitesCount} {receivedInvitesCount === 1 ? "novo convite" : "novos convites"}
+                </span>
+              )}
+            </CtaButton>
           </div>
 
           {filteredMembers.length === 0 ? (

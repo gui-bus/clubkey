@@ -3,7 +3,8 @@
 import * as React from "react"
 import Link from "next/link"
 import { AnimatePresence, motion } from "framer-motion"
-import { NavigationArrow } from "@phosphor-icons/react"
+import { ArrowSquareOut, NavigationArrow } from "@phosphor-icons/react"
+import { CtaButton } from "@/src/components/common/ctaButton"
 
 export interface RoomLocationCardProps {
   street?: string
@@ -59,14 +60,15 @@ export function RoomLocationCard({
           ref={directionsRef}
           className="relative shrink-0 self-start sm:self-auto"
         >
-          <button
-            type="button"
+          <CtaButton
+            variant="secondary"
+            size="sm"
             onClick={() => setDirectionsOpen((prev) => !prev)}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-sm bg-white dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-xs font-bold text-zinc-900 dark:text-white shadow-sm border border-zinc-200 dark:border-zinc-700 transition-all hover:scale-103 cursor-pointer"
+            textClassName="gap-2"
           >
-            <NavigationArrow className="w-3.5 h-3.5 text-zinc-900 dark:text-white fill-none stroke-[2.2]" />
+            <NavigationArrow className="w-3.5 h-3.5 shrink-0" weight="bold" />
             <span>Como chegar</span>
-          </button>
+          </CtaButton>
 
           <AnimatePresence>
             {directionsOpen && (
@@ -82,27 +84,30 @@ export function RoomLocationCard({
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => setDirectionsOpen(false)}
-                  className="flex items-center gap-2.5 px-3 py-2 rounded-sm text-xs font-semibold text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-white transition-colors cursor-pointer"
+                  className="flex items-center justify-between gap-2.5 px-3 py-2 rounded-sm text-xs font-semibold text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-white transition-colors cursor-pointer"
                 >
                   <span>Google Maps</span>
+                  <ArrowSquareOut className="w-3.5 h-3.5 text-zinc-400" />
                 </Link>
                 <Link
                   href={`https://waze.com/ul?ll=${latitude},${longitude}&navigate=yes`}
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => setDirectionsOpen(false)}
-                  className="flex items-center gap-2.5 px-3 py-2 rounded-sm text-xs font-semibold text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-white transition-colors cursor-pointer"
+                  className="flex items-center justify-between gap-2.5 px-3 py-2 rounded-sm text-xs font-semibold text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-white transition-colors cursor-pointer"
                 >
                   <span>Waze</span>
+                  <ArrowSquareOut className="w-3.5 h-3.5 text-zinc-400" />
                 </Link>
                 <Link
                   href={`https://maps.apple.com/?daddr=${latitude},${longitude}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => setDirectionsOpen(false)}
-                  className="flex items-center gap-2.5 px-3 py-2 rounded-sm text-xs font-semibold text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-white transition-colors cursor-pointer"
+                  className="flex items-center justify-between gap-2.5 px-3 py-2 rounded-sm text-xs font-semibold text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-white transition-colors cursor-pointer"
                 >
                   <span>Apple Maps</span>
+                  <ArrowSquareOut className="w-3.5 h-3.5 text-zinc-400" />
                 </Link>
               </motion.div>
             )}

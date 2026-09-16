@@ -496,15 +496,18 @@ export function RoomsSearchFilterBar({
           </div>
         </div>
 
-        <button
+        <CtaButton
           type="button"
           onClick={handleSearchClick}
-          className="w-full h-10 rounded-sm bg-brand-primary hover:bg-brand-primary-hover text-white font-bold text-xs uppercase tracking-wide shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-[0.99] mt-0.5"
+          variant="primary"
+          size="sm"
+          isFullWidth
+          className="h-10 rounded-sm text-xs uppercase tracking-wide mt-0.5"
           aria-label="Buscar acomodações"
         >
-          <MagnifyingGlass className="w-4 h-4 stroke-[2.5]" />
+          <MagnifyingGlass className="w-4 h-4 stroke-[2.5] mr-2 shrink-0" />
           <span>Buscar Acomodações</span>
-        </button>
+        </CtaButton>
       </div>
 
       <div className="hidden sm:flex items-center justify-between w-full gap-2">
@@ -606,14 +609,16 @@ export function RoomsSearchFilterBar({
           </button>
         </div>
 
-        <button
+        <CtaButton
           type="button"
           onClick={handleSearchClick}
-          className="w-11 h-11 rounded-full bg-brand-primary hover:bg-brand-primary-hover text-white flex items-center justify-center shadow-lg transition-all shrink-0 cursor-pointer"
+          variant="primary"
+          size="sm"
+          className="w-11 h-11 px-0 rounded-full flex items-center justify-center shrink-0"
           aria-label="Buscar acomodações"
         >
           <MagnifyingGlass className="w-4 h-4 stroke-[2.5]" />
-        </button>
+        </CtaButton>
       </div>
 
       {calendarOpen && (

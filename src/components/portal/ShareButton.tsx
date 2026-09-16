@@ -4,6 +4,7 @@ import * as React from "react"
 import { LinkSimple, Check } from "@phosphor-icons/react"
 import { toast } from "@/src/components/ui/toast/toast"
 import { cn } from "@/src/lib/utils"
+import { CtaButton, CtaButtonSize } from "@/src/components/common/ctaButton"
 
 export interface ShareButtonProps {
   url?: string
@@ -11,6 +12,7 @@ export interface ShareButtonProps {
   label?: string
   copiedLabel?: string
   className?: string
+  size?: CtaButtonSize
 }
 
 export function ShareButton({
@@ -18,10 +20,11 @@ export function ShareButton({
   label = "Copiar Link",
   copiedLabel = "Link Copiado!",
   className,
+  size = "sm",
 }: ShareButtonProps): React.JSX.Element {
   const [copied, setCopied] = React.useState(false)
 
-  const handleCopy = (e: React.MouseEvent) => {
+  const handleCopy = (e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => {
     e.preventDefault()
     e.stopPropagation()
 
@@ -38,19 +41,19 @@ export function ShareButton({
   }
 
   return (
-    <button
+    <CtaButton
       type="button"
+      variant="secondary"
+      size={size}
       onClick={handleCopy}
       className={cn(
-        "group relative inline-flex items-center justify-center gap-2 h-9 px-3.5 rounded-sm border text-xs font-bold uppercase tracking-wider select-none cursor-pointer transition-all duration-200 active:scale-[0.98] shadow-2xs hover:shadow-xs",
-        copied
-          ? "border-emerald-500/40 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 dark:border-emerald-500/30"
-          : "border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] text-zinc-700 dark:text-zinc-300 hover:border-zinc-300 dark:hover:border-zinc-700 hover:text-zinc-900 dark:hover:text-white",
+        "h-9 px-3.5 text-xs shadow-none hover:shadow-none font-bold uppercase tracking-wider",
+        copied && "border-emerald-500/40 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 dark:border-emerald-500/30",
         className
       )}
       aria-label={copied ? copiedLabel : label}
     >
-      <span className="relative flex items-center justify-center size-3.5 shrink-0">
+      <span className="relative flex items-center justify-center size-3.5 shrink-0 mr-2">
         {copied ? (
           <Check className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 animate-in zoom-in-75 duration-200" />
         ) : (
@@ -66,6 +69,6 @@ export function ShareButton({
       >
         {copied ? copiedLabel : label}
       </span>
-    </button>
+    </CtaButton>
   )
 }

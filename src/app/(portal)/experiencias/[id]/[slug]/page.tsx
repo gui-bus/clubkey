@@ -42,6 +42,7 @@ import { AddToCalendarButton } from "@/src/components/portal/AddToCalendarButton
 import { BackButton } from "@/src/components/portal/BackButton"
 import { GlassBadge } from "@/src/components/portal/GlassBadge"
 import { MemberCard } from "@/src/components/portal/MemberCard"
+import { RelatedExperiencesCard } from "@/src/components/portal/RelatedExperiencesCard"
 import { ShareButton } from "@/src/components/portal/ShareButton"
 
 export default function ExperienceDetailPage(): React.JSX.Element {
@@ -155,6 +156,23 @@ export default function ExperienceDetailPage(): React.JSX.Element {
             <span className="font-semibold text-white">
               {isFree ? "Gratuita para membros" : formatBRL(experience.price)}
             </span>
+            <span className="text-zinc-500 hidden sm:inline">•</span>
+            <GlassBadge
+              size="sm"
+              className="bg-black/60 text-white border-white/20 text-[10px] font-bold px-2.5 py-1"
+              icon={
+                <div className="relative w-3.5 h-3.5 shrink-0">
+                  <Image
+                    src="/utils/gamification/utils/xp.webp"
+                    alt="XP"
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+              }
+            >
+              +{experience.xp || 300} XP
+            </GlassBadge>
           </div>
         </div>
       </div>
@@ -303,9 +321,13 @@ export default function ExperienceDetailPage(): React.JSX.Element {
                 </h2>
               </div>
 
-              <span className="text-xs font-bold uppercase tracking-wider text-zinc-400">
-                {experience.sub}
-              </span>
+              <Link
+                href={`/experiencias/${experience.id}/${expSlug}/quem-vai`}
+                className="text-xs font-bold uppercase tracking-wider text-brand-primary hover:underline flex items-center gap-1.5 self-start sm:self-auto"
+              >
+                <span>Ver todos os participantes</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -392,6 +414,17 @@ export default function ExperienceDetailPage(): React.JSX.Element {
                   <ArrowRight className="w-4 h-4 ml-2 shrink-0" />
                 </CtaButton>
               )}
+
+              <CtaButton
+                href={`/experiencias/${experience.id}/${expSlug}/quem-vai`}
+                variant="secondary"
+                size="md"
+                isFullWidth
+                className="h-12 text-xs shadow-none hover:shadow-none"
+              >
+                <Users className="w-3.5 h-3.5 text-brand-primary mr-2 shrink-0" />
+                <span>Ver todos os participantes ({attendees.length})</span>
+              </CtaButton>
             </div>
 
             <div className="space-y-2.5 pt-5 border-t border-zinc-100 dark:border-zinc-800 text-xs text-zinc-600 dark:text-zinc-300">
@@ -432,93 +465,8 @@ export default function ExperienceDetailPage(): React.JSX.Element {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <Link
-            href={`/experiencias/${prevExp.id}/${getExperienceSlug(prevExp)}`}
-            className="group relative flex flex-col sm:flex-row items-stretch overflow-hidden rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] hover:border-brand-primary transition-all duration-200 shadow-xs"
-          >
-            <div className="relative w-full sm:w-44 h-36 sm:h-auto shrink-0 bg-zinc-950 overflow-hidden">
-              {prevExp.image && (
-                <Image
-                  src={prevExp.image}
-                  alt={prevExp.title}
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-300 opacity-80"
-                />
-              )}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent sm:hidden" />
-            </div>
-
-            <div className="p-5 flex flex-col justify-between flex-1 gap-3 min-w-0">
-              <div>
-                <div className="flex items-center justify-between gap-2 text-[11px] font-bold text-zinc-400 mb-1.5">
-                  <span className="inline-flex items-center px-2 py-0.5 rounded-xs bg-zinc-100 dark:bg-zinc-800 text-[10px] font-black uppercase tracking-wider text-zinc-600 dark:text-zinc-300">
-                    {prevExp.price === 0
-                      ? "Gratuita"
-                      : formatBRL(prevExp.price)}
-                  </span>
-                  <span className="text-zinc-500 font-medium">
-                    {prevExp.date}
-                  </span>
-                </div>
-                <h3 className="text-sm sm:text-base font-heading font-black uppercase tracking-tight text-zinc-900 dark:text-white group-hover:text-brand-primary transition-colors line-clamp-2">
-                  {prevExp.title}
-                </h3>
-              </div>
-
-              <div className="flex items-center gap-3 text-xs text-zinc-500 dark:text-zinc-400 pt-2 border-t border-zinc-100 dark:border-zinc-800/60 truncate">
-                <span className="flex items-center gap-1 truncate">
-                  <MapPin className="w-3.5 h-3.5 text-brand-primary shrink-0" />
-                  <span className="truncate">{prevExp.place}</span>
-                </span>
-                <span>•</span>
-                <span className="shrink-0">{prevExp.sub}</span>
-              </div>
-            </div>
-          </Link>
-
-          <Link
-            href={`/experiencias/${nextExp.id}/${getExperienceSlug(nextExp)}`}
-            className="group relative flex flex-col sm:flex-row items-stretch overflow-hidden rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] hover:border-brand-primary transition-all duration-200 shadow-xs"
-          >
-            <div className="relative w-full sm:w-44 h-36 sm:h-auto shrink-0 bg-zinc-950 overflow-hidden">
-              {nextExp.image && (
-                <Image
-                  src={nextExp.image}
-                  alt={nextExp.title}
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-300 opacity-80"
-                />
-              )}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent sm:hidden" />
-            </div>
-
-            <div className="p-5 flex flex-col justify-between flex-1 gap-3 min-w-0">
-              <div>
-                <div className="flex items-center justify-between gap-2 text-[11px] font-bold text-zinc-400 mb-1.5">
-                  <span className="inline-flex items-center px-2 py-0.5 rounded-xs bg-zinc-100 dark:bg-zinc-800 text-[10px] font-black uppercase tracking-wider text-zinc-600 dark:text-zinc-300">
-                    {nextExp.price === 0
-                      ? "Gratuita"
-                      : formatBRL(nextExp.price)}
-                  </span>
-                  <span className="text-zinc-500 font-medium">
-                    {nextExp.date}
-                  </span>
-                </div>
-                <h3 className="text-sm sm:text-base font-heading font-black uppercase tracking-tight text-zinc-900 dark:text-white group-hover:text-brand-primary transition-colors line-clamp-2">
-                  {nextExp.title}
-                </h3>
-              </div>
-
-              <div className="flex items-center gap-3 text-xs text-zinc-500 dark:text-zinc-400 pt-2 border-t border-zinc-100 dark:border-zinc-800/60 truncate">
-                <span className="flex items-center gap-1 truncate">
-                  <MapPin className="w-3.5 h-3.5 text-brand-primary shrink-0" />
-                  <span className="truncate">{nextExp.place}</span>
-                </span>
-                <span>•</span>
-                <span className="shrink-0">{nextExp.sub}</span>
-              </div>
-            </div>
-          </Link>
+          <RelatedExperiencesCard experience={prevExp} />
+          <RelatedExperiencesCard experience={nextExp} />
         </div>
       </section>
     </Container>

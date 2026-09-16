@@ -3,6 +3,7 @@
 import * as React from "react"
 
 import { CaretDown, type Icon, MagnifyingGlass, X } from "@phosphor-icons/react"
+import { CtaButton } from "@/src/components/common/ctaButton"
 
 import { cn } from "@/src/lib/utils"
 
@@ -149,14 +150,17 @@ export function PortalHeroFilterBar({
           )}
         </div>
 
-        <button
+        <CtaButton
           type="button"
           onClick={() => handleSearchSubmit()}
-          className="w-full h-10 rounded-sm bg-brand-primary hover:bg-brand-primary/90 text-white font-bold text-xs uppercase tracking-wide shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-[0.99]"
+          variant="primary"
+          size="sm"
+          isFullWidth
+          className="h-10 rounded-sm text-xs font-bold uppercase tracking-wide"
         >
-          <MagnifyingGlass className="w-4 h-4 stroke-[2.5]" />
+          <MagnifyingGlass className="w-4 h-4 stroke-[2.5] mr-1.5 shrink-0" />
           <span>Buscar</span>
-        </button>
+        </CtaButton>
       </div>
 
       <div className="hidden sm:flex items-center justify-between w-full gap-2">
@@ -245,14 +249,16 @@ export function PortalHeroFilterBar({
           )}
         </div>
 
-        <button
+        <CtaButton
           type="button"
           onClick={() => handleSearchSubmit()}
-          className="w-11 h-11 rounded-full bg-brand-primary hover:bg-brand-primary/90 text-white flex items-center justify-center shadow-lg transition-all shrink-0 cursor-pointer active:scale-95"
+          variant="primary"
+          size="sm"
+          className="w-11 h-11 px-0 rounded-full flex items-center justify-center shrink-0"
           aria-label="Buscar"
         >
           <MagnifyingGlass className="w-4 h-4 stroke-[2.5]" />
-        </button>
+        </CtaButton>
       </div>
     </div>
   )

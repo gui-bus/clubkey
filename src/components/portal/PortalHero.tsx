@@ -9,7 +9,7 @@ import { Container } from "@/src/components/common/container"
 import { cn } from "@/src/lib/utils"
 
 export interface PortalHeroProps {
-  badge?: string
+  badge?: React.ReactNode
   title: React.ReactNode
   description: React.ReactNode
   imageSrc: string

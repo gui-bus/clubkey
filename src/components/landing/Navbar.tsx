@@ -4,7 +4,18 @@ import * as React from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
-import { List, User, CaretDown, SignOut, Calendar, Gift, MapPin, CreditCard } from "@phosphor-icons/react"
+import {
+  List,
+  User,
+  CaretDown,
+  SignOut,
+  Calendar,
+  Gift,
+  MapPin,
+  CreditCard,
+  Trophy,
+  Lightning,
+} from "@phosphor-icons/react"
 
 import { Container } from "@/src/components/common/container"
 import { CtaButton } from "@/src/components/common/ctaButton"
@@ -28,7 +39,11 @@ import { Badge } from "@/src/components/ui/badge/badge"
 import { brandConfig } from "@/src/config/brand.config"
 import { cn } from "@/src/lib/utils"
 import { usePortalStore } from "@/src/store/usePortalStore"
-import { getInitials } from "@/src/data/portalData"
+import {
+  getInitials,
+  calculateTierProgress,
+  TIERS_CONFIG,
+} from "@/src/data/portalData"
 
 const isClubKey = brandConfig.id === "clubkey"
 
@@ -52,6 +67,16 @@ const PORTAL_NAV_LINKS = [
   { name: "Conexões", href: "/conexoes" },
 ]
 
+const MOBILE_PORTAL_NAV_LINKS = [
+  { name: "Home", href: "/" },
+  { name: "Hospedagens", href: "/hospedagens" },
+  { name: "Eventos", href: "/eventos" },
+  { name: "Experiências", href: "/experiencias" },
+  { name: "Benefícios", href: "/beneficios" },
+  { name: "Conexões", href: "/conexoes" },
+  { name: "KeyPass", href: "/keypass" },
+]
+
 export function Navbar({
   isTransparent,
 }: {
@@ -64,15 +89,22 @@ export function Navbar({
     userProfile,
     logout,
     memberStays,
-    confirmedEvents
+    confirmedEvents,
+    xp,
+    ribTokens,
+    getUserTier,
   } = usePortalStore()
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false)
   const [activeSection, setActiveSection] = React.useState<string>("")
 
   const staysCount = memberStays?.length ?? 2
-  const eventsCount = Object.keys(confirmedEvents || {}).filter(
-    (k) => !!confirmedEvents[Number(k)]
-  ).length || 1
+  const eventsCount =
+    Object.keys(confirmedEvents || {}).filter(
+      (k) => !!confirmedEvents[Number(k)]
+    ).length || 1
+
+  const currentTier = getUserTier ? getUserTier() : TIERS_CONFIG.titular
+  const tierProgress = calculateTierProgress(xp || 2850, currentTier)
 
   const userInitials = getInitials(userProfile?.name || "")
   const homeHref = isClubKey ? "/" : "/hospedagens"
@@ -87,7 +119,8 @@ export function Navbar({
         pathname !== "/eventos" &&
         pathname !== "/eventos/meus-eventos") ||
       (pathname?.startsWith("/agenda/") && pathname !== "/agenda") ||
-      (pathname?.startsWith("/experiencias/") && pathname !== "/experiencias") ||
+      (pathname?.startsWith("/experiencias/") &&
+        pathname !== "/experiencias") ||
       (pathname?.startsWith("/conexoes/") && pathname !== "/conexoes") ||
       (pathname?.startsWith("/pessoas/") && pathname !== "/pessoas") ||
       pathname === "/perfil")
@@ -106,6 +139,8 @@ export function Navbar({
       pathname === "/pessoas" ||
       pathname?.startsWith("/pessoas/") ||
       pathname === "/beneficios" ||
+      pathname === "/keypass" ||
+      pathname?.startsWith("/keypass/") ||
       pathname === "/perfil" ||
       pathname?.startsWith("/perfil/") ||
       pathname?.startsWith("/hospedagens/minhas-hospedagens")
@@ -214,14 +249,14 @@ export function Navbar({
     >
       <header className="w-full bg-transparent py-3 sm:py-4">
         <Container className="flex items-center justify-between gap-4">
-          <div className="flex items-center gap-3 sm:gap-4 flex-shrink-0">
+          <div className="flex items-center gap-2.5 sm:gap-3.5 flex-shrink-0">
             <Link
               href={homeHref}
               className="flex items-center transition-opacity hover:opacity-90"
               aria-label={`${brandConfig.name} - Início`}
             >
               {brandConfig.assets.logoMain ? (
-                <div className="relative h-9 sm:h-10 w-32 sm:w-36">
+                <div className="relative h-8 sm:h-9 w-28 sm:w-32">
                   <Image
                     src="/logos/logo_black.svg"
                     alt={brandConfig.name}
@@ -255,6 +290,45 @@ export function Navbar({
                   {brandConfig.assets.logoText || brandConfig.name}
                 </span>
               )}
+            </Link>
+
+            <div
+              className={cn(
+                "h-4 sm:h-4.5 w-px",
+                isDarkBar
+                  ? "bg-white/20"
+                  : "bg-zinc-300 dark:bg-zinc-700"
+              )}
+            />
+
+            <Link
+              href="/keypass"
+              className="flex items-center transition-opacity hover:opacity-90"
+              title="KeyPass"
+              aria-label="KeyPass"
+            >
+              <div className="relative h-6 sm:h-7 w-20 sm:w-24">
+                <Image
+                  src="/logos/gamification/keypass_logo_black.svg"
+                  alt="KeyPass"
+                  fill
+                  priority
+                  className={cn(
+                    "object-contain object-left",
+                    isDarkBar ? "hidden" : "block dark:hidden"
+                  )}
+                />
+                <Image
+                  src="/logos/gamification/keypass_logo_white.svg"
+                  alt="KeyPass"
+                  fill
+                  priority
+                  className={cn(
+                    "object-contain object-left",
+                    isDarkBar ? "block" : "hidden dark:block"
+                  )}
+                />
+              </div>
             </Link>
           </div>
 
@@ -342,7 +416,59 @@ export function Navbar({
           )}
 
           <div className="flex items-center gap-4 sm:gap-5 flex-shrink-0">
-            <ThemeToggle />
+          
+
+            {isAuthenticated && (
+              <Link
+                href="/keypass"
+                className={cn(
+                  "hidden md:flex items-center gap-2 transition-colors group shrink-0 select-none py-1 px-1",
+                  isDarkBar
+                    ? "text-zinc-200 hover:text-white"
+                    : "text-zinc-700 dark:text-zinc-300 hover:text-brand-primary dark:hover:text-white"
+                )}
+                title="Ver KeyPass & Recompensas"
+              >
+                <div className="relative w-6 h-6 shrink-0 transition-transform group-hover:scale-105">
+                  <Image
+                    src={currentTier.image}
+                    alt={currentTier.name}
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+
+                <div
+                  className={cn(
+                    "h-3.5 w-px",
+                    isDarkBar
+                      ? "bg-white/20"
+                      : "bg-zinc-300 dark:bg-zinc-700"
+                  )}
+                />
+
+                <div className="flex items-center gap-1 shrink-0 whitespace-nowrap">
+                  <div className="relative w-4 h-4 shrink-0">
+                    <Image
+                      src="/utils/gamification/utils/RIB.svg"
+                      alt="RIB Token"
+                      fill
+                      className="object-contain"
+                    />
+                  </div>
+                  <span
+                    className={cn(
+                      "text-xs font-black font-heading tracking-tight",
+                      isDarkBar ? "text-white" : "text-zinc-900 dark:text-white"
+                    )}
+                  >
+                    {ribTokens}
+                  </span>
+                </div>
+              </Link>
+            )}
+
+              <ThemeToggle />
 
             {!isAuthenticated ? (
               <Link
@@ -495,6 +621,16 @@ export function Navbar({
                         <span>Minha Assinatura</span>
                       </Link>
                     </DropdownMenuItem>
+
+                    <DropdownMenuItem asChild>
+                      <Link
+                        href="/keypass"
+                        className="flex items-center gap-2.5 px-3 py-2 rounded-sm text-xs font-semibold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800/80 hover:text-brand-primary dark:hover:text-brand-primary cursor-pointer transition-colors"
+                      >
+                        <Trophy className="w-3.5 h-3.5 text-zinc-400" />
+                        <span>KeyPass & Recompensas</span>
+                      </Link>
+                    </DropdownMenuItem>
                   </div>
 
                   <DropdownMenuSeparator className="my-1.5 bg-zinc-100 dark:bg-zinc-800" />
@@ -536,19 +672,36 @@ export function Navbar({
                     <SheetHeader className="pb-6 border-b border-zinc-200 dark:border-zinc-800/80">
                       <SheetTitle className="text-left font-heading font-black text-xl uppercase tracking-wider">
                         {brandConfig.assets.logoMain ? (
-                          <div className="relative h-8 w-28">
-                            <Image
-                              src="/logos/logo_black.svg"
-                              alt={brandConfig.name}
-                              fill
-                              className="object-contain object-left block dark:hidden"
-                            />
-                            <Image
-                              src="/logos/logo_white.svg"
-                              alt={brandConfig.name}
-                              fill
-                              className="object-contain object-left hidden dark:block"
-                            />
+                          <div className="flex items-center gap-2.5">
+                            <div className="relative h-7 w-24">
+                              <Image
+                                src="/logos/logo_black.svg"
+                                alt={brandConfig.name}
+                                fill
+                                className="object-contain object-left block dark:hidden"
+                              />
+                              <Image
+                                src="/logos/logo_white.svg"
+                                alt={brandConfig.name}
+                                fill
+                                className="object-contain object-left hidden dark:block"
+                              />
+                            </div>
+                            <div className="h-3.5 w-px bg-zinc-300 dark:bg-zinc-700" />
+                            <div className="relative h-5 w-16">
+                              <Image
+                                src="/logos/gamification/keypass_logo_black.svg"
+                                alt="KeyPass"
+                                fill
+                                className="object-contain object-left block dark:hidden"
+                              />
+                              <Image
+                                src="/logos/gamification/keypass_logo_white.svg"
+                                alt="KeyPass"
+                                fill
+                                className="object-contain object-left hidden dark:block"
+                              />
+                            </div>
                           </div>
                         ) : (
                           <span className="text-zinc-900 dark:text-white">
@@ -582,13 +735,49 @@ export function Navbar({
                       </div>
                     )}
 
+                    {isAuthenticated && (
+                      <Link
+                        href="/keypass"
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="flex items-center justify-between py-2 px-1 text-zinc-900 dark:text-white hover:text-brand-primary dark:hover:text-brand-primary transition-colors select-none border-b border-zinc-100 dark:border-zinc-800/80 mb-2"
+                      >
+                        <div className="flex items-center gap-2">
+                          <div className="relative w-5 h-5 shrink-0">
+                            <Image
+                              src={currentTier.image}
+                              alt={currentTier.name}
+                              fill
+                              className="object-contain"
+                            />
+                          </div>
+                          <span className="text-xs font-heading font-black uppercase text-zinc-900 dark:text-white">
+                            {currentTier.name}
+                          </span>
+                        </div>
+
+                        <div className="flex items-center gap-1 shrink-0">
+                          <div className="relative w-4 h-4 shrink-0">
+                            <Image
+                              src="/utils/gamification/utils/RIB.svg"
+                              alt="RIB Token"
+                              fill
+                              className="object-contain"
+                            />
+                          </div>
+                          <span className="text-xs font-heading font-black tracking-tight text-zinc-900 dark:text-white">
+                            {ribTokens} RIB
+                          </span>
+                        </div>
+                      </Link>
+                    )}
+
                     <div className="flex flex-col gap-1 pt-2">
                       {isAuthenticated ? (
                         <>
                           <div className="text-[10px] font-black uppercase tracking-widest text-brand-primary px-3 pt-2 pb-1">
                             List do Membro
                           </div>
-                          {PORTAL_NAV_LINKS.map((link) => {
+                          {MOBILE_PORTAL_NAV_LINKS.map((link) => {
                             const isCatalogPath =
                               link.href === "/hospedagens" &&
                               (pathname === "/hospedagens" ||

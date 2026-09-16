@@ -92,7 +92,7 @@ export default function HospedagemDetailPage(): React.JSX.Element {
       <Navbar isTransparent={false} />
 
       <Container className="pt-6 pb-24">
-        <div className="flex items-center justify-between gap-4 mb-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 mb-4">
           <Link
             href="/hospedagens"
             className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors cursor-pointer"
@@ -101,12 +101,12 @@ export default function HospedagemDetailPage(): React.JSX.Element {
             <span>Voltar para acomodações</span>
           </Link>
 
-          <div className="flex items-center gap-2">
-            <ShareButton />
+          <div className="flex items-center gap-2 w-full sm:w-auto">
+            <ShareButton className="flex-1 sm:flex-initial" />
             <button
               type="button"
               onClick={handleToggleFav}
-              className="relative inline-flex items-center gap-1.5 h-9 px-3.5 rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] hover:border-zinc-300 dark:hover:border-zinc-700 text-xs font-semibold text-zinc-800 dark:text-zinc-200 transition-all cursor-pointer shadow-2xs hover:shadow-xs active:scale-95 group overflow-hidden"
+              className="relative inline-flex flex-1 sm:flex-initial items-center justify-center gap-1.5 h-9 px-3.5 rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] hover:border-zinc-300 dark:hover:border-zinc-700 text-xs font-semibold text-zinc-800 dark:text-zinc-200 transition-all cursor-pointer shadow-2xs hover:shadow-xs active:scale-95 group overflow-hidden"
             >
               <div className="relative flex items-center justify-center">
                 <motion.div

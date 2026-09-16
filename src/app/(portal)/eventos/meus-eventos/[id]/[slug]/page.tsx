@@ -207,19 +207,6 @@ export default function MeuEventoDetailPage(): React.JSX.Element {
                 />
               ))}
             </div>
-
-            {attendees.length > 6 && (
-              <div className="pt-2 text-center">
-                <Link
-                  href={`/eventos/${event.id}/${eventSlug}/quem-vai`}
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] hover:border-zinc-300 dark:hover:border-zinc-700 text-xs font-bold uppercase tracking-wider text-zinc-800 dark:text-zinc-200 transition-all hover:bg-zinc-50 dark:hover:bg-zinc-800/60"
-                >
-                  <Users className="w-4 h-4 text-brand-primary" />
-                  <span>Ver todos os participantes ({attendees.length})</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </Link>
-              </div>
-            )}
           </div>
         </div>
 

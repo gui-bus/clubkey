@@ -12,11 +12,19 @@ import {
   Briefcase,
   Building,
   Check,
+  CheckCircle,
+  Copy,
   CreditCard,
+  DeviceMobile,
   FloppyDisk,
   Image as ImageIcon,
+  Key,
+  LockKey,
   MapPin,
   PencilSimple,
+  QrCode,
+  ShieldCheck,
+  ShieldSlash,
   User,
 } from "@phosphor-icons/react"
 
@@ -37,9 +45,11 @@ import {
   DialogTitle,
 } from "@/src/components/ui/dialog/dialog"
 import { FileUpload } from "@/src/components/ui/fileUpload/fileUpload"
+import { InputOtp } from "@/src/components/ui/inputOtp/inputOtp"
 import { TagInput } from "@/src/components/ui/tagInput/tagInput"
 import { toast } from "@/src/components/ui/toast/toast"
 import { Container } from "@/src/components/common/container"
+import { CtaButton } from "@/src/components/common/ctaButton"
 
 const PRESET_COVERS = [
   { label: "Membros & Networking", src: "/utils/banners/pessoas.webp" },
@@ -49,11 +59,22 @@ const PRESET_COVERS = [
 ]
 
 export default function ProfilePage(): React.JSX.Element {
-  const { userProfile, updateProfile, getActiveClub } = usePortalStore()
-  const activeClub = getActiveClub()
+  const {
+    userProfile,
+    updateProfile,
+    is2FAEnabled,
+    enable2FA,
+    disable2FA,
+    getUserTier,
+  } = usePortalStore()
+  const currentTier = getUserTier()
 
   const [mounted, setMounted] = React.useState(false)
   const [isModalOpen, setIsModalOpen] = React.useState(false)
+  const [is2FAModalOpen, setIs2FAModalOpen] = React.useState(false)
+  const [otpCode, setOtpCode] = React.useState("")
+  const [otpError, setOtpError] = React.useState(false)
+  const [copiedKey, setCopiedKey] = React.useState(false)
   const [pendingCover, setPendingCover] = React.useState(
     userProfile.coverImage || "/utils/banners/pessoas.webp"
   )
@@ -100,6 +121,41 @@ export default function ProfilePage(): React.JSX.Element {
     })
   }
 
+  const handleCopyKey = () => {
+    if (typeof navigator !== "undefined" && navigator.clipboard) {
+      navigator.clipboard.writeText("CK99-PROT-7741-X992")
+      setCopiedKey(true)
+      setTimeout(() => setCopiedKey(false), 2000)
+      toast.success("Chave copiada para a área de transferência!")
+    }
+  }
+
+  const handleVerifyOtp = () => {
+    if (otpCode.trim().length === 6) {
+      enable2FA()
+      setIs2FAModalOpen(false)
+      setOtpCode("")
+      setOtpError(false)
+      toast.success("Autenticação 2FA ativada com sucesso!", {
+        description: "Sua conta agora está protegida e você ganhou +250 XP!",
+      })
+    } else {
+      setOtpError(true)
+      toast.error("Código incompleto", {
+        description:
+          "Digite o código de 6 dígitos gerado pelo seu aplicativo autenticador.",
+      })
+    }
+  }
+
+  const handleDisable2FA = () => {
+    disable2FA()
+    toast.info("Autenticação 2FA desativada", {
+      description:
+        "Você pode reativá-la quando desejar para manter sua conta protegida.",
+    })
+  }
+
   const handleCoverFilesSelected = (files: File[]) => {
     if (files.length > 0) {
       const file = files[0]
@@ -116,27 +172,8 @@ export default function ProfilePage(): React.JSX.Element {
   return (
     <div className="w-full flex flex-col">
       <Container className="py-8 sm:py-10 space-y-8">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <Badge
-              color="primary"
-              variant="flat"
-              radius="sm"
-              className="font-bold text-[11px] mb-2"
-            >
-              Configurações de Conta
-            </Badge>
-            <h1 className="text-2xl sm:text-3xl font-heading font-black uppercase tracking-tight text-zinc-900 dark:text-white">
-              Meu perfil de <span className="text-brand-primary">associado</span>
-            </h1>
-            <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 mt-1">
-              Mantenha suas informações e interesses atualizados para recomendações de conexões assertivas.
-            </p>
-          </div>
-        </div>
-
         <div className="relative rounded-sm overflow-hidden border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] shadow-xs">
-          <div className="relative w-full h-44 sm:h-56 md:h-64 bg-zinc-950 overflow-hidden group">
+          <div className="relative w-full h-44 sm:h-56 md:h-64 bg-zinc-950 overflow-hidden">
             {mounted ? (
               <Image
                 src={userProfile.coverImage || "/utils/banners/pessoas.webp"}
@@ -151,20 +188,24 @@ export default function ProfilePage(): React.JSX.Element {
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/20" />
 
             <div className="absolute top-4 right-4 z-10">
-              <button
+              <CtaButton
                 type="button"
+                variant="secondary"
+                size="xs"
                 onClick={() => {
                   setPendingCover(
                     userProfile.coverImage || "/utils/banners/pessoas.webp"
                   )
                   setIsModalOpen(true)
                 }}
-                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-sm bg-black/60 hover:bg-black/80 text-white backdrop-blur-md border border-white/20 text-xs font-bold uppercase tracking-wider transition-all shadow-md cursor-pointer hover:scale-105"
+                className="bg-black/60 hover:bg-black/80 text-white backdrop-blur-md border border-white/20 text-xs font-bold uppercase tracking-wider shadow-md"
+                textClassName="text-white"
+                sliderClassName="bg-white/20"
                 aria-label="Editar capa do perfil"
               >
-                <PencilSimple className="w-3.5 h-3.5 text-white" />
+                <PencilSimple className="w-3.5 h-3.5 mr-1.5 text-white" />
                 <span>Editar Capa</span>
-              </button>
+              </CtaButton>
             </div>
           </div>
 
@@ -188,46 +229,31 @@ export default function ProfilePage(): React.JSX.Element {
               </Avatar>
 
               <div className="flex items-center gap-2 self-start sm:self-auto">
-                <Link
+                <CtaButton
                   href="/perfil/minha-assinatura"
-                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-sm border border-zinc-200 dark:border-zinc-800 bg-[#F1F1F1] dark:bg-zinc-900 hover:border-brand-primary/60 text-xs font-bold uppercase tracking-wider text-zinc-800 dark:text-zinc-200 transition-colors shadow-2xs"
+                  variant="secondary"
+                  size="sm"
+                  className="text-xs"
                 >
-                  <CreditCard className="w-4 h-4 text-brand-primary" />
+                  <CreditCard className="w-4 h-4 mr-2 text-brand-primary" />
                   <span>Gerenciar Assinatura</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </Link>
+                  <ArrowRight className="w-3.5 h-3.5 ml-2" />
+                </CtaButton>
               </div>
             </div>
 
             <div className="space-y-3 pb-6 border-b border-zinc-100 dark:border-zinc-800">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                <div>
-                  <h2 className="text-xl sm:text-2xl font-heading font-black uppercase tracking-tight text-zinc-900 dark:text-white">
-                    {userProfile.name}
-                  </h2>
-                  <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400">
-                    {userProfile.role} • {userProfile.company}
-                  </p>
-                </div>
-
-                <div>
-                  <Badge
-                    color="primary"
-                    variant="flat"
-                    radius="sm"
-                    className="font-bold text-[11px] gap-1.5"
-                  >
-                    <span
-                      className="w-2 h-2 rounded-full"
-                      style={{ backgroundColor: activeClub.accent }}
-                    />
-                    {activeClub.name}
-                  </Badge>
-                </div>
+              <div>
+                <h2 className="text-xl sm:text-2xl font-heading font-black uppercase tracking-tight text-zinc-900 dark:text-white">
+                  {userProfile.name}
+                </h2>
+                <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400">
+                  {userProfile.role} • {userProfile.company}
+                </p>
               </div>
             </div>
 
-          <form onSubmit={handleSave} className="space-y-6">
+          <form onSubmit={handleSave} className="space-y-6 pt-6">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
               <div className="space-y-1.5">
                 <label className="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 flex items-center gap-1.5">
@@ -299,17 +325,19 @@ export default function ProfilePage(): React.JSX.Element {
             </div>
 
             <div className="flex items-center gap-3 pt-2">
-              <button
+              <CtaButton
                 type="submit"
-                className="px-6 py-3 rounded-sm bg-brand-primary hover:bg-brand-primary/90 text-white text-xs font-black uppercase tracking-wider transition-all shadow-xs flex items-center gap-2 cursor-pointer"
+                variant="primary"
+                size="sm"
+                className="text-xs"
               >
-                <FloppyDisk className="w-4 h-4" />
+                <FloppyDisk className="w-4 h-4 mr-2" />
                 <span>Salvar alterações</span>
-              </button>
+              </CtaButton>
             </div>
           </form>
 
-          <div className="space-y-6 pt-6 border-t border-zinc-100 dark:border-zinc-800">
+          <div className="space-y-6 pt-8 mt-8 border-t border-zinc-100 dark:border-zinc-800">
             <div className="space-y-3">
               <div>
                 <h3 className="text-sm font-heading font-black tracking-tight uppercase text-zinc-900 dark:text-white">
@@ -324,14 +352,14 @@ export default function ProfilePage(): React.JSX.Element {
               <TagInput
                 value={userProfile.seeking}
                 onChange={(tags) => updateProfile({ seeking: tags })}
-                tagColor="primary"
+                tagColor="default"
                 tagVariant="flat"
                 radius="sm"
                 placeholder="Digite uma busca e pressione Enter..."
               />
             </div>
 
-            <div className="space-y-3 pt-4 border-t border-zinc-100 dark:border-zinc-800">
+            <div className="space-y-3 pt-6 border-t border-zinc-100 dark:border-zinc-800">
               <div>
                 <h3 className="text-sm font-heading font-black tracking-tight uppercase text-zinc-900 dark:text-white">
                   O que posso oferecer
@@ -345,11 +373,132 @@ export default function ProfilePage(): React.JSX.Element {
               <TagInput
                 value={userProfile.offering}
                 onChange={(tags) => updateProfile({ offering: tags })}
-                tagColor="primary"
+                tagColor="default"
                 tagVariant="flat"
                 radius="sm"
                 placeholder="Digite uma oferta e pressione Enter..."
               />
+            </div>
+
+            <div className="space-y-4 pt-6 border-t border-zinc-100 dark:border-zinc-800">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div>
+                  <div className="flex items-center gap-2 mb-1">
+                    <h3 className="text-sm font-heading font-black tracking-tight uppercase text-zinc-900 dark:text-white flex items-center gap-2">
+                      <ShieldCheck className="w-4 h-4 text-brand-primary" />
+                      <span>Autenticação em Duas Etapas (2FA)</span>
+                    </h3>
+                    <Badge
+                      color={is2FAEnabled ? "success" : "warning"}
+                      variant="flat"
+                      radius="sm"
+                      className="text-[10px] font-bold inline-flex items-center gap-1"
+                    >
+                      {is2FAEnabled ? (
+                        "Ativo & Protegido"
+                      ) : (
+                        <>
+                          <div className="relative w-3 h-3 shrink-0">
+                            <Image
+                              src="/utils/gamification/utils/xp.webp"
+                              alt="XP"
+                              fill
+                              className="object-contain"
+                            />
+                          </div>
+                          <span>Pendente (+250 XP)</span>
+                        </>
+                      )}
+                    </Badge>
+                  </div>
+                  <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                    Aumente a segurança da sua conta com verificação por código TOTP (Google Authenticator ou 1Password).
+                  </p>
+                </div>
+
+                <div className="shrink-0">
+                  {is2FAEnabled ? (
+                    <CtaButton
+                      type="button"
+                      variant="secondary"
+                      size="sm"
+                      onClick={handleDisable2FA}
+                      className="text-xs text-zinc-600 dark:text-zinc-300 hover:text-red-500"
+                    >
+                      <ShieldSlash className="w-3.5 h-3.5 mr-1.5 shrink-0" />
+                      <span>Desativar 2FA</span>
+                    </CtaButton>
+                  ) : (
+                    <Button
+                      color="primary"
+                      size="sm"
+                      onClick={() => {
+                        setOtpCode("")
+                        setOtpError(false)
+                        setIs2FAModalOpen(true)
+                      }}
+                      className="text-xs font-black uppercase tracking-wider shadow-xs inline-flex items-center gap-1.5 whitespace-nowrap shrink-0"
+                    >
+                      <ShieldCheck className="w-4 h-4 shrink-0" />
+                      <div className="relative w-3.5 h-3.5 shrink-0">
+                        <Image
+                          src="/utils/gamification/utils/xp.webp"
+                          alt="XP"
+                          fill
+                          className="object-contain"
+                        />
+                      </div>
+                      <span>Configurar 2FA (+250 XP)</span>
+                    </Button>
+                  )}
+                </div>
+              </div>
+
+              <div className="p-4 rounded-sm border border-zinc-200 dark:border-zinc-800 bg-[#F1F1F1]/50 dark:bg-zinc-900/40 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-sm bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 flex items-center justify-center text-brand-primary shrink-0 shadow-2xs">
+                    <DeviceMobile className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold text-zinc-900 dark:text-white">
+                      Aplicativo Autenticador (TOTP)
+                    </p>
+                    <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
+                      {is2FAEnabled
+                        ? "Configurado com sucesso. Código solicitado em novas sessões."
+                        : "Recomendado: Google Authenticator, Authy ou 1Password."}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <span className="text-[11px] font-bold text-zinc-600 dark:text-zinc-300">
+                    Requisito de Onboarding:
+                  </span>
+                  <Badge
+                    color={is2FAEnabled ? "success" : "default"}
+                    variant="flat"
+                    radius="sm"
+                    className="text-[10px] font-bold inline-flex items-center gap-1"
+                  >
+                    {is2FAEnabled ? (
+                      "Concluído"
+                    ) : (
+                      <>
+                        <div className="relative w-3 h-3 shrink-0">
+                          <Image
+                            src="/utils/gamification/utils/xp.webp"
+                            alt="XP"
+                            fill
+                            className="object-contain"
+                          />
+                        </div>
+                        <span>Faltam 250 XP</span>
+                      </>
+                    )}
+                  </Badge>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -498,6 +647,120 @@ export default function ProfilePage(): React.JSX.Element {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      <Dialog open={is2FAModalOpen} onOpenChange={setIs2FAModalOpen}>
+        <DialogContent size="md" className="max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <div className="flex items-center gap-2 mb-0.5">
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-xs bg-brand-primary/10 text-brand-primary text-[10px] font-bold uppercase tracking-wider">
+                Segurança da Conta
+              </span>
+              <Badge
+                color="success"
+                variant="flat"
+                radius="sm"
+                className="text-[10px] font-bold inline-flex items-center gap-1"
+              >
+                <div className="relative w-3 h-3 shrink-0">
+                  <Image
+                    src="/utils/gamification/utils/xp.webp"
+                    alt="XP"
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+                <span>+250 XP</span>
+              </Badge>
+            </div>
+            <DialogTitle className="text-xl font-heading font-black uppercase tracking-tight text-zinc-900 dark:text-white flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-sm bg-brand-primary/10 flex items-center justify-center text-brand-primary shrink-0">
+                <ShieldCheck className="w-4 h-4" />
+              </div>
+              <span>Ativar Autenticação 2FA</span>
+            </DialogTitle>
+            <DialogDescription className="text-xs text-zinc-500 dark:text-zinc-400">
+              Escaneie o código QR com o seu aplicativo autenticador ou insira a chave manualmente para ativar.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-6 py-2">
+            <div className="flex flex-col items-center justify-center p-5 rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-center space-y-3">
+              <div className="p-3 bg-white rounded-sm border border-zinc-200 dark:border-zinc-700 shadow-xs">
+                <div className="w-36 h-36 relative flex items-center justify-center bg-zinc-950 text-white rounded-xs">
+                  <QrCode className="w-28 h-28 text-white" />
+                </div>
+              </div>
+              <p className="text-[11px] text-zinc-500 dark:text-zinc-400 max-w-xs">
+                Abra o Google Authenticator ou seu app de preferência e aponte a câmera para a imagem acima.
+              </p>
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 flex items-center justify-between">
+                <span>Chave de configuração manual</span>
+                <button
+                  type="button"
+                  onClick={handleCopyKey}
+                  className="text-brand-primary hover:underline inline-flex items-center gap-1 text-[11px] font-bold cursor-pointer"
+                >
+                  <Copy className="w-3.5 h-3.5" />
+                  <span>{copiedKey ? "Copiado!" : "Copiar Chave"}</span>
+                </button>
+              </label>
+              <div className="p-2.5 rounded-sm bg-[#F1F1F1] dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 font-mono text-xs text-zinc-800 dark:text-zinc-200 text-center font-bold tracking-widest select-all">
+                CK99-PROT-7741-X992
+              </div>
+            </div>
+
+            <div className="space-y-2 text-center">
+              <label className="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 block">
+                Digite o código de 6 dígitos
+              </label>
+              <div className="flex justify-center py-1">
+                <InputOtp
+                  value={otpCode}
+                  onChange={(val) => {
+                    setOtpCode(val)
+                    if (otpError) setOtpError(false)
+                  }}
+                  length={6}
+                  autoFocus
+                />
+              </div>
+              {otpError && (
+                <p className="text-xs font-medium text-red-500">
+                  Código incompleto ou inválido. Digite os 6 números.
+                </p>
+              )}
+            </div>
+          </div>
+
+          <DialogFooter className="pt-3 border-t border-zinc-100 dark:border-zinc-800">
+            <DialogClose asChild>
+              <Button variant="flat" size="sm" className="font-bold text-xs uppercase tracking-wider">
+                Cancelar
+              </Button>
+            </DialogClose>
+            <Button
+              color="primary"
+              size="sm"
+              onClick={handleVerifyOtp}
+              className="font-bold text-xs uppercase tracking-wider inline-flex items-center gap-1.5 whitespace-nowrap shrink-0"
+            >
+              <div className="relative w-3.5 h-3.5 shrink-0">
+                <Image
+                  src="/utils/gamification/utils/xp.webp"
+                  alt="XP"
+                  fill
+                  className="object-contain"
+                />
+              </div>
+              <span>Confirmar & Ativar (+250 XP)</span>
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
+

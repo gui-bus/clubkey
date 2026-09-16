@@ -4,7 +4,7 @@ import * as React from "react"
 import { useParams, notFound } from "next/navigation"
 import { MapPin, MagnifyingGlass, Users, Calendar, ArrowRight } from "@phosphor-icons/react"
 
-import { EVENTS, MEMBERS, getEventSlug } from "@/src/data/portalData"
+import { EXPERIENCES, MEMBERS, getExperienceSlug } from "@/src/data/portalData"
 import { usePortalStore } from "@/src/store/usePortalStore"
 import { BackButton } from "@/src/components/portal/BackButton"
 import { PortalHeroFilterBar } from "@/src/components/portal/PortalHeroFilterBar"
@@ -20,27 +20,27 @@ const ROLE_FILTERS = [
   { value: "investidores", label: "Investidores & Partners" },
 ]
 
-export default function EventParticipantsPage(): React.JSX.Element {
+export default function ExperienceParticipantsPage(): React.JSX.Element {
   const params = useParams()
   const idParam = Array.isArray(params?.id) ? params.id[0] : params?.id
-  const eventId = Number(idParam)
-  const event = EVENTS.find((e) => e.id === eventId)
+  const experienceId = Number(idParam)
+  const experience = EXPERIENCES.find((e) => e.id === experienceId)
 
-  if (!event) {
+  if (!experience) {
     notFound()
   }
 
-  const { confirmedEvents } = usePortalStore()
-  const isConfirmed = !!confirmedEvents[event.id]
+  const { boughtExperiences } = usePortalStore()
+  const isBought = !!boughtExperiences[experience.id]
 
   const [searchQuery, setSearchQuery] = React.useState("")
   const [activeRole, setActiveRole] = React.useState("todos")
 
   const attendees = React.useMemo(() => {
-    return event.participants
+    return experience.participants
       .map((id: number) => MEMBERS.find((m) => m.id === id))
       .filter((m): m is typeof MEMBERS[0] => Boolean(m))
-  }, [event.participants])
+  }, [experience.participants])
 
   const roleOptions = React.useMemo(() => {
     return ROLE_FILTERS.map((r) => ({
@@ -144,22 +144,23 @@ export default function EventParticipantsPage(): React.JSX.Element {
   }
 
   const hasActiveFilters = activeRole !== "todos" || Boolean(searchQuery)
+  const expSlug = getExperienceSlug(experience)
 
   return (
     <Container className="pt-6 sm:pt-8 pb-20 space-y-8">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <BackButton
-          fallbackHref="/eventos"
-          label="Voltar ao Evento"
+          fallbackHref="/experiencias"
+          label="Voltar à Experiência"
         />
 
         <CtaButton
-          href={`/eventos/${event.id}/${getEventSlug(event)}`}
+          href={`/experiencias/${experience.id}/${expSlug}`}
           variant="secondary"
           size="sm"
           className="h-9 px-3.5 text-xs shadow-none hover:shadow-none self-start sm:self-auto"
         >
-          <span>Ver Detalhes do Evento</span>
+          <span>Ver Detalhes da Experiência</span>
           <ArrowRight className="w-3.5 h-3.5 ml-2 shrink-0" />
         </CtaButton>
       </div>
@@ -169,16 +170,16 @@ export default function EventParticipantsPage(): React.JSX.Element {
             Quem vai estar lá ({attendees.length})
           </h1>
           <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 flex flex-wrap items-center gap-2">
-            <strong className="text-zinc-800 dark:text-zinc-200 font-semibold">{event.title}</strong>
+            <strong className="text-zinc-800 dark:text-zinc-200 font-semibold">{experience.title}</strong>
             <span>•</span>
             <span className="flex items-center gap-1">
               <Calendar className="w-3.5 h-3.5 text-brand-primary" />
-              {event.weekday}, {event.day} de {event.month}
+              {experience.date}
             </span>
             <span>•</span>
             <span className="flex items-center gap-1">
               <MapPin className="w-3.5 h-3.5 text-brand-primary" />
-              {event.place}
+              {experience.place}
             </span>
             <span>•</span>
             <span className="flex items-center gap-1 text-zinc-500 dark:text-zinc-400">
@@ -250,7 +251,7 @@ export default function EventParticipantsPage(): React.JSX.Element {
             Nenhum participante encontrado
           </h3>
           <p className="text-xs text-zinc-500 dark:text-zinc-400 max-w-sm mx-auto">
-            Não encontramos membros com os critérios selecionados. Tente ajustar a busca.
+            Nao encontramos membros com os criterios selecionados. Tente ajustar a busca.
           </p>
           <Button
             type="button"
@@ -269,7 +270,6 @@ export default function EventParticipantsPage(): React.JSX.Element {
             <MemberCard
               key={member.id}
               member={member}
-              isHost={member.id === event.organizerId}
             />
           ))}
         </div>
@@ -277,4 +277,3 @@ export default function EventParticipantsPage(): React.JSX.Element {
     </Container>
   )
 }
-

@@ -42,6 +42,7 @@ import { AddToCalendarButton } from "@/src/components/portal/AddToCalendarButton
 import { BackButton } from "@/src/components/portal/BackButton"
 import { GlassBadge } from "@/src/components/portal/GlassBadge"
 import { MemberCard } from "@/src/components/portal/MemberCard"
+import { RelatedEventsCard } from "@/src/components/portal/RelatedEventsCard"
 import { ShareButton } from "@/src/components/portal/ShareButton"
 
 import { cn } from "@/src/lib/utils"
@@ -209,6 +210,18 @@ export default function EventDetailPage(): React.JSX.Element {
                 ({organizer.company})
               </span>
             </Link>
+            <span className="text-zinc-500 hidden sm:inline">•</span>
+            <div className="inline-flex items-center gap-1.5 text-white/90 text-xs font-medium">
+              <div className="relative w-3.5 h-3.5 shrink-0">
+                <Image
+                  src="/utils/gamification/utils/xp.webp"
+                  alt="XP"
+                  fill
+                  className="object-contain"
+                />
+              </div>
+              <span>+{event.xp || 200} XP</span>
+            </div>
           </div>
         </div>
       </div>
@@ -377,19 +390,6 @@ export default function EventDetailPage(): React.JSX.Element {
                 />
               ))}
             </div>
-
-            {attendees.length > 6 && (
-              <div className="pt-2 text-center">
-                <Link
-                  href={`/eventos/${event.id}/${eventSlug}/quem-vai`}
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] hover:border-zinc-300 dark:hover:border-zinc-700 text-xs font-bold uppercase tracking-wider text-zinc-800 dark:text-zinc-200 transition-all hover:bg-zinc-50 dark:hover:bg-zinc-800/60"
-                >
-                  <Users className="w-4 h-4 text-brand-primary" />
-                  <span>Ver todos os participantes ({attendees.length})</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </Link>
-              </div>
-            )}
           </section>
         </div>
 
@@ -456,13 +456,16 @@ export default function EventDetailPage(): React.JSX.Element {
                 </CtaButton>
               )}
 
-              <Link
+              <CtaButton
                 href={`/eventos/${event.id}/${eventSlug}/quem-vai`}
-                className="w-full h-11 px-4 rounded-sm border border-zinc-200 dark:border-zinc-700 bg-[#F1F1F1] dark:bg-zinc-900 text-xs font-bold uppercase tracking-wider text-zinc-800 dark:text-zinc-200 hover:border-brand-primary transition-colors flex items-center justify-center gap-2"
+                variant="secondary"
+                size="md"
+                isFullWidth
+                className="h-12 text-xs shadow-none hover:shadow-none"
               >
-                <Users className="w-3.5 h-3.5 text-brand-primary" />
+                <Users className="w-3.5 h-3.5 text-brand-primary mr-2 shrink-0" />
                 <span>Ver todos os participantes ({attendees.length})</span>
-              </Link>
+              </CtaButton>
             </div>
 
             <div className="space-y-3 pt-5 border-t border-zinc-100 dark:border-zinc-800">
@@ -503,89 +506,8 @@ export default function EventDetailPage(): React.JSX.Element {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <Link
-            href={`/eventos/${prevEvent.id}/${getEventSlug(prevEvent)}`}
-            className="group relative flex flex-col sm:flex-row items-stretch overflow-hidden rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] hover:border-brand-primary transition-all duration-200 shadow-xs"
-          >
-            <div className="relative w-full sm:w-44 h-36 sm:h-auto shrink-0 bg-zinc-950 overflow-hidden">
-              {prevEvent.image && (
-                <Image
-                  src={prevEvent.image}
-                  alt={prevEvent.title}
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-300 opacity-80"
-                />
-              )}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent sm:hidden" />
-            </div>
-
-            <div className="p-5 flex flex-col justify-between flex-1 gap-3 min-w-0">
-              <div>
-                <div className="flex items-center justify-between gap-2 text-[11px] font-bold text-zinc-400 mb-1.5">
-                  <span className="inline-flex items-center px-2 py-0.5 rounded-xs bg-zinc-100 dark:bg-zinc-800 text-[10px] font-black uppercase tracking-wider text-zinc-600 dark:text-zinc-300">
-                    {prevEvent.category || "Exclusivo"}
-                  </span>
-                  <span className="text-zinc-500 font-medium">
-                    {prevEvent.weekday}, {prevEvent.day} {prevEvent.month}
-                  </span>
-                </div>
-                <h3 className="text-sm sm:text-base font-heading font-black uppercase tracking-tight text-zinc-900 dark:text-white group-hover:text-brand-primary transition-colors line-clamp-2">
-                  {prevEvent.title}
-                </h3>
-              </div>
-
-              <div className="flex items-center gap-3 text-xs text-zinc-500 dark:text-zinc-400 pt-2 border-t border-zinc-100 dark:border-zinc-800/60 truncate">
-                <span className="flex items-center gap-1 truncate">
-                  <MapPin className="w-3.5 h-3.5 text-brand-primary shrink-0" />
-                  <span className="truncate">{prevEvent.place}</span>
-                </span>
-                <span>•</span>
-                <span className="shrink-0">{prevEvent.time}</span>
-              </div>
-            </div>
-          </Link>
-
-          <Link
-            href={`/eventos/${nextEvent.id}/${getEventSlug(nextEvent)}`}
-            className="group relative flex flex-col sm:flex-row items-stretch overflow-hidden rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] hover:border-brand-primary transition-all duration-200 shadow-xs"
-          >
-            <div className="relative w-full sm:w-44 h-36 sm:h-auto shrink-0 bg-zinc-950 overflow-hidden">
-              {nextEvent.image && (
-                <Image
-                  src={nextEvent.image}
-                  alt={nextEvent.title}
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-300 opacity-80"
-                />
-              )}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent sm:hidden" />
-            </div>
-
-            <div className="p-5 flex flex-col justify-between flex-1 gap-3 min-w-0">
-              <div>
-                <div className="flex items-center justify-between gap-2 text-[11px] font-bold text-zinc-400 mb-1.5">
-                  <span className="inline-flex items-center px-2 py-0.5 rounded-xs bg-zinc-100 dark:bg-zinc-800 text-[10px] font-black uppercase tracking-wider text-zinc-600 dark:text-zinc-300">
-                    {nextEvent.category || "Exclusivo"}
-                  </span>
-                  <span className="text-zinc-500 font-medium">
-                    {nextEvent.weekday}, {nextEvent.day} {nextEvent.month}
-                  </span>
-                </div>
-                <h3 className="text-sm sm:text-base font-heading font-black uppercase tracking-tight text-zinc-900 dark:text-white group-hover:text-brand-primary transition-colors line-clamp-2">
-                  {nextEvent.title}
-                </h3>
-              </div>
-
-              <div className="flex items-center gap-3 text-xs text-zinc-500 dark:text-zinc-400 pt-2 border-t border-zinc-100 dark:border-zinc-800/60 truncate">
-                <span className="flex items-center gap-1 truncate">
-                  <MapPin className="w-3.5 h-3.5 text-brand-primary shrink-0" />
-                  <span className="truncate">{nextEvent.place}</span>
-                </span>
-                <span>•</span>
-                <span className="shrink-0">{nextEvent.time}</span>
-              </div>
-            </div>
-          </Link>
+          <RelatedEventsCard event={prevEvent} />
+          <RelatedEventsCard event={nextEvent} />
         </div>
       </section>
     </Container>

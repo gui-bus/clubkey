@@ -3,10 +3,11 @@
 import * as React from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { Bathtub, Bed, Bookmark, CaretLeft, CaretRight, Door, Flame, Users } from "@phosphor-icons/react"
+import { Bathtub, Bed, Bookmark, CaretLeft, CaretRight, Door, Flame, Lightning, Users } from "@phosphor-icons/react"
 
 import { type RoomProperty } from "@/src/data/mockRooms"
 import { DiscountRibbon } from "@/src/components/common/discountRibbon"
+import { GlassBadge } from "@/src/components/portal/GlassBadge"
 import { cn } from "@/src/lib/utils"
 
 export interface RoomCardProps {
@@ -241,6 +242,25 @@ export function RoomCard({
         {discountPercent > 0 && (
           <DiscountRibbon>{discountPercent}% OFF</DiscountRibbon>
         )}
+
+        <div className="absolute bottom-3 right-3 z-20 pointer-events-none">
+          <GlassBadge
+            size="sm"
+            className="flex items-center gap-1.5 px-2 py-1 font-heading font-black text-[10px]"
+            icon={
+              <div className="relative w-3.5 h-3.5 shrink-0">
+                <Image
+                  src="/utils/gamification/utils/xp.webp"
+                  alt="XP"
+                  fill
+                  className="object-contain"
+                />
+              </div>
+            }
+          >
+            +300 XP
+          </GlassBadge>
+        </div>
       </div>
 
       <div className="p-4 sm:p-5 flex flex-col gap-3.5 flex-1 justify-between bg-white dark:bg-zinc-900">

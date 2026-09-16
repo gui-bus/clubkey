@@ -46,6 +46,7 @@ export interface EventItem {
   participants: number[]
   category?: string
   spots?: number
+  xp?: number
   host?: {
     name: string
     role: string
@@ -68,6 +69,7 @@ export interface ExperienceItem {
   includes: string[]
   participants: number[]
   image?: string
+  xp?: number
 }
 
 export interface BenefitItem {
@@ -341,6 +343,7 @@ export const EVENTS: EventItem[] = [
     participants: [0, 1, 2, 4, 9, 10, 14, 15],
     dressCode: "Smart Casual / Business",
     format: "Jantar Exclusivo • Mesa Redonda",
+    xp: 350,
     highlights: [
       {
         title: "Mesa Redonda Sem Palco",
@@ -382,6 +385,7 @@ export const EVENTS: EventItem[] = [
     participants: [10, 0, 9, 5, 2],
     dressCode: "Business Elegante",
     format: "Almoço Fechado • Sala Privativa",
+    xp: 250,
     highlights: [
       {
         title: "Acesso Direto a GPs & LPs",
@@ -423,6 +427,7 @@ export const EVENTS: EventItem[] = [
     participants: [7, 4, 3, 11],
     dressCode: "Business Formal / Smart",
     format: "Roda de Conversa & Coquetel",
+    xp: 200,
     highlights: [
       {
         title: "Casos Reais & Sucessão",
@@ -464,6 +469,7 @@ export const EVENTS: EventItem[] = [
     participants: [3, 6, 9, 1],
     dressCode: "Campo / Botas & Camisa",
     format: "Field Day • Visita Técnica",
+    xp: 450,
     highlights: [
       {
         title: "Tecnologia de Campo ao Vivo",
@@ -505,6 +511,7 @@ export const EVENTS: EventItem[] = [
     participants: [8, 12, 14, 4],
     dressCode: "Smart Casual",
     format: "Degustação Guiada • Sala Climatizada",
+    xp: 300,
     highlights: [
       {
         title: "Degustação Às Cegas",
@@ -546,6 +553,7 @@ export const EVENTS: EventItem[] = [
     participants: [9, 0, 10, 5, 11, 15],
     dressCode: "Business / Passeio Completo",
     format: "Painel Estratégico & Foyer VIP",
+    xp: 400,
     highlights: [
       {
         title: "Panorama Macroeconômico Global",
@@ -587,6 +595,7 @@ export const EVENTS: EventItem[] = [
     participants: [14, 2, 12, 6],
     dressCode: "Casual Executivo",
     format: "Breakfast Briefing • Rooftop",
+    xp: 150,
     highlights: [
       {
         title: "IA Aplicada à Eficiência",
@@ -628,6 +637,7 @@ export const EVENTS: EventItem[] = [
     participants: [13, 7, 1, 3, 11, 15],
     dressCode: "Smart Casual / Noite",
     format: "Lounge Noturno • Fumoir Privado",
+    xp: 300,
     highlights: [
       {
         title: "Charutaria & Curadoria",
@@ -663,6 +673,7 @@ export const EXPERIENCES: ExperienceItem[] = [
     price: 780,
     place: "Adega Bonvivant, SP",
     date: "12 SET",
+    xp: 450,
     image: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=800&auto=format&fit=crop&q=80",
     includes: [
       "Seis rótulos safras 2010–2016",
@@ -676,10 +687,11 @@ export const EXPERIENCES: ExperienceItem[] = [
   {
     id: 1,
     title: "Voo panorâmico sobre a Serra da Mantiqueira",
-    sub: "4 vagas",
+    sub: "10 vagas",
     price: 1450,
     place: "Aeroporto de Jundiaí, SP",
     date: "20 SET",
+    xp: 650,
     image: "https://images.unsplash.com/photo-1508614589041-895b88991e3e?w=800&auto=format&fit=crop&q=80",
     includes: [
       "Helicóptero biturbina",
@@ -688,7 +700,7 @@ export const EXPERIENCES: ExperienceItem[] = [
       "Seguro premium incluso"
     ],
     desc: "Rota panorâmica com pouso privativo para brunch gourmet em fazenda histórica restaurada.",
-    participants: [1, 13, 11]
+    participants: [1, 13, 11, 0, 4, 7, 8, 14]
   },
   {
     id: 2,
@@ -697,6 +709,7 @@ export const EXPERIENCES: ExperienceItem[] = [
     price: 2200,
     place: "Ilhabela, SP",
     date: "27 SET",
+    xp: 900,
     image: "https://images.unsplash.com/photo-1500917293891-ef795e70e1f6?w=800&auto=format&fit=crop&q=80",
     includes: [
       "Veleiro oceânico com capitão",
@@ -714,6 +727,7 @@ export const EXPERIENCES: ExperienceItem[] = [
     price: 0,
     place: "Cotia, SP",
     date: "04 OUT",
+    xp: 250,
     image: "https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&auto=format&fit=crop&q=80",
     includes: [
       "Green fee cortesia de membro",
@@ -731,6 +745,7 @@ export const EXPERIENCES: ExperienceItem[] = [
     price: 620,
     place: "Bar Kioi, SP",
     date: "11 OUT",
+    xp: 400,
     image: "https://images.unsplash.com/photo-1527281400683-1aae777175f8?w=800&auto=format&fit=crop&q=80",
     includes: [
       "Cinco destilarias japonesas premiadas",
@@ -748,6 +763,7 @@ export const EXPERIENCES: ExperienceItem[] = [
     price: 0,
     place: "Paranapiacaba, SP",
     date: "18 OUT",
+    xp: 300,
     image: "https://images.unsplash.com/photo-1551632811-561732d1e306?w=800&auto=format&fit=crop&q=80",
     includes: [
       "Guias credenciados e socorristas",
@@ -765,6 +781,7 @@ export const EXPERIENCES: ExperienceItem[] = [
     price: 950,
     place: "Theatro Municipal, SP",
     date: "25 OUT",
+    xp: 500,
     image: "https://images.unsplash.com/photo-1507676184212-d03ab07a01bf?w=800&auto=format&fit=crop&q=80",
     includes: [
       "Camarote central nobre",
@@ -782,6 +799,7 @@ export const EXPERIENCES: ExperienceItem[] = [
     price: 3400,
     place: "Sua residência, SP",
     date: "Sob agendamento",
+    xp: 1200,
     image: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&auto=format&fit=crop&q=80",
     includes: [
       "Menu degustação de seis tempos",
@@ -799,6 +817,7 @@ export const EXPERIENCES: ExperienceItem[] = [
     price: 1890,
     place: "Autódromo de Interlagos, SP",
     date: "08 NOV",
+    xp: 800,
     image: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=800&auto=format&fit=crop&q=80",
     includes: [
       "Vinte voltas de pilotagem pura",
@@ -816,6 +835,7 @@ export const EXPERIENCES: ExperienceItem[] = [
     price: 5600,
     place: "Trancoso, BA",
     date: "20 NOV",
+    xp: 1500,
     image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&auto=format&fit=crop&q=80",
     includes: [
       "Villa privativa à beira-mar",
@@ -1238,4 +1258,648 @@ export const MONTH_ORDER = [
   "OUT",
   "NOV",
   "DEZ",
+]
+
+export type TierId =
+  | "membro"
+  | "associado"
+  | "titular"
+  | "investidor"
+  | "incorporador"
+  | "patrono"
+
+export interface TierDefinition {
+  id: TierId
+  order: number
+  name: string
+  subtitle: string
+  minXp: number
+  maxXp: number | null
+  image: string
+  color: string
+  badgeColor:
+    | "default"
+    | "primary"
+    | "secondary"
+    | "accent"
+    | "success"
+    | "warning"
+    | "danger"
+  isProtectedBase?: boolean
+  isSpecialPinnacle?: boolean
+  description: string
+  perks: string[]
+}
+
+export interface XpActivity {
+  id: string
+  title: string
+  xp: number
+  date: string
+  category:
+    | "onboarding"
+    | "hospedagem"
+    | "evento"
+    | "experiencia"
+    | "conexao"
+    | "missao"
+    | "bonus"
+}
+
+export interface MissionItem {
+  id: string
+  title: string
+  description: string
+  category:
+    | "onboarding"
+    | "estadias"
+    | "eventos"
+    | "experiencias"
+    | "networking"
+    | "ranking"
+  xpReward: number
+  tokensReward?: number
+  currentProgress: number
+  totalRequired: number
+  isCompleted: boolean
+  isClaimed: boolean
+  actionUrl?: string
+  actionLabel?: string
+}
+
+export interface LeaderboardMember {
+  rank: number
+  id: number
+  name: string
+  role: string
+  company: string
+  city: string
+  avatar: string
+  clubId: string
+  clubName: string
+  tierId: TierId
+  xp: number
+  ribTokens: number
+  isCurrentUser?: boolean
+}
+
+export const TIERS_CONFIG: Record<TierId, TierDefinition> = {
+  membro: {
+    id: "membro",
+    order: 1,
+    name: "Membro",
+    subtitle: "Boas-vindas ao ecossistema",
+    minXp: 0,
+    maxXp: 499,
+    image: "/utils/gamification/tiers/01_membro.webp",
+    color: "#8E8E93",
+    badgeColor: "default",
+    description:
+      "Nível de entrada para novos membros. Complete seu cadastro e ative o 2FA para subir para Associado.",
+    perks: [
+      "Acesso ao catálogo de hospedagens parceiras",
+      "Visualização de eventos abertos",
+      "Diretório básico de membros",
+    ],
+  },
+  associado: {
+    id: "associado",
+    order: 2,
+    name: "Associado",
+    subtitle: "Membro verificado e protegido",
+    minXp: 500,
+    maxXp: 1999,
+    image: "/utils/gamification/tiers/02_associado.webp",
+    color: "#3B82F6",
+    badgeColor: "primary",
+    isProtectedBase: true,
+    description:
+      "Base segura de membro ativo. Uma vez alcançado, você nunca é rebaixado abaixo de Associado.",
+    perks: [
+      "Tarifas exclusivas com até 20% OFF em estadias",
+      "Confirmação de presença em eventos regulares",
+      "Conexões diretas com outros membros",
+      "2 Tokens RIB ao subir de nível",
+    ],
+  },
+  titular: {
+    id: "titular",
+    order: 3,
+    name: "Titular",
+    subtitle: "Engajamento recorrente e influência",
+    minXp: 2000,
+    maxXp: 4999,
+    image: "/utils/gamification/tiers/03_titular.webp",
+    color: "#10B981",
+    badgeColor: "success",
+    description:
+      "Nível intermediário para membros ativos em eventos, viagens e conexões estratégicas.",
+    perks: [
+      "Tarifas exclusivas com até 25% OFF em estadias",
+      "Prioridade na lista de espera de experiências",
+      "Acesso a jantares fechados e rodadas setoriais",
+      "Concierge standard para reservas prioritárias",
+      "2 Tokens RIB ao subir de nível",
+    ],
+  },
+  investidor: {
+    id: "investidor",
+    order: 4,
+    name: "Investidor",
+    subtitle: "Alta circulação e liderança",
+    minXp: 5000,
+    maxXp: 9999,
+    image: "/utils/gamification/tiers/04_investidor.webp",
+    color: "#F59E0B",
+    badgeColor: "warning",
+    description:
+      "Destaque sênior na comunidade com acesso prioritário a deal flow e comitês de investimento.",
+    perks: [
+      "Tarifas exclusivas com até 30% OFF em estadias",
+      "Acesso a reuniões de deal flow e co-investimento",
+      "Concierge VIP dedicado 24/7",
+      "Convites para experiências internacionais",
+      "2 Tokens RIB ao subir de nível",
+    ],
+  },
+  incorporador: {
+    id: "incorporador",
+    order: 5,
+    name: "Incorporador",
+    subtitle: "Patamar máximo por pontuação",
+    minXp: 10000,
+    maxXp: null,
+    image: "/utils/gamification/tiers/05_incorporador.webp",
+    color: "#EC4899",
+    badgeColor: "accent",
+    description:
+      "O mais alto tier regular da plataforma por pontuação contínua e contribuição estratégica.",
+    perks: [
+      "Tarifas com desconto máximo de até 35% OFF",
+      "Acesso total a todas as experiências e regatas",
+      "Canal direto com fundadores do ClubKey",
+      "Mesa cativa nos encontros institucionais anuais",
+      "2 Tokens RIB ao subir de nível",
+    ],
+  },
+  patrono: {
+    id: "patrono",
+    order: 6,
+    name: "Patrono",
+    subtitle: "Posição #1 no Ranking Geral Global",
+    minXp: 10000,
+    maxXp: null,
+    image: "/utils/gamification/tiers/06_patrono.webp",
+    color: "#E85535",
+    badgeColor: "danger",
+    isSpecialPinnacle: true,
+    description:
+      "Título supremo e singular concedido exclusivamente ao membro com a maior pontuação de XP global.",
+    perks: [
+      "Insígnia dourada suprema em todo o ecossistema",
+      "Destaque comemorativo fixo no hall do Patrono",
+      "Cota especial de 5 Tokens RIB bônus por trimestre",
+      "Acesso irrestrito a todas as cotas e propriedades VIP",
+    ],
+  },
+}
+
+export const TIERS_LIST: TierDefinition[] = [
+  TIERS_CONFIG.membro,
+  TIERS_CONFIG.associado,
+  TIERS_CONFIG.titular,
+  TIERS_CONFIG.investidor,
+  TIERS_CONFIG.incorporador,
+  TIERS_CONFIG.patrono,
+]
+
+export function getTierByXp(
+  xp: number,
+  isLeader: boolean = false,
+  isTierFrozen: boolean = false
+): TierDefinition {
+  if (isLeader && xp >= 5000) {
+    return TIERS_CONFIG.patrono
+  }
+  if (isTierFrozen && xp >= 2000) {
+    return TIERS_CONFIG.associado
+  }
+  if (xp >= 10000) return TIERS_CONFIG.incorporador
+  if (xp >= 5000) return TIERS_CONFIG.investidor
+  if (xp >= 2000) return TIERS_CONFIG.titular
+  if (xp >= 500) return TIERS_CONFIG.associado
+  return TIERS_CONFIG.membro
+}
+
+export function getNextTier(currentTierId: TierId): TierDefinition | null {
+  switch (currentTierId) {
+    case "membro":
+      return TIERS_CONFIG.associado
+    case "associado":
+      return TIERS_CONFIG.titular
+    case "titular":
+      return TIERS_CONFIG.investidor
+    case "investidor":
+      return TIERS_CONFIG.incorporador
+    case "incorporador":
+      return TIERS_CONFIG.patrono
+    case "patrono":
+      return null
+  }
+}
+
+export function calculateTierProgress(
+  xp: number,
+  currentTier: TierDefinition
+): {
+  currentTier: TierDefinition
+  nextTier: TierDefinition | null
+  currentTierXp: number
+  nextTierXp: number
+  progressPercentage: number
+  xpNeeded: number
+} {
+  const next = getNextTier(currentTier.id)
+  if (!next || currentTier.maxXp === null) {
+    return {
+      currentTier,
+      nextTier: null,
+      currentTierXp: currentTier.minXp,
+      nextTierXp: currentTier.minXp,
+      progressPercentage: 100,
+      xpNeeded: 0,
+    }
+  }
+
+  const base = currentTier.minXp
+  const target = next.minXp
+  const range = target - base
+  const earned = Math.max(0, xp - base)
+  const percentage = Math.min(100, Math.round((earned / range) * 100))
+  const needed = Math.max(0, target - xp)
+
+  return {
+    currentTier,
+    nextTier: next,
+    currentTierXp: base,
+    nextTierXp: target,
+    progressPercentage: percentage,
+    xpNeeded: needed,
+  }
+}
+
+export const DEFAULT_MISSIONS: MissionItem[] = [
+  {
+    id: "profile_completion",
+    title: "Primeiro Passo",
+    description: "Complete todos os dados cadastrais do seu perfil profissional.",
+    category: "onboarding",
+    xpReward: 250,
+    tokensReward: 0,
+    currentProgress: 1,
+    totalRequired: 1,
+    isCompleted: true,
+    isClaimed: true,
+    actionUrl: "/perfil",
+    actionLabel: "Ver Perfil",
+  },
+  {
+    id: "two_factor_auth",
+    title: "Blindagem Digital",
+    description: "Ative a autenticação de dois fatores (2FA) para proteger sua conta.",
+    category: "onboarding",
+    xpReward: 250,
+    tokensReward: 0,
+    currentProgress: 1,
+    totalRequired: 1,
+    isCompleted: true,
+    isClaimed: true,
+    actionUrl: "/perfil",
+    actionLabel: "Configurar 2FA",
+  },
+  {
+    id: "first_stay",
+    title: "Pioneiro das Estadias",
+    description: "Faça sua primeira reserva de hospedagem exclusiva no portal.",
+    category: "estadias",
+    xpReward: 300,
+    tokensReward: 0,
+    currentProgress: 2,
+    totalRequired: 1,
+    isCompleted: true,
+    isClaimed: true,
+    actionUrl: "/hospedagens",
+    actionLabel: "Explorar Hospedagens",
+  },
+  {
+    id: "events_attendee",
+    title: "Habitué dos Encontros",
+    description: "Confirme presença em pelo menos 3 eventos fechados do clube.",
+    category: "eventos",
+    xpReward: 400,
+    tokensReward: 0,
+    currentProgress: 2,
+    totalRequired: 3,
+    isCompleted: false,
+    isClaimed: false,
+    actionUrl: "/eventos",
+    actionLabel: "Ver Agenda",
+  },
+  {
+    id: "experiences_collector",
+    title: "Colecionador de Experiências",
+    description: "Adquira ou participe de 2 experiências e roteiros exclusivos.",
+    category: "experiencias",
+    xpReward: 500,
+    tokensReward: 0,
+    currentProgress: 1,
+    totalRequired: 2,
+    isCompleted: false,
+    isClaimed: false,
+    actionUrl: "/experiencias",
+    actionLabel: "Ver Experiências",
+  },
+  {
+    id: "connections_5",
+    title: "Networking Starter",
+    description: "Estabeleça conexão bilateral com 5 membros do clube.",
+    category: "networking",
+    xpReward: 250,
+    tokensReward: 0,
+    currentProgress: 4,
+    totalRequired: 5,
+    isCompleted: false,
+    isClaimed: false,
+    actionUrl: "/conexoes",
+    actionLabel: "Conectar Membros",
+  },
+  {
+    id: "connections_10",
+    title: "Conector de Elite",
+    description: "Alcance a marca de 10 conexões diretas na comunidade.",
+    category: "networking",
+    xpReward: 500,
+    tokensReward: 0,
+    currentProgress: 4,
+    totalRequired: 10,
+    isCompleted: false,
+    isClaimed: false,
+    actionUrl: "/conexoes",
+    actionLabel: "Conectar Membros",
+  },
+  {
+    id: "connections_20",
+    title: "Super Connector",
+    description: "Expanda sua rede com 20 conexões estratégicas ativas.",
+    category: "networking",
+    xpReward: 1000,
+    tokensReward: 1,
+    currentProgress: 4,
+    totalRequired: 20,
+    isCompleted: false,
+    isClaimed: false,
+    actionUrl: "/conexoes",
+    actionLabel: "Conectar Membros",
+  },
+  {
+    id: "patrono_aspirant",
+    title: "Patrono Aspirante",
+    description: "Alcance o Top 10 do ranking geral global de associados.",
+    category: "ranking",
+    xpReward: 1000,
+    tokensReward: 2,
+    currentProgress: 8,
+    totalRequired: 10,
+    isCompleted: true,
+    isClaimed: false,
+    actionUrl: "/keypass/ranking",
+    actionLabel: "Ver Ranking",
+  },
+]
+
+export const MOCK_LEADERBOARD: LeaderboardMember[] = [
+  {
+    rank: 1,
+    id: 101,
+    name: "Bernardo Fontes",
+    role: "Managing Partner",
+    company: "Apex Ventures",
+    city: "São Paulo",
+    avatar:
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&auto=format&fit=crop&q=80",
+    clubId: "alpha",
+    clubName: "Clube Alpha",
+    tierId: "patrono",
+    xp: 14850,
+    ribTokens: 18,
+  },
+  {
+    rank: 2,
+    id: 102,
+    name: "Beatriz Helena",
+    role: "Presidente",
+    company: "Helena Holding",
+    city: "Rio de Janeiro",
+    avatar:
+      "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&auto=format&fit=crop&q=80",
+    clubId: "inv",
+    clubName: "Clube Investidores",
+    tierId: "incorporador",
+    xp: 12400,
+    ribTokens: 14,
+  },
+  {
+    rank: 3,
+    id: 103,
+    name: "Henrique Alcantara",
+    role: "Founder & CEO",
+    company: "Pulse Tech",
+    city: "Belo Horizonte",
+    avatar:
+      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&auto=format&fit=crop&q=80",
+    clubId: "founders",
+    clubName: "Founders Circle",
+    tierId: "incorporador",
+    xp: 11200,
+    ribTokens: 12,
+  },
+  {
+    rank: 4,
+    id: 104,
+    name: "Camila Yoshida",
+    role: "Diretora de Produto",
+    company: "Banco Livre",
+    city: "São Paulo",
+    avatar:
+      "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&auto=format&fit=crop&q=80",
+    clubId: "alpha",
+    clubName: "Clube Alpha",
+    tierId: "investidor",
+    xp: 8900,
+    ribTokens: 10,
+  },
+  {
+    rank: 5,
+    id: 105,
+    name: "Rodrigo Salles",
+    role: "CEO",
+    company: "Norte Logística",
+    city: "Curitiba",
+    avatar:
+      "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&auto=format&fit=crop&q=80",
+    clubId: "founders",
+    clubName: "Founders Circle",
+    tierId: "investidor",
+    xp: 7650,
+    ribTokens: 8,
+  },
+  {
+    rank: 6,
+    id: 106,
+    name: "Marcelo Vianna",
+    role: "Sócio",
+    company: "Vianna Real Estate",
+    city: "São Paulo",
+    avatar:
+      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&auto=format&fit=crop&q=80",
+    clubId: "inv",
+    clubName: "Clube Investidores",
+    tierId: "investidor",
+    xp: 6200,
+    ribTokens: 8,
+  },
+  {
+    rank: 7,
+    id: 107,
+    name: "Luciana Morais",
+    role: "Angel Investor",
+    company: "Morais Capital",
+    city: "Florianópolis",
+    avatar:
+      "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&auto=format&fit=crop&q=80",
+    clubId: "inv",
+    clubName: "Clube Investidores",
+    tierId: "investidor",
+    xp: 5400,
+    ribTokens: 6,
+  },
+  {
+    rank: 8,
+    id: 0,
+    name: "William Tabata",
+    role: "Sócio-diretor",
+    company: "Tabata Capital",
+    city: "São Paulo",
+    avatar:
+      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80",
+    clubId: "alpha",
+    clubName: "Clube Alpha",
+    tierId: "titular",
+    xp: 2850,
+    ribTokens: 6,
+    isCurrentUser: true,
+  },
+  {
+    rank: 9,
+    id: 108,
+    name: "Gabriel Medeiros",
+    role: "CTO",
+    company: "CloudScale",
+    city: "Campinas",
+    avatar:
+      "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&auto=format&fit=crop&q=80",
+    clubId: "founders",
+    clubName: "Founders Circle",
+    tierId: "titular",
+    xp: 2600,
+    ribTokens: 4,
+  },
+  {
+    rank: 10,
+    id: 109,
+    name: "Juliana Peixoto",
+    role: "VP de Expansão",
+    company: "Varejo Brasil",
+    city: "Porto Alegre",
+    avatar:
+      "https://images.unsplash.com/photo-1534751516642-a171edd25218?w=400&auto=format&fit=crop&q=80",
+    clubId: "alpha",
+    clubName: "Clube Alpha",
+    tierId: "titular",
+    xp: 2350,
+    ribTokens: 4,
+  },
+]
+
+export const DEFAULT_XP_ACTIVITIES: XpActivity[] = [
+  {
+    id: "act-01",
+    title: "Onboarding Completo de Membro",
+    xp: 250,
+    date: "10 de Outubro, 2026",
+    category: "onboarding",
+  },
+  {
+    id: "act-02",
+    title: "Ativação de Autenticação 2FA",
+    xp: 250,
+    date: "10 de Outubro, 2026",
+    category: "onboarding",
+  },
+  {
+    id: "act-03",
+    title: "Reserva confirmada: Fazenda Boa Vista",
+    xp: 300,
+    date: "12 de Outubro, 2026",
+    category: "hospedagem",
+  },
+  {
+    id: "act-04",
+    title: "Reserva confirmada: Uxua Casa Hotel & Spa",
+    xp: 300,
+    date: "14 de Outubro, 2026",
+    category: "hospedagem",
+  },
+  {
+    id: "act-05",
+    title: "Presença confirmada no Jantar de Abertura",
+    xp: 200,
+    date: "18 de Outubro, 2026",
+    category: "evento",
+  },
+  {
+    id: "act-06",
+    title: "Presença confirmada no Encontro de Founders",
+    xp: 200,
+    date: "20 de Outubro, 2026",
+    category: "evento",
+  },
+  {
+    id: "act-07",
+    title: "Experiência garantida: Degustação Rara de Vinhos",
+    xp: 250,
+    date: "22 de Outubro, 2026",
+    category: "experiencia",
+  },
+  {
+    id: "act-08",
+    title: "Conexões estabelecidas no Clube Alpha",
+    xp: 200,
+    date: "25 de Outubro, 2026",
+    category: "conexao",
+  },
+  {
+    id: "act-09",
+    title: "Conquista resgatada: Pioneiro das Estadias",
+    xp: 300,
+    date: "28 de Outubro, 2026",
+    category: "missao",
+  },
+  {
+    id: "act-10",
+    title: "Promoção para o Nível Titular (+2 RIB)",
+    xp: 600,
+    date: "01 de Novembro, 2026",
+    category: "bonus",
+  },
 ]

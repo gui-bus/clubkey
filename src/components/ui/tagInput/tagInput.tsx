@@ -63,19 +63,19 @@ const tagInputVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-xs focus-within:border-sky-500 focus-within:ring-2 focus-within:ring-sky-500/40 text-zinc-900 dark:text-zinc-100",
+          "bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-xs focus-within:border-brand-primary focus-within:ring-1 focus-within:ring-brand-primary text-zinc-900 dark:text-zinc-100",
         bordered:
-          "bg-transparent border-2 border-zinc-200 dark:border-zinc-800 focus-within:border-sky-500 text-zinc-900 dark:text-zinc-100",
-        flat: "bg-zinc-100 dark:bg-zinc-800/60 border-transparent hover:bg-zinc-200/70 dark:hover:bg-zinc-800 focus-within:bg-white dark:focus-within:bg-zinc-900 focus-within:border-sky-500 border text-zinc-900 dark:text-zinc-100",
+          "bg-transparent border-2 border-zinc-200 dark:border-zinc-800 focus-within:border-brand-primary text-zinc-900 dark:text-zinc-100",
+        flat: "bg-zinc-100 dark:bg-zinc-800/60 border-transparent hover:bg-zinc-200/70 dark:hover:bg-zinc-800 focus-within:bg-white dark:focus-within:bg-zinc-900 focus-within:border-brand-primary border text-zinc-900 dark:text-zinc-100",
         underlined:
-          "bg-transparent border-b-2 border-zinc-200 dark:border-zinc-800 rounded-none px-0 focus-within:border-sky-500 text-zinc-900 dark:text-zinc-100",
+          "bg-transparent border-b-2 border-zinc-200 dark:border-zinc-800 rounded-none px-0 focus-within:border-brand-primary text-zinc-900 dark:text-zinc-100",
         filled:
-          "bg-zinc-100 dark:bg-zinc-800/80 border border-transparent focus-within:border-sky-500 focus-within:ring-2 focus-within:ring-sky-500/40 text-zinc-900 dark:text-zinc-100",
+          "bg-zinc-100 dark:bg-zinc-800/80 border border-transparent focus-within:border-brand-primary focus-within:ring-1 focus-within:ring-brand-primary text-zinc-900 dark:text-zinc-100",
         glassmorphism:
-          "backdrop-blur-md bg-white/10 dark:bg-black/10 border border-white/20 dark:border-white/10 focus-within:border-sky-500 shadow-lg text-zinc-900 dark:text-zinc-100",
+          "backdrop-blur-md bg-white/10 dark:bg-black/10 border border-white/20 dark:border-white/10 focus-within:border-brand-primary shadow-lg text-zinc-900 dark:text-zinc-100",
         "gradient-border":
-          "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 relative [background-clip:padding-box] border border-transparent before:absolute before:inset-0 before:-z-10 before:rounded-[inherit] before:p-[1px] before:bg-gradient-to-r before:from-sky-500 before:via-indigo-500 before:to-pink-500 focus-within:ring-2 focus-within:ring-indigo-500/30",
-        glow: "bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-xs focus-within:border-sky-500 focus-within:shadow-[0_0_12px_rgba(14,165,233,0.35)] text-zinc-900 dark:text-zinc-100",
+          "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 relative [background-clip:padding-box] border border-transparent before:absolute before:inset-0 before:-z-10 before:rounded-[inherit] before:p-[1px] before:bg-gradient-to-r before:from-zinc-400 before:via-zinc-500 before:to-zinc-600 focus-within:ring-1 focus-within:ring-brand-primary",
+        glow: "bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-xs focus-within:border-brand-primary text-zinc-900 dark:text-zinc-100",
       },
       size: {
         sm: "min-h-8 p-1 text-xs gap-1",
@@ -109,7 +109,7 @@ export const TagInput = React.forwardRef<HTMLInputElement, TagInputProps>(
       validate,
       addOnBlur = true,
       delimiterKeys = ["Enter", ","],
-      tagColor = "primary",
+      tagColor = "default",
       tagVariant = "flat",
       isDisabled = false,
       placeholder = "Add tag...",

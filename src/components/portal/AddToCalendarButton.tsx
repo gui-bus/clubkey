@@ -4,6 +4,7 @@ import * as React from "react"
 import { CalendarPlus } from "@phosphor-icons/react"
 import { toast } from "@/src/components/ui/toast/toast"
 import { cn } from "@/src/lib/utils"
+import { CtaButton, CtaButtonSize } from "@/src/components/common/ctaButton"
 
 export interface AddToCalendarButtonProps {
   title: string
@@ -13,6 +14,7 @@ export interface AddToCalendarButtonProps {
   endDate?: string
   label?: string
   className?: string
+  size?: CtaButtonSize
 }
 
 export function AddToCalendarButton({
@@ -21,8 +23,9 @@ export function AddToCalendarButton({
   location = "",
   label = "Adicionar à Agenda",
   className,
+  size = "sm",
 }: AddToCalendarButtonProps): React.JSX.Element {
-  const handleAddToCalendar = (e: React.MouseEvent) => {
+  const handleAddToCalendar = (e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => {
     e.preventDefault()
     e.stopPropagation()
 
@@ -39,17 +42,19 @@ export function AddToCalendarButton({
   }
 
   return (
-    <button
+    <CtaButton
       type="button"
+      variant="secondary"
+      size={size}
       onClick={handleAddToCalendar}
       className={cn(
-        "group relative inline-flex items-center justify-center gap-2 h-9 px-3.5 rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] text-zinc-700 dark:text-zinc-300 hover:border-zinc-300 dark:hover:border-zinc-700 hover:text-zinc-900 dark:hover:text-white text-xs font-bold uppercase tracking-wider select-none cursor-pointer transition-all duration-200 active:scale-[0.98] shadow-2xs hover:shadow-xs",
+        "h-9 px-3.5 text-xs shadow-none hover:shadow-none font-bold uppercase tracking-wider",
         className
       )}
       aria-label={label}
     >
-      <CalendarPlus className="w-3.5 h-3.5 text-zinc-400 group-hover:text-brand-primary transition-colors duration-200 shrink-0" />
+      <CalendarPlus className="w-3.5 h-3.5 text-zinc-400 group-hover:text-brand-primary transition-colors duration-200 shrink-0 mr-2" />
       <span>{label}</span>
-    </button>
+    </CtaButton>
   )
 }

@@ -8,7 +8,13 @@ import {
   MemberStayReservation,
   DEFAULT_MEMBER_STAYS,
   MemberSubscription,
-  DEFAULT_MEMBER_SUBSCRIPTION
+  DEFAULT_MEMBER_SUBSCRIPTION,
+  DEFAULT_MISSIONS,
+  DEFAULT_XP_ACTIVITIES,
+  MissionItem,
+  XpActivity,
+  TierDefinition,
+  getTierByXp,
 } from "@/src/data/portalData"
 
 export type MemberConnectionStatus = "none" | "pending" | "connected"
@@ -18,10 +24,19 @@ interface PortalState {
   activeClubId: string
   confirmedEvents: Record<number, boolean>
   connectedMembers: Record<number, "pending" | "connected">
+  receivedPendingInvites: number[]
   boughtExperiences: Record<number, boolean>
   memberStays: MemberStayReservation[]
   memberSubscription: MemberSubscription
   userProfile: UserProfile
+  xp: number
+  ribTokens: number
+  is2FAEnabled: boolean
+  isProfileCompleted: boolean
+  lastActivityDate: string
+  isTierFrozen: boolean
+  missions: MissionItem[]
+  xpHistory: XpActivity[]
   login: (email?: string, name?: string) => void
   logout: () => void
   setActiveClubId: (id: string) => void
@@ -29,6 +44,10 @@ interface PortalState {
   toggleEventRSVP: (eventId: number) => boolean
   toggleConnect: (memberId: number) => MemberConnectionStatus
   getConnectionStatus: (memberId: number) => MemberConnectionStatus
+  acceptInvite: (memberId: number) => void
+  declineInvite: (memberId: number) => void
+  cancelSentInvite: (memberId: number) => void
+  removeConnection: (memberId: number) => void
   buyExperience: (experienceId: number) => void
   cancelStay: (stayReservationId: string) => void
   resetStays: () => void
@@ -37,6 +56,17 @@ interface PortalState {
   removeSeekingTag: (index: number) => void
   addOfferingTag: (tag: string) => void
   removeOfferingTag: (index: number) => void
+  addXP: (
+    amount: number,
+    title: string,
+    category: XpActivity["category"],
+    tokensBonus?: number
+  ) => void
+  enable2FA: () => void
+  disable2FA: () => void
+  claimMission: (missionId: string) => void
+  updateMissionProgress: (missionId: string, progressDelta: number) => void
+  getUserTier: () => TierDefinition
 }
 
 export const usePortalStore = create<PortalState>()(
@@ -51,12 +81,21 @@ export const usePortalStore = create<PortalState>()(
         7: "connected",
         10: "connected",
         4: "pending",
-        14: "pending"
+        14: "pending",
       },
+      receivedPendingInvites: [1, 5, 9],
       boughtExperiences: {},
       memberStays: DEFAULT_MEMBER_STAYS,
       memberSubscription: DEFAULT_MEMBER_SUBSCRIPTION,
       userProfile: DEFAULT_USER,
+      xp: 2850,
+      ribTokens: 6,
+      is2FAEnabled: true,
+      isProfileCompleted: true,
+      lastActivityDate: new Date().toISOString(),
+      isTierFrozen: false,
+      missions: DEFAULT_MISSIONS,
+      xpHistory: DEFAULT_XP_ACTIVITIES,
 
       login: (email?: string, name?: string) => {
         const updatedProfile = { ...get().userProfile }
@@ -75,13 +114,13 @@ export const usePortalStore = create<PortalState>()(
         }
         set({
           isAuthenticated: true,
-          userProfile: updatedProfile
+          userProfile: updatedProfile,
         })
       },
 
       logout: () => {
         set({
-          isAuthenticated: false
+          isAuthenticated: false,
         })
       },
 
@@ -92,15 +131,146 @@ export const usePortalStore = create<PortalState>()(
         return CLUBS.find((c) => c.id === id) || CLUBS[0]
       },
 
+      getUserTier: () => {
+        const xp = get().xp
+        const isFrozen = get().isTierFrozen
+        return getTierByXp(xp, false, isFrozen)
+      },
+
+      addXP: (
+        amount: number,
+        title: string,
+        category: XpActivity["category"],
+        tokensBonus: number = 0
+      ) => {
+        const currentXp = get().xp
+        const currentTier = getTierByXp(currentXp, false, get().isTierFrozen)
+        const newXp = currentXp + amount
+        const newTier = getTierByXp(newXp, false, false)
+        const leveledUp = newTier.order > currentTier.order
+        const earnedTokens = tokensBonus + (leveledUp ? 2 : 0)
+
+        const newActivity: XpActivity = {
+          id: `act-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
+          title: title,
+          xp: amount,
+          date: new Intl.DateTimeFormat("pt-BR", {
+            day: "2-digit",
+            month: "long",
+            year: "numeric",
+          }).format(new Date()),
+          category: category,
+        }
+
+        const bonusActivity: XpActivity | null = leveledUp
+          ? {
+              id: `promo-${Date.now()}`,
+              title: `Subida de nível para o Nível ${newTier.name} (+2 RIB)`,
+              xp: 0,
+              date: new Intl.DateTimeFormat("pt-BR", {
+                day: "2-digit",
+                month: "long",
+                year: "numeric",
+              }).format(new Date()),
+              category: "bonus",
+            }
+          : null
+
+        const combinedHistory = [
+          bonusActivity,
+          newActivity,
+          ...get().xpHistory,
+        ].filter((item): item is XpActivity => Boolean(item))
+
+        set((state) => ({
+          xp: newXp,
+          ribTokens: state.ribTokens + earnedTokens,
+          lastActivityDate: new Date().toISOString(),
+          isTierFrozen: false,
+          xpHistory: combinedHistory,
+        }))
+      },
+
+      enable2FA: () => {
+        if (get().is2FAEnabled) return
+        set((state) => ({
+          is2FAEnabled: true,
+          missions: state.missions.map((m) =>
+            m.id === "two_factor_auth"
+              ? { ...m, isCompleted: true, currentProgress: 1 }
+              : m
+          ),
+        }))
+        get().addXP(250, "Ativação de Autenticação 2FA", "onboarding")
+      },
+
+      disable2FA: () => {
+        set({ is2FAEnabled: false })
+      },
+
+      claimMission: (missionId: string) => {
+        const mission = get().missions.find((m) => m.id === missionId)
+        if (!mission || !mission.isCompleted || mission.isClaimed) return
+        set((state) => ({
+          missions: state.missions.map((m) =>
+            m.id === missionId ? { ...m, isClaimed: true } : m
+          ),
+        }))
+        get().addXP(
+          mission.xpReward,
+          `Conquista resgatada: ${mission.title}`,
+          "missao",
+          mission.tokensReward || 0
+        )
+      },
+
+      updateMissionProgress: (missionId: string, progressDelta: number) => {
+        set((state) => ({
+          missions: state.missions.map((m) => {
+            if (m.id === missionId) {
+              const nextProgress = Math.min(
+                m.totalRequired,
+                m.currentProgress + progressDelta
+              )
+              return {
+                ...m,
+                currentProgress: nextProgress,
+                isCompleted: nextProgress >= m.totalRequired,
+              }
+            }
+            return m
+          }),
+        }))
+      },
+
       toggleEventRSVP: (eventId: number) => {
         const current = !!get().confirmedEvents[eventId]
         const next = !current
         set((state) => ({
           confirmedEvents: {
             ...state.confirmedEvents,
-            [eventId]: next
-          }
+            [eventId]: next,
+          },
         }))
+        if (next) {
+          get().addXP(200, `Presença confirmada no evento #${eventId}`, "evento")
+          const confirmedCount = Object.keys(get().confirmedEvents).filter(
+            (k) => !!get().confirmedEvents[Number(k)]
+          ).length
+          set((state) => ({
+            missions: state.missions.map((m) => {
+              if (m.id === "events_attendee") {
+                const count = Math.min(m.totalRequired, confirmedCount)
+                return {
+                  ...m,
+                  currentProgress: count,
+                  isCompleted: count >= m.totalRequired,
+                }
+              }
+              return m
+            }),
+          }))
+        }
         return next
       },
 
@@ -121,31 +291,150 @@ export const usePortalStore = create<PortalState>()(
           set((state) => ({
             connectedMembers: {
               ...state.connectedMembers,
-              [memberId]: "pending"
-            }
+              [memberId]: "connected",
+            },
           }))
-          return "pending"
+          get().addXP(50, `Nova conexão profissional estabelecida`, "conexao")
+          const connectedCount = Object.values(get().connectedMembers).filter(
+            (v) => v === "connected"
+          ).length
+          set((state) => ({
+            missions: state.missions.map((m) => {
+              if (
+                m.id === "connections_5" ||
+                m.id === "connections_10" ||
+                m.id === "connections_20"
+              ) {
+                const count = Math.min(m.totalRequired, connectedCount)
+                return {
+                  ...m,
+                  currentProgress: count,
+                  isCompleted: count >= m.totalRequired,
+                }
+              }
+              return m
+            }),
+          }))
+          return "connected"
         }
+      },
+
+      acceptInvite: (memberId: number) => {
+        set((state) => ({
+          connectedMembers: {
+            ...state.connectedMembers,
+            [memberId]: "connected",
+          },
+          receivedPendingInvites: state.receivedPendingInvites.filter(
+            (id) => id !== memberId
+          ),
+        }))
+        get().addXP(50, `Convite de conexão aceito`, "conexao")
+        const connectedCount = Object.values(get().connectedMembers).filter(
+          (v) => v === "connected"
+        ).length
+        set((state) => ({
+          missions: state.missions.map((m) => {
+            if (
+              m.id === "connections_5" ||
+              m.id === "connections_10" ||
+              m.id === "connections_20"
+            ) {
+              const count = Math.min(m.totalRequired, connectedCount)
+              return {
+                ...m,
+                currentProgress: count,
+                isCompleted: count >= m.totalRequired,
+              }
+            }
+            return m
+          }),
+        }))
+      },
+
+      declineInvite: (memberId: number) => {
+        set((state) => ({
+          receivedPendingInvites: state.receivedPendingInvites.filter(
+            (id) => id !== memberId
+          ),
+        }))
+      },
+
+      cancelSentInvite: (memberId: number) => {
+        set((state) => {
+          const copy = { ...state.connectedMembers }
+          delete copy[memberId]
+          return { connectedMembers: copy }
+        })
+      },
+
+      removeConnection: (memberId: number) => {
+        set((state) => {
+          const copy = { ...state.connectedMembers }
+          delete copy[memberId]
+          return { connectedMembers: copy }
+        })
+        const connectedCount = Object.values(get().connectedMembers).filter(
+          (v) => v === "connected"
+        ).length
+        set((state) => ({
+          missions: state.missions.map((m) => {
+            if (
+              m.id === "connections_5" ||
+              m.id === "connections_10" ||
+              m.id === "connections_20"
+            ) {
+              const count = Math.min(m.totalRequired, connectedCount)
+              return {
+                ...m,
+                currentProgress: count,
+                isCompleted: count >= m.totalRequired,
+              }
+            }
+            return m
+          }),
+        }))
       },
 
       buyExperience: (experienceId: number) => {
         set((state) => ({
           boughtExperiences: {
             ...state.boughtExperiences,
-            [experienceId]: true
-          }
+            [experienceId]: true,
+          },
+        }))
+        get().addXP(
+          250,
+          `Experiência garantida #${experienceId}`,
+          "experiencia"
+        )
+        const expCount = Object.keys(get().boughtExperiences).length
+        set((state) => ({
+          missions: state.missions.map((m) => {
+            if (m.id === "experiences_collector") {
+              const count = Math.min(m.totalRequired, expCount)
+              return {
+                ...m,
+                currentProgress: count,
+                isCompleted: count >= m.totalRequired,
+              }
+            }
+            return m
+          }),
         }))
       },
 
       cancelStay: (stayReservationId: string) => {
         set((state) => ({
-          memberStays: state.memberStays.filter((s) => s.id !== stayReservationId)
+          memberStays: state.memberStays.filter(
+            (s) => s.id !== stayReservationId
+          ),
         }))
       },
 
       resetStays: () => {
         set({
-          memberStays: DEFAULT_MEMBER_STAYS
+          memberStays: DEFAULT_MEMBER_STAYS,
         })
       },
 
@@ -153,8 +442,8 @@ export const usePortalStore = create<PortalState>()(
         set((state) => ({
           userProfile: {
             ...state.userProfile,
-            ...profileUpdates
-          }
+            ...profileUpdates,
+          },
         }))
       },
 
@@ -164,8 +453,8 @@ export const usePortalStore = create<PortalState>()(
         set((state) => ({
           userProfile: {
             ...state.userProfile,
-            seeking: [...state.userProfile.seeking, trimmed]
-          }
+            seeking: [...state.userProfile.seeking, trimmed],
+          },
         }))
       },
 
@@ -173,8 +462,10 @@ export const usePortalStore = create<PortalState>()(
         set((state) => ({
           userProfile: {
             ...state.userProfile,
-            seeking: state.userProfile.seeking.filter((_: string, i: number) => i !== index)
-          }
+            seeking: state.userProfile.seeking.filter(
+              (_: string, i: number) => i !== index
+            ),
+          },
         }))
       },
 
@@ -184,8 +475,8 @@ export const usePortalStore = create<PortalState>()(
         set((state) => ({
           userProfile: {
             ...state.userProfile,
-            offering: [...state.userProfile.offering, trimmed]
-          }
+            offering: [...state.userProfile.offering, trimmed],
+          },
         }))
       },
 
@@ -193,23 +484,46 @@ export const usePortalStore = create<PortalState>()(
         set((state) => ({
           userProfile: {
             ...state.userProfile,
-            offering: state.userProfile.offering.filter((_: string, i: number) => i !== index)
-          }
+            offering: state.userProfile.offering.filter(
+              (_: string, i: number) => i !== index
+            ),
+          },
         }))
-      }
+      },
     }),
     {
-      name: "clubkey-portal-storage-v4",
-      version: 4,
+      name: "clubkey-portal-storage-v5",
+      version: 5,
       migrate: (persistedState: unknown) => {
         const state = persistedState as PortalState
         if (!state) return state
         const migratedState = { ...state }
-        if (migratedState.userProfile?.name === "Marina Duarte" || !migratedState.userProfile?.name) {
+        if (
+          migratedState.userProfile?.name === "Marina Duarte" ||
+          !migratedState.userProfile?.name
+        ) {
           migratedState.userProfile = DEFAULT_USER
         }
-        if (!migratedState.memberStays || migratedState.memberStays.length < DEFAULT_MEMBER_STAYS.length) {
+        if (
+          !migratedState.memberStays ||
+          migratedState.memberStays.length < DEFAULT_MEMBER_STAYS.length
+        ) {
           migratedState.memberStays = DEFAULT_MEMBER_STAYS
+        }
+        if (typeof migratedState.xp !== "number") {
+          migratedState.xp = 2850
+        }
+        if (typeof migratedState.ribTokens !== "number") {
+          migratedState.ribTokens = 6
+        }
+        if (typeof migratedState.is2FAEnabled !== "boolean") {
+          migratedState.is2FAEnabled = true
+        }
+        if (!migratedState.missions || migratedState.missions.length === 0) {
+          migratedState.missions = DEFAULT_MISSIONS
+        }
+        if (!migratedState.xpHistory || migratedState.xpHistory.length === 0) {
+          migratedState.xpHistory = DEFAULT_XP_ACTIVITIES
         }
         if (migratedState.connectedMembers) {
           const raw = migratedState.connectedMembers as Record<number, unknown>
@@ -228,14 +542,36 @@ export const usePortalStore = create<PortalState>()(
       },
       onRehydrateStorage: () => (state) => {
         if (state) {
-          if (state.userProfile?.name === "Marina Duarte" || !state.userProfile?.name) {
+          if (
+            state.userProfile?.name === "Marina Duarte" ||
+            !state.userProfile?.name
+          ) {
             state.userProfile = DEFAULT_USER
           }
-          if (!state.memberStays || state.memberStays.length < DEFAULT_MEMBER_STAYS.length) {
+          if (
+            !state.memberStays ||
+            state.memberStays.length < DEFAULT_MEMBER_STAYS.length
+          ) {
             state.memberStays = DEFAULT_MEMBER_STAYS
           }
+          if (typeof state.xp !== "number") {
+            state.xp = 2850
+          }
+          if (typeof state.ribTokens !== "number") {
+            state.ribTokens = 6
+          }
+          if (typeof state.is2FAEnabled !== "boolean") {
+            state.is2FAEnabled = true
+          }
+          if (!state.missions || state.missions.length === 0) {
+            state.missions = DEFAULT_MISSIONS
+          }
+          if (!state.xpHistory || state.xpHistory.length === 0) {
+            state.xpHistory = DEFAULT_XP_ACTIVITIES
+          }
         }
-      }
+      },
     }
   )
 )
+

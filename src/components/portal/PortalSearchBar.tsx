@@ -3,6 +3,7 @@
 import * as React from "react"
 import { MagnifyingGlass, X } from "@phosphor-icons/react"
 import { cn } from "@/src/lib/utils"
+import { CtaButton } from "@/src/components/common/ctaButton"
 
 export interface PortalSearchBarProps {
   value: string
@@ -62,13 +63,15 @@ export function PortalSearchBar({
         </button>
       )}
 
-      <button
+      <CtaButton
         type="submit"
-        className="px-4 sm:px-6 h-8 sm:h-10 rounded-full bg-brand-primary hover:bg-brand-primary/90 text-white font-heading font-black text-xs uppercase tracking-wider shadow-md transition-all flex items-center justify-center gap-1.5 cursor-pointer active:scale-[0.98] shrink-0"
+        variant="primary"
+        size="sm"
+        className="rounded-full h-8 sm:h-10 px-4 sm:px-6 text-xs font-heading font-black uppercase tracking-wider shrink-0"
       >
-        <MagnifyingGlass className="w-3.5 h-3.5 stroke-[2.5] hidden sm:inline-block" />
+        <MagnifyingGlass className="w-3.5 h-3.5 stroke-[2.5] hidden sm:inline-block mr-1.5" />
         <span>Buscar</span>
-      </button>
+      </CtaButton>
     </form>
   )
 }

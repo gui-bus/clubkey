@@ -11,7 +11,7 @@ import {
   getExperienceSlug,
 } from "@/src/data/portalData"
 import { usePortalStore } from "@/src/store/usePortalStore"
-import { Calendar, Check, Gift, MapPin } from "@phosphor-icons/react"
+import { Calendar, Check, Gift, Lightning, MapPin } from "@phosphor-icons/react"
 
 import { GlassBadge } from "@/src/components/portal/GlassBadge"
 
@@ -50,13 +50,13 @@ export function ExperienceCard({
             </GlassBadge>
 
             {isBought ? (
-              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-sm bg-emerald-500 text-white text-[10px] font-black uppercase tracking-widest shadow-xs">
-                <Check className="w-3 h-3" />
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-sm bg-emerald-500 text-white text-[10px] font-black uppercase tracking-widest shadow-xs whitespace-nowrap">
+                <Check className="w-3 h-3 shrink-0" />
                 <span>Garantido</span>
               </span>
             ) : isFree ? (
-              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-sm bg-brand-primary text-white text-[10px] font-black uppercase tracking-widest shadow-xs">
-                <Gift className="w-3 h-3" />
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-sm bg-brand-primary text-white text-[10px] font-black uppercase tracking-widest shadow-xs whitespace-nowrap">
+                <Gift className="w-3 h-3 shrink-0" />
                 <span>Cortesia Membro</span>
               </span>
             ) : null}
@@ -72,10 +72,26 @@ export function ExperienceCard({
             {experience.title}
           </h3>
 
-          <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400 flex items-center gap-1.5 line-clamp-1">
-            <MapPin className="w-3.5 h-3.5 text-brand-primary shrink-0" />
-            {experience.place}
-          </p>
+          <div className="flex flex-wrap items-center gap-3 text-xs font-medium text-zinc-500 dark:text-zinc-400">
+            <div className="flex items-center gap-1.5 min-w-0 truncate">
+              <MapPin className="w-3.5 h-3.5 text-brand-primary shrink-0" />
+              <span className="truncate">{experience.place}</span>
+            </div>
+            <span className="text-zinc-300 dark:text-zinc-700 hidden sm:inline">
+              •
+            </span>
+            <div className="flex items-center gap-1.5 shrink-0">
+              <div className="relative w-3.5 h-3.5 shrink-0">
+                <Image
+                  src="/utils/gamification/utils/xp.webp"
+                  alt="XP"
+                  fill
+                  className="object-contain"
+                />
+              </div>
+              <span>+{experience.xp || 300} XP</span>
+            </div>
+          </div>
 
           <p className="text-xs text-zinc-600 dark:text-zinc-400 line-clamp-2 pt-1 leading-relaxed">
             {experience.desc}

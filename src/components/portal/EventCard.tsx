@@ -18,6 +18,7 @@ import {
   ArrowUpRight,
   Check,
   Clock,
+  Lightning,
   MapPin,
   Plus,
   Users,
@@ -33,7 +34,6 @@ import { AvatarGroup } from "@/src/components/ui/avatarGroup/avatarGroup"
 import { toast } from "@/src/components/ui/toast/toast"
 
 import { CtaButton } from "@/src/components/common/ctaButton"
-import { GlassBadge } from "@/src/components/portal/GlassBadge"
 
 import { cn } from "@/src/lib/utils"
 
@@ -90,38 +90,22 @@ export function EventCard({ event }: EventCardProps): React.JSX.Element {
             <div className="absolute inset-0 bg-gradient-to-br from-zinc-900 to-zinc-950" />
           )}
 
-          <div className="absolute top-3.5 left-3.5 right-3.5 z-10 flex items-center justify-between gap-2">
-            <GlassBadge>{event.category || "Exclusivo"}</GlassBadge>
-
-            {isConfirmed && (
-              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-sm bg-emerald-500 text-white text-[10px] font-black uppercase tracking-widest shadow-xs">
-                <Check className="w-3 h-3" />
+          {isConfirmed && (
+            <div className="absolute top-3.5 left-3.5 z-10">
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-sm bg-emerald-500 text-white text-[10px] font-black uppercase tracking-widest shadow-xs whitespace-nowrap">
+                <Check className="w-3 h-3 shrink-0" />
                 <span>Confirmado</span>
               </span>
-            )}
-          </div>
-
-          <div className="absolute bottom-3.5 left-3.5 right-3.5 z-10">
-            <div className="flex items-center gap-3 p-2.5 sm:p-3 rounded-sm bg-white/10 backdrop-blur-md shadow-xs border border-white/15">
-              <div className="flex flex-col items-center justify-center min-w-11 px-2 py-1 rounded-sm bg-brand-primary text-white text-center shrink-0">
-                <span className="text-xl font-black font-heading leading-none text-white">
-                  {event.day}
-                </span>
-                <span className="text-[9px] font-black uppercase tracking-wider leading-none mt-0.5 text-white">
-                  {event.month}
-                </span>
-              </div>
-
-              <div className="min-w-0">
-                <p className="text-xs font-bold text-white uppercase tracking-wider truncate">
-                  {event.weekday}
-                </p>
-                <p className="text-[11px] text-white/90 flex items-center gap-1 mt-0.5">
-                  <Clock className="w-3 h-3 text-brand-primary shrink-0" />
-                  <span>{event.time}</span>
-                </p>
-              </div>
             </div>
+          )}
+
+          <div className="absolute bottom-0 left-0 right-0 z-10 flex items-center gap-2 px-3.5 py-2.5 bg-black/40 backdrop-blur-md border-t border-white/10">
+            <span className="text-[11px] font-bold text-white uppercase tracking-wider">{event.weekday}, {event.day} de {event.month}</span>
+            <span className="text-white/40">•</span>
+            <span className="flex items-center gap-1 text-[11px] text-white/80">
+              <Clock className="w-3 h-3 text-white/60 shrink-0" />
+              {event.time}
+            </span>
           </div>
         </div>
 
@@ -167,6 +151,20 @@ export function EventCard({ event }: EventCardProps): React.JSX.Element {
               <div className="flex items-center gap-1.5 font-medium">
                 <Users className="w-3.5 h-3.5 text-brand-primary shrink-0" />
                 <span>{remainingSpots} vagas restantes</span>
+              </div>
+              <span className="text-zinc-300 dark:text-zinc-700 hidden sm:inline">
+                •
+              </span>
+              <div className="flex items-center gap-1.5 font-medium">
+                <div className="relative w-3.5 h-3.5 shrink-0">
+                  <Image
+                    src="/utils/gamification/utils/xp.webp"
+                    alt="XP"
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+                <span>+{event.xp || 200} XP</span>
               </div>
             </div>
           </div>
@@ -247,9 +245,19 @@ export function EventCard({ event }: EventCardProps): React.JSX.Element {
                 </CtaButton>
               )}
 
-              <div className="hidden sm:flex items-center justify-center w-9 h-9 rounded-sm border border-zinc-200 dark:border-zinc-800 bg-[#F1F1F1] dark:bg-zinc-900 text-zinc-500 group-hover/card:text-zinc-900 dark:group-hover/card:text-white transition-colors">
+              <CtaButton
+                type="button"
+                variant="secondary"
+                size="xs"
+                onClick={(e) => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                }}
+                className="hidden sm:flex w-9 h-9 px-0 items-center justify-center shadow-none hover:shadow-none shrink-0"
+                disableRipple
+              >
                 <ArrowUpRight className="w-4 h-4" />
-              </div>
+              </CtaButton>
             </div>
           </div>
         </div>
