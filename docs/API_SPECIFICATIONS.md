@@ -599,10 +599,115 @@ Atualiza os dados de perfil (bio, tags de negócio, telefone, redes sociais).
 ```
 
 ### `GET /profile/subscription`
-Retorna os dados da assinatura ativa (plano, valor, data de renovação, cartão).
+Retorna os dados da assinatura ativa (plano, valor, status, data de renovação e dados mascarados do cartão).
+- **Response (200 OK)**:
+```json
+{
+  "id": "sub-01",
+  "planName": "ClubKey Member",
+  "planType": "monthly",
+  "status": "active",
+  "price": "R$ 19,90/mês",
+  "billingCycle": "mensal",
+  "nextBillingDate": "2026-10-17",
+  "currentPeriodEnd": "2026-10-17T00:00:00Z",
+  "cancelAtPeriodEnd": false,
+  "card": {
+    "brand": "Mastercard",
+    "lastFour": "4242",
+    "expiry": "12/28"
+  }
+}
+```
+
+### `POST /subscriptions/checkout`
+Realiza a contratação de uma nova assinatura ou renovação (utilizado na landing/portal).
+- **Request Body (Cartão de Crédito)**:
+```json
+{
+  "planType": "monthly",
+  "paymentMethod": "credit_card",
+  "cardNumber": "4242424242424242",
+  "holderName": "Rodrigo Salles",
+  "expirationDate": "12/28",
+  "cvv": "123",
+  "holderCpf": "123.456.789-00"
+}
+```
+- **Request Body (PIX)**:
+```json
+{
+  "planType": "annual",
+  "paymentMethod": "pix"
+}
+```
+- **Response (200 OK)**:
+```json
+{
+  "status": "active",
+  "subscriptionId": "sub_ck_9921",
+  "planName": "ClubKey Member",
+  "pixQrCode": "00020126580014br.gov.bcb.pix...",
+  "pixCopyPaste": "00020126580014br.gov.bcb.pix..."
+}
+```
+
+### `POST /profile/subscription/card`
+Atualiza o cartão de crédito associado à assinatura recorrente.
+- **Request Body**:
+```json
+{
+  "cardNumber": "5555444433332222",
+  "holderName": "Rodrigo Salles",
+  "expirationDate": "10/29",
+  "cvv": "456",
+  "holderCpf": "123.456.789-00"
+}
+```
+- **Response (200 OK)**:
+```json
+{
+  "success": true,
+  "card": {
+    "brand": "Visa",
+    "lastFour": "2222",
+    "expiry": "10/29"
+  }
+}
+```
+
+### `POST /profile/subscription/cancel`
+Agenda o cancelamento da renovação automática ao final do período vigente.
+- **Response (200 OK)**:
+```json
+{
+  "success": true,
+  "cancelAtPeriodEnd": true,
+  "activeUntil": "2026-10-17"
+}
+```
+
+### `GET /profile/invoices`
+Lista o histórico de faturas e recibos de pagamento.
+- **Response (200 OK)**:
+```json
+[
+  {
+    "id": "inv-2026-09",
+    "date": "17 de Setembro de 2026",
+    "amount": "R$ 19,90",
+    "status": "paid",
+    "paymentMethod": "Mastercard •••• 4242",
+    "pdfUrl": "https://api.clubkey.com.br/invoices/inv-2026-09.pdf"
+  }
+]
+```
 
 ### `POST /profile/2fa/toggle`
-Ativa ou desativa a autenticação em dois fatores.
+Ativa ou desativa a autenticação em dois fatores (2FA).
+- **Request Body**: `{ "enabled": true, "token": "123456" }`
+- **Response (200 OK)**: `{ "twoFactorEnabled": true }`
+
 
 ---
 

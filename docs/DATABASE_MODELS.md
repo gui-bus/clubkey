@@ -32,6 +32,8 @@ erDiagram
 
     users ||--o{ xpTransactions : "histórico de pontos"
     users ||--o{ notifications : "recebe"
+    users ||--o| subscriptions : "possui"
+    subscriptions ||--o{ invoices : "gera"
     tiers ||--o{ users : "classifica"
 ```
 
@@ -71,6 +73,8 @@ erDiagram
 | `corporateEmail` | `VARCHAR(255)` | E-mail corporativo |
 | `openingDate` | `VARCHAR(20)` | Data de fundação da empresa |
 | `twoFactorEnabled` | `BOOLEAN` | Se 2FA está ativo |
+| `inviteCode` | `VARCHAR(50)` | Código exclusivo de convite do membro |
+| `usedInviteCode` | `VARCHAR(50)` | Código de convite utilizado no cadastro (se houver) |
 | `createdAt` | `TIMESTAMP` | Data de cadastro |
 
 ---
@@ -157,11 +161,17 @@ erDiagram
 | `id` | `SERIAL` (PK) | Identificador do quarto |
 | `title` | `VARCHAR(150)` | Nome da suíte |
 | `roomType` | `VARCHAR(50)` | `"master_suite"`, `"executive_room"`, `"villa"` |
-| `description` | `TEXT` | Detalhes |
-| `pricePerNight` | `NUMERIC(10,2)` | Diária |
-| `capacityGuests` | `INTEGER` | Limite de hóspedes |
+| `city` | `VARCHAR(100)` | Cidade da acomodação (ex: `"Gramado"`, `"Campos do Jordão"`) |
+| `state` | `VARCHAR(10)` | Sigla do estado (ex: `"RS"`, `"SP"`) |
+| `location` | `VARCHAR(200)` | Endereço / Localização descritiva |
+| `description` | `TEXT` | Detalhes da acomodação |
+| `pricePerNight` | `NUMERIC(10,2)` | Diária regular (preço cheio) |
+| `memberPricePerNight` | `NUMERIC(10,2)` | Diária exclusiva de associado ClubKey |
+| `memberDiscountPercent` | `INTEGER` | Desconto percentual para membros (ex: `20`) |
+| `capacityGuests` | `INTEGER` | Limite máximo de hóspedes |
+| `rating` | `NUMERIC(3,2)` | Nota média de avaliação (ex: `4.9`) |
 | `images` | `TEXT[]` | Galeria de fotos |
-| `amenities` | `TEXT[]` | Comodidades (Wi-Fi, Jacuzzi, etc.) |
+| `amenities` | `TEXT[]` | Comodidades (Wi-Fi, Jacuzzi, Ar-condicionado, etc.) |
 
 ---
 
@@ -342,4 +352,41 @@ erDiagram
 | `isRead` | `BOOLEAN` (Default: false) | Status de leitura |
 | `metadata` | `JSONB` | Dados adicionais (`memberId`, `eventId`, `stayId`, `dropId`, `unreadCount`) |
 | `createdAt` | `TIMESTAMP` | Data e hora do disparo |
+
+---
+
+### 17. `subscriptions` (Planos & Assinaturas dos Membros)
+| Coluna (camelCase) | Tipo | Descrição |
+| :--- | :--- | :--- |
+| `id` | `VARCHAR(50)` (PK) | Identificador da assinatura (ex: `"sub-01"`, `"sub_ck_9921"`) |
+| `userId` | `INTEGER` (FK) | Membro assinante (`users.id`) |
+| `planName` | `VARCHAR(100)` | Nome do plano (ex: `"ClubKey Member"`, `"Plano Anual VIP"`) |
+| `planType` | `VARCHAR(50)` | `"monthly"`, `"annual"` |
+| `status` | `VARCHAR(50)` | `"active"`, `"past_due"`, `"canceled"`, `"trialing"` |
+| `price` | `NUMERIC(10,2)` | Valor recorrente (ex: `19.90` ou `214.90`) |
+| `billingCycle` | `VARCHAR(50)` | `"mensal"`, `"anual"` |
+| `currentPeriodStart`| `TIMESTAMP` | Início do ciclo de faturamento atual |
+| `currentPeriodEnd` | `TIMESTAMP` | Data da próxima renovação ou expiração |
+| `cancelAtPeriodEnd` | `BOOLEAN` | Se o cancelamento foi agendado para o fim do período |
+| `cardBrand` | `VARCHAR(50)` | Bandeira do cartão ativo (ex: `"Mastercard"`, `"Visa"`) |
+| `cardLastFour` | `VARCHAR(4)` | Últimos 4 dígitos do cartão (ex: `"4242"`) |
+| `cardExpiry` | `VARCHAR(10)` | Validade do cartão (ex: `"12/28"`) |
+| `createdAt` | `TIMESTAMP` | Data de contratação |
+| `updatedAt` | `TIMESTAMP` | Data da última alteração |
+
+---
+
+### 18. `invoices` (Faturas & Histórico de Cobrança)
+| Coluna (camelCase) | Tipo | Descrição |
+| :--- | :--- | :--- |
+| `id` | `VARCHAR(50)` (PK) | Identificador da fatura (ex: `"inv-2026-01"`) |
+| `subscriptionId` | `VARCHAR(50)` (FK) | Assinatura vinculada (`subscriptions.id`) |
+| `userId` | `INTEGER` (FK) | Membro pagador (`users.id`) |
+| `amount` | `NUMERIC(10,2)` | Valor cobrado na fatura |
+| `status` | `VARCHAR(50)` | `"paid"`, `"pending"`, `"failed"`, `"refunded"` |
+| `paymentMethod` | `VARCHAR(50)` | `"credit_card"`, `"pix"` |
+| `invoiceDate` | `TIMESTAMP` | Data de emissão da fatura |
+| `paidAt` | `TIMESTAMP` | Data da confirmação do pagamento |
+| `pdfUrl` | `TEXT` | URL pública ou assinada para download do recibo em PDF |
+
 
