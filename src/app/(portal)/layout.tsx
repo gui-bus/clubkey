@@ -1,5 +1,3 @@
-"use client"
-
 import * as React from "react"
 
 import { Navbar } from "@/src/components/landing/Navbar"

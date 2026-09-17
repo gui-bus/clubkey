@@ -1,9 +1,14 @@
-"use client"
-
+import type { Metadata } from "next"
 import * as React from "react"
 
 import { KeyPassNav } from "@/src/components/portal/KeyPassNav"
 import { PortalHero } from "@/src/components/portal/PortalHero"
+
+export const metadata: Metadata = {
+  title: "KeyPass — Tiers & Recompensas",
+  description:
+    "Evolua seu passe de associado, acumule pontos XP e desbloqueie tokens RIB e privilégios exclusivos no ClubKey.",
+}
 
 export default function KeyPassLayout({
   children,

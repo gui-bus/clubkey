@@ -139,7 +139,7 @@ export default function KeyPassMissionsPage(): React.JSX.Element {
   return (
     <Container className="py-6 sm:py-8 space-y-6">
       <SectionHeader
-        badge="Passe Executivo • Gamificação"
+        badge="Passe Executivo • Recompensas & Conquistas"
         tagline="Missões & Conquistas"
         title="Central de Missões, Drops & Conquistas"
         description="Acelere sua evolução de tier através de desafios semanais por tempo limitado, marcos de carreira e colecione medalhas de prestígio."
