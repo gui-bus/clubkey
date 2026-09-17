@@ -754,6 +754,18 @@ export const usePortalStore = create<PortalState>()(
           migratedState.memberStays.length < DEFAULT_MEMBER_STAYS.length
         ) {
           migratedState.memberStays = DEFAULT_MEMBER_STAYS
+        } else {
+          migratedState.memberStays = migratedState.memberStays.map((s) => ({
+            ...s,
+            status:
+              (s.status as string) === "confirmada"
+                ? "confirmed"
+                : (s.status as string) === "em_analise"
+                  ? "pending"
+                  : (s.status as string) === "concluida"
+                    ? "completed"
+                    : s.status,
+          }))
         }
         if (typeof migratedState.xp !== "number" || migratedState.xp === 2850) {
           migratedState.xp = 4000

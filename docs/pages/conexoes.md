@@ -78,8 +78,8 @@ export interface Member {
   membershipTier: string
   tierId: "membro" | "associado" | "titular" | "investidor" | "incorporador" | "patrono"
   memberSince: string
-  seekingTags: string[]
-  offeringTags: string[]
+  seeking: string[]
+  offering: string[]
   unlockedBadgeIds?: string[]
   linkedin?: string
   instagram?: string
@@ -125,8 +125,8 @@ Lista membros da rede com suporte a filtros avançados de busca e tags.
       "tierId": "incorporador",
       "membershipTier": "Incorporador",
       "memberSince": "2023",
-      "seekingTags": ["AgroTech", "Deals Seed"],
-      "offeringTags": ["Investimentos", "Venture Capital"],
+      "seeking": ["AgroTech", "Deals Seed"],
+      "offering": ["Investimentos", "Venture Capital"],
       "connectionStatus": "none"
     }
   ],
@@ -154,8 +154,8 @@ Retorna todos os detalhes do perfil público do associado.
   "membershipTier": "Incorporador",
   "tierId": "incorporador",
   "memberSince": "2023",
-  "seekingTags": ["AgroTech", "Deals Seed", "Fintechs"],
-  "offeringTags": ["Investimentos", "Venture Capital", "M&A"],
+  "seeking": ["AgroTech", "Deals Seed", "Fintechs"],
+  "offering": ["Investimentos", "Venture Capital", "M&A"],
   "unlockedBadgeIds": ["badge_early_adopter", "badge_blindagem_digital", "badge_wine_connoisseur"],
   "linkedin": "https://linkedin.com/in/fernandacamargo",
   "instagram": "@fernandacamargo.vc",

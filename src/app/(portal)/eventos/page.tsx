@@ -60,7 +60,8 @@ export default function EventsPage(): React.JSX.Element {
         e.place,
         e.weekday,
         e.month,
-        e.host?.name,
+        e.host?.firstName,
+        e.host?.lastName,
         e.host?.role,
         e.category,
       ]

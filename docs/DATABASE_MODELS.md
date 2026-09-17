@@ -60,8 +60,8 @@ erDiagram
 | `memberSince` | `VARCHAR(20)` | Ano de adesão (ex: `"2021"`) |
 | `xp` | `INTEGER` (Default: 0) | Saldo total de XP acumulado |
 | `ribTokens` | `INTEGER` (Default: 0) | Saldo de Tokens RIB |
-| `seekingTags` | `TEXT[]` | O que está buscando no networking |
-| `offeringTags` | `TEXT[]` | O que tem a oferecer no networking |
+| `seeking` | `TEXT[]` | O que está buscando no networking (ex: `["AgroTech", "Deals Seed"]`) |
+| `offering` | `TEXT[]` | O que tem a oferecer no networking (ex: `["Investimentos", "Venture Capital"]`) |
 | `linkedin` | `VARCHAR(255)` | URL do LinkedIn |
 | `instagram` | `VARCHAR(255)` | Usuário do Instagram |
 | `phone` | `VARCHAR(50)` | Telefone / WhatsApp |
@@ -188,7 +188,7 @@ erDiagram
 | `nights` | `INTEGER` | Quantidade de diárias |
 | `guests` | `INTEGER` | Número de hóspedes |
 | `roomType` | `VARCHAR(150)` | Tipo de quarto / Suíte |
-| `status` | `VARCHAR(20)` | `"confirmada"`, `"em_analise"`, `"concluida"`, `"cancelled"` |
+| `status` | `VARCHAR(20)` | `"confirmed"`, `"pending"`, `"completed"`, `"cancelled"` |
 | `confirmationCode`| `VARCHAR(50)` | Código do voucher (ex: `"CK-STAY-8821"`) |
 | `totalPrice` | `NUMERIC(10,2)` | Valor total |
 | `image` | `TEXT` | Foto da suíte |

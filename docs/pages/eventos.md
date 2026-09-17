@@ -211,8 +211,8 @@ Retorna a lista completa de associados confirmados para a tela *"Quem Vai"*.
     "avatar": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400",
     "tierId": "incorporador",
     "membershipTier": "Incorporador",
-    "seekingTags": ["AgroTech", "Deals Seed"],
-    "offeringTags": ["Investimentos", "Venture Capital"],
+    "seeking": ["AgroTech", "Deals Seed"],
+    "offering": ["Investimentos", "Venture Capital"],
     "connectionStatus": "none"
   }
 ]

@@ -62,7 +62,7 @@ export default function SubscriptionPage(): React.JSX.Element {
                   <span>Assinatura Ativada</span>
                 </div>
                 <h1 className="text-2xl sm:text-3xl font-black text-zinc-900 dark:text-white font-heading uppercase tracking-tight">
-                  Parabéns, {user?.name || "Membro"}!
+                  Parabéns, {user ? `${user.firstName} ${user.lastName}`.trim() : "Membro"}!
                 </h1>
                 <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 font-light leading-relaxed">
                   Sua Key de membro {brandConfig.name} está ativa. Você já tem

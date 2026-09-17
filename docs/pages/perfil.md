@@ -25,8 +25,8 @@ O módulo de **Perfil & Assinatura** centraliza a identidade profissional do ass
 - **Seção: Canais de Contato & Redes**:
   - Inputs para: URL do LinkedIn (`linkedin`), Usuário do Instagram (`instagram`), Telefone / WhatsApp com máscara (`phone`).
 - **Seção: Foco de Negócios & Tags de Networking**:
-  - **O que Busco (`seekingTags`)**: Interface dinâmica de inserção de tags com tecla `Enter` ou botão de adicionar, renderizando pílulas com botão de exclusão (`X`).
-  - **O que Ofereço (`offeringTags`)**: Interface idêntica para competências e ofertas de valor.
+  - **O que Busco (`seeking`)**: Interface dinâmica de inserção de tags com tecla `Enter` ou botão de adicionar, renderizando pílulas com botão de exclusão (`X`).
+  - **O que Ofereço (`offering`)**: Interface idêntica para competências e ofertas de valor.
 - **Seção: Dados Cadastrais & Fiscais**:
   - Campos corporativos: Nacionalidade (`nationality`), CPF (`cpf`), Data de Nascimento (`birthDate`), Razão Social (`companyName`), CNPJ (`cnpj`), E-mail Corporativo (`corporateEmail`), Data de Abertura (`openingDate`).
 - **Seção: Segurança da Conta**:
@@ -61,8 +61,8 @@ export interface ProfileUpdateRequest {
   linkedin?: string
   instagram?: string
   phone?: string
-  seekingTags: string[]
-  offeringTags: string[]
+  seeking: string[]
+  offering: string[]
   nationality?: "brasileiro" | "estrangeiro"
   cpf?: string
   birthDate?: string
@@ -100,8 +100,7 @@ export interface InvoiceItem {
 ## 📡 Especificação Completa dos Endpoints de API
 
 ### 1. `GET /api/v1/profile`
-Retorna todos os dados de cadastro e preferências do associado logado.
-- **Headers**: `Authorization: Bearer <jwt_token>`
+Retorna todos os dados de perfil, preferências de segurança e dados corporativos do membro logado.
 - **Response (200 OK)**:
 ```json
 {
@@ -118,8 +117,8 @@ Retorna todos os dados de cadastro e preferências do associado logado.
   "membershipTier": "Patrono",
   "tierId": "patrono",
   "memberSince": "2024",
-  "seekingTags": ["Investimentos", "AgroTech", "M&A"],
-  "offeringTags": ["Venture Capital", "Mentoria", "Governança"],
+  "seeking": ["Investimentos", "AgroTech", "M&A"],
+  "offering": ["Venture Capital", "Mentoria", "Governança"],
   "linkedin": "https://linkedin.com/in/rodrigosalles",
   "instagram": "@rodrigo.salles",
   "phone": "+55 11 99999-9999",
@@ -146,8 +145,8 @@ Salva as alterações no perfil executivo e tags de networking.
     "id": 1,
     "firstName": "Rodrigo",
     "lastName": "Salles",
-    "seekingTags": ["Investimentos", "AgroTech", "M&A"],
-    "offeringTags": ["Venture Capital", "Mentoria", "Governança"]
+    "seeking": ["Investimentos", "AgroTech", "M&A"],
+    "offering": ["Venture Capital", "Mentoria", "Governança"]
   }
 }
 ```
@@ -257,7 +256,7 @@ Lista o histórico de faturas e recibos para download.
 ## ⚡ Interações & Comportamento do Usuário
 
 1. **Gestão Dinâmica de Tags**:
-   - Digitar uma nova tag e pressionar `Enter` adiciona imediatamente a pílula visualmente e a inclui no array `seekingTags` / `offeringTags`.
+   - Digitar uma nova tag e pressionar `Enter` adiciona imediatamente a pílula visualmente e a inclui no array `seeking` / `offering`.
    - Clicar no `X` da pílula remove a tag do array.
 2. **Toggle 2FA Interativo**:
    - Ao ativar o switch, um modal apresenta a chave secreta e o QR Code. O usuário digita o token de 6 dígitos gerado no app autenticador. Ao validar, o 2FA é ativado com sucesso e a insígnia *"Blindagem Digital"* é concedida.

@@ -45,8 +45,10 @@ export interface EventItem {
   spots?: number
   xp?: number
   host?: {
-    name: string
+    firstName: string
+    lastName: string
     role: string
+    avatar?: string
   }
   image?: string
   dressCode?: string
@@ -1279,7 +1281,7 @@ export interface MemberStayReservation {
   guests: number
   roomType: string
   totalPrice: number
-  status: "confirmada" | "em_analise" | "concluida"
+  status: "confirmed" | "pending" | "completed" | "cancelled"
   confirmationCode: string
 }
 
@@ -1297,7 +1299,7 @@ export const DEFAULT_MEMBER_STAYS: MemberStayReservation[] = [
     guests: 2,
     roomType: "Villa Master com Piscina Privativa",
     totalPrice: 5760,
-    status: "confirmada",
+    status: "confirmed",
     confirmationCode: "CK-BV-8821",
   },
   {
@@ -1313,7 +1315,7 @@ export const DEFAULT_MEMBER_STAYS: MemberStayReservation[] = [
     guests: 2,
     roomType: "Casa da Praça (Suíte Presidencial)",
     totalPrice: 9280,
-    status: "confirmada",
+    status: "confirmed",
     confirmationCode: "CK-UX-4490",
   },
 ]
@@ -1592,8 +1594,6 @@ export interface LeaderboardMember {
   company: string
   city: string
   avatar: string
-  clubId?: string
-  clubName?: string
   tierId: TierId
   xp: number
   ribTokens: number

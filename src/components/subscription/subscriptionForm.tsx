@@ -34,7 +34,8 @@ import { cn } from "@/src/lib/utils"
 export type PaymentMethod = "credit_card" | "pix"
 
 export interface SubscriptionUser {
-  name: string
+  firstName: string
+  lastName: string
   email: string
   cpf?: string
 }
@@ -58,12 +59,16 @@ export function SubscriptionForm({
   const [isPixGenerated, setIsPixGenerated] = React.useState(false)
   const [copiedPix, setCopiedPix] = React.useState(false)
 
+  const userFullName = user
+    ? `${user.firstName} ${user.lastName}`.trim()
+    : ""
+
   const cardForm = useForm<CreditCardPaymentFormData>({
     resolver: zodResolver(creditCardPaymentSchema),
     mode: "onSubmit",
     defaultValues: {
       cardNumber: "",
-      holderName: user?.name || "",
+      holderName: userFullName,
       expirationDate: "",
       cvv: "",
       holderCpf: user?.cpf || "",
@@ -71,13 +76,13 @@ export function SubscriptionForm({
   })
 
   React.useEffect(() => {
-    if (user?.name && !cardForm.getValues("holderName")) {
-      cardForm.setValue("holderName", user.name)
+    if (userFullName && !cardForm.getValues("holderName")) {
+      cardForm.setValue("holderName", userFullName)
     }
     if (user?.cpf && !cardForm.getValues("holderCpf")) {
       cardForm.setValue("holderCpf", user.cpf)
     }
-  }, [user, cardForm])
+  }, [user, userFullName, cardForm])
 
   const onCardSubmit = () => {
     if (!user) {
@@ -127,7 +132,7 @@ export function SubscriptionForm({
             <UserCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
             <div>
               <span className="font-bold text-zinc-900 dark:text-white">
-                {user.name}
+                {userFullName}
               </span>{" "}
               <span className="text-zinc-600 dark:text-zinc-400">
                 ({user.email})
