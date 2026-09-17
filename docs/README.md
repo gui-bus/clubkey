@@ -12,6 +12,9 @@ Este diretório foi projetado especificamente para que desenvolvedores de backen
 - **[`ARCHITECTURE.md`](./ARCHITECTURE.md)**: Arquitetura técnica do Frontend, Next.js 16 (App Router), convenções de Server/Client Components, gerenciamento de estado (Zustand), Design System (Bloom UI) e decisões de tecnologia.
 - **[`DATABASE_MODELS.md`](./DATABASE_MODELS.md)**: Modelagem relacional de banco de dados sugerida (entidades, relacionamentos, chaves primárias/estrangeiras e tipos).
 - **[`API_SPECIFICATIONS.md`](./API_SPECIFICATIONS.md)**: Especificação completa de todas as rotas de API, métodos HTTP, parâmetros de rota/query, schemas de requisição e resposta (JSON), autenticação e status codes.
+- **[`ENUMS.md`](./ENUMS.md)**: Dicionário central de todos os Enums e constantes padronizados em inglês (`lowercase`/`snake_case`).
+- **[`GAMIFICATION_RULES.md`](./GAMIFICATION_RULES.md)**: Manual de regras de negócio do KeyPass, algoritmos de cálculo de XP, subida de tier, bônus de RIB tokens, marcos intermediários e regras de retenção/descongelamento.
+- **[`SEED_DATA.md`](./SEED_DATA.md)**: Datasets iniciais prontos em JSON para seeders de banco de dados (Tiers, Badges, Missões, Drops e Benefícios).
 
 ### 2. Especificações por Página / Módulo
 Cada documento descreve as funcionalidades da tela, dados consumidos, ações do usuário e rotas de API necessárias:
@@ -28,11 +31,14 @@ Cada documento descreve as funcionalidades da tela, dados consumidos, ações do
 
 ---
 
-## 🤖 Guia Rápido para a IA do Backend
+## 🤖 Guia Rápido para a IA do Backend & Desenvolvedores
 
 Para criar o backend a partir deste repositório:
-1. **Leia [`DATABASE_MODELS.md`](./DATABASE_MODELS.md)** para criar as migrações/tabelas do banco de dados (Prisma, Drizzle, TypeORM, SQLAlchemy ou SQL puro).
-2. **Leia [`API_SPECIFICATIONS.md`](./API_SPECIFICATIONS.md)** para implementar os controllers, services e rotas HTTP (Node/NestJS, FastAPI, Go, Laravel, etc.).
-3. **Consulte [`pages/*.md`](./pages/)** para entender as regras de negócio específicas de cada tela quando tiver dúvidas sobre filtros, paginação ou fluxos de usuário.
-4. **Consulte [`src/data/portalData.ts`](../src/data/portalData.ts)** no código-fonte para ver os tipos TypeScript exatos já utilizados pelo frontend.
-5. **Gere a OpenAPI & Documentação com [Scalar](https://scalar.com/)**: Exponha o endpoint `GET /docs/api.json` ou `GET /openapi.json` e atribua `operationId` único em cada rota. O frontend utilizará **Orval** (`orval`) para gerar automaticamente todos os tipos TypeScript e hooks do **TanStack React Query** via **Axios**.
+1. **Consulte [`ENUMS.md`](./ENUMS.md)** para garantir que todos os campos de tipo e status usem os literais corretos em inglês.
+2. **Leia [`DATABASE_MODELS.md`](./DATABASE_MODELS.md)** para criar as migrações/tabelas do banco de dados (Laravel Migrations, Prisma, Drizzle, SQL puro).
+3. **Utilize [`SEED_DATA.md`](./SEED_DATA.md)** para popular as tabelas essenciais (`tiers`, `badges`, `missions`, `weeklyDrops`, `benefits`) com dados válidos no seeder (`DatabaseSeeder.php`).
+4. **Leia [`GAMIFICATION_RULES.md`](./GAMIFICATION_RULES.md)** para implementar a lógica de concessão de XP, cálculo de tier ativo, subida de patamar e retenção de 180 dias.
+5. **Leia [`API_SPECIFICATIONS.md`](./API_SPECIFICATIONS.md)** para implementar os controllers, services e rotas HTTP.
+6. **Consulte [`pages/*.md`](./pages/)** para entender as regras de negócio específicas de cada tela quando tiver dúvidas sobre filtros, paginação ou fluxos de usuário.
+7. **Consulte [`src/data/portalData.ts`](../src/data/portalData.ts)** no código-fonte para ver os tipos TypeScript exatos já utilizados pelo frontend.
+8. **Gere a OpenAPI & Documentação com [Scalar](https://scalar.com/)**: Exponha o endpoint `GET /docs/api.json` ou `GET /openapi.json` e atribua `operationId` único em cada rota. O frontend utilizará **Orval** (`orval`) para gerar automaticamente todos os tipos TypeScript e hooks do **TanStack React Query** via **Axios**.
