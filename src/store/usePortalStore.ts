@@ -15,6 +15,7 @@ import {
   XpActivity,
   TierDefinition,
   getTierByXp,
+  DEFAULT_CLAIMED_MILESTONES,
   ChatMessage,
   DEFAULT_CHAT_MESSAGES,
 } from "@/src/data/portalData"
@@ -37,6 +38,7 @@ interface PortalState {
   isProfileCompleted: boolean
   lastActivityDate: string
   isTierFrozen: boolean
+  claimedMilestones: Record<string, boolean>
   missions: MissionItem[]
   xpHistory: XpActivity[]
   chatMessages: Record<number, ChatMessage[]>
@@ -71,6 +73,7 @@ interface PortalState {
   enable2FA: () => void
   disable2FA: () => void
   claimMission: (missionId: string) => void
+  claimMilestone: (tierId: string, milestoneIndex: number) => void
   updateMissionProgress: (missionId: string, progressDelta: number) => void
   getUserTier: () => TierDefinition
   openChat: (memberId?: number) => void
@@ -101,12 +104,13 @@ export const usePortalStore = create<PortalState>()(
       memberStays: DEFAULT_MEMBER_STAYS,
       memberSubscription: DEFAULT_MEMBER_SUBSCRIPTION,
       userProfile: DEFAULT_USER,
-      xp: 2850,
+      xp: 4000,
       ribTokens: 6,
       is2FAEnabled: true,
       isProfileCompleted: true,
       lastActivityDate: new Date().toISOString(),
       isTierFrozen: false,
+      claimedMilestones: DEFAULT_CLAIMED_MILESTONES,
       missions: DEFAULT_MISSIONS,
       xpHistory: DEFAULT_XP_ACTIVITIES,
       chatMessages: DEFAULT_CHAT_MESSAGES,
@@ -151,7 +155,37 @@ export const usePortalStore = create<PortalState>()(
       getUserTier: () => {
         const xp = get().xp
         const isFrozen = get().isTierFrozen
-        return getTierByXp(xp, false, isFrozen)
+        const claimed = get().claimedMilestones || DEFAULT_CLAIMED_MILESTONES
+        return getTierByXp(xp, false, isFrozen, claimed)
+      },
+
+      claimMilestone: (tierId: string, milestoneIndex: number) => {
+        const key = `${tierId}_${milestoneIndex}`
+        const claimed = get().claimedMilestones || DEFAULT_CLAIMED_MILESTONES
+        if (claimed[key]) return
+
+        const updatedClaimed = {
+          ...claimed,
+          [key]: true,
+        }
+
+        const newActivity: XpActivity = {
+          id: `milestone-${Date.now()}-${milestoneIndex}`,
+          title: `Recompensa de Marco ${milestoneIndex} (+0,5 RIB)`,
+          xp: 0,
+          date: new Intl.DateTimeFormat("pt-BR", {
+            day: "2-digit",
+            month: "long",
+            year: "numeric",
+          }).format(new Date()),
+          category: "bonus",
+        }
+
+        set((state) => ({
+          ribTokens: Number((state.ribTokens + 0.5).toFixed(1)),
+          claimedMilestones: updatedClaimed,
+          xpHistory: [newActivity, ...state.xpHistory],
+        }))
       },
 
       addXP: (
@@ -588,8 +622,8 @@ export const usePortalStore = create<PortalState>()(
       },
     }),
     {
-      name: "clubkey-portal-storage-v6",
-      version: 6,
+      name: "clubkey-portal-storage-v7",
+      version: 7,
       migrate: (persistedState: unknown) => {
         const state = persistedState as PortalState
         if (!state) return state
@@ -618,8 +652,8 @@ export const usePortalStore = create<PortalState>()(
         ) {
           migratedState.memberStays = DEFAULT_MEMBER_STAYS
         }
-        if (typeof migratedState.xp !== "number") {
-          migratedState.xp = 2850
+        if (typeof migratedState.xp !== "number" || migratedState.xp === 2850) {
+          migratedState.xp = 4000
         }
         if (typeof migratedState.ribTokens !== "number") {
           migratedState.ribTokens = 6
@@ -662,8 +696,8 @@ export const usePortalStore = create<PortalState>()(
           ) {
             state.memberStays = DEFAULT_MEMBER_STAYS
           }
-          if (typeof state.xp !== "number") {
-            state.xp = 2850
+          if (typeof state.xp !== "number" || state.xp === 2850) {
+            state.xp = 4000
           }
           if (typeof state.ribTokens !== "number") {
             state.ribTokens = 6

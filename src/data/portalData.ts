@@ -1486,7 +1486,7 @@ export const TIERS_CONFIG: Record<TierId, TierDefinition> = {
     name: "Incorporador",
     subtitle: "Patamar máximo por pontuação",
     minXp: 10000,
-    maxXp: null,
+    maxXp: 15999,
     image: "/utils/gamification/tiers/05_incorporador.webp",
     color: "#EC4899",
     badgeColor: "accent",
@@ -1504,15 +1504,15 @@ export const TIERS_CONFIG: Record<TierId, TierDefinition> = {
     id: "patrono",
     order: 6,
     name: "Patrono",
-    subtitle: "Posição #1 no Ranking Geral Global",
-    minXp: 10000,
+    subtitle: "Posição #1 no Ranking Geral Global (> 16.000 XP)",
+    minXp: 16000,
     maxXp: null,
     image: "/utils/gamification/tiers/06_patrono.webp",
     color: "#E85535",
     badgeColor: "danger",
     isSpecialPinnacle: true,
     description:
-      "Título supremo e singular concedido exclusivamente ao membro com a maior pontuação de XP global.",
+      "Título supremo e singular concedido exclusivamente ao membro com a maior pontuação de XP global (acima de 16.000 XP).",
     perks: [
       "Insígnia dourada suprema em todo o ecossistema",
       "Destaque comemorativo fixo no hall do Patrono",
@@ -1531,21 +1531,58 @@ export const TIERS_LIST: TierDefinition[] = [
   TIERS_CONFIG.patrono,
 ]
 
+export const DEFAULT_CLAIMED_MILESTONES: Record<string, boolean> = {
+  "membro_1": true,
+  "membro_2": true,
+  "membro_3": true,
+  "membro_4": true,
+  "associado_1": true,
+  "associado_2": true,
+  "associado_3": true,
+  "associado_4": true,
+}
+
 export function getTierByXp(
   xp: number,
   isLeader: boolean = false,
-  isTierFrozen: boolean = false
+  isTierFrozen: boolean = false,
+  claimedMilestones: Record<string, boolean> = DEFAULT_CLAIMED_MILESTONES
 ): TierDefinition {
-  if (isLeader && xp >= 5000) {
+  if (isLeader && xp >= 16000) {
     return TIERS_CONFIG.patrono
   }
   if (isTierFrozen && xp >= 2000) {
     return TIERS_CONFIG.associado
   }
-  if (xp >= 10000) return TIERS_CONFIG.incorporador
-  if (xp >= 5000) return TIERS_CONFIG.investidor
-  if (xp >= 2000) return TIERS_CONFIG.titular
-  if (xp >= 500) return TIERS_CONFIG.associado
+
+  const checkAllClaimed = (tierId: TierId): boolean => {
+    return [1, 2, 3, 4].every((idx) => Boolean(claimedMilestones[`${tierId}_${idx}`]))
+  }
+
+  if (xp >= 10000) {
+    if (checkAllClaimed("investidor")) {
+      return TIERS_CONFIG.incorporador
+    }
+    return TIERS_CONFIG.investidor
+  }
+  if (xp >= 5000) {
+    if (checkAllClaimed("titular")) {
+      return TIERS_CONFIG.investidor
+    }
+    return TIERS_CONFIG.titular
+  }
+  if (xp >= 2000) {
+    if (checkAllClaimed("associado")) {
+      return TIERS_CONFIG.titular
+    }
+    return TIERS_CONFIG.associado
+  }
+  if (xp >= 500) {
+    if (checkAllClaimed("membro")) {
+      return TIERS_CONFIG.associado
+    }
+    return TIERS_CONFIG.membro
+  }
   return TIERS_CONFIG.membro
 }
 
@@ -1728,7 +1765,7 @@ export const DEFAULT_MISSIONS: MissionItem[] = [
     tokensReward: 2,
     currentProgress: 8,
     totalRequired: 10,
-    isCompleted: true,
+    isCompleted: false,
     isClaimed: false,
     actionUrl: "/keypass/ranking",
     actionLabel: "Ver Ranking",
@@ -1853,7 +1890,7 @@ export const MOCK_LEADERBOARD: LeaderboardMember[] = [
     clubId: "alpha",
     clubName: "Clube Alpha",
     tierId: "titular",
-    xp: 2850,
+    xp: 4000,
     ribTokens: 6,
     isCurrentUser: true,
   },

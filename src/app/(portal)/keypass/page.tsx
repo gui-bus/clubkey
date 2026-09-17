@@ -5,26 +5,18 @@ import Image from "next/image"
 import Link from "next/link"
 import {
   ArrowRight,
-  CalendarCheck,
-  Check,
-  Gift,
-  LockSimple,
-  Medal,
-  ShieldCheck,
-  Target,
   Trophy,
-  Users,
 } from "@phosphor-icons/react"
 import { Container } from "@/src/components/common/container"
-import { Badge } from "@/src/components/ui/badge/badge"
-import { Button } from "@/src/components/ui/button/button"
+import { KeyPassMilestoneProgress } from "@/src/components/portal/KeyPassMilestoneProgress"
+import { KeyPassTierTrack } from "@/src/components/portal/KeyPassTierTrack"
+import { KeyPassMissionsWidget } from "@/src/components/portal/KeyPassMissionsWidget"
+import { KeyPassHistoryWidget } from "@/src/components/portal/KeyPassHistoryWidget"
 import { usePortalStore } from "@/src/store/usePortalStore"
 import {
-  calculateTierProgress,
   getNextTier,
   TIERS_CONFIG,
-  TIERS_LIST,
-  XpActivity,
+  TierId,
 } from "@/src/data/portalData"
 import { cn } from "@/src/lib/utils"
 
@@ -33,97 +25,100 @@ export default function KeyPassOverviewPage(): React.JSX.Element {
     xp,
     ribTokens,
     isTierFrozen,
-    missions,
-    xpHistory,
-    claimMission,
     getUserTier,
   } = usePortalStore()
 
-  const currentTier = getUserTier ? getUserTier() : TIERS_CONFIG.titular
-  const nextTier = getNextTier(currentTier.id)
-  const tierProgress = calculateTierProgress(xp || 2850, currentTier)
+  const userTier = getUserTier ? getUserTier() : TIERS_CONFIG.titular
+  const [selectedTierId, setSelectedTierId] = React.useState<TierId>(userTier.id)
 
-  const pendingActionMissions = missions
-    .filter((m) => !m.isClaimed)
-    .slice(0, 3)
+  React.useEffect(() => {
+    setSelectedTierId(userTier.id)
+  }, [userTier.id])
 
-  const getCategoryIcon = (category: XpActivity["category"]) => {
-    switch (category) {
-      case "onboarding":
-        return <ShieldCheck className="w-4 h-4 text-zinc-700 dark:text-zinc-300" />
-      case "hospedagem":
-        return <Medal className="w-4 h-4 text-zinc-700 dark:text-zinc-300" />
-      case "evento":
-        return <CalendarCheck className="w-4 h-4 text-zinc-700 dark:text-zinc-300" />
-      case "experiencia":
-        return <Gift className="w-4 h-4 text-zinc-700 dark:text-zinc-300" />
-      case "conexao":
-        return <Users className="w-4 h-4 text-zinc-700 dark:text-zinc-300" />
-      case "missao":
-        return <Target className="w-4 h-4 text-brand-primary" />
-      case "bonus":
-        return <Trophy className="w-4 h-4 text-brand-primary" />
-    }
-  }
+  const displayedTier = TIERS_CONFIG[selectedTierId] || userTier
+  const displayedNextTier = getNextTier(displayedTier.id)
+  const isViewingOtherTier = displayedTier.id !== userTier.id
 
   return (
     <Container className="py-8 sm:py-10 space-y-8">
-      <div className="rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] p-6 sm:p-8 shadow-xs">
+      {/* 1. Executive Pass Header & Watermark Icon Stat HUD */}
+      <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 sm:p-7 shadow-2xs space-y-6">
         <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8">
+          {/* Left: Pass Identity (No border or background on tier image) */}
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 sm:gap-6">
-            <div className="relative w-20 h-20 sm:w-24 sm:h-24 shrink-0 p-2 rounded-sm bg-[#F1F1F1] dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-2xs flex items-center justify-center">
+            <div className="relative w-20 h-20 sm:w-24 sm:h-24 shrink-0 flex items-center justify-center">
               <Image
-                src={currentTier.image}
-                alt={currentTier.name}
+                src={displayedTier.image}
+                alt={displayedTier.name}
                 fill
-                className="object-contain p-2"
+                className="object-contain"
                 priority
               />
             </div>
 
             <div className="space-y-1.5">
               <div className="flex flex-wrap items-center gap-2">
-                <Badge
-                  color={currentTier.badgeColor}
-                  variant="flat"
-                  radius="sm"
-                  className="font-black text-[10px] uppercase tracking-wider"
-                >
-                  Nível {currentTier.order} • {currentTier.name}
-                </Badge>
-
-                {isTierFrozen ? (
-                  <Badge
-                    color="warning"
-                    variant="flat"
-                    radius="sm"
-                    className="text-[10px] font-bold"
-                  >
+                {isViewingOtherTier ? (
+                  <>
+                    <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-sm bg-zinc-100 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 text-zinc-800 dark:text-zinc-200">
+                      Visualizando {displayedTier.name}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => setSelectedTierId(userTier.id)}
+                      className="text-[10px] font-bold text-zinc-900 dark:text-white underline hover:opacity-80 cursor-pointer"
+                    >
+                      Voltar ao seu nível ({userTier.name})
+                    </button>
+                  </>
+                ) : isTierFrozen ? (
+                  <span className="text-[10px] font-black uppercase px-2.5 py-0.5 rounded-sm bg-zinc-100 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 text-zinc-800 dark:text-zinc-200">
                     Nível Temporariamente Congelado
-                  </Badge>
+                  </span>
                 ) : (
-                  <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-600 dark:text-emerald-400">
-                    <Check className="w-3.5 h-3.5" weight="bold" />
-                    Status Ativo (Janela 6 Meses)
+                  <span className="text-[10px] font-black uppercase tracking-widest px-2.5 py-0.5 rounded-sm bg-zinc-900 dark:bg-white text-white dark:text-zinc-900">
+                    Nível Vigente
+                  </span>
+                )}
+
+                {displayedTier.isProtectedBase && (
+                  <span className="text-[10px] font-bold text-zinc-600 dark:text-zinc-300 border border-zinc-300 dark:border-zinc-700 px-2 py-0.5 rounded-sm">
+                    Base Protegida
                   </span>
                 )}
               </div>
 
-              <h2 className="text-2xl sm:text-3xl font-heading font-black uppercase tracking-tight text-zinc-900 dark:text-white">
-                {currentTier.name}
-              </h2>
-              <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 max-w-xl">
-                {currentTier.description}
-              </p>
+              <div>
+                <h1 className="text-2xl sm:text-3xl font-heading font-black uppercase tracking-tight text-zinc-900 dark:text-white">
+                  {displayedTier.name}
+                </h1>
+                <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 max-w-2xl font-medium leading-relaxed mt-0.5">
+                  {displayedTier.description}
+                </p>
+              </div>
             </div>
           </div>
 
-          <div className="flex flex-wrap sm:flex-nowrap items-center gap-3 w-full lg:w-auto">
-            <div className="p-4 rounded-sm border border-zinc-200 dark:border-zinc-800 bg-[#F1F1F1] dark:bg-zinc-900 flex-1 sm:w-40 text-center">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400 block mb-0.5">
+          {/* Right: Executive Metric Trio with Watermark Background Icons */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 w-full lg:w-auto shrink-0">
+            {/* XP Metric Card */}
+            <div className="relative overflow-hidden p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-800/40 space-y-1.5 min-w-[130px]">
+              {/* Background Watermark Icon */}
+              <div className="absolute -right-3 -bottom-3 pointer-events-none select-none opacity-[0.07] dark:opacity-[0.12]">
+                <div className="relative w-20 h-20">
+                  <Image
+                    src="/utils/gamification/utils/xp.webp"
+                    alt=""
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+              </div>
+
+              <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 block">
                 Pontos XP
               </span>
-              <div className="flex items-center justify-center gap-1.5">
+              <div className="flex items-center gap-1.5">
                 <div className="relative w-4 h-4 shrink-0">
                   <Image
                     src="/utils/gamification/utils/xp.webp"
@@ -132,17 +127,33 @@ export default function KeyPassOverviewPage(): React.JSX.Element {
                     className="object-contain"
                   />
                 </div>
-                <span className="text-xl sm:text-2xl font-black font-heading tracking-tight text-zinc-900 dark:text-white">
+                <span className="text-2xl font-black font-heading tracking-tight text-zinc-900 dark:text-white">
                   {xp.toLocaleString("pt-BR")}
                 </span>
               </div>
+              <span className="text-[10px] text-zinc-500 font-medium block">
+                Acumulado total
+              </span>
             </div>
 
-            <div className="p-4 rounded-sm border border-zinc-200 dark:border-zinc-800 bg-[#F1F1F1] dark:bg-zinc-900 flex-1 sm:w-40 text-center">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400 block mb-0.5">
+            {/* Tokens RIB Metric Card */}
+            <div className="relative overflow-hidden p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-800/40 space-y-1.5 min-w-[130px]">
+              {/* Background Watermark Icon */}
+              <div className="absolute -right-3 -bottom-3 pointer-events-none select-none opacity-[0.07] dark:opacity-[0.12]">
+                <div className="relative w-20 h-20">
+                  <Image
+                    src="/utils/gamification/utils/RIB.svg"
+                    alt=""
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+              </div>
+
+              <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 block">
                 Saldo em Tokens
               </span>
-              <div className="flex items-center justify-center gap-1.5">
+              <div className="flex items-center gap-1.5">
                 <div className="relative w-4 h-4 shrink-0">
                   <Image
                     src="/utils/gamification/utils/RIB.svg"
@@ -151,333 +162,58 @@ export default function KeyPassOverviewPage(): React.JSX.Element {
                     className="object-contain"
                   />
                 </div>
-                <span className="text-xl sm:text-2xl font-black font-heading tracking-tight text-zinc-900 dark:text-white">
+                <span className="text-2xl font-black font-heading tracking-tight text-zinc-900 dark:text-white">
                   {ribTokens}
                 </span>
               </div>
+              <span className="text-[10px] text-zinc-500 font-medium block">
+                Tokens RIB disponíveis
+              </span>
             </div>
 
-            <div className="p-4 rounded-sm border border-zinc-200 dark:border-zinc-800 bg-[#F1F1F1] dark:bg-zinc-900 flex-1 sm:w-40 text-center">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400 block mb-0.5">
+            {/* Ranking Position Metric Card */}
+            <div className="relative overflow-hidden p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-800/40 space-y-1.5 min-w-[130px]">
+              {/* Background Watermark Icon */}
+              <div className="absolute -right-2 -bottom-2 pointer-events-none select-none opacity-[0.06] dark:opacity-[0.10]">
+                <Trophy className="w-20 h-20 text-zinc-900 dark:text-white" weight="bold" />
+              </div>
+
+              <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 block">
                 Posição Geral
               </span>
-              <span className="text-xl sm:text-2xl font-black font-heading tracking-tight text-brand-primary">
+              <span className="text-2xl font-black font-heading tracking-tight text-zinc-900 dark:text-white block">
                 #8
               </span>
+              <Link
+                href="/keypass/ranking"
+                className="text-[10px] font-bold text-zinc-800 dark:text-zinc-200 hover:text-brand-primary underline block truncate"
+              >
+                Ver Classificação →
+              </Link>
             </div>
-          </div>
-        </div>
-
-        <div className="mt-8 pt-6 border-t border-zinc-100 dark:border-zinc-800/80 space-y-2.5">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
-            <div className="flex items-center gap-2">
-              <span className="font-bold text-zinc-700 dark:text-zinc-300">
-                Progresso para {nextTier ? nextTier.name : "Nível Máximo"}:
-              </span>
-              <span className="font-extrabold text-brand-primary">
-                {tierProgress.progressPercentage}%
-              </span>
-            </div>
-            <div className="text-zinc-500 dark:text-zinc-400 font-medium text-[11px] sm:text-xs">
-              {nextTier ? (
-                <span>
-                  Faltam <strong className="text-zinc-900 dark:text-white font-black">{tierProgress.xpNeeded.toLocaleString("pt-BR")} XP</strong> para o Nível {nextTier.name} (+2 Tokens RIB)
-                </span>
-              ) : (
-                <span>Você atingiu o patamar supremo do clube.</span>
-              )}
-            </div>
-          </div>
-
-          <div className="w-full h-2 rounded-full bg-zinc-100 dark:bg-zinc-800 overflow-hidden">
-            <div
-              className="h-full bg-brand-primary rounded-full transition-all duration-700"
-              style={{ width: `${tierProgress.progressPercentage}%` }}
-            />
           </div>
         </div>
       </div>
 
-      <div className="space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-          <div>
-            <h2 className="text-lg sm:text-xl font-heading font-black uppercase tracking-tight text-zinc-900 dark:text-white">
-              Trilha de Níveis de Associação
-            </h2>
-            <p className="text-xs text-zinc-500 dark:text-zinc-400">
-              A cada promoção de nível você recebe 2 Tokens RIB e desbloqueia novos privilégios exclusivos.
-            </p>
-          </div>
-          <Link
-            href="/keypass/regras"
-            className="text-xs font-bold uppercase tracking-wider text-brand-primary hover:underline inline-flex items-center gap-1.5 shrink-0 whitespace-nowrap self-start sm:self-auto"
-          >
-            <span>Regras & Benefícios</span>
-            <ArrowRight className="w-3.5 h-3.5 shrink-0" />
-          </Link>
-        </div>
+      {/* 2. Milestone Progress Section */}
+      <KeyPassMilestoneProgress
+        xp={xp}
+        currentTier={displayedTier}
+        nextTier={displayedNextTier}
+      />
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
-          {TIERS_LIST.map((tier) => {
-            const isCurrent = tier.id === currentTier.id
-            const isPassed = tier.order < currentTier.order
-            const isLocked = tier.order > currentTier.order
+      {/* 3. Tier Progression Track */}
+      <KeyPassTierTrack
+        userTier={userTier}
+        selectedTierId={selectedTierId}
+        onSelectTier={setSelectedTierId}
+        userXp={xp}
+      />
 
-            return (
-              <div
-                key={tier.id}
-                className={cn(
-                  "rounded-sm border p-4 flex flex-col justify-between transition-all relative overflow-hidden bg-white dark:bg-[#141416]",
-                  isCurrent
-                    ? "border-brand-primary ring-1 ring-brand-primary/40 shadow-xs"
-                    : isPassed
-                    ? "border-zinc-300 dark:border-zinc-700"
-                    : "border-zinc-200 dark:border-zinc-800 opacity-70"
-                )}
-              >
-                {isCurrent && (
-                  <div className="absolute top-0 right-0">
-                    <span className="bg-brand-primary text-white text-[9px] font-black uppercase px-2 py-0.5 rounded-bl-sm">
-                      Atual
-                    </span>
-                  </div>
-                )}
-
-                {isPassed && (
-                  <div className="absolute top-2 right-2">
-                    <Check className="w-3.5 h-3.5 text-zinc-500 dark:text-zinc-400" weight="bold" />
-                  </div>
-                )}
-
-                {isLocked && (
-                  <div className="absolute top-2 right-2">
-                    <LockSimple className="w-3.5 h-3.5 text-zinc-400" />
-                  </div>
-                )}
-
-                <div className="space-y-2.5">
-                  <div className="relative w-12 h-12 mx-auto my-1">
-                    <Image
-                      src={tier.image}
-                      alt={tier.name}
-                      fill
-                      className="object-contain"
-                    />
-                  </div>
-
-                  <div className="text-center space-y-0.5">
-                    <h3 className="text-xs font-heading font-black uppercase text-zinc-900 dark:text-white">
-                      {tier.name}
-                    </h3>
-                    <p className="text-[10px] font-semibold text-zinc-500 dark:text-zinc-400 truncate">
-                      {tier.minXp === 0
-                        ? "0 - 499 XP"
-                        : tier.maxXp
-                        ? `${tier.minXp.toLocaleString("pt-BR")} - ${tier.maxXp.toLocaleString("pt-BR")} XP`
-                        : tier.isSpecialPinnacle
-                        ? "Top #1 Global"
-                        : "10.000+ XP"}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="mt-3 pt-2.5 border-t border-zinc-100 dark:border-zinc-800/80 text-center">
-                  {isCurrent ? (
-                    <span className="text-[10px] font-black uppercase text-brand-primary tracking-wider">
-                      Nível Vigente
-                    </span>
-                  ) : isPassed ? (
-                    <span className="text-[10px] font-bold text-zinc-600 dark:text-zinc-300 uppercase tracking-wider">
-                      Conquistado
-                    </span>
-                  ) : (
-                    <span className="text-[10px] font-semibold text-zinc-400 uppercase tracking-wider">
-                      Bloqueado
-                    </span>
-                  )}
-                </div>
-              </div>
-            )
-          })}
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] p-5 sm:p-6 space-y-4 shadow-xs">
-          <div className="flex items-center justify-between">
-            <div>
-              <h3 className="text-sm sm:text-base font-heading font-black uppercase tracking-tight text-zinc-900 dark:text-white flex items-center gap-2">
-                <Target className="w-4 h-4 text-brand-primary shrink-0" />
-                <span>Metas & Missões em Destaque</span>
-              </h3>
-              <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                Ações prioritárias para elevar seu status.
-              </p>
-            </div>
-            <Link
-              href="/keypass/missoes"
-              className="text-xs font-bold uppercase tracking-wider text-brand-primary hover:underline whitespace-nowrap shrink-0"
-            >
-              Ver todas ({missions.length})
-            </Link>
-          </div>
-
-          <div className="space-y-3">
-            {pendingActionMissions.map((mission) => {
-              const progressPct = Math.round(
-                (mission.currentProgress / mission.totalRequired) * 100
-              )
-
-              return (
-                <div
-                  key={mission.id}
-                  className="p-3.5 rounded-sm border border-zinc-200 dark:border-zinc-800 bg-[#F1F1F1]/50 dark:bg-zinc-900/40 space-y-2.5"
-                >
-                  <div className="flex items-start justify-between gap-3">
-                    <div>
-                      <h4 className="text-xs font-bold text-zinc-900 dark:text-white uppercase tracking-tight">
-                        {mission.title}
-                      </h4>
-                      <p className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5">
-                        {mission.description}
-                      </p>
-                    </div>
-
-                    <div className="flex items-center gap-1.5 shrink-0 whitespace-nowrap">
-                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-xs bg-[#F1F1F1] dark:bg-zinc-800 text-zinc-900 dark:text-white border border-zinc-200 dark:border-zinc-700 text-[10px] font-black uppercase">
-                        <div className="relative w-3 h-3 shrink-0">
-                          <Image
-                            src="/utils/gamification/utils/xp.webp"
-                            alt="XP"
-                            fill
-                            className="object-contain"
-                          />
-                        </div>
-                        <span>+{mission.xpReward} XP</span>
-                      </span>
-                      {mission.tokensReward && mission.tokensReward > 0 ? (
-                        <span className="inline-flex items-center gap-0.5 px-2 py-0.5 rounded-xs bg-zinc-200 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 border border-zinc-300 dark:border-zinc-700 text-[10px] font-black uppercase">
-                          +{mission.tokensReward} RIB
-                        </span>
-                      ) : null}
-                    </div>
-                  </div>
-
-                  <div className="space-y-1">
-                    <div className="flex justify-between text-[10px] text-zinc-500 font-semibold">
-                      <span>
-                        Progresso: {mission.currentProgress} / {mission.totalRequired}
-                      </span>
-                      <span>{progressPct}%</span>
-                    </div>
-                    <div className="w-full h-1.5 bg-zinc-200 dark:bg-zinc-800 rounded-full overflow-hidden">
-                      <div
-                        className="h-full bg-brand-primary rounded-full"
-                        style={{ width: `${progressPct}%` }}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="flex justify-end pt-0.5">
-                    {mission.isCompleted && !mission.isClaimed ? (
-                      <Button
-                        color="primary"
-                        size="sm"
-                        onClick={() => claimMission(mission.id)}
-                        className="text-xs font-black uppercase tracking-wider inline-flex items-center justify-center gap-1.5 whitespace-nowrap shrink-0"
-                      >
-                        <div className="relative w-3.5 h-3.5 shrink-0">
-                          <Image
-                            src="/utils/gamification/utils/xp.webp"
-                            alt="XP"
-                            fill
-                            className="object-contain"
-                          />
-                        </div>
-                        <span>Resgatar +{mission.xpReward} XP</span>
-                      </Button>
-                    ) : mission.actionUrl ? (
-                      <Link
-                        href={mission.actionUrl}
-                        className="text-xs font-bold uppercase tracking-wider text-brand-primary hover:underline inline-flex items-center gap-1 whitespace-nowrap shrink-0"
-                      >
-                        <span>{mission.actionLabel || "Realizar Missão"}</span>
-                        <ArrowRight className="w-3 h-3 shrink-0" />
-                      </Link>
-                    ) : null}
-                  </div>
-                </div>
-              )
-            })}
-          </div>
-        </div>
-
-        <div className="rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] p-5 sm:p-6 space-y-4 shadow-xs">
-          <div className="flex items-center justify-between">
-            <div>
-              <h3 className="text-sm sm:text-base font-heading font-black uppercase tracking-tight text-zinc-900 dark:text-white flex items-center gap-2">
-                <div className="relative w-4 h-4 shrink-0">
-                  <Image
-                    src="/utils/gamification/utils/xp.webp"
-                    alt="XP"
-                    fill
-                    className="object-contain"
-                  />
-                </div>
-                <span>Histórico de Pontos XP</span>
-              </h3>
-              <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                Extrato das últimas atividades qualificadoras.
-              </p>
-            </div>
-            <span className="text-[11px] font-bold text-zinc-400 whitespace-nowrap">
-              {xpHistory.length} registros
-            </span>
-          </div>
-
-          <div className="space-y-2.5 max-h-[380px] overflow-y-auto pr-1">
-            {xpHistory.slice(0, 6).map((activity) => (
-              <div
-                key={activity.id}
-                className="flex items-center justify-between p-3 rounded-sm border border-zinc-100 dark:border-zinc-800/80 bg-[#F1F1F1]/40 dark:bg-zinc-900/30 gap-3"
-              >
-                <div className="flex items-center gap-3 min-w-0">
-                  <div className="w-7 h-7 rounded-sm bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 flex items-center justify-center shrink-0 shadow-2xs">
-                    {getCategoryIcon(activity.category)}
-                  </div>
-                  <div className="min-w-0">
-                    <p className="text-xs font-bold text-zinc-900 dark:text-white truncate">
-                      {activity.title}
-                    </p>
-                    <p className="text-[10px] text-zinc-400">
-                      {activity.date}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="shrink-0 text-right whitespace-nowrap">
-                  {activity.xp > 0 ? (
-                    <div className="inline-flex items-center gap-1 text-xs font-black text-zinc-900 dark:text-white">
-                      <div className="relative w-3 h-3 shrink-0">
-                        <Image
-                          src="/utils/gamification/utils/xp.webp"
-                          alt="XP"
-                          fill
-                          className="object-contain"
-                        />
-                      </div>
-                      <span>+{activity.xp} XP</span>
-                    </div>
-                  ) : (
-                    <span className="text-xs font-bold text-zinc-600 dark:text-zinc-300">
-                      Recompensa
-                    </span>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+      {/* 4. Command Center Grid with Equalized Dynamic Heights */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
+        <KeyPassMissionsWidget className="h-full" />
+        <KeyPassHistoryWidget className="h-full" />
       </div>
     </Container>
   )
