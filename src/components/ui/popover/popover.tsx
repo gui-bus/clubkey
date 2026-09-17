@@ -1,28 +1,31 @@
-"use client";
+"use client"
 
-import { Icon } from "@iconify/react";
-import * as PopoverPrimitive from "@radix-ui/react-popover";
-import * as React from "react";
-import { cn } from "../../../lib/utils";
+import * as React from "react"
 
-export type PopoverBackdrop = "none" | "dark" | "light" | "blur";
+import { Icon } from "@iconify/react"
+import * as PopoverPrimitive from "@radix-ui/react-popover"
+
+import { cn } from "../../../lib/utils"
+
+export type PopoverBackdrop = "none" | "dark" | "light" | "blur"
 
 const backdropVariants: Record<PopoverBackdrop, string> = {
   none: "",
   dark: "bg-black/60",
   light: "bg-zinc-900/20 dark:bg-black/40",
   blur: "bg-black/40 backdrop-blur-md",
-};
+}
 
-const Popover = PopoverPrimitive.Root;
-const PopoverTrigger = PopoverPrimitive.Trigger;
-const PopoverAnchor = PopoverPrimitive.Anchor;
-const PopoverClose = PopoverPrimitive.Close;
+const Popover = PopoverPrimitive.Root
+const PopoverTrigger = PopoverPrimitive.Trigger
+const PopoverAnchor = PopoverPrimitive.Anchor
+const PopoverClose = PopoverPrimitive.Close
 
-export interface PopoverContentProps
-  extends React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Content> {
-  backdrop?: PopoverBackdrop;
-  showCloseButton?: boolean;
+export interface PopoverContentProps extends React.ComponentPropsWithoutRef<
+  typeof PopoverPrimitive.Content
+> {
+  backdrop?: PopoverBackdrop
+  showCloseButton?: boolean
 }
 
 const PopoverContent = React.forwardRef<
@@ -39,7 +42,7 @@ const PopoverContent = React.forwardRef<
       children,
       ...props
     },
-    ref,
+    ref
   ) => (
     <>
       {backdrop !== "none" && (
@@ -47,7 +50,7 @@ const PopoverContent = React.forwardRef<
           <div
             className={cn(
               "fixed inset-0 z-40 cursor-pointer pointer-events-auto max-w-[110rem] mx-auto left-0 right-0 overflow-hidden transition-opacity duration-200 animate-in fade-in-0",
-              backdropVariants[backdrop],
+              backdropVariants[backdrop]
             )}
             aria-hidden="true"
           />
@@ -61,7 +64,7 @@ const PopoverContent = React.forwardRef<
           sideOffset={sideOffset}
           className={cn(
             "z-50 w-80 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 text-zinc-900 dark:text-zinc-100 shadow-xl outline-none duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
-            className,
+            className
           )}
           {...props}
         >
@@ -75,9 +78,9 @@ const PopoverContent = React.forwardRef<
         </PopoverPrimitive.Content>
       </PopoverPrimitive.Portal>
     </>
-  ),
-);
-PopoverContent.displayName = PopoverPrimitive.Content.displayName;
+  )
+)
+PopoverContent.displayName = PopoverPrimitive.Content.displayName
 
 const PopoverHeader = ({
   className,
@@ -87,8 +90,8 @@ const PopoverHeader = ({
     className={cn("flex flex-col space-y-1 text-left mb-3 pr-6", className)}
     {...props}
   />
-);
-PopoverHeader.displayName = "PopoverHeader";
+)
+PopoverHeader.displayName = "PopoverHeader"
 
 const PopoverTitle = React.forwardRef<
   HTMLHeadingElement,
@@ -98,12 +101,12 @@ const PopoverTitle = React.forwardRef<
     ref={ref}
     className={cn(
       "text-sm font-semibold text-zinc-900 dark:text-zinc-100 leading-none",
-      className,
+      className
     )}
     {...props}
   />
-));
-PopoverTitle.displayName = "PopoverTitle";
+))
+PopoverTitle.displayName = "PopoverTitle"
 
 const PopoverDescription = React.forwardRef<
   HTMLParagraphElement,
@@ -114,8 +117,8 @@ const PopoverDescription = React.forwardRef<
     className={cn("text-xs text-zinc-500 dark:text-zinc-400 mt-1", className)}
     {...props}
   />
-));
-PopoverDescription.displayName = "PopoverDescription";
+))
+PopoverDescription.displayName = "PopoverDescription"
 
 export {
   Popover,
@@ -126,4 +129,4 @@ export {
   PopoverHeader,
   PopoverTitle,
   PopoverTrigger,
-};
+}

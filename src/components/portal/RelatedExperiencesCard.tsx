@@ -1,10 +1,17 @@
 "use client"
 
 import * as React from "react"
+
 import Image from "next/image"
 import Link from "next/link"
-import { ExperienceItem, formatBRL, getExperienceSlug } from "@/src/data/portalData"
+
+import {
+  ExperienceItem,
+  formatBRL,
+  getExperienceSlug,
+} from "@/src/data/portalData"
 import { MapPin } from "@phosphor-icons/react"
+
 import { cn } from "@/src/lib/utils"
 
 export interface RelatedExperiencesCardProps {
@@ -40,7 +47,9 @@ export function RelatedExperiencesCard({
         <div>
           <div className="flex items-center justify-between gap-2 text-[11px] mb-1.5">
             <span className="text-sm sm:text-base font-black font-heading text-zinc-900 dark:text-white">
-              {experience.price === 0 ? "Gratuita" : formatBRL(experience.price)}
+              {experience.price === 0
+                ? "Gratuita"
+                : formatBRL(experience.price)}
             </span>
             <span className="text-zinc-500 font-medium text-xs">
               {experience.date}

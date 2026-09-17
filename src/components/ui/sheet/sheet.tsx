@@ -1,8 +1,9 @@
 "use client"
 
 import * as React from "react"
-import { Dialog as DialogPrimitive } from "radix-ui"
+
 import { X } from "@phosphor-icons/react"
+import { Dialog as DialogPrimitive } from "radix-ui"
 
 import { cn } from "@/src/lib/utils"
 
@@ -29,8 +30,7 @@ const SheetTrigger = DialogPrimitive.Trigger
 const SheetClose = DialogPrimitive.Close
 const SheetPortal = DialogPrimitive.Portal
 
-export interface SheetOverlayProps
-  extends React.ComponentPropsWithoutRef<"div"> {
+export interface SheetOverlayProps extends React.ComponentPropsWithoutRef<"div"> {
   backdrop?: SheetBackdrop
 }
 
@@ -64,8 +64,9 @@ const positionStyles: Record<SheetSide, string> = {
   top: "absolute top-0 left-0 right-0 h-96 border-b border-zinc-200 dark:border-zinc-800 data-[state=open]:animate-in data-[state=closed]:animate-out",
 }
 
-export interface SheetContentProps
-  extends React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content> {
+export interface SheetContentProps extends React.ComponentPropsWithoutRef<
+  typeof DialogPrimitive.Content
+> {
   side?: SheetSide
   backdrop?: SheetBackdrop
   showCloseButton?: boolean

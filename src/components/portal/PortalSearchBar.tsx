@@ -1,9 +1,12 @@
 "use client"
 
 import * as React from "react"
+
 import { MagnifyingGlass, X } from "@phosphor-icons/react"
-import { cn } from "@/src/lib/utils"
+
 import { CtaButton } from "@/src/components/common/ctaButton"
+
+import { cn } from "@/src/lib/utils"
 
 export interface PortalSearchBarProps {
   value: string

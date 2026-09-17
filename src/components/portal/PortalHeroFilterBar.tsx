@@ -3,6 +3,7 @@
 import * as React from "react"
 
 import { CaretDown, type Icon, MagnifyingGlass, X } from "@phosphor-icons/react"
+
 import { CtaButton } from "@/src/components/common/ctaButton"
 
 import { cn } from "@/src/lib/utils"

@@ -1,12 +1,16 @@
 "use client"
 
 import * as React from "react"
+
 import { useRouter } from "next/navigation"
+
 import { EnvelopeSimple } from "@phosphor-icons/react"
 import { toast } from "sonner"
 
-import { CtaButton } from "@/src/components/common/ctaButton"
 import { InputOtp } from "@/src/components/ui/inputOtp/inputOtp"
+
+import { CtaButton } from "@/src/components/common/ctaButton"
+
 import { cn } from "@/src/lib/utils"
 
 export interface EmailVerificationProps {

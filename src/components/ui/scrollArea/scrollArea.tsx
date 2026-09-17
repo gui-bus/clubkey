@@ -1,15 +1,18 @@
-"use client";
+"use client"
 
-import { Icon } from "@iconify/react";
-import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area";
-import * as React from "react";
-import { cn } from "../../../lib/utils";
+import * as React from "react"
 
-export interface ScrollAreaProps
-  extends React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.Root> {
-  orientation?: "vertical" | "horizontal" | "both";
-  showScrollButtons?: boolean;
-  showProgressBar?: boolean;
+import { Icon } from "@iconify/react"
+import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area"
+
+import { cn } from "../../../lib/utils"
+
+export interface ScrollAreaProps extends React.ComponentPropsWithoutRef<
+  typeof ScrollAreaPrimitive.Root
+> {
+  orientation?: "vertical" | "horizontal" | "both"
+  showScrollButtons?: boolean
+  showProgressBar?: boolean
 }
 
 const ScrollBar = React.forwardRef<
@@ -25,14 +28,14 @@ const ScrollBar = React.forwardRef<
         "h-full w-2.5 border-l border-l-transparent",
       orientation === "horizontal" &&
         "h-2.5 flex-col border-t border-t-transparent",
-      className,
+      className
     )}
     {...props}
   >
     <ScrollAreaPrimitive.ScrollAreaThumb className="relative flex-1 rounded-full bg-zinc-300 dark:bg-zinc-700 hover:bg-zinc-400 dark:hover:bg-zinc-600 transition-colors" />
   </ScrollAreaPrimitive.ScrollAreaScrollbar>
-));
-ScrollBar.displayName = ScrollAreaPrimitive.ScrollAreaScrollbar.displayName;
+))
+ScrollBar.displayName = ScrollAreaPrimitive.ScrollAreaScrollbar.displayName
 
 const ScrollArea = React.forwardRef<
   React.ComponentRef<typeof ScrollAreaPrimitive.Root>,
@@ -47,43 +50,43 @@ const ScrollArea = React.forwardRef<
       showProgressBar = false,
       ...props
     },
-    ref,
+    ref
   ) => {
-    const viewportRef = React.useRef<HTMLDivElement>(null);
-    const [scrollProgress, setScrollProgress] = React.useState(0);
-    const [canScrollUp, setCanScrollUp] = React.useState(false);
-    const [canScrollDown, setCanScrollDown] = React.useState(false);
+    const viewportRef = React.useRef<HTMLDivElement>(null)
+    const [scrollProgress, setScrollProgress] = React.useState(0)
+    const [canScrollUp, setCanScrollUp] = React.useState(false)
+    const [canScrollDown, setCanScrollDown] = React.useState(false)
 
     const handleScroll = React.useCallback(() => {
-      const el = viewportRef.current;
-      if (!el) return;
-      const { scrollTop, scrollHeight, clientHeight } = el;
-      const total = scrollHeight - clientHeight;
-      setScrollProgress(total > 0 ? (scrollTop / total) * 100 : 0);
-      setCanScrollUp(scrollTop > 20);
-      setCanScrollDown(scrollTop + clientHeight < scrollHeight - 20);
-    }, []);
+      const el = viewportRef.current
+      if (!el) return
+      const { scrollTop, scrollHeight, clientHeight } = el
+      const total = scrollHeight - clientHeight
+      setScrollProgress(total > 0 ? (scrollTop / total) * 100 : 0)
+      setCanScrollUp(scrollTop > 20)
+      setCanScrollDown(scrollTop + clientHeight < scrollHeight - 20)
+    }, [])
 
     React.useEffect(() => {
-      const el = viewportRef.current;
-      if (!el) return;
-      handleScroll();
-      el.addEventListener("scroll", handleScroll);
-      return () => el.removeEventListener("scroll", handleScroll);
-    }, [handleScroll]);
+      const el = viewportRef.current
+      if (!el) return
+      handleScroll()
+      el.addEventListener("scroll", handleScroll)
+      return () => el.removeEventListener("scroll", handleScroll)
+    }, [handleScroll])
 
     const scrollToTop = () => {
-      viewportRef.current?.scrollTo({ top: 0, behavior: "smooth" });
-    };
+      viewportRef.current?.scrollTo({ top: 0, behavior: "smooth" })
+    }
 
     const scrollToBottom = () => {
       if (viewportRef.current) {
         viewportRef.current.scrollTo({
           top: viewportRef.current.scrollHeight,
           behavior: "smooth",
-        });
+        })
       }
-    };
+    }
 
     return (
       <ScrollAreaPrimitive.Root
@@ -140,9 +143,9 @@ const ScrollArea = React.forwardRef<
         )}
         <ScrollAreaPrimitive.Corner />
       </ScrollAreaPrimitive.Root>
-    );
-  },
-);
-ScrollArea.displayName = ScrollAreaPrimitive.Root.displayName;
+    )
+  }
+)
+ScrollArea.displayName = ScrollAreaPrimitive.Root.displayName
 
-export { ScrollArea, ScrollBar };
+export { ScrollArea, ScrollBar }

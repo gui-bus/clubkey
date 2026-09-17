@@ -1,22 +1,26 @@
 "use client"
 
 import * as React from "react"
+
 import Link from "next/link"
+
+import { MEMBERS, Member, MissionItem } from "@/src/data/portalData"
+import { usePortalStore } from "@/src/store/usePortalStore"
 import {
   ArrowRight,
   MagnifyingGlass,
   UserPlus,
   Users,
 } from "@phosphor-icons/react"
-import { MEMBERS, Member, MissionItem } from "@/src/data/portalData"
-import { usePortalStore } from "@/src/store/usePortalStore"
+
+import { toast } from "@/src/components/ui/toast/toast"
+
 import { Container } from "@/src/components/common/container"
 import { CtaButton } from "@/src/components/common/ctaButton"
 import { MemberCard } from "@/src/components/portal/MemberCard"
 import { NetworkingMissions } from "@/src/components/portal/NetworkingMissions"
 import { PortalHero } from "@/src/components/portal/PortalHero"
 import { PortalHeroFilterBar } from "@/src/components/portal/PortalHeroFilterBar"
-import { toast } from "@/src/components/ui/toast/toast"
 
 function MinhasConexoesContent(): React.JSX.Element {
   const {

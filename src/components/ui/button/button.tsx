@@ -6,15 +6,14 @@ import { Icon } from "@iconify/react"
 import { Slot } from "@radix-ui/react-slot"
 import { type VariantProps, cva } from "class-variance-authority"
 
-import { Ripple } from "@/src/lib/ripple/ripple"
-import { useRipples } from "@/src/lib/ripple/useRipple"
-import { cn } from "@/src/lib/utils"
-
 import {
   designColors,
   designRadius,
   designSizes,
 } from "@/src/lib/design-system"
+import { Ripple } from "@/src/lib/ripple/ripple"
+import { useRipples } from "@/src/lib/ripple/useRipple"
+import { cn } from "@/src/lib/utils"
 
 type ButtonSize = "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl"
 type ButtonRadius =

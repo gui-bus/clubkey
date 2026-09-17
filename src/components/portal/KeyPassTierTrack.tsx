@@ -1,21 +1,24 @@
 "use client"
 
 import * as React from "react"
+
 import Image from "next/image"
 import Link from "next/link"
-import { motion, AnimatePresence } from "framer-motion"
+
+import {
+  TIERS_CONFIG,
+  TIERS_LIST,
+  TierDefinition,
+  TierId,
+} from "@/src/data/portalData"
 import {
   ArrowRight,
   Check,
   CheckCircle,
   LockSimple,
 } from "@phosphor-icons/react"
-import {
-  TierDefinition,
-  TierId,
-  TIERS_LIST,
-  TIERS_CONFIG,
-} from "@/src/data/portalData"
+import { AnimatePresence, motion } from "framer-motion"
+
 import { cn } from "@/src/lib/utils"
 
 interface KeyPassTierTrackProps {
@@ -55,14 +58,15 @@ export function KeyPassTierTrack({
 
   return (
     <div className={cn("space-y-4", className)}>
-      {/* Header Bar */}
+      {}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <h2 className="text-lg sm:text-xl font-heading font-black uppercase tracking-tight text-zinc-900 dark:text-white">
             Trilha de Níveis de Associação
           </h2>
           <p className="text-xs text-zinc-600 dark:text-zinc-400 font-medium">
-            A cada promoção você recebe 2 Tokens RIB e desbloqueia novos privilégios institucionais.
+            A cada promoção você recebe 2 Tokens RIB e desbloqueia novos
+            privilégios institucionais.
           </p>
         </div>
 
@@ -75,7 +79,7 @@ export function KeyPassTierTrack({
         </Link>
       </div>
 
-      {/* 6-Tier Grid with Normal Subtle Borders */}
+      {}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
         {TIERS_LIST.map((tier, index) => {
           const isUserCurrent = tier.id === userTier.id
@@ -104,12 +108,12 @@ export function KeyPassTierTrack({
                   : "bg-white dark:bg-zinc-900 hover:bg-zinc-50/60 dark:hover:bg-zinc-800/40"
               )}
             >
-              {/* Huge Background Number (01, 02, etc.) */}
+              {}
               <span className="absolute -bottom-2 -right-1 text-5xl sm:text-6xl font-heading font-black text-zinc-900/[0.04] dark:text-white/[0.04] pointer-events-none select-none leading-none z-0">
                 0{index + 1}
               </span>
 
-              {/* Status indicator top right */}
+              {}
               {isUserCurrent ? (
                 <div className="absolute top-2 right-2 z-10">
                   <span className="text-[9px] font-black uppercase px-1.5 py-0.5 rounded-xs bg-zinc-900 dark:bg-white text-white dark:text-zinc-900">
@@ -128,7 +132,7 @@ export function KeyPassTierTrack({
                 </div>
               ) : null}
 
-              {/* Emblem */}
+              {}
               <div className="my-auto py-3 space-y-2 w-full relative z-10">
                 <div className="relative w-12 h-12 sm:w-14 sm:h-14 mx-auto transition-transform duration-200 group-hover:scale-105">
                   <Image
@@ -147,15 +151,15 @@ export function KeyPassTierTrack({
                     {tier.minXp === 0
                       ? "0 - 499 XP"
                       : tier.maxXp
-                      ? `${tier.minXp.toLocaleString("pt-BR")} - ${tier.maxXp.toLocaleString("pt-BR")} XP`
-                      : tier.isSpecialPinnacle
-                      ? "Top #1 Global"
-                      : "10.000+ XP"}
+                        ? `${tier.minXp.toLocaleString("pt-BR")} - ${tier.maxXp.toLocaleString("pt-BR")} XP`
+                        : tier.isSpecialPinnacle
+                          ? "Top #1 Global"
+                          : "10.000+ XP"}
                   </p>
                 </div>
               </div>
 
-              {/* Tier Perk & Status */}
+              {}
               <div className="w-full pt-2 border-t border-zinc-100 dark:border-zinc-800 space-y-1 relative z-10">
                 <p className="text-[9px] font-medium text-zinc-500 dark:text-zinc-400 truncate">
                   {getTierShortPerk(tier.id)}
@@ -182,7 +186,7 @@ export function KeyPassTierTrack({
         })}
       </div>
 
-      {/* Tier Detail Inspector */}
+      {}
       <AnimatePresence mode="wait">
         <motion.div
           key={selectedTier.id}
@@ -228,7 +232,7 @@ export function KeyPassTierTrack({
               </div>
             </div>
 
-            {/* Perks list */}
+            {}
             <div className="w-full lg:w-auto shrink-0 flex flex-col gap-2">
               <span className="text-[10px] font-black uppercase tracking-wider text-zinc-500 block">
                 Privilégios do Nível:

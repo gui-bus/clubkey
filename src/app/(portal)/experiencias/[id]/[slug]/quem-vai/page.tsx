@@ -1,17 +1,26 @@
 "use client"
 
 import * as React from "react"
-import { useParams, notFound } from "next/navigation"
-import { MapPin, MagnifyingGlass, Users, Calendar, ArrowRight } from "@phosphor-icons/react"
+
+import { notFound, useParams } from "next/navigation"
 
 import { EXPERIENCES, MEMBERS, getExperienceSlug } from "@/src/data/portalData"
 import { usePortalStore } from "@/src/store/usePortalStore"
-import { BackButton } from "@/src/components/portal/BackButton"
-import { PortalHeroFilterBar } from "@/src/components/portal/PortalHeroFilterBar"
-import { MemberCard } from "@/src/components/portal/MemberCard"
+import {
+  ArrowRight,
+  Calendar,
+  MagnifyingGlass,
+  MapPin,
+  Users,
+} from "@phosphor-icons/react"
+
 import { Button } from "@/src/components/ui/button/button"
+
 import { Container } from "@/src/components/common/container"
 import { CtaButton } from "@/src/components/common/ctaButton"
+import { BackButton } from "@/src/components/portal/BackButton"
+import { MemberCard } from "@/src/components/portal/MemberCard"
+import { PortalHeroFilterBar } from "@/src/components/portal/PortalHeroFilterBar"
 
 const ROLE_FILTERS = [
   { value: "todos", label: "Todos" },
@@ -39,7 +48,7 @@ export default function ExperienceParticipantsPage(): React.JSX.Element {
   const attendees = React.useMemo(() => {
     return experience.participants
       .map((id: number) => MEMBERS.find((m) => m.id === id))
-      .filter((m): m is typeof MEMBERS[0] => Boolean(m))
+      .filter((m): m is (typeof MEMBERS)[0] => Boolean(m))
   }, [experience.participants])
 
   const roleOptions = React.useMemo(() => {
@@ -149,10 +158,7 @@ export default function ExperienceParticipantsPage(): React.JSX.Element {
   return (
     <Container className="pt-6 sm:pt-8 pb-20 space-y-8">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <BackButton
-          fallbackHref="/experiencias"
-          label="Voltar à Experiência"
-        />
+        <BackButton fallbackHref="/experiencias" label="Voltar à Experiência" />
 
         <CtaButton
           href={`/experiencias/${experience.id}/${expSlug}`}
@@ -166,28 +172,30 @@ export default function ExperienceParticipantsPage(): React.JSX.Element {
       </div>
 
       <div className="space-y-1">
-          <h1 className="text-3xl sm:text-4xl font-heading font-black uppercase tracking-tight text-zinc-900 dark:text-white">
-            Quem vai estar lá ({attendees.length})
-          </h1>
-          <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 flex flex-wrap items-center gap-2">
-            <strong className="text-zinc-800 dark:text-zinc-200 font-semibold">{experience.title}</strong>
-            <span>•</span>
-            <span className="flex items-center gap-1">
-              <Calendar className="w-3.5 h-3.5 text-brand-primary" />
-              {experience.date}
-            </span>
-            <span>•</span>
-            <span className="flex items-center gap-1">
-              <MapPin className="w-3.5 h-3.5 text-brand-primary" />
-              {experience.place}
-            </span>
-            <span>•</span>
-            <span className="flex items-center gap-1 text-zinc-500 dark:text-zinc-400">
-              <Users className="w-3.5 h-3.5 text-brand-primary" />
-              {attendees.length} participantes confirmados
-            </span>
-          </p>
-        </div>
+        <h1 className="text-3xl sm:text-4xl font-heading font-black uppercase tracking-tight text-zinc-900 dark:text-white">
+          Quem vai estar lá ({attendees.length})
+        </h1>
+        <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 flex flex-wrap items-center gap-2">
+          <strong className="text-zinc-800 dark:text-zinc-200 font-semibold">
+            {experience.title}
+          </strong>
+          <span>•</span>
+          <span className="flex items-center gap-1">
+            <Calendar className="w-3.5 h-3.5 text-brand-primary" />
+            {experience.date}
+          </span>
+          <span>•</span>
+          <span className="flex items-center gap-1">
+            <MapPin className="w-3.5 h-3.5 text-brand-primary" />
+            {experience.place}
+          </span>
+          <span>•</span>
+          <span className="flex items-center gap-1 text-zinc-500 dark:text-zinc-400">
+            <Users className="w-3.5 h-3.5 text-brand-primary" />
+            {attendees.length} participantes confirmados
+          </span>
+        </p>
+      </div>
 
       <div className="w-full pt-2">
         <PortalHeroFilterBar
@@ -238,7 +246,9 @@ export default function ExperienceParticipantsPage(): React.JSX.Element {
       <div className="flex items-center justify-between">
         <span className="text-xs font-black uppercase tracking-widest text-zinc-400">
           {filteredAttendees.length}{" "}
-          {filteredAttendees.length === 1 ? "participante confirmado" : "participantes confirmados"}
+          {filteredAttendees.length === 1
+            ? "participante confirmado"
+            : "participantes confirmados"}
         </span>
       </div>
 
@@ -251,7 +261,8 @@ export default function ExperienceParticipantsPage(): React.JSX.Element {
             Nenhum participante encontrado
           </h3>
           <p className="text-xs text-zinc-500 dark:text-zinc-400 max-w-sm mx-auto">
-            Nao encontramos membros com os criterios selecionados. Tente ajustar a busca.
+            Nao encontramos membros com os criterios selecionados. Tente ajustar
+            a busca.
           </p>
           <Button
             type="button"
@@ -267,10 +278,7 @@ export default function ExperienceParticipantsPage(): React.JSX.Element {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {filteredAttendees.map((member) => (
-            <MemberCard
-              key={member.id}
-              member={member}
-            />
+            <MemberCard key={member.id} member={member} />
           ))}
         </div>
       )}

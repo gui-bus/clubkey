@@ -1,7 +1,24 @@
 "use client"
 
 import * as React from "react"
-import { ArrowsDownUp, Bed, Car, CheckCircle, Flame, Laptop, ShieldCheck, TShirt, Television, Umbrella, ForkKnife, Waves, WifiHigh, Wind, Lightning } from "@phosphor-icons/react"
+
+import {
+  ArrowsDownUp,
+  Bed,
+  Car,
+  CheckCircle,
+  Flame,
+  ForkKnife,
+  Laptop,
+  Lightning,
+  ShieldCheck,
+  TShirt,
+  Television,
+  Umbrella,
+  Waves,
+  WifiHigh,
+  Wind,
+} from "@phosphor-icons/react"
 
 export interface AmenityItem {
   id: string
@@ -30,7 +47,9 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   ShieldCheck,
 }
 
-export function RoomAmenities({ amenities = [] }: RoomAmenitiesProps): React.JSX.Element {
+export function RoomAmenities({
+  amenities = [],
+}: RoomAmenitiesProps): React.JSX.Element {
   return (
     <section className="py-8 border-b border-zinc-200 dark:border-zinc-800 space-y-5">
       <h2 className="text-xl sm:text-2xl font-bold uppercase tracking-tight text-zinc-900 dark:text-white font-heading">

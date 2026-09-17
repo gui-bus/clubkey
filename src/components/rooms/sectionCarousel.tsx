@@ -1,11 +1,13 @@
 "use client"
 
 import * as React from "react"
+
+import { type RoomSection } from "@/src/data/mockRooms"
 import { CaretLeft, CaretRight } from "@phosphor-icons/react"
 
 import { EventBadgePopover } from "@/src/components/rooms/eventBadgePopover"
 import { RoomCard } from "@/src/components/rooms/roomCard"
-import { type RoomSection } from "@/src/data/mockRooms"
+
 import { cn } from "@/src/lib/utils"
 
 export interface SectionCarouselProps {

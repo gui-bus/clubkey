@@ -1,13 +1,16 @@
 "use client"
 
 import * as React from "react"
+
 import Image from "next/image"
 import Link from "next/link"
+
+import { usePortalStore } from "@/src/store/usePortalStore"
 import { ArrowUp, EnvelopeSimple, ShieldCheck } from "@phosphor-icons/react"
 
 import { Container } from "@/src/components/common/container"
+
 import { brandConfig } from "@/src/config/brand.config"
-import { usePortalStore } from "@/src/store/usePortalStore"
 
 const clubKeyNavLinks = [
   { href: "/#sobre-a-club-key", label: `Sobre a ${brandConfig.name}` },
@@ -28,7 +31,10 @@ const memberLinks = [
   { href: brandConfig.links.login, label: "Já sou associado (Login)" },
   { href: brandConfig.links.subscription, label: "Quero ser associado" },
   { href: "/hospedagens", label: "Explorar Hospedagens" },
-  { href: `mailto:${brandConfig.links.contactEmail}`, label: "Suporte & Concierge" },
+  {
+    href: `mailto:${brandConfig.links.contactEmail}`,
+    label: "Suporte & Concierge",
+  },
 ] as const
 
 const emptySubscribe = () => () => {}
@@ -149,8 +155,8 @@ export function Footer(): React.JSX.Element | null {
 
         <div className="pt-8 border-t border-zinc-800/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-zinc-500">
           <div>
-            &copy; {new Date().getFullYear()} {brandConfig.name}. Todos os direitos
-            reservados.
+            &copy; {new Date().getFullYear()} {brandConfig.name}. Todos os
+            direitos reservados.
           </div>
 
           <div className="flex items-center gap-6">

@@ -9,6 +9,7 @@ import { FloatingCta } from "@/src/components/landing/FloatingCta"
 import { Footer } from "@/src/components/landing/Footer"
 import { Navbar } from "@/src/components/landing/Navbar"
 import { TopBanner } from "@/src/components/landing/TopBanner"
+
 import { brandConfig } from "@/src/config/brand.config"
 
 export default function SignUpPage(): React.JSX.Element {
@@ -39,7 +40,8 @@ export default function SignUpPage(): React.JSX.Element {
                     Crie sua conta
                   </h1>
                   <p className="mt-2 text-sm sm:text-base text-zinc-600 dark:text-zinc-400 font-light leading-relaxed">
-                    Cadastre-se na {brandConfig.name} para desbloquear benefícios exclusivos e tarifas de até 60% OFF.
+                    Cadastre-se na {brandConfig.name} para desbloquear
+                    benefícios exclusivos e tarifas de até 60% OFF.
                   </p>
                 </div>
 

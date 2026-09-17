@@ -1,8 +1,10 @@
-"use client";
+"use client"
 
-import * as SeparatorPrimitive from "@radix-ui/react-separator";
-import * as React from "react";
-import { cn } from "../../../lib/utils";
+import * as React from "react"
+
+import * as SeparatorPrimitive from "@radix-ui/react-separator"
+
+import { cn } from "../../../lib/utils"
 
 type SeparatorColor =
   | "default"
@@ -11,13 +13,14 @@ type SeparatorColor =
   | "accent"
   | "success"
   | "warning"
-  | "danger";
+  | "danger"
 
-export interface SeparatorProps
-  extends React.ComponentPropsWithoutRef<typeof SeparatorPrimitive.Root> {
-  label?: React.ReactNode;
-  gradient?: boolean;
-  color?: SeparatorColor;
+export interface SeparatorProps extends React.ComponentPropsWithoutRef<
+  typeof SeparatorPrimitive.Root
+> {
+  label?: React.ReactNode
+  gradient?: boolean
+  color?: SeparatorColor
 }
 
 const colorSolidMap: Record<SeparatorColor, string> = {
@@ -28,7 +31,7 @@ const colorSolidMap: Record<SeparatorColor, string> = {
   success: "bg-emerald-500",
   warning: "bg-amber-500",
   danger: "bg-rose-500",
-};
+}
 
 const colorGradientMap: Record<
   SeparatorColor,
@@ -69,7 +72,7 @@ const colorGradientMap: Record<
     left: "bg-gradient-to-r from-transparent to-rose-500",
     right: "bg-gradient-to-r from-rose-500 to-transparent",
   },
-};
+}
 
 const Separator = React.forwardRef<
   React.ComponentRef<typeof SeparatorPrimitive.Root>,
@@ -85,10 +88,10 @@ const Separator = React.forwardRef<
       color = "default",
       ...props
     },
-    ref,
+    ref
   ) => {
     if (label && orientation === "horizontal") {
-      const colors = colorGradientMap[color];
+      const colors = colorGradientMap[color]
       return (
         <div className="flex w-full items-center gap-3">
           <SeparatorPrimitive.Root
@@ -98,7 +101,7 @@ const Separator = React.forwardRef<
             className={cn(
               "h-px w-full rounded-full shrink",
               gradient ? colors.left : colorSolidMap[color],
-              className,
+              className
             )}
             {...props}
           />
@@ -111,11 +114,11 @@ const Separator = React.forwardRef<
             className={cn(
               "h-px w-full rounded-full shrink",
               gradient ? colors.right : colorSolidMap[color],
-              className,
+              className
             )}
           />
         </div>
-      );
+      )
     }
 
     return (
@@ -127,14 +130,14 @@ const Separator = React.forwardRef<
           "shrink-0 rounded-full",
           orientation === "horizontal" ? "h-px w-full" : "h-full w-px",
           gradient ? colorGradientMap[color].line : colorSolidMap[color],
-          className,
+          className
         )}
         {...props}
       />
-    );
-  },
-);
+    )
+  }
+)
 
-Separator.displayName = "Separator";
+Separator.displayName = "Separator"
 
-export { Separator };
+export { Separator }

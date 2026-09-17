@@ -1,14 +1,16 @@
 "use client"
 
 import * as React from "react"
+
 import { Icon } from "@iconify/react"
 import * as CheckboxPrimitive from "@radix-ui/react-checkbox"
 
 import { designRadius } from "@/src/lib/design-system"
 import { cn } from "@/src/lib/utils"
 
-export interface CheckboxProps
-  extends React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root> {
+export interface CheckboxProps extends React.ComponentPropsWithoutRef<
+  typeof CheckboxPrimitive.Root
+> {
   color?:
     | "default"
     | "primary"

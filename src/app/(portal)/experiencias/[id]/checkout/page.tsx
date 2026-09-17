@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation"
+
 import { EXPERIENCES, getExperienceSlug } from "@/src/data/portalData"
 
 interface PageProps {
@@ -11,7 +12,9 @@ export default async function ExperienciaCheckoutRedirectPage({
   const { id } = await params
   const experience = EXPERIENCES.find((e) => e.id === Number(id))
   if (experience) {
-    redirect(`/experiencias/${experience.id}/${getExperienceSlug(experience)}/checkout`)
+    redirect(
+      `/experiencias/${experience.id}/${getExperienceSlug(experience)}/checkout`
+    )
   }
   redirect(`/experiencias`)
 }

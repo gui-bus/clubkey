@@ -18,9 +18,12 @@ import {
 } from "@phosphor-icons/react"
 
 import { toast } from "@/src/components/ui/toast/toast"
+
 import { CtaButton } from "@/src/components/common/ctaButton"
-import { useMounted } from "@/src/hooks/useMounted"
+
 import { cn } from "@/src/lib/utils"
+
+import { useMounted } from "@/src/hooks/useMounted"
 
 interface MemberCardProps {
   member: Member
@@ -46,7 +49,9 @@ export function MemberCard({
 
   const status = mounted ? getConnectionStatus(member.id) : "none"
 
-  const handleConnect = (e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => {
+  const handleConnect = (
+    e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>
+  ) => {
     e.preventDefault()
     e.stopPropagation()
     if (status !== "none") return
@@ -56,7 +61,9 @@ export function MemberCard({
     })
   }
 
-  const handleRemove = (e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => {
+  const handleRemove = (
+    e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>
+  ) => {
     e.preventDefault()
     e.stopPropagation()
     if (onRemove) {
@@ -64,7 +71,9 @@ export function MemberCard({
     }
   }
 
-  const handleCancel = (e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => {
+  const handleCancel = (
+    e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>
+  ) => {
     e.preventDefault()
     e.stopPropagation()
     if (onCancel) {
@@ -224,7 +233,13 @@ export function MemberCard({
               ) : (
                 <CtaButton
                   type="button"
-                  variant={status === "connected" ? "secondary" : status === "pending" ? "secondary" : "primary"}
+                  variant={
+                    status === "connected"
+                      ? "secondary"
+                      : status === "pending"
+                        ? "secondary"
+                        : "primary"
+                  }
                   size="xs"
                   onClick={handleConnect}
                   disabled={status !== "none"}
@@ -234,8 +249,7 @@ export function MemberCard({
                       "bg-emerald-500/15 border-emerald-500/30 text-emerald-600 dark:text-emerald-400 opacity-100 cursor-default",
                     status === "pending" &&
                       "bg-sky-500/15 border-sky-500/30 text-sky-600 dark:text-sky-400 opacity-100 cursor-default",
-                    status === "none" &&
-                      "border-transparent"
+                    status === "none" && "border-transparent"
                   )}
                   sliderClassName={
                     status === "connected"
@@ -245,7 +259,8 @@ export function MemberCard({
                         : undefined
                   }
                   textClassName={cn(
-                    status === "connected" && "text-emerald-600 dark:text-emerald-400",
+                    status === "connected" &&
+                      "text-emerald-600 dark:text-emerald-400",
                     status === "pending" && "text-sky-600 dark:text-sky-400",
                     status === "none" && "text-white"
                   )}

@@ -1,22 +1,18 @@
-"use client";
+"use client"
 
-import * as React from "react";
-import type { designColors, designSizes } from "../../../lib/design-system";
-import { cn } from "../../../lib/utils";
+import * as React from "react"
+
+import type { designColors, designSizes } from "../../../lib/design-system"
+import { cn } from "../../../lib/utils"
 
 export type SpinnerVariant =
-  | "default"
-  | "dots"
-  | "bars"
-  | "pulse"
-  | "ring"
-  | "gradient";
+  "default" | "dots" | "bars" | "pulse" | "ring" | "gradient"
 
 export interface SpinnerProps extends React.HTMLAttributes<HTMLDivElement> {
-  variant?: SpinnerVariant;
-  size?: keyof typeof designSizes;
-  color?: keyof typeof designColors;
-  label?: string;
+  variant?: SpinnerVariant
+  size?: keyof typeof designSizes
+  color?: keyof typeof designColors
+  label?: string
 }
 
 const spinnerSizes = {
@@ -27,7 +23,7 @@ const spinnerSizes = {
   xl: "size-10",
   "2xl": "size-12",
   "3xl": "size-16",
-};
+}
 
 const colorClasses = {
   default:
@@ -38,7 +34,7 @@ const colorClasses = {
   success: "text-emerald-500 border-emerald-500/20 border-t-emerald-500",
   warning: "text-amber-500 border-amber-500/20 border-t-amber-500",
   danger: "text-rose-500 border-rose-500/20 border-t-rose-500",
-};
+}
 
 const bgPulseColors = {
   default: "bg-zinc-900 dark:bg-zinc-100",
@@ -48,7 +44,7 @@ const bgPulseColors = {
   success: "bg-emerald-500",
   warning: "bg-amber-500",
   danger: "bg-rose-500",
-};
+}
 
 const Spinner = React.forwardRef<HTMLDivElement, SpinnerProps>(
   (
@@ -60,7 +56,7 @@ const Spinner = React.forwardRef<HTMLDivElement, SpinnerProps>(
       label,
       ...props
     },
-    ref,
+    ref
   ) => {
     const renderSpinnerGraphic = () => {
       switch (variant) {
@@ -69,113 +65,113 @@ const Spinner = React.forwardRef<HTMLDivElement, SpinnerProps>(
             <div
               className={cn(
                 "inline-flex items-center space-x-1 shrink-0",
-                spinnerSizes[size],
+                spinnerSizes[size]
               )}
             >
               <span
                 className={cn(
                   "size-1/3 rounded-full animate-bounce [animation-delay:-0.3s]",
-                  bgPulseColors[color],
+                  bgPulseColors[color]
                 )}
               />
               <span
                 className={cn(
                   "size-1/3 rounded-full animate-bounce [animation-delay:-0.15s]",
-                  bgPulseColors[color],
+                  bgPulseColors[color]
                 )}
               />
               <span
                 className={cn(
                   "size-1/3 rounded-full animate-bounce",
-                  bgPulseColors[color],
+                  bgPulseColors[color]
                 )}
               />
             </div>
-          );
+          )
         case "bars":
           return (
             <div
               className={cn(
                 "inline-flex items-center space-x-0.5 shrink-0",
-                spinnerSizes[size],
+                spinnerSizes[size]
               )}
             >
               <span
                 className={cn(
                   "h-full w-1/4 rounded-full animate-pulse [animation-delay:-0.4s]",
-                  bgPulseColors[color],
+                  bgPulseColors[color]
                 )}
               />
               <span
                 className={cn(
                   "h-full w-1/4 rounded-full animate-pulse [animation-delay:-0.2s]",
-                  bgPulseColors[color],
+                  bgPulseColors[color]
                 )}
               />
               <span
                 className={cn(
                   "h-full w-1/4 rounded-full animate-pulse",
-                  bgPulseColors[color],
+                  bgPulseColors[color]
                 )}
               />
             </div>
-          );
+          )
         case "pulse":
           return (
             <div
               className={cn(
                 "relative shrink-0 flex items-center justify-center",
-                spinnerSizes[size],
+                spinnerSizes[size]
               )}
             >
               <span
                 className={cn(
                   "absolute inset-0 rounded-full animate-ping opacity-75",
-                  bgPulseColors[color],
+                  bgPulseColors[color]
                 )}
               />
               <span
                 className={cn(
                   "relative size-1/2 rounded-full",
-                  bgPulseColors[color],
+                  bgPulseColors[color]
                 )}
               />
             </div>
-          );
+          )
         case "ring":
           return (
             <div
               className={cn(
                 "rounded-full animate-spin border-2 border-dashed border-t-transparent shrink-0",
                 spinnerSizes[size],
-                colorClasses[color],
+                colorClasses[color]
               )}
             />
-          );
+          )
         case "gradient":
           return (
             <div
               className={cn(
                 "rounded-full animate-spin bg-gradient-to-tr from-transparent via-current to-current p-0.5 shrink-0",
                 spinnerSizes[size],
-                colorClasses[color],
+                colorClasses[color]
               )}
             >
               <div className="size-full rounded-full bg-white dark:bg-zinc-900" />
             </div>
-          );
+          )
         default:
           return (
             <div
               className={cn(
                 "rounded-full animate-spin border-2 shrink-0",
                 spinnerSizes[size],
-                colorClasses[color],
+                colorClasses[color]
               )}
             />
-          );
+          )
       }
-    };
+    }
 
     return (
       <div
@@ -195,10 +191,10 @@ const Spinner = React.forwardRef<HTMLDivElement, SpinnerProps>(
           <span className="sr-only">Loading...</span>
         )}
       </div>
-    );
-  },
-);
+    )
+  }
+)
 
-Spinner.displayName = "Spinner";
+Spinner.displayName = "Spinner"
 
-export { Spinner };
+export { Spinner }

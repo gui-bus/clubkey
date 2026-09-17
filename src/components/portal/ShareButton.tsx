@@ -1,10 +1,14 @@
 "use client"
 
 import * as React from "react"
-import { LinkSimple, Check } from "@phosphor-icons/react"
+
+import { Check, LinkSimple } from "@phosphor-icons/react"
+
 import { toast } from "@/src/components/ui/toast/toast"
-import { cn } from "@/src/lib/utils"
+
 import { CtaButton, CtaButtonSize } from "@/src/components/common/ctaButton"
+
+import { cn } from "@/src/lib/utils"
 
 export interface ShareButtonProps {
   url?: string
@@ -24,7 +28,9 @@ export function ShareButton({
 }: ShareButtonProps): React.JSX.Element {
   const [copied, setCopied] = React.useState(false)
 
-  const handleCopy = (e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => {
+  const handleCopy = (
+    e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>
+  ) => {
     e.preventDefault()
     e.stopPropagation()
 
@@ -48,7 +54,8 @@ export function ShareButton({
       onClick={handleCopy}
       className={cn(
         "h-9 px-3.5 text-xs shadow-none hover:shadow-none font-bold uppercase tracking-wider",
-        copied && "border-emerald-500/40 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 dark:border-emerald-500/30",
+        copied &&
+          "border-emerald-500/40 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 dark:border-emerald-500/30",
         className
       )}
       aria-label={copied ? copiedLabel : label}
@@ -64,7 +71,9 @@ export function ShareButton({
         key={copied ? "copied" : "default"}
         className={cn(
           "transition-all duration-200",
-          copied ? "animate-in fade-in-50 text-emerald-600 dark:text-emerald-400" : ""
+          copied
+            ? "animate-in fade-in-50 text-emerald-600 dark:text-emerald-400"
+            : ""
         )}
       >
         {copied ? copiedLabel : label}

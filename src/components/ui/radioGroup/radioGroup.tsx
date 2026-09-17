@@ -1,10 +1,12 @@
-"use client";
+"use client"
 
-import { Icon } from "@iconify/react";
-import * as RadioGroupPrimitive from "@radix-ui/react-radio-group";
-import { cva } from "class-variance-authority";
-import * as React from "react";
-import { cn } from "../../../lib/utils";
+import * as React from "react"
+
+import { Icon } from "@iconify/react"
+import * as RadioGroupPrimitive from "@radix-ui/react-radio-group"
+import { cva } from "class-variance-authority"
+
+import { cn } from "../../../lib/utils"
 
 const radioCardVariants = cva(
   "relative flex items-center gap-3 p-4 transition-all duration-200 cursor-pointer select-none",
@@ -30,11 +32,12 @@ const radioCardVariants = cva(
     defaultVariants: {
       variant: "default",
     },
-  },
-);
+  }
+)
 
-export interface RadioGroupProps
-  extends React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Root> {
+export interface RadioGroupProps extends React.ComponentPropsWithoutRef<
+  typeof RadioGroupPrimitive.Root
+> {
   color?:
     | "default"
     | "primary"
@@ -42,7 +45,7 @@ export interface RadioGroupProps
     | "accent"
     | "success"
     | "warning"
-    | "danger";
+    | "danger"
   variant?:
     | "default"
     | "bordered"
@@ -51,13 +54,13 @@ export interface RadioGroupProps
     | "filled"
     | "glassmorphism"
     | "gradient-border"
-    | "glow";
-  orientation?: "horizontal" | "vertical";
-  columns?: 1 | 2 | 3 | 4 | 5 | 6;
-  label?: React.ReactNode;
-  description?: React.ReactNode;
-  isInvalid?: boolean;
-  isRequired?: boolean;
+    | "glow"
+  orientation?: "horizontal" | "vertical"
+  columns?: 1 | 2 | 3 | 4 | 5 | 6
+  label?: React.ReactNode
+  description?: React.ReactNode
+  isInvalid?: boolean
+  isRequired?: boolean
 }
 
 const colorMap = {
@@ -75,12 +78,12 @@ const colorMap = {
     "text-amber-500 border-zinc-300 dark:border-zinc-700 data-[state=checked]:border-amber-500",
   danger:
     "text-rose-500 border-zinc-300 dark:border-zinc-700 data-[state=checked]:border-rose-500",
-};
+}
 
 const RadioGroupContext = React.createContext<{
-  color?: RadioGroupProps["color"];
-  variant?: RadioGroupProps["variant"];
-}>({});
+  color?: RadioGroupProps["color"]
+  variant?: RadioGroupProps["variant"]
+}>({})
 
 const columnStyles: Record<number, string> = {
   1: "grid-cols-1",
@@ -89,7 +92,7 @@ const columnStyles: Record<number, string> = {
   4: "grid-cols-1 sm:grid-cols-2 md:grid-cols-4",
   5: "grid-cols-2 sm:grid-cols-3 md:grid-cols-5",
   6: "grid-cols-2 sm:grid-cols-3 md:grid-cols-6",
-};
+}
 
 const RadioGroup = React.forwardRef<
   React.ComponentRef<typeof RadioGroupPrimitive.Root>,
@@ -109,7 +112,7 @@ const RadioGroup = React.forwardRef<
       children,
       ...props
     },
-    ref,
+    ref
   ) => {
     return (
       <RadioGroupContext.Provider value={{ color, variant }}>
@@ -120,7 +123,7 @@ const RadioGroup = React.forwardRef<
                 <label
                   className={cn(
                     "text-xs font-semibold text-zinc-900 dark:text-zinc-100",
-                    isInvalid && "text-rose-500 dark:text-rose-400",
+                    isInvalid && "text-rose-500 dark:text-rose-400"
                   )}
                 >
                   {label}
@@ -145,7 +148,7 @@ const RadioGroup = React.forwardRef<
                 : orientation === "horizontal"
                   ? "flex flex-wrap items-center gap-4"
                   : "grid gap-2.5",
-              className,
+              className
             )}
             {...props}
           >
@@ -153,20 +156,21 @@ const RadioGroup = React.forwardRef<
           </RadioGroupPrimitive.Root>
         </div>
       </RadioGroupContext.Provider>
-    );
-  },
-);
-RadioGroup.displayName = RadioGroupPrimitive.Root.displayName;
+    )
+  }
+)
+RadioGroup.displayName = RadioGroupPrimitive.Root.displayName
 
-export interface RadioGroupItemProps
-  extends React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Item> {
-  label?: React.ReactNode;
-  description?: React.ReactNode;
-  isCard?: boolean;
-  icon?: string;
-  badge?: string | React.ReactNode;
-  price?: string;
-  variant?: RadioGroupProps["variant"];
+export interface RadioGroupItemProps extends React.ComponentPropsWithoutRef<
+  typeof RadioGroupPrimitive.Item
+> {
+  label?: React.ReactNode
+  description?: React.ReactNode
+  isCard?: boolean
+  icon?: string
+  badge?: string | React.ReactNode
+  price?: string
+  variant?: RadioGroupProps["variant"]
 }
 
 const RadioGroupItem = React.forwardRef<
@@ -187,14 +191,14 @@ const RadioGroupItem = React.forwardRef<
       variant: localVariant,
       ...props
     },
-    ref,
+    ref
   ) => {
-    const generatedId = React.useId();
-    const itemId = id || generatedId;
+    const generatedId = React.useId()
+    const itemId = id || generatedId
     const { color = "primary", variant: contextVariant = "default" } =
-      React.useContext(RadioGroupContext);
+      React.useContext(RadioGroupContext)
 
-    const variant = localVariant || contextVariant;
+    const variant = localVariant || contextVariant
 
     const innerContent = (
       <>
@@ -205,7 +209,7 @@ const RadioGroupItem = React.forwardRef<
           className={cn(
             "aspect-square size-4 rounded-full border bg-white dark:bg-zinc-900 transition-all duration-200 outline-none focus-visible:ring-2 focus-visible:ring-sky-500/20 disabled:cursor-not-allowed cursor-pointer mt-0.5 flex items-center justify-center shrink-0 group relative",
             colorMap[color],
-            className,
+            className
           )}
           {...props}
         >
@@ -247,7 +251,7 @@ const RadioGroupItem = React.forwardRef<
           </span>
         )}
       </>
-    );
+    )
 
     if (isCard) {
       return (
@@ -256,12 +260,12 @@ const RadioGroupItem = React.forwardRef<
           className={cn(
             radioCardVariants({ variant }),
             variant !== "underlined" && "rounded-2xl",
-            disabled && "opacity-40 cursor-not-allowed pointer-events-none",
+            disabled && "opacity-40 cursor-not-allowed pointer-events-none"
           )}
         >
           {innerContent}
         </label>
-      );
+      )
     }
 
     return (
@@ -269,14 +273,14 @@ const RadioGroupItem = React.forwardRef<
         htmlFor={itemId}
         className={cn(
           "inline-flex items-start gap-2.5 cursor-pointer select-none",
-          disabled && "opacity-40 cursor-not-allowed pointer-events-none",
+          disabled && "opacity-40 cursor-not-allowed pointer-events-none"
         )}
       >
         {innerContent}
       </label>
-    );
-  },
-);
-RadioGroupItem.displayName = RadioGroupPrimitive.Item.displayName;
+    )
+  }
+)
+RadioGroupItem.displayName = RadioGroupPrimitive.Item.displayName
 
-export { RadioGroup, RadioGroupItem };
+export { RadioGroup, RadioGroupItem }

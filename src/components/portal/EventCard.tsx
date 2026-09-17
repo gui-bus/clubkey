@@ -35,8 +35,9 @@ import { toast } from "@/src/components/ui/toast/toast"
 
 import { CtaButton } from "@/src/components/common/ctaButton"
 
-import { useMounted } from "@/src/hooks/useMounted"
 import { cn } from "@/src/lib/utils"
+
+import { useMounted } from "@/src/hooks/useMounted"
 
 interface EventCardProps {
   event: EventItem
@@ -107,7 +108,9 @@ export function EventCard({ event }: EventCardProps): React.JSX.Element {
           )}
 
           <div className="absolute bottom-0 left-0 right-0 z-10 flex items-center gap-2 px-3.5 py-2.5 bg-black/40 backdrop-blur-md border-t border-white/10">
-            <span className="text-[11px] font-bold text-white uppercase tracking-wider">{event.weekday}, {event.day} de {event.month}</span>
+            <span className="text-[11px] font-bold text-white uppercase tracking-wider">
+              {event.weekday}, {event.day} de {event.month}
+            </span>
             <span className="text-white/40">•</span>
             <span className="flex items-center gap-1 text-[11px] text-white/80">
               <Clock className="w-3 h-3 text-white/60 shrink-0" />

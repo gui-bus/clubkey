@@ -7,7 +7,17 @@ import Link from "next/link"
 
 import { EVENTS, getInitials } from "@/src/data/portalData"
 import { usePortalStore } from "@/src/store/usePortalStore"
-import { ArrowRight, Buildings, Calendar, CheckCircle, Compass, Gift, BuildingApartment, ShieldCheck, Users } from "@phosphor-icons/react"
+import {
+  ArrowRight,
+  BuildingApartment,
+  Buildings,
+  Calendar,
+  CheckCircle,
+  Compass,
+  Gift,
+  ShieldCheck,
+  Users,
+} from "@phosphor-icons/react"
 
 import {
   Avatar,

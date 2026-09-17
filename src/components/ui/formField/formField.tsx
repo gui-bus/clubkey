@@ -1,26 +1,28 @@
-"use client";
+"use client"
 
-import * as React from "react";
-import { Label } from "@/src/components/ui/label/label";
+import * as React from "react"
+
+import { Label } from "@/src/components/ui/label/label"
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/src/components/ui/tooltip/tooltip";
-import { cn } from "../../../lib/utils";
+} from "@/src/components/ui/tooltip/tooltip"
+
+import { cn } from "../../../lib/utils"
 
 export interface FormFieldProps extends React.HTMLAttributes<HTMLDivElement> {
-  label?: React.ReactNode;
-  isRequired?: boolean;
-  requiredTooltip?: React.ReactNode;
-  description?: React.ReactNode;
-  errorMessage?: React.ReactNode;
-  isInvalid?: boolean;
-  htmlFor?: string;
-  maxLength?: number;
-  currentLength?: number;
-  helperAlign?: "left" | "right" | "between";
+  label?: React.ReactNode
+  isRequired?: boolean
+  requiredTooltip?: React.ReactNode
+  description?: React.ReactNode
+  errorMessage?: React.ReactNode
+  isInvalid?: boolean
+  htmlFor?: string
+  maxLength?: number
+  currentLength?: number
+  helperAlign?: "left" | "right" | "between"
 }
 
 export function FormField({
@@ -38,17 +40,17 @@ export function FormField({
   helperAlign = "between",
   ...props
 }: FormFieldProps) {
-  const generatedId = React.useId();
-  const fieldId = htmlFor || generatedId;
+  const generatedId = React.useId()
+  const fieldId = htmlFor || generatedId
 
   const renderLabelContent = () => {
-    if (!label) return null;
+    if (!label) return null
     if (!isRequired || !requiredTooltip) {
       return (
         <Label htmlFor={fieldId} isRequired={isRequired}>
           {label}
         </Label>
-      );
+      )
     }
 
     return (
@@ -67,8 +69,8 @@ export function FormField({
           </Tooltip>
         </TooltipProvider>
       </div>
-    );
-  };
+    )
+  }
 
   return (
     <div className={cn("w-full flex flex-col gap-1.5", className)} {...props}>
@@ -77,13 +79,13 @@ export function FormField({
         {React.isValidElement(children)
           ? React.cloneElement(
               children as React.ReactElement<{
-                id?: string;
-                isInvalid?: boolean;
+                id?: string
+                isInvalid?: boolean
               }>,
               {
                 id: fieldId,
                 isInvalid: isInvalid || Boolean(errorMessage),
-              },
+              }
             )
           : children}
       </div>
@@ -93,7 +95,7 @@ export function FormField({
           "flex items-center text-xs gap-2 min-h-4",
           helperAlign === "right" && "justify-end",
           helperAlign === "left" && "justify-start",
-          helperAlign === "between" && "justify-between",
+          helperAlign === "between" && "justify-between"
         )}
       >
         {isInvalid && errorMessage ? (
@@ -112,7 +114,7 @@ export function FormField({
                 ? "text-rose-500 font-bold"
                 : currentLength >= maxLength * 0.9
                   ? "text-amber-500 font-semibold"
-                  : "text-zinc-400",
+                  : "text-zinc-400"
             )}
           >
             {currentLength}/{maxLength}
@@ -120,5 +122,5 @@ export function FormField({
         )}
       </div>
     </div>
-  );
+  )
 }

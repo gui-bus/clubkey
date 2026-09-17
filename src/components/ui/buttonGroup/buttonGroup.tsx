@@ -1,22 +1,23 @@
-"use client";
+"use client"
 
-import * as React from "react";
-import { cn } from "../../../lib/utils";
-import type { ButtonProps } from "../button/button";
+import * as React from "react"
+
+import { cn } from "../../../lib/utils"
+import type { ButtonProps } from "../button/button"
 
 export type ButtonGroupProps = {
-  children: React.ReactNode;
-  variant?: ButtonProps["variant"];
-  color?: ButtonProps["color"];
-  size?: ButtonProps["size"];
-  radius?: ButtonProps["radius"];
-  orientation?: "horizontal" | "vertical";
-  isAttached?: boolean;
-  isLoading?: boolean;
-  isDisabled?: boolean;
-  ariaLabel?: string;
-  className?: string;
-};
+  children: React.ReactNode
+  variant?: ButtonProps["variant"]
+  color?: ButtonProps["color"]
+  size?: ButtonProps["size"]
+  radius?: ButtonProps["radius"]
+  orientation?: "horizontal" | "vertical"
+  isAttached?: boolean
+  isLoading?: boolean
+  isDisabled?: boolean
+  ariaLabel?: string
+  className?: string
+}
 
 export const ButtonGroup = React.memo(
   ({
@@ -33,31 +34,31 @@ export const ButtonGroup = React.memo(
     className,
   }: ButtonGroupProps) => {
     const clonedChildren = React.useMemo(() => {
-      const childrenArray = React.Children.toArray(children);
-      const count = childrenArray.length;
+      const childrenArray = React.Children.toArray(children)
+      const count = childrenArray.length
       return childrenArray.map((child, index) => {
-        if (!React.isValidElement<ButtonProps>(child)) return child;
+        if (!React.isValidElement<ButtonProps>(child)) return child
 
-        const isFirst = index === 0;
-        const isLast = index === count - 1;
-        const isVertical = orientation === "vertical";
+        const isFirst = index === 0
+        const isLast = index === count - 1
+        const isVertical = orientation === "vertical"
 
-        const childRadius = child.props.radius || radius || "xl";
-        let radiusClasses = "";
+        const childRadius = child.props.radius || radius || "xl"
+        let radiusClasses = ""
 
         if (isAttached) {
           if (isVertical) {
             if (isFirst)
-              radiusClasses = `rounded-b-none rounded-t-${childRadius}`;
+              radiusClasses = `rounded-b-none rounded-t-${childRadius}`
             else if (isLast)
-              radiusClasses = `rounded-t-none rounded-b-${childRadius}`;
-            else radiusClasses = "rounded-none";
+              radiusClasses = `rounded-t-none rounded-b-${childRadius}`
+            else radiusClasses = "rounded-none"
           } else {
             if (isFirst)
-              radiusClasses = `rounded-r-none rounded-l-${childRadius}`;
+              radiusClasses = `rounded-r-none rounded-l-${childRadius}`
             else if (isLast)
-              radiusClasses = `rounded-l-none rounded-r-${childRadius}`;
-            else radiusClasses = "rounded-none";
+              radiusClasses = `rounded-l-none rounded-r-${childRadius}`
+            else radiusClasses = "rounded-none"
           }
         }
 
@@ -79,10 +80,10 @@ export const ButtonGroup = React.memo(
             isAttached && radiusClasses,
             "focus-visible:z-10 focus-visible:relative",
             isAttached && !isFirst && !isVertical && "-ml-px",
-            isAttached && !isFirst && isVertical && "-mt-px",
+            isAttached && !isFirst && isVertical && "-mt-px"
           ),
-        });
-      });
+        })
+      })
     }, [
       children,
       variant,
@@ -93,7 +94,7 @@ export const ButtonGroup = React.memo(
       isAttached,
       isLoading,
       isDisabled,
-    ]);
+    ])
 
     return (
       <div
@@ -106,13 +107,13 @@ export const ButtonGroup = React.memo(
             ? "flex-col items-stretch"
             : "flex-row items-center",
           !isAttached && (orientation === "vertical" ? "gap-2" : "gap-2"),
-          className,
+          className
         )}
       >
         {clonedChildren}
       </div>
-    );
-  },
-);
+    )
+  }
+)
 
-ButtonGroup.displayName = "ButtonGroup";
+ButtonGroup.displayName = "ButtonGroup"

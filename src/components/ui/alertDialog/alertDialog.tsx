@@ -1,19 +1,21 @@
-"use client";
+"use client"
 
-import * as DialogPrimitive from "@radix-ui/react-dialog";
-import * as React from "react";
-import { cn } from "../../../lib/utils";
+import * as React from "react"
+
+import * as DialogPrimitive from "@radix-ui/react-dialog"
+
+import { cn } from "../../../lib/utils"
 
 const AlertDialog = ({
   modal = true,
   ...props
 }: React.ComponentPropsWithoutRef<typeof DialogPrimitive.Root>) => (
   <DialogPrimitive.Root modal={modal} {...props} />
-);
-AlertDialog.displayName = "AlertDialog";
+)
+AlertDialog.displayName = "AlertDialog"
 
-const AlertDialogTrigger = DialogPrimitive.Trigger;
-const AlertDialogPortal = DialogPrimitive.Portal;
+const AlertDialogTrigger = DialogPrimitive.Trigger
+const AlertDialogPortal = DialogPrimitive.Portal
 
 const AlertDialogOverlay = React.forwardRef<
   HTMLDivElement,
@@ -24,13 +26,13 @@ const AlertDialogOverlay = React.forwardRef<
       ref={ref}
       className={cn(
         "fixed inset-0 z-50 cursor-pointer pointer-events-auto transition-all duration-300 bg-black/60 backdrop-blur-xs data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
-        className,
+        className
       )}
       {...props}
     />
   </DialogPrimitive.Close>
-));
-AlertDialogOverlay.displayName = "AlertDialogOverlay";
+))
+AlertDialogOverlay.displayName = "AlertDialogOverlay"
 
 const AlertDialogContent = React.forwardRef<
   React.ComponentRef<typeof DialogPrimitive.Content>,
@@ -44,7 +46,7 @@ const AlertDialogContent = React.forwardRef<
           ref={ref}
           className={cn(
             "pointer-events-auto relative z-50 grid w-full max-w-lg gap-4 border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] p-6 shadow-2xl duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 rounded-sm text-zinc-900 dark:text-white",
-            className,
+            className
           )}
           {...props}
         >
@@ -53,8 +55,8 @@ const AlertDialogContent = React.forwardRef<
       </div>
     </div>
   </AlertDialogPortal>
-));
-AlertDialogContent.displayName = "AlertDialogContent";
+))
+AlertDialogContent.displayName = "AlertDialogContent"
 
 const AlertDialogHeader = ({
   className,
@@ -63,12 +65,12 @@ const AlertDialogHeader = ({
   <div
     className={cn(
       "flex flex-col space-y-2 text-center sm:text-left",
-      className,
+      className
     )}
     {...props}
   />
-);
-AlertDialogHeader.displayName = "AlertDialogHeader";
+)
+AlertDialogHeader.displayName = "AlertDialogHeader"
 
 const AlertDialogFooter = ({
   className,
@@ -77,12 +79,12 @@ const AlertDialogFooter = ({
   <div
     className={cn(
       "flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 gap-2 mt-4",
-      className,
+      className
     )}
     {...props}
   />
-);
-AlertDialogFooter.displayName = "AlertDialogFooter";
+)
+AlertDialogFooter.displayName = "AlertDialogFooter"
 
 const AlertDialogTitle = React.forwardRef<
   React.ComponentRef<typeof DialogPrimitive.Title>,
@@ -92,12 +94,12 @@ const AlertDialogTitle = React.forwardRef<
     ref={ref}
     className={cn(
       "text-base font-heading font-black uppercase tracking-tight text-zinc-900 dark:text-white flex items-center gap-2",
-      className,
+      className
     )}
     {...props}
   />
-));
-AlertDialogTitle.displayName = "AlertDialogTitle";
+))
+AlertDialogTitle.displayName = "AlertDialogTitle"
 
 const AlertDialogDescription = React.forwardRef<
   React.ComponentRef<typeof DialogPrimitive.Description>,
@@ -107,24 +109,19 @@ const AlertDialogDescription = React.forwardRef<
     ref={ref}
     className={cn(
       "text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed",
-      className,
+      className
     )}
     {...props}
   />
-));
-AlertDialogDescription.displayName = "AlertDialogDescription";
+))
+AlertDialogDescription.displayName = "AlertDialogDescription"
 
 export type AlertDialogActionColor =
-  | "default"
-  | "info"
-  | "success"
-  | "warning"
-  | "danger";
+  "default" | "info" | "success" | "warning" | "danger"
 
-export interface AlertDialogActionProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  color?: AlertDialogActionColor;
-  isLoading?: boolean;
+export interface AlertDialogActionProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  color?: AlertDialogActionColor
+  isLoading?: boolean
 }
 
 const actionColorMap: Record<AlertDialogActionColor, string> = {
@@ -132,8 +129,9 @@ const actionColorMap: Record<AlertDialogActionColor, string> = {
   info: "bg-brand-primary hover:bg-brand-primary-hover text-white shadow-xs",
   success: "bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs",
   warning: "bg-amber-600 hover:bg-amber-700 text-white shadow-xs",
-  default: "bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-white dark:hover:bg-zinc-100 dark:text-zinc-900 shadow-xs",
-};
+  default:
+    "bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-white dark:hover:bg-zinc-100 dark:text-zinc-900 shadow-xs",
+}
 
 const AlertDialogAction = React.forwardRef<
   HTMLButtonElement,
@@ -149,7 +147,7 @@ const AlertDialogAction = React.forwardRef<
       onClick,
       ...props
     },
-    ref,
+    ref
   ) => {
     const button = (
       <button
@@ -158,7 +156,7 @@ const AlertDialogAction = React.forwardRef<
         className={cn(
           "inline-flex h-9 items-center justify-center gap-2 rounded-sm px-4 text-xs font-bold uppercase tracking-wider cursor-pointer transition-all duration-200 shadow-xs disabled:opacity-50 disabled:cursor-not-allowed select-none",
           actionColorMap[color],
-          className,
+          className
         )}
         onClick={onClick}
         {...props}
@@ -176,14 +174,14 @@ const AlertDialogAction = React.forwardRef<
           children
         )}
       </button>
-    );
+    )
 
-    if (isLoading || disabled) return button;
+    if (isLoading || disabled) return button
 
-    return <DialogPrimitive.Close asChild>{button}</DialogPrimitive.Close>;
-  },
-);
-AlertDialogAction.displayName = "AlertDialogAction";
+    return <DialogPrimitive.Close asChild>{button}</DialogPrimitive.Close>
+  }
+)
+AlertDialogAction.displayName = "AlertDialogAction"
 
 const AlertDialogCancel = React.forwardRef<
   HTMLButtonElement,
@@ -194,13 +192,13 @@ const AlertDialogCancel = React.forwardRef<
       ref={ref}
       className={cn(
         "inline-flex h-9 items-center justify-center rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] px-4 text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 cursor-pointer transition-all duration-200 mt-2 sm:mt-0 select-none",
-        className,
+        className
       )}
       {...props}
     />
   </DialogPrimitive.Close>
-));
-AlertDialogCancel.displayName = "AlertDialogCancel";
+))
+AlertDialogCancel.displayName = "AlertDialogCancel"
 
 export {
   AlertDialog,
@@ -214,4 +212,4 @@ export {
   AlertDialogPortal,
   AlertDialogTitle,
   AlertDialogTrigger,
-};
+}

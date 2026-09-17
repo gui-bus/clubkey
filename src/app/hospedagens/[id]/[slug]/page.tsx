@@ -1,23 +1,33 @@
 "use client"
 
 import * as React from "react"
+
 import Link from "next/link"
 import { useParams } from "next/navigation"
-import { AnimatePresence, motion } from "framer-motion"
-import { Bookmark, CaretLeft, Clock, MapPin, ShieldWarning } from "@phosphor-icons/react"
 
-import { RoomAmenities } from "@/src/components/rooms/roomAmenities"
-import { RoomBookingCard } from "@/src/components/rooms/roomBookingCard"
-import { RoomGallery } from "@/src/components/rooms/roomGallery"
-import { RoomLocationCard } from "@/src/components/rooms/roomLocationCard"
-import { Container } from "@/src/components/common/container"
-import { ShareButton } from "@/src/components/portal/ShareButton"
+import { getRoomDetail } from "@/src/data/mockRoomDetails"
+import {
+  Bookmark,
+  CaretLeft,
+  Clock,
+  MapPin,
+  ShieldWarning,
+} from "@phosphor-icons/react"
+import { AnimatePresence, motion } from "framer-motion"
+
 import { toast } from "@/src/components/ui/toast/toast"
+
+import { Container } from "@/src/components/common/container"
 import { FloatingCta } from "@/src/components/landing/FloatingCta"
 import { Footer } from "@/src/components/landing/Footer"
 import { Navbar } from "@/src/components/landing/Navbar"
 import { TopBanner } from "@/src/components/landing/TopBanner"
-import { getRoomDetail } from "@/src/data/mockRoomDetails"
+import { ShareButton } from "@/src/components/portal/ShareButton"
+import { RoomAmenities } from "@/src/components/rooms/roomAmenities"
+import { RoomBookingCard } from "@/src/components/rooms/roomBookingCard"
+import { RoomGallery } from "@/src/components/rooms/roomGallery"
+import { RoomLocationCard } from "@/src/components/rooms/roomLocationCard"
+
 import { cn } from "@/src/lib/utils"
 
 export default function HospedagemDetailPage(): React.JSX.Element {
@@ -257,7 +267,9 @@ export default function HospedagemDetailPage(): React.JSX.Element {
                 stateName={room.city.keys_coverage_states.name}
                 latitude={Number(room.latitude) || 0}
                 longitude={Number(room.longitude) || 0}
-                neighborhoodOverview={room.property_meta?._msneighborhood_overview?.pt_BR}
+                neighborhoodOverview={
+                  room.property_meta?._msneighborhood_overview?.pt_BR
+                }
               />
 
               <section className="py-8 border-b border-zinc-200 dark:border-zinc-800 space-y-4">

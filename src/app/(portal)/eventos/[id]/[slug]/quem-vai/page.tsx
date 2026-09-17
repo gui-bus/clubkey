@@ -1,17 +1,26 @@
 "use client"
 
 import * as React from "react"
-import { useParams, notFound } from "next/navigation"
-import { MapPin, MagnifyingGlass, Users, Calendar, ArrowRight } from "@phosphor-icons/react"
+
+import { notFound, useParams } from "next/navigation"
 
 import { EVENTS, MEMBERS, getEventSlug } from "@/src/data/portalData"
 import { usePortalStore } from "@/src/store/usePortalStore"
-import { BackButton } from "@/src/components/portal/BackButton"
-import { PortalHeroFilterBar } from "@/src/components/portal/PortalHeroFilterBar"
-import { MemberCard } from "@/src/components/portal/MemberCard"
+import {
+  ArrowRight,
+  Calendar,
+  MagnifyingGlass,
+  MapPin,
+  Users,
+} from "@phosphor-icons/react"
+
 import { Button } from "@/src/components/ui/button/button"
+
 import { Container } from "@/src/components/common/container"
 import { CtaButton } from "@/src/components/common/ctaButton"
+import { BackButton } from "@/src/components/portal/BackButton"
+import { MemberCard } from "@/src/components/portal/MemberCard"
+import { PortalHeroFilterBar } from "@/src/components/portal/PortalHeroFilterBar"
 
 const ROLE_FILTERS = [
   { value: "todos", label: "Todos" },
@@ -39,7 +48,7 @@ export default function EventParticipantsPage(): React.JSX.Element {
   const attendees = React.useMemo(() => {
     return event.participants
       .map((id: number) => MEMBERS.find((m) => m.id === id))
-      .filter((m): m is typeof MEMBERS[0] => Boolean(m))
+      .filter((m): m is (typeof MEMBERS)[0] => Boolean(m))
   }, [event.participants])
 
   const roleOptions = React.useMemo(() => {
@@ -148,10 +157,7 @@ export default function EventParticipantsPage(): React.JSX.Element {
   return (
     <Container className="pt-6 sm:pt-8 pb-20 space-y-8">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <BackButton
-          fallbackHref="/eventos"
-          label="Voltar ao Evento"
-        />
+        <BackButton fallbackHref="/eventos" label="Voltar ao Evento" />
 
         <CtaButton
           href={`/eventos/${event.id}/${getEventSlug(event)}`}
@@ -165,28 +171,30 @@ export default function EventParticipantsPage(): React.JSX.Element {
       </div>
 
       <div className="space-y-1">
-          <h1 className="text-3xl sm:text-4xl font-heading font-black uppercase tracking-tight text-zinc-900 dark:text-white">
-            Quem vai estar lá ({attendees.length})
-          </h1>
-          <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 flex flex-wrap items-center gap-2">
-            <strong className="text-zinc-800 dark:text-zinc-200 font-semibold">{event.title}</strong>
-            <span>•</span>
-            <span className="flex items-center gap-1">
-              <Calendar className="w-3.5 h-3.5 text-brand-primary" />
-              {event.weekday}, {event.day} de {event.month}
-            </span>
-            <span>•</span>
-            <span className="flex items-center gap-1">
-              <MapPin className="w-3.5 h-3.5 text-brand-primary" />
-              {event.place}
-            </span>
-            <span>•</span>
-            <span className="flex items-center gap-1 text-zinc-500 dark:text-zinc-400">
-              <Users className="w-3.5 h-3.5 text-brand-primary" />
-              {attendees.length} participantes confirmados
-            </span>
-          </p>
-        </div>
+        <h1 className="text-3xl sm:text-4xl font-heading font-black uppercase tracking-tight text-zinc-900 dark:text-white">
+          Quem vai estar lá ({attendees.length})
+        </h1>
+        <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 flex flex-wrap items-center gap-2">
+          <strong className="text-zinc-800 dark:text-zinc-200 font-semibold">
+            {event.title}
+          </strong>
+          <span>•</span>
+          <span className="flex items-center gap-1">
+            <Calendar className="w-3.5 h-3.5 text-brand-primary" />
+            {event.weekday}, {event.day} de {event.month}
+          </span>
+          <span>•</span>
+          <span className="flex items-center gap-1">
+            <MapPin className="w-3.5 h-3.5 text-brand-primary" />
+            {event.place}
+          </span>
+          <span>•</span>
+          <span className="flex items-center gap-1 text-zinc-500 dark:text-zinc-400">
+            <Users className="w-3.5 h-3.5 text-brand-primary" />
+            {attendees.length} participantes confirmados
+          </span>
+        </p>
+      </div>
 
       <div className="w-full pt-2">
         <PortalHeroFilterBar
@@ -237,7 +245,9 @@ export default function EventParticipantsPage(): React.JSX.Element {
       <div className="flex items-center justify-between">
         <span className="text-xs font-black uppercase tracking-widest text-zinc-400">
           {filteredAttendees.length}{" "}
-          {filteredAttendees.length === 1 ? "participante confirmado" : "participantes confirmados"}
+          {filteredAttendees.length === 1
+            ? "participante confirmado"
+            : "participantes confirmados"}
         </span>
       </div>
 
@@ -250,7 +260,8 @@ export default function EventParticipantsPage(): React.JSX.Element {
             Nenhum participante encontrado
           </h3>
           <p className="text-xs text-zinc-500 dark:text-zinc-400 max-w-sm mx-auto">
-            Não encontramos membros com os critérios selecionados. Tente ajustar a busca.
+            Não encontramos membros com os critérios selecionados. Tente ajustar
+            a busca.
           </p>
           <Button
             type="button"
@@ -277,4 +288,3 @@ export default function EventParticipantsPage(): React.JSX.Element {
     </Container>
   )
 }
-

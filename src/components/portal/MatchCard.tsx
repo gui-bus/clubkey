@@ -22,9 +22,12 @@ import {
   AvatarImage,
 } from "@/src/components/ui/avatar/avatar"
 import { toast } from "@/src/components/ui/toast/toast"
+
 import { CtaButton } from "@/src/components/common/ctaButton"
-import { useMounted } from "@/src/hooks/useMounted"
+
 import { cn } from "@/src/lib/utils"
+
+import { useMounted } from "@/src/hooks/useMounted"
 
 interface MatchCardProps {
   member: Member
@@ -42,7 +45,9 @@ export function MatchCard({
   const firstName = member.name.split(" ")[0]
   const memberSlug = getMemberSlug(member)
 
-  const handleConnect = (e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => {
+  const handleConnect = (
+    e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>
+  ) => {
     e.preventDefault()
     e.stopPropagation()
     if (status !== "none") return
@@ -57,7 +62,10 @@ export function MatchCard({
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-zinc-100 dark:border-zinc-800">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-sm bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white flex items-center justify-center shrink-0">
-            <Lightning className="w-5 h-5 text-zinc-900 dark:text-white" weight="fill" />
+            <Lightning
+              className="w-5 h-5 text-zinc-900 dark:text-white"
+              weight="fill"
+            />
           </div>
           <div>
             <span className="text-sm font-black uppercase tracking-wider text-zinc-900 dark:text-white block">
@@ -111,7 +119,9 @@ export function MatchCard({
               <span className="text-zinc-300 dark:text-zinc-700 hidden sm:inline">
                 •
               </span>
-              <span className="font-medium text-zinc-900 dark:text-white">Membro desde {member.since || 2021}</span>
+              <span className="font-medium text-zinc-900 dark:text-white">
+                Membro desde {member.since || 2021}
+              </span>
             </div>
           </div>
         </div>
@@ -129,7 +139,13 @@ export function MatchCard({
 
           <CtaButton
             type="button"
-            variant={status === "connected" ? "secondary" : status === "pending" ? "secondary" : "primary"}
+            variant={
+              status === "connected"
+                ? "secondary"
+                : status === "pending"
+                  ? "secondary"
+                  : "primary"
+            }
             size="md"
             onClick={handleConnect}
             disabled={status !== "none"}
@@ -139,8 +155,7 @@ export function MatchCard({
                 "bg-emerald-500/15 border-emerald-500/30 text-emerald-600 dark:text-emerald-400 opacity-100 cursor-default",
               status === "pending" &&
                 "bg-sky-500/15 border-sky-500/30 text-sky-600 dark:text-sky-400 opacity-100 cursor-default",
-              status === "none" &&
-                "border-transparent"
+              status === "none" && "border-transparent"
             )}
             sliderClassName={
               status === "connected"
@@ -150,7 +165,8 @@ export function MatchCard({
                   : undefined
             }
             textClassName={cn(
-              status === "connected" && "text-emerald-600 dark:text-emerald-400",
+              status === "connected" &&
+                "text-emerald-600 dark:text-emerald-400",
               status === "pending" && "text-sky-600 dark:text-sky-400",
               status === "none" && "text-white"
             )}

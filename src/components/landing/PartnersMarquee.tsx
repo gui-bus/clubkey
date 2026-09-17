@@ -1,13 +1,17 @@
 "use client"
 
 import * as React from "react"
+
 import Image from "next/image"
+
 import { motion } from "framer-motion"
 
 import { Container } from "@/src/components/common/container"
 import { CtaButton } from "@/src/components/common/ctaButton"
-import { brandConfig } from "@/src/config/brand.config"
+
 import { cn } from "@/src/lib/utils"
+
+import { brandConfig } from "@/src/config/brand.config"
 
 interface PartnerLogo {
   name: string
@@ -145,10 +149,7 @@ export function PartnersMarquee(): React.JSX.Element {
           </div>
 
           <div>
-            <CtaButton
-              href={brandConfig.links.subscription}
-              size="lg"
-            >
+            <CtaButton href={brandConfig.links.subscription} size="lg">
               Solicite agora
             </CtaButton>
           </div>

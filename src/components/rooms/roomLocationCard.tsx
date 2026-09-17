@@ -1,9 +1,12 @@
 "use client"
 
 import * as React from "react"
+
 import Link from "next/link"
-import { AnimatePresence, motion } from "framer-motion"
+
 import { ArrowSquareOut, NavigationArrow } from "@phosphor-icons/react"
+import { AnimatePresence, motion } from "framer-motion"
+
 import { CtaButton } from "@/src/components/common/ctaButton"
 
 export interface RoomLocationCardProps {

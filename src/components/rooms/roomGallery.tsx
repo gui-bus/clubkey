@@ -1,11 +1,14 @@
 "use client"
 
 import * as React from "react"
+
 import Image from "next/image"
-import { AnimatePresence, motion } from "framer-motion"
+
 import { CaretLeft, CaretRight, SquaresFour, X } from "@phosphor-icons/react"
+import { AnimatePresence, motion } from "framer-motion"
 
 import { CtaButton } from "@/src/components/common/ctaButton"
+
 import { cn } from "@/src/lib/utils"
 
 export interface RoomGalleryProps {
@@ -13,7 +16,10 @@ export interface RoomGalleryProps {
   photos: string[]
 }
 
-export function RoomGallery({ title, photos }: RoomGalleryProps): React.JSX.Element {
+export function RoomGallery({
+  title,
+  photos,
+}: RoomGalleryProps): React.JSX.Element {
   const [lightboxOpen, setLightboxOpen] = React.useState(false)
   const [activePhotoIndex, setActivePhotoIndex] = React.useState(0)
 

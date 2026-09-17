@@ -1,4 +1,5 @@
 ﻿import * as React from "react"
+
 import { cn } from "@/src/lib/utils"
 
 export type DiscountRibbonColor = "emerald" | "primary" | "brand"
@@ -39,7 +40,9 @@ export function DiscountRibbon({
       <div
         className={cn(
           "absolute -right-8 top-4 w-32 rotate-45 py-1 text-center font-black uppercase select-none shadow-xs",
-          isLong ? "text-[10px] tracking-tight leading-tight" : "text-xs tracking-wider",
+          isLong
+            ? "text-[10px] tracking-tight leading-tight"
+            : "text-xs tracking-wider",
           colorClasses[color],
           className
         )}

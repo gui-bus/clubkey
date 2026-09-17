@@ -1,14 +1,18 @@
 "use client"
 
 import * as React from "react"
+
 import Image from "next/image"
-import { motion } from "framer-motion"
+
 import { Key } from "@phosphor-icons/react"
+import { motion } from "framer-motion"
 
 import { Container } from "@/src/components/common/container"
 import { CtaButton } from "@/src/components/common/ctaButton"
-import { brandConfig } from "@/src/config/brand.config"
+
 import { cn } from "@/src/lib/utils"
+
+import { brandConfig } from "@/src/config/brand.config"
 
 const clubKeyHighlights = [
   {
@@ -155,10 +159,7 @@ export function WhatIsClubKey(): React.JSX.Element {
             ))}
 
             <div>
-              <CtaButton
-                href={brandConfig.links.subscription}
-                size="lg"
-              >
+              <CtaButton href={brandConfig.links.subscription} size="lg">
                 Conheça a {brandConfig.name}
               </CtaButton>
             </div>

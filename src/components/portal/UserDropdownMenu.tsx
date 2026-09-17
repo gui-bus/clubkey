@@ -1,28 +1,36 @@
 "use client"
 
 import * as React from "react"
+
 import Link from "next/link"
 import { useRouter } from "next/navigation"
+
+import { getInitials } from "@/src/data/portalData"
+import { usePortalStore } from "@/src/store/usePortalStore"
 import {
-  User,
-  CaretDown,
-  SignOut,
   Calendar,
-  MapPin,
+  CaretDown,
   CreditCard,
+  MapPin,
+  SignOut,
   Trophy,
+  User,
 } from "@phosphor-icons/react"
+
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/src/components/ui/avatar/avatar"
+import { Badge } from "@/src/components/ui/badge/badge"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuTrigger,
   DropdownMenuSeparator,
+  DropdownMenuTrigger,
 } from "@/src/components/ui/dropdownMenu/dropdownMenu"
-import { Avatar, AvatarImage, AvatarFallback } from "@/src/components/ui/avatar/avatar"
-import { Badge } from "@/src/components/ui/badge/badge"
-import { usePortalStore } from "@/src/store/usePortalStore"
-import { getInitials } from "@/src/data/portalData"
+
 import { cn } from "@/src/lib/utils"
 
 export interface UserDropdownMenuProps {
@@ -35,13 +43,8 @@ export function UserDropdownMenu({
   className,
 }: UserDropdownMenuProps): React.JSX.Element | null {
   const router = useRouter()
-  const {
-    isAuthenticated,
-    userProfile,
-    logout,
-    memberStays,
-    confirmedEvents,
-  } = usePortalStore()
+  const { isAuthenticated, userProfile, logout, memberStays, confirmedEvents } =
+    usePortalStore()
 
   if (!isAuthenticated || !userProfile) {
     return null
@@ -73,10 +76,7 @@ export function UserDropdownMenu({
           >
             <Avatar size="sm">
               {userProfile.avatar && (
-                <AvatarImage
-                  src={userProfile.avatar}
-                  alt={userProfile.name}
-                />
+                <AvatarImage src={userProfile.avatar} alt={userProfile.name} />
               )}
               <AvatarFallback className="font-bold text-[10px] bg-zinc-900 text-white dark:bg-zinc-800">
                 {userInitials}
@@ -87,9 +87,7 @@ export function UserDropdownMenu({
               <span
                 className={cn(
                   "text-xs font-semibold uppercase tracking-tight truncate",
-                  isDarkBar
-                    ? "text-white"
-                    : "text-zinc-900 dark:text-white"
+                  isDarkBar ? "text-white" : "text-zinc-900 dark:text-white"
                 )}
               >
                 {userProfile.name}
@@ -114,10 +112,7 @@ export function UserDropdownMenu({
           <div className="px-3 py-2.5 border-b border-zinc-100 dark:border-zinc-800/80 mb-1 flex items-center gap-3">
             <Avatar size="sm">
               {userProfile.avatar && (
-                <AvatarImage
-                  src={userProfile.avatar}
-                  alt={userProfile.name}
-                />
+                <AvatarImage src={userProfile.avatar} alt={userProfile.name} />
               )}
               <AvatarFallback className="font-bold text-[10px] bg-zinc-900 text-white dark:bg-zinc-800">
                 {userInitials}

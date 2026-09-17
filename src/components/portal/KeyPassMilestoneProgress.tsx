@@ -1,15 +1,19 @@
 "use client"
 
 import * as React from "react"
+
 import Image from "next/image"
-import { motion } from "framer-motion"
+
 import {
-  Check,
-  LockSimple,
-} from "@phosphor-icons/react"
-import { CtaButton } from "@/src/components/common/ctaButton"
+  DEFAULT_CLAIMED_MILESTONES,
+  TierDefinition,
+} from "@/src/data/portalData"
 import { usePortalStore } from "@/src/store/usePortalStore"
-import { TierDefinition, DEFAULT_CLAIMED_MILESTONES } from "@/src/data/portalData"
+import { Check, LockSimple } from "@phosphor-icons/react"
+import { motion } from "framer-motion"
+
+import { CtaButton } from "@/src/components/common/ctaButton"
+
 import { cn } from "@/src/lib/utils"
 
 export interface MilestoneItem {
@@ -39,7 +43,9 @@ export function KeyPassMilestoneProgress({
 }: KeyPassMilestoneProgressProps): React.JSX.Element {
   const { claimedMilestones, claimMilestone } = usePortalStore()
   const activeClaimed = claimedMilestones || DEFAULT_CLAIMED_MILESTONES
-  const [justClaimedIndex, setJustClaimedIndex] = React.useState<number | null>(null)
+  const [justClaimedIndex, setJustClaimedIndex] = React.useState<number | null>(
+    null
+  )
 
   const handleClaim = (milestoneIndex: number) => {
     claimMilestone(currentTier.id, milestoneIndex)
@@ -161,7 +167,7 @@ export function KeyPassMilestoneProgress({
         className
       )}
     >
-      {/* Header Readout with current / target XP */}
+      {}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div className="space-y-0.5">
           <div className="flex items-center gap-2">
@@ -174,14 +180,18 @@ export function KeyPassMilestoneProgress({
               Progresso para {nextTier.name}
             </h3>
             <span className="text-xs font-bold text-zinc-500">
-              • {xp.toLocaleString("pt-BR")} / {targetXp.toLocaleString("pt-BR")} XP ({progressPercentage}%)
+              • {xp.toLocaleString("pt-BR")} /{" "}
+              {targetXp.toLocaleString("pt-BR")} XP ({progressPercentage}%)
             </span>
           </div>
         </div>
 
         <div className="flex items-center gap-3 text-xs font-medium text-zinc-600 dark:text-zinc-400">
           <span>
-            Faltam <strong className="text-zinc-900 dark:text-white font-black">{totalXpNeeded.toLocaleString("pt-BR")} XP</strong>
+            Faltam{" "}
+            <strong className="text-zinc-900 dark:text-white font-black">
+              {totalXpNeeded.toLocaleString("pt-BR")} XP
+            </strong>
           </span>
           <span className="inline-flex items-center gap-1 font-bold text-zinc-900 dark:text-white">
             <div className="relative w-3.5 h-3.5 shrink-0">
@@ -197,9 +207,9 @@ export function KeyPassMilestoneProgress({
         </div>
       </div>
 
-      {/* Brand Primary Striped Progress Track with Exact Milestone Pins */}
+      {}
       <div className="relative pt-6 pb-2">
-        {/* Track rail (0% to 100%) */}
+        {}
         <div className="relative w-full h-3 bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden border border-zinc-200/80 dark:border-zinc-700/60 z-0">
           <motion.div
             className="h-full bg-brand-primary rounded-full relative overflow-hidden"
@@ -207,7 +217,7 @@ export function KeyPassMilestoneProgress({
             animate={{ width: `${progressPercentage}%` }}
             transition={{ duration: 0.6, ease: "easeOut" }}
           >
-            {/* Striped Diagonal Pattern Overlay (Fixed) */}
+            {}
             <div
               className="absolute inset-0 opacity-30"
               style={{
@@ -219,7 +229,7 @@ export function KeyPassMilestoneProgress({
           </motion.div>
         </div>
 
-        {/* Milestone Pins placed accurately at their exact percent coordinates (25%, 50%, 75%, 100%) */}
+        {}
         <div className="absolute inset-x-0 top-0 bottom-0 pointer-events-none">
           {milestones.map((m) => {
             const isDone = m.isAchieved
@@ -230,7 +240,7 @@ export function KeyPassMilestoneProgress({
                 className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 flex flex-col items-center pointer-events-auto"
                 style={{ left: `${m.percent}%` }}
               >
-                {/* Node checkmark circle in brand-primary when achieved */}
+                {}
                 <div
                   className={cn(
                     "w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 flex items-center justify-center transition-all shadow-xs shrink-0 mt-3.5",
@@ -251,7 +261,7 @@ export function KeyPassMilestoneProgress({
         </div>
       </div>
 
-      {/* 4 Milestone Detail Cards */}
+      {}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-1">
         {milestones.map((milestone) => {
           const isClaimable = milestone.isAchieved && !milestone.isClaimed
@@ -310,7 +320,11 @@ export function KeyPassMilestoneProgress({
                   </div>
                 ) : milestone.isCurrent ? (
                   <div className="text-[10px] font-medium text-zinc-600 dark:text-zinc-400">
-                    Faltam <strong className="text-zinc-900 dark:text-white font-black">{milestone.xpRemainingToMilestone.toLocaleString("pt-BR")} XP</strong>
+                    Faltam{" "}
+                    <strong className="text-zinc-900 dark:text-white font-black">
+                      {milestone.xpRemainingToMilestone.toLocaleString("pt-BR")}{" "}
+                      XP
+                    </strong>
                   </div>
                 ) : (
                   <div className="flex items-center gap-1 text-[10px] text-zinc-400 font-medium">

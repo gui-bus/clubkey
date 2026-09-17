@@ -1,13 +1,15 @@
-"use client";
+"use client"
 
-import { Icon } from "@iconify/react";
-import { Slot } from "@radix-ui/react-slot";
-import * as React from "react";
-import { designRadius } from "../../../lib/design-system";
-import { useKeyboardClick } from "@/lib/hooks";
-import { Ripple } from "@/lib/ripple/ripple";
-import { useRipples } from "@/lib/ripple/useRipple";
-import { cn } from "../../../lib/utils";
+import * as React from "react"
+
+import { useKeyboardClick } from "@/lib/hooks"
+import { Ripple } from "@/lib/ripple/ripple"
+import { useRipples } from "@/lib/ripple/useRipple"
+import { Icon } from "@iconify/react"
+import { Slot } from "@radix-ui/react-slot"
+
+import { designRadius } from "../../../lib/design-system"
+import { cn } from "../../../lib/utils"
 
 type CardColor =
   | "default"
@@ -16,7 +18,7 @@ type CardColor =
   | "accent"
   | "success"
   | "warning"
-  | "danger";
+  | "danger"
 
 type CardVariant =
   | "default"
@@ -25,20 +27,20 @@ type CardVariant =
   | "ghost"
   | "shadow"
   | "glassmorphism"
-  | "gradient";
+  | "gradient"
 
 export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
-  variant?: CardVariant;
-  color?: CardColor;
-  radius?: keyof typeof designRadius;
-  isHoverable?: boolean;
-  isPressable?: boolean;
-  isDisabled?: boolean;
-  isLoading?: boolean;
-  disableRipple?: boolean;
-  backgroundIcon?: string;
-  children?: React.ReactNode;
-  asChild?: boolean;
+  variant?: CardVariant
+  color?: CardColor
+  radius?: keyof typeof designRadius
+  isHoverable?: boolean
+  isPressable?: boolean
+  isDisabled?: boolean
+  isLoading?: boolean
+  disableRipple?: boolean
+  backgroundIcon?: string
+  children?: React.ReactNode
+  asChild?: boolean
 }
 
 const cardColorMap: Record<CardColor, Record<CardVariant, string>> = {
@@ -140,7 +142,7 @@ const cardColorMap: Record<CardColor, Record<CardVariant, string>> = {
     gradient:
       "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 border border-zinc-200 dark:border-zinc-800 border-l-4 border-l-rose-500",
   },
-};
+}
 
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
   (
@@ -160,32 +162,32 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
       asChild = false,
       ...props
     },
-    ref,
+    ref
   ) => {
-    const { ripples, addRipple, removeRipple } = useRipples();
-    const Comp = asChild ? Slot : "div";
+    const { ripples, addRipple, removeRipple } = useRipples()
+    const Comp = asChild ? Slot : "div"
 
     const handleClick = React.useCallback(
       (e: React.MouseEvent<HTMLDivElement>) => {
-        if (isDisabled || isLoading) return;
+        if (isDisabled || isLoading) return
 
         if (isPressable && !disableRipple) {
-          const isKeyboardClick = e.clientX === 0 && e.clientY === 0;
-          const rect = e.currentTarget.getBoundingClientRect();
-          const size = Math.max(rect.width, rect.height);
-          const x = isKeyboardClick ? rect.width / 2 : e.clientX - rect.left;
-          const y = isKeyboardClick ? rect.height / 2 : e.clientY - rect.top;
-          addRipple(x, y, size);
+          const isKeyboardClick = e.clientX === 0 && e.clientY === 0
+          const rect = e.currentTarget.getBoundingClientRect()
+          const size = Math.max(rect.width, rect.height)
+          const x = isKeyboardClick ? rect.width / 2 : e.clientX - rect.left
+          const y = isKeyboardClick ? rect.height / 2 : e.clientY - rect.top
+          addRipple(x, y, size)
         }
 
-        onClick?.(e);
+        onClick?.(e)
       },
-      [isPressable, isDisabled, isLoading, disableRipple, addRipple, onClick],
-    );
+      [isPressable, isDisabled, isLoading, disableRipple, addRipple, onClick]
+    )
 
     const keyboardProps = useKeyboardClick<HTMLDivElement>(
-      isPressable && !isDisabled && !isLoading,
-    );
+      isPressable && !isDisabled && !isLoading
+    )
 
     return (
       <Comp
@@ -208,7 +210,7 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
             "cursor-pointer hover:scale-[1.01] active:scale-[0.98] outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
           isDisabled && "opacity-50 pointer-events-none cursor-not-allowed",
           isLoading && "opacity-75 cursor-wait pointer-events-none",
-          className,
+          className
         )}
         {...keyboardProps}
         {...props}
@@ -239,12 +241,12 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
             />
           ))}
       </Comp>
-    );
-  },
-);
-Card.displayName = "Card";
+    )
+  }
+)
+Card.displayName = "Card"
 
-export type CardHeaderProps = React.HTMLAttributes<HTMLDivElement>;
+export type CardHeaderProps = React.HTMLAttributes<HTMLDivElement>
 
 const CardHeader = React.forwardRef<HTMLDivElement, CardHeaderProps>(
   ({ className, ...props }, ref) => (
@@ -253,11 +255,11 @@ const CardHeader = React.forwardRef<HTMLDivElement, CardHeaderProps>(
       className={cn("flex flex-col space-y-1.5 p-6", className)}
       {...props}
     />
-  ),
-);
-CardHeader.displayName = "CardHeader";
+  )
+)
+CardHeader.displayName = "CardHeader"
 
-export type CardTitleProps = React.HTMLAttributes<HTMLHeadingElement>;
+export type CardTitleProps = React.HTMLAttributes<HTMLHeadingElement>
 
 const CardTitle = React.forwardRef<HTMLHeadingElement, CardTitleProps>(
   ({ className, children, ...props }, ref) => (
@@ -265,17 +267,17 @@ const CardTitle = React.forwardRef<HTMLHeadingElement, CardTitleProps>(
       ref={ref}
       className={cn(
         "font-semibold leading-none tracking-tight text-lg text-zinc-900 dark:text-zinc-100",
-        className,
+        className
       )}
       {...props}
     >
       {children}
     </h3>
-  ),
-);
-CardTitle.displayName = "CardTitle";
+  )
+)
+CardTitle.displayName = "CardTitle"
 
-export type CardDescriptionProps = React.HTMLAttributes<HTMLParagraphElement>;
+export type CardDescriptionProps = React.HTMLAttributes<HTMLParagraphElement>
 
 const CardDescription = React.forwardRef<
   HTMLParagraphElement,
@@ -285,14 +287,14 @@ const CardDescription = React.forwardRef<
     ref={ref}
     className={cn(
       "text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed",
-      className,
+      className
     )}
     {...props}
   />
-));
-CardDescription.displayName = "CardDescription";
+))
+CardDescription.displayName = "CardDescription"
 
-export type CardBodyProps = React.HTMLAttributes<HTMLDivElement>;
+export type CardBodyProps = React.HTMLAttributes<HTMLDivElement>
 
 const CardBody = React.forwardRef<HTMLDivElement, CardBodyProps>(
   ({ className, ...props }, ref) => (
@@ -300,16 +302,16 @@ const CardBody = React.forwardRef<HTMLDivElement, CardBodyProps>(
       ref={ref}
       className={cn(
         "p-6 pt-0 text-sm text-zinc-700 dark:text-zinc-300",
-        className,
+        className
       )}
       {...props}
     />
-  ),
-);
-CardBody.displayName = "CardBody";
+  )
+)
+CardBody.displayName = "CardBody"
 
 export interface CardFooterProps extends React.HTMLAttributes<HTMLDivElement> {
-  isBlurred?: boolean;
+  isBlurred?: boolean
 }
 
 const CardFooter = React.forwardRef<HTMLDivElement, CardFooterProps>(
@@ -320,12 +322,12 @@ const CardFooter = React.forwardRef<HTMLDivElement, CardFooterProps>(
         "flex items-center p-6 pt-0",
         isBlurred &&
           "backdrop-blur-md bg-white/60 dark:bg-zinc-900/60 absolute bottom-0 left-0 right-0 z-10 rounded-b-xl border-t border-zinc-200/50 dark:border-zinc-800/50",
-        className,
+        className
       )}
       {...props}
     />
-  ),
-);
-CardFooter.displayName = "CardFooter";
+  )
+)
+CardFooter.displayName = "CardFooter"
 
-export { Card, CardBody, CardDescription, CardFooter, CardHeader, CardTitle };
+export { Card, CardBody, CardDescription, CardFooter, CardHeader, CardTitle }

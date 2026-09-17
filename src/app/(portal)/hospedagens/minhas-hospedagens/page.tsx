@@ -1,13 +1,26 @@
 "use client"
 
 import * as React from "react"
-import Link from "next/link"
-import { ArrowCounterClockwise, ArrowRight, Buildings, Calendar, MagnifyingGlass } from "@phosphor-icons/react"
 
+import Link from "next/link"
+
+import {
+  MONTH_MAP,
+  MONTH_OPTIONS,
+  MemberStayReservation,
+} from "@/src/data/portalData"
 import { usePortalStore } from "@/src/store/usePortalStore"
-import { MemberStayReservation, MONTH_MAP, MONTH_OPTIONS } from "@/src/data/portalData"
-import { toast } from "@/src/components/ui/toast/toast"
+import {
+  ArrowCounterClockwise,
+  ArrowRight,
+  Buildings,
+  Calendar,
+  MagnifyingGlass,
+} from "@phosphor-icons/react"
+
 import { Button } from "@/src/components/ui/button/button"
+import { toast } from "@/src/components/ui/toast/toast"
+
 import { Container } from "@/src/components/common/container"
 import { PortalHero } from "@/src/components/portal/PortalHero"
 import { PortalHeroFilterBar } from "@/src/components/portal/PortalHeroFilterBar"
@@ -209,7 +222,9 @@ export default function MinhasHospedagensPage(): React.JSX.Element {
                 Nenhuma reserva ativa no momento
               </h3>
               <p className="text-xs text-zinc-500 dark:text-zinc-400 max-w-md mx-auto leading-relaxed">
-                Você ainda não possui estadias agendadas. Explore nossa curadoria de hotéis boutique e resorts com tarifas exclusivas para associados.
+                Você ainda não possui estadias agendadas. Explore nossa
+                curadoria de hotéis boutique e resorts com tarifas exclusivas
+                para associados.
               </p>
             </div>
             <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
@@ -239,7 +254,8 @@ export default function MinhasHospedagensPage(): React.JSX.Element {
               Nenhuma reserva encontrada
             </h3>
             <p className="text-xs text-zinc-500 dark:text-zinc-400 max-w-sm mx-auto">
-              Não encontramos reservas para o mês ou termo de busca selecionado. Tente ajustar os filtros.
+              Não encontramos reservas para o mês ou termo de busca selecionado.
+              Tente ajustar os filtros.
             </p>
             <Button
               type="button"
@@ -289,4 +305,3 @@ export default function MinhasHospedagensPage(): React.JSX.Element {
     </div>
   )
 }
-

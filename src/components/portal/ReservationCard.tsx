@@ -1,8 +1,15 @@
 "use client"
 
 import * as React from "react"
+
 import Image from "next/image"
 import Link from "next/link"
+
+import {
+  MemberStayReservation,
+  formatBRL,
+  getStaySlug,
+} from "@/src/data/portalData"
 import {
   ArrowRight,
   Bed,
@@ -18,9 +25,6 @@ import {
   XCircle,
 } from "@phosphor-icons/react"
 
-import { MemberStayReservation, formatBRL, getStaySlug } from "@/src/data/portalData"
-import { GlassBadge } from "@/src/components/portal/GlassBadge"
-import { CtaButton } from "@/src/components/common/ctaButton"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -33,6 +37,10 @@ import {
   AlertDialogTrigger,
 } from "@/src/components/ui/alertDialog/alertDialog"
 import { toast } from "@/src/components/ui/toast/toast"
+
+import { CtaButton } from "@/src/components/common/ctaButton"
+import { GlassBadge } from "@/src/components/portal/GlassBadge"
+
 import { cn } from "@/src/lib/utils"
 
 export interface ReservationCardProps {
@@ -79,7 +87,9 @@ export function ReservationCard({
           <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/20" />
 
           <div className="absolute top-3.5 left-3.5 z-10">
-            <GlassBadge icon={<Check className="w-3 h-3 text-emerald-400 stroke-[2.5]" />}>
+            <GlassBadge
+              icon={<Check className="w-3 h-3 text-emerald-400 stroke-[2.5]" />}
+            >
               Confirmada
             </GlassBadge>
           </div>
@@ -193,7 +203,10 @@ export function ReservationCard({
                         Cancelar reserva em {stay.stayName}?
                       </AlertDialogTitle>
                       <AlertDialogDescription>
-                        Tem certeza que deseja solicitar o cancelamento desta reserva ({stay.roomType} • {stay.checkIn})? Nossa equipe de atendimento será notificada para o processo de estorno.
+                        Tem certeza que deseja solicitar o cancelamento desta
+                        reserva ({stay.roomType} • {stay.checkIn})? Nossa equipe
+                        de atendimento será notificada para o processo de
+                        estorno.
                       </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>

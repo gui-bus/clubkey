@@ -1,24 +1,24 @@
-import { create } from "zustand"
-import { persist } from "zustand/middleware"
 import {
   CLUBS,
+  ChatMessage,
   Club,
-  DEFAULT_USER,
-  UserProfile,
-  MemberStayReservation,
+  DEFAULT_CHAT_MESSAGES,
+  DEFAULT_CLAIMED_MILESTONES,
   DEFAULT_MEMBER_STAYS,
-  MemberSubscription,
   DEFAULT_MEMBER_SUBSCRIPTION,
   DEFAULT_MISSIONS,
+  DEFAULT_USER,
   DEFAULT_XP_ACTIVITIES,
+  MemberStayReservation,
+  MemberSubscription,
   MissionItem,
-  XpActivity,
   TierDefinition,
+  UserProfile,
+  XpActivity,
   getTierByXp,
-  DEFAULT_CLAIMED_MILESTONES,
-  ChatMessage,
-  DEFAULT_CHAT_MESSAGES,
 } from "@/src/data/portalData"
+import { create } from "zustand"
+import { persist } from "zustand/middleware"
 
 export type MemberConnectionStatus = "none" | "pending" | "connected"
 
@@ -127,8 +127,7 @@ export const usePortalStore = create<PortalState>()(
           updatedProfile.name = name.trim()
         } else if (email && email.includes("@")) {
           const username = email.split("@")[0]
-          const formatted =
-            username.charAt(0).toUpperCase() + username.slice(1)
+          const formatted = username.charAt(0).toUpperCase() + username.slice(1)
           if (!updatedProfile.name) {
             updatedProfile.name = formatted
           }
@@ -304,7 +303,11 @@ export const usePortalStore = create<PortalState>()(
           },
         }))
         if (next) {
-          get().addXP(200, `Presença confirmada no evento #${eventId}`, "evento")
+          get().addXP(
+            200,
+            `Presença confirmada no evento #${eventId}`,
+            "evento"
+          )
           const confirmedCount = Object.keys(get().confirmedEvents).filter(
             (k) => !!get().confirmedEvents[Number(k)]
           ).length
@@ -628,7 +631,10 @@ export const usePortalStore = create<PortalState>()(
         const state = persistedState as PortalState
         if (!state) return state
         const migratedState = { ...state }
-        if (!migratedState.chatMessages || Object.keys(migratedState.chatMessages).length === 0) {
+        if (
+          !migratedState.chatMessages ||
+          Object.keys(migratedState.chatMessages).length === 0
+        ) {
           migratedState.chatMessages = DEFAULT_CHAT_MESSAGES
         }
         if (typeof migratedState.activeChatMemberId !== "number") {
@@ -716,4 +722,3 @@ export const usePortalStore = create<PortalState>()(
     }
   )
 )
-

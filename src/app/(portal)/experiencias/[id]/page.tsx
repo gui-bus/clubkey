@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation"
+
 import { EXPERIENCES, getExperienceSlug } from "@/src/data/portalData"
 
 interface PageProps {

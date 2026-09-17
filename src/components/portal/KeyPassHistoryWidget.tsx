@@ -1,7 +1,11 @@
 "use client"
 
 import * as React from "react"
+
 import Image from "next/image"
+
+import { XpActivity } from "@/src/data/portalData"
+import { usePortalStore } from "@/src/store/usePortalStore"
 import {
   CalendarCheck,
   Gift,
@@ -12,9 +16,9 @@ import {
   Trophy,
   Users,
 } from "@phosphor-icons/react"
+
 import { ScrollArea } from "@/src/components/ui/scrollArea/scrollArea"
-import { usePortalStore } from "@/src/store/usePortalStore"
-import { XpActivity } from "@/src/data/portalData"
+
 import { cn } from "@/src/lib/utils"
 
 interface KeyPassHistoryWidgetProps {
@@ -29,11 +33,15 @@ export function KeyPassHistoryWidget({
   const getCategoryIcon = (category: XpActivity["category"]) => {
     switch (category) {
       case "onboarding":
-        return <ShieldCheck className="w-4 h-4 text-zinc-700 dark:text-zinc-300" />
+        return (
+          <ShieldCheck className="w-4 h-4 text-zinc-700 dark:text-zinc-300" />
+        )
       case "hospedagem":
         return <Medal className="w-4 h-4 text-zinc-700 dark:text-zinc-300" />
       case "evento":
-        return <CalendarCheck className="w-4 h-4 text-zinc-700 dark:text-zinc-300" />
+        return (
+          <CalendarCheck className="w-4 h-4 text-zinc-700 dark:text-zinc-300" />
+        )
       case "experiencia":
         return <Gift className="w-4 h-4 text-zinc-700 dark:text-zinc-300" />
       case "conexao":
@@ -54,11 +62,14 @@ export function KeyPassHistoryWidget({
         className
       )}
     >
-      {/* Header Bar */}
+      {}
       <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800 pb-3 shrink-0">
         <div className="space-y-0.5">
           <div className="flex items-center gap-2">
-            <Receipt className="w-4 h-4 text-zinc-900 dark:text-white" weight="bold" />
+            <Receipt
+              className="w-4 h-4 text-zinc-900 dark:text-white"
+              weight="bold"
+            />
             <h3 className="text-base font-heading font-black uppercase tracking-tight text-zinc-900 dark:text-white">
               Histórico de Pontos XP
             </h3>
@@ -73,7 +84,7 @@ export function KeyPassHistoryWidget({
         </span>
       </div>
 
-      {/* Activity List with ScrollArea filling all the way to the bottom */}
+      {}
       <ScrollArea className="h-[365px] pr-2">
         {xpHistory.length === 0 ? (
           <div className="p-8 text-center text-zinc-500 text-xs">
@@ -95,13 +106,11 @@ export function KeyPassHistoryWidget({
                     <p className="text-xs font-bold text-zinc-900 dark:text-white truncate">
                       {activity.title}
                     </p>
-                    <p className="text-[10px] text-zinc-400">
-                      {activity.date}
-                    </p>
+                    <p className="text-[10px] text-zinc-400">{activity.date}</p>
                   </div>
                 </div>
 
-                {/* Clean XP & Reward display without background/border/font-bold */}
+                {}
                 <div className="shrink-0 text-right whitespace-nowrap">
                   {activity.xp > 0 ? (
                     <div className="inline-flex items-center gap-1.5 text-xs text-zinc-700 dark:text-zinc-300 font-normal">

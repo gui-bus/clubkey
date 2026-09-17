@@ -1,38 +1,37 @@
-"use client";
+"use client"
 
-import * as ProgressPrimitive from "@radix-ui/react-progress";
-import * as React from "react";
-import { cn } from "../../../lib/utils";
+import * as React from "react"
+
+import * as ProgressPrimitive from "@radix-ui/react-progress"
+
+import { cn } from "../../../lib/utils"
 
 export type ProgressColor =
-  | "default"
-  | "primary"
-  | "success"
-  | "warning"
-  | "danger";
+  "default" | "primary" | "success" | "warning" | "danger"
 
 export interface ProgressStep {
-  value: number;
-  label?: string;
+  value: number
+  label?: string
 }
 
-export interface ProgressProps
-  extends React.ComponentPropsWithoutRef<typeof ProgressPrimitive.Root> {
-  value?: number;
-  size?: "sm" | "md" | "lg";
-  color?: ProgressColor;
-  isIndeterminate?: boolean;
-  isBarberPole?: boolean;
-  steps?: (number | ProgressStep)[];
-  label?: string;
-  showValueLabel?: boolean;
+export interface ProgressProps extends React.ComponentPropsWithoutRef<
+  typeof ProgressPrimitive.Root
+> {
+  value?: number
+  size?: "sm" | "md" | "lg"
+  color?: ProgressColor
+  isIndeterminate?: boolean
+  isBarberPole?: boolean
+  steps?: (number | ProgressStep)[]
+  label?: string
+  showValueLabel?: boolean
 }
 
 const progressSizes = {
   sm: "h-1.5",
   md: "h-2.5",
   lg: "h-4",
-};
+}
 
 const progressColors: Record<ProgressColor, string> = {
   default: "bg-zinc-300 dark:bg-zinc-700",
@@ -40,7 +39,7 @@ const progressColors: Record<ProgressColor, string> = {
   success: "bg-emerald-500 dark:bg-emerald-400",
   warning: "bg-amber-500 dark:bg-amber-400",
   danger: "bg-rose-500 dark:bg-rose-400",
-};
+}
 
 const Progress = React.forwardRef<
   React.ElementRef<typeof ProgressPrimitive.Root>,
@@ -59,9 +58,9 @@ const Progress = React.forwardRef<
       showValueLabel = false,
       ...props
     },
-    ref,
+    ref
   ) => {
-    const clampedValue = Math.min(100, Math.max(0, value));
+    const clampedValue = Math.min(100, Math.max(0, value))
 
     return (
       <div className="w-full space-y-1.5">
@@ -84,7 +83,7 @@ const Progress = React.forwardRef<
             className={cn(
               "relative w-full overflow-hidden rounded-full bg-zinc-100 dark:bg-zinc-800 border border-zinc-200/50 dark:border-zinc-800/50 shrink-0",
               progressSizes[size],
-              className,
+              className
             )}
             {...props}
           >
@@ -96,7 +95,7 @@ const Progress = React.forwardRef<
                   !isBarberPole &&
                   "animate-progress-indeterminate origin-left",
                 isBarberPole &&
-                  "bg-[linear-gradient(45deg,rgba(255,255,255,0.25)_25%,transparent_25%,transparent_50%,rgba(255,255,255,0.25)_50%,rgba(255,255,255,0.25)_75%,transparent_75%,transparent)] bg-[length:1rem_1rem] animate-stripe-move",
+                  "bg-[linear-gradient(45deg,rgba(255,255,255,0.25)_25%,transparent_25%,transparent_50%,rgba(255,255,255,0.25)_50%,rgba(255,255,255,0.25)_75%,transparent_75%,transparent)] bg-[length:1rem_1rem] animate-stripe-move"
               )}
               style={
                 isIndeterminate
@@ -110,8 +109,8 @@ const Progress = React.forwardRef<
             <div className="absolute inset-0 pointer-events-none flex items-center px-1">
               {steps.map((stepItem, idx) => {
                 const stepVal =
-                  typeof stepItem === "number" ? stepItem : stepItem.value;
-                const isPassed = clampedValue >= stepVal;
+                  typeof stepItem === "number" ? stepItem : stepItem.value
+                const isPassed = clampedValue >= stepVal
                 return (
                   <div
                     key={idx}
@@ -123,20 +122,20 @@ const Progress = React.forwardRef<
                         "size-2 rounded-full border border-white dark:border-zinc-900 transition-colors",
                         isPassed
                           ? "bg-white dark:bg-zinc-900"
-                          : "bg-zinc-300 dark:bg-zinc-700",
+                          : "bg-zinc-300 dark:bg-zinc-700"
                       )}
                     />
                   </div>
-                );
+                )
               })}
             </div>
           )}
         </div>
       </div>
-    );
-  },
-);
+    )
+  }
+)
 
-Progress.displayName = "Progress";
+Progress.displayName = "Progress"
 
-export { Progress };
+export { Progress }

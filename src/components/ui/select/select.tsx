@@ -1,11 +1,13 @@
-"use client";
+"use client"
 
-import { Icon } from "@iconify/react";
-import * as SelectPrimitive from "@radix-ui/react-select";
-import * as React from "react";
-import { designRadius } from "../../../lib/design-system";
-import { useKeyboardClick } from "@/lib/hooks";
-import { cn } from "../../../lib/utils";
+import * as React from "react"
+
+import { useKeyboardClick } from "@/lib/hooks"
+import { Icon } from "@iconify/react"
+import * as SelectPrimitive from "@radix-ui/react-select"
+
+import { designRadius } from "../../../lib/design-system"
+import { cn } from "../../../lib/utils"
 
 export type SelectVariant =
   | "default"
@@ -15,58 +17,57 @@ export type SelectVariant =
   | "filled"
   | "glassmorphism"
   | "gradient-border"
-  | "glow";
+  | "glow"
 
 export interface SelectOption {
-  value: string;
-  label: string;
-  disabled?: boolean;
-  avatar?: string;
-  description?: string;
-  badge?: string | React.ReactNode;
-  icon?: string;
-  group?: string;
-  [key: string]: unknown;
+  value: string
+  label: string
+  disabled?: boolean
+  avatar?: string
+  description?: string
+  badge?: string | React.ReactNode
+  icon?: string
+  group?: string
+  [key: string]: unknown
 }
 
-export interface SelectProps
-  extends Omit<
-    React.ComponentPropsWithoutRef<typeof SelectPrimitive.Root>,
-    "value" | "defaultValue" | "onValueChange"
-  > {
-  variant?: SelectVariant;
-  size?: "sm" | "md" | "lg";
-  radius?: keyof typeof designRadius;
-  label?: React.ReactNode;
-  placeholder?: string;
-  description?: React.ReactNode;
-  errorMessage?: React.ReactNode;
-  isInvalid?: boolean;
-  isRequired?: boolean;
-  className?: string;
-  options?: SelectOption[];
+export interface SelectProps extends Omit<
+  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Root>,
+  "value" | "defaultValue" | "onValueChange"
+> {
+  variant?: SelectVariant
+  size?: "sm" | "md" | "lg"
+  radius?: keyof typeof designRadius
+  label?: React.ReactNode
+  placeholder?: string
+  description?: React.ReactNode
+  errorMessage?: React.ReactNode
+  isInvalid?: boolean
+  isRequired?: boolean
+  className?: string
+  options?: SelectOption[]
 
-  value?: string;
-  defaultValue?: string;
-  onValueChange?: (value: string) => void;
+  value?: string
+  defaultValue?: string
+  onValueChange?: (value: string) => void
 
-  isMultiSelect?: boolean;
-  multiValue?: string[];
-  defaultMultiValue?: string[];
-  onMultiValueChange?: (value: string[]) => void;
-  maxTagsVisible?: number;
+  isMultiSelect?: boolean
+  multiValue?: string[]
+  defaultMultiValue?: string[]
+  onMultiValueChange?: (value: string[]) => void
+  maxTagsVisible?: number
 
-  isSearchable?: boolean;
-  searchPlaceholder?: string;
-  showBatchActions?: boolean;
-  selectAllLabel?: string;
-  deselectAllLabel?: string;
+  isSearchable?: boolean
+  searchPlaceholder?: string
+  showBatchActions?: boolean
+  selectAllLabel?: string
+  deselectAllLabel?: string
 
-  renderOption?: (option: SelectOption) => React.ReactNode;
+  renderOption?: (option: SelectOption) => React.ReactNode
   renderValue?: (
-    optionOrOptions: SelectOption | SelectOption[],
-  ) => React.ReactNode;
-  children?: React.ReactNode;
+    optionOrOptions: SelectOption | SelectOption[]
+  ) => React.ReactNode
+  children?: React.ReactNode
 }
 
 const variantStyles: Record<SelectVariant, string> = {
@@ -84,13 +85,13 @@ const variantStyles: Record<SelectVariant, string> = {
   "gradient-border":
     "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 relative [background-clip:padding-box] border border-transparent before:absolute before:inset-0 before:-z-10 before:rounded-[inherit] before:p-[1px] before:bg-gradient-to-r before:from-sky-500 before:via-indigo-500 before:to-pink-500 focus:ring-2 focus:ring-indigo-500/30",
   glow: "bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-xs focus:border-sky-500 focus:shadow-[0_0_12px_rgba(14,165,233,0.35)] text-zinc-900 dark:text-zinc-100",
-};
+}
 
 const sizeMap = {
   sm: "min-h-8 px-2.5 text-xs py-1 gap-1.5",
   md: "min-h-10 px-3 text-sm py-1.5 gap-2",
   lg: "min-h-12 px-4 text-base py-2 gap-2.5",
-};
+}
 
 const Select = React.forwardRef<HTMLDivElement, SelectProps>(
   (
@@ -125,83 +126,81 @@ const Select = React.forwardRef<HTMLDivElement, SelectProps>(
       disabled,
       ...props
     },
-    ref,
+    ref
   ) => {
-    const [singleVal, setSingleVal] = React.useState<string>(
-      defaultValue || "",
-    );
+    const [singleVal, setSingleVal] = React.useState<string>(defaultValue || "")
 
     const [selectedMulti, setSelectedMulti] =
-      React.useState<string[]>(defaultMultiValue);
-    const [isOpen, setIsOpen] = React.useState(false);
-    const keyboardProps = useKeyboardClick<HTMLDivElement>(!disabled);
-    const [searchQuery, setSearchQuery] = React.useState("");
+      React.useState<string[]>(defaultMultiValue)
+    const [isOpen, setIsOpen] = React.useState(false)
+    const keyboardProps = useKeyboardClick<HTMLDivElement>(!disabled)
+    const [searchQuery, setSearchQuery] = React.useState("")
 
-    const currentSingle = value !== undefined ? value : singleVal;
-    const currentMulti = multiValue !== undefined ? multiValue : selectedMulti;
+    const currentSingle = value !== undefined ? value : singleVal
+    const currentMulti = multiValue !== undefined ? multiValue : selectedMulti
 
     const handleSingleSelect = (val: string) => {
-      if (value === undefined) setSingleVal(val);
-      onValueChange?.(val);
-    };
+      if (value === undefined) setSingleVal(val)
+      onValueChange?.(val)
+    }
 
     const handleMultiToggle = (val: string) => {
-      let next: string[];
+      let next: string[]
       if (currentMulti.includes(val)) {
-        next = currentMulti.filter((v) => v !== val);
+        next = currentMulti.filter((v) => v !== val)
       } else {
-        next = [...currentMulti, val];
+        next = [...currentMulti, val]
       }
-      if (multiValue === undefined) setSelectedMulti(next);
-      onMultiValueChange?.(next);
-    };
+      if (multiValue === undefined) setSelectedMulti(next)
+      onMultiValueChange?.(next)
+    }
 
     const handleSelectAll = () => {
       const allValues = filteredOptions
         .filter((o) => !o.disabled)
-        .map((o) => o.value);
-      const combined = Array.from(new Set([...currentMulti, ...allValues]));
-      if (multiValue === undefined) setSelectedMulti(combined);
-      onMultiValueChange?.(combined);
-    };
+        .map((o) => o.value)
+      const combined = Array.from(new Set([...currentMulti, ...allValues]))
+      if (multiValue === undefined) setSelectedMulti(combined)
+      onMultiValueChange?.(combined)
+    }
 
     const handleDeselectAll = () => {
-      if (multiValue === undefined) setSelectedMulti([]);
-      onMultiValueChange?.([]);
-    };
+      if (multiValue === undefined) setSelectedMulti([])
+      onMultiValueChange?.([])
+    }
 
     const handleRemoveTag = (e: React.SyntheticEvent, val: string) => {
-      e.stopPropagation();
-      const next = currentMulti.filter((v) => v !== val);
-      if (multiValue === undefined) setSelectedMulti(next);
-      onMultiValueChange?.(next);
-    };
+      e.stopPropagation()
+      const next = currentMulti.filter((v) => v !== val)
+      if (multiValue === undefined) setSelectedMulti(next)
+      onMultiValueChange?.(next)
+    }
 
     const filteredOptions = React.useMemo(() => {
-      if (!searchQuery.trim()) return options;
-      const q = searchQuery.toLowerCase();
+      if (!searchQuery.trim()) return options
+      const q = searchQuery.toLowerCase()
       return options.filter(
         (o) =>
           o.label.toLowerCase().includes(q) ||
-          o.description?.toLowerCase().includes(q),
-      );
-    }, [options, searchQuery]);
+          o.description?.toLowerCase().includes(q)
+      )
+    }, [options, searchQuery])
 
     const groupedOptions = React.useMemo(() => {
-      const groups: Record<string, SelectOption[]> = {};
-      const ungrouped: SelectOption[] = [];
+      const groups: Record<string, SelectOption[]> = {}
+      const ungrouped: SelectOption[] = []
 
       filteredOptions.forEach((opt) => {
         if (opt.group) {
-          if (!groups[opt.group]) groups[opt.group] = [];
-          groups[opt.group].push(opt);
+          if (!groups[opt.group]) groups[opt.group] = []
+          groups[opt.group].push(opt)
         } else {
-          ungrouped.push(opt);
+          ungrouped.push(opt)
         }
-      });
+      })
 
-      return { groups, ungrouped };
-    }, [filteredOptions]);
+      return { groups, ungrouped }
+    }, [filteredOptions])
 
     const renderMultiTriggerContent = () => {
       if (currentMulti.length === 0) {
@@ -209,18 +208,18 @@ const Select = React.forwardRef<HTMLDivElement, SelectProps>(
           <span className="text-zinc-400 dark:text-zinc-500">
             {placeholder}
           </span>
-        );
+        )
       }
 
       const selectedOptions = options.filter((o) =>
-        currentMulti.includes(o.value),
-      );
+        currentMulti.includes(o.value)
+      )
       if (renderValue) {
-        return renderValue(selectedOptions);
+        return renderValue(selectedOptions)
       }
 
-      const visible = selectedOptions.slice(0, maxTagsVisible);
-      const hiddenCount = selectedOptions.length - maxTagsVisible;
+      const visible = selectedOptions.slice(0, maxTagsVisible)
+      const hiddenCount = selectedOptions.length - maxTagsVisible
 
       return (
         <div className="flex flex-wrap items-center gap-1.5 min-w-0">
@@ -243,8 +242,8 @@ const Select = React.forwardRef<HTMLDivElement, SelectProps>(
                 onClick={(e) => handleRemoveTag(e, opt.value)}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" || e.key === " ") {
-                    e.preventDefault();
-                    handleRemoveTag(e, opt.value);
+                    e.preventDefault()
+                    handleRemoveTag(e, opt.value)
                   }
                 }}
                 className="hover:bg-zinc-200 dark:hover:bg-zinc-700 rounded p-0.5 text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 transition-colors cursor-pointer"
@@ -259,8 +258,8 @@ const Select = React.forwardRef<HTMLDivElement, SelectProps>(
             </span>
           )}
         </div>
-      );
-    };
+      )
+    }
 
     if (children && !isMultiSelect && options.length === 0) {
       return (
@@ -290,20 +289,20 @@ const Select = React.forwardRef<HTMLDivElement, SelectProps>(
             </p>
           ) : null}
         </div>
-      );
+      )
     }
 
-    const selectedSingleOpt = options.find((o) => o.value === currentSingle);
+    const selectedSingleOpt = options.find((o) => o.value === currentSingle)
     const renderSingleTriggerContent = () => {
       if (!selectedSingleOpt) {
         return (
           <span className="text-zinc-400 dark:text-zinc-500">
             {placeholder}
           </span>
-        );
+        )
       }
       if (renderValue) {
-        return renderValue(selectedSingleOpt);
+        return renderValue(selectedSingleOpt)
       }
       return (
         <div className="flex items-center gap-2 truncate">
@@ -327,8 +326,8 @@ const Select = React.forwardRef<HTMLDivElement, SelectProps>(
             </span>
           )}
         </div>
-      );
-    };
+      )
+    }
 
     return (
       <div ref={ref} className="w-full flex flex-col gap-1.5">
@@ -350,7 +349,7 @@ const Select = React.forwardRef<HTMLDivElement, SelectProps>(
               isInvalid &&
                 "border-rose-500 focus:ring-rose-500/20 text-rose-500",
               disabled && "cursor-not-allowed opacity-50 pointer-events-none",
-              className,
+              className
             )}
             role="button"
             tabIndex={disabled ? -1 : 0}
@@ -365,7 +364,7 @@ const Select = React.forwardRef<HTMLDivElement, SelectProps>(
               icon="hugeicons:arrow-down-01"
               className={cn(
                 "size-4 opacity-50 shrink-0 transition-transform duration-200 ml-2",
-                isOpen && "rotate-180",
+                isOpen && "rotate-180"
               )}
             />
           </div>
@@ -379,7 +378,7 @@ const Select = React.forwardRef<HTMLDivElement, SelectProps>(
 
               <div
                 className={cn(
-                  "absolute left-0 right-0 top-full mt-1.5 z-50 max-h-80 overflow-y-auto rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl shadow-2xl p-1.5 animate-in fade-in-0 zoom-in-95",
+                  "absolute left-0 right-0 top-full mt-1.5 z-50 max-h-80 overflow-y-auto rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl shadow-2xl p-1.5 animate-in fade-in-0 zoom-in-95"
                 )}
               >
                 {(isSearchable || options.length > 6) && (
@@ -453,11 +452,11 @@ const Select = React.forwardRef<HTMLDivElement, SelectProps>(
                               handleSingleSelect,
                               handleMultiToggle,
                               setIsOpen,
-                              renderOption,
-                            ),
+                              renderOption
+                            )
                           )}
                         </div>
-                      ),
+                      )
                     )}
 
                     {groupedOptions.ungrouped.map((opt) =>
@@ -469,8 +468,8 @@ const Select = React.forwardRef<HTMLDivElement, SelectProps>(
                         handleSingleSelect,
                         handleMultiToggle,
                         setIsOpen,
-                        renderOption,
-                      ),
+                        renderOption
+                      )
                     )}
                   </div>
                 )}
@@ -487,10 +486,10 @@ const Select = React.forwardRef<HTMLDivElement, SelectProps>(
           </p>
         ) : null}
       </div>
-    );
-  },
-);
-Select.displayName = "Select";
+    )
+  }
+)
+Select.displayName = "Select"
 
 function renderOptionItem(
   opt: SelectOption,
@@ -500,22 +499,22 @@ function renderOptionItem(
   handleSingleSelect: (val: string) => void,
   handleMultiToggle: (val: string) => void,
   setIsOpen: (open: boolean) => void,
-  renderOption?: (opt: SelectOption) => React.ReactNode,
+  renderOption?: (opt: SelectOption) => React.ReactNode
 ) {
   const isSelected = isMultiSelect
     ? currentMulti.includes(opt.value)
-    : currentSingle === opt.value;
+    : currentSingle === opt.value
 
   return (
     <div
       key={opt.value}
       onClick={() => {
-        if (opt.disabled) return;
+        if (opt.disabled) return
         if (isMultiSelect) {
-          handleMultiToggle(opt.value);
+          handleMultiToggle(opt.value)
         } else {
-          handleSingleSelect(opt.value);
-          setIsOpen(false);
+          handleSingleSelect(opt.value)
+          setIsOpen(false)
         }
       }}
       className={cn(
@@ -523,7 +522,7 @@ function renderOptionItem(
         isSelected
           ? "bg-sky-50 dark:bg-sky-950/40 text-sky-600 dark:text-sky-400 font-semibold"
           : "hover:bg-zinc-100 dark:hover:bg-zinc-800/80 text-zinc-900 dark:text-zinc-100",
-        opt.disabled && "opacity-40 cursor-not-allowed pointer-events-none",
+        opt.disabled && "opacity-40 cursor-not-allowed pointer-events-none"
       )}
     >
       {renderOption ? (
@@ -562,23 +561,23 @@ function renderOptionItem(
         )}
       </div>
     </div>
-  );
+  )
 }
 
-const SelectGroup = SelectPrimitive.Group;
-const SelectValue = SelectPrimitive.Value;
+const SelectGroup = SelectPrimitive.Group
+const SelectValue = SelectPrimitive.Value
 
 const SelectTrigger = React.forwardRef<
   React.ComponentRef<typeof SelectPrimitive.Trigger>,
   React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger> & {
-    size?: "sm" | "md" | "lg";
-    radius?: keyof typeof designRadius;
-    isInvalid?: boolean;
+    size?: "sm" | "md" | "lg"
+    radius?: keyof typeof designRadius
+    isInvalid?: boolean
   }
 >(
   (
     { className, children, size = "md", radius = "lg", isInvalid, ...props },
-    ref,
+    ref
   ) => (
     <SelectPrimitive.Trigger
       ref={ref}
@@ -587,7 +586,7 @@ const SelectTrigger = React.forwardRef<
         sizeMap[size],
         designRadius[radius],
         isInvalid && "border-rose-500 focus:ring-rose-500/20 text-rose-500",
-        className,
+        className
       )}
       {...props}
     >
@@ -599,9 +598,9 @@ const SelectTrigger = React.forwardRef<
         />
       </SelectPrimitive.Icon>
     </SelectPrimitive.Trigger>
-  ),
-);
-SelectTrigger.displayName = SelectPrimitive.Trigger.displayName;
+  )
+)
+SelectTrigger.displayName = SelectPrimitive.Trigger.displayName
 
 const SelectContent = React.forwardRef<
   React.ComponentRef<typeof SelectPrimitive.Content>,
@@ -614,7 +613,7 @@ const SelectContent = React.forwardRef<
         "relative z-50 max-h-96 min-w-[8rem] overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xl data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
         position === "popper" &&
           "data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1",
-        className,
+        className
       )}
       position={position}
       {...props}
@@ -623,15 +622,15 @@ const SelectContent = React.forwardRef<
         className={cn(
           "p-1.5",
           position === "popper" &&
-            "h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)]",
+            "h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)]"
         )}
       >
         {children}
       </SelectPrimitive.Viewport>
     </SelectPrimitive.Content>
   </SelectPrimitive.Portal>
-));
-SelectContent.displayName = SelectPrimitive.Content.displayName;
+))
+SelectContent.displayName = SelectPrimitive.Content.displayName
 
 const SelectLabel = React.forwardRef<
   React.ComponentRef<typeof SelectPrimitive.Label>,
@@ -641,12 +640,12 @@ const SelectLabel = React.forwardRef<
     ref={ref}
     className={cn(
       "py-1.5 pl-8 pr-2 text-xs font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider",
-      className,
+      className
     )}
     {...props}
   />
-));
-SelectLabel.displayName = SelectPrimitive.Label.displayName;
+))
+SelectLabel.displayName = SelectPrimitive.Label.displayName
 
 const SelectItem = React.forwardRef<
   React.ComponentRef<typeof SelectPrimitive.Item>,
@@ -656,7 +655,7 @@ const SelectItem = React.forwardRef<
     ref={ref}
     className={cn(
       "relative flex w-full cursor-pointer select-none items-center rounded-xl py-2 pl-8 pr-3 text-sm outline-none focus:bg-zinc-100 dark:focus:bg-zinc-800 text-zinc-900 dark:text-zinc-100 transition-colors data-[disabled]:pointer-events-none data-[disabled]:opacity-40",
-      className,
+      className
     )}
     {...props}
   >
@@ -667,8 +666,8 @@ const SelectItem = React.forwardRef<
     </span>
     <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
   </SelectPrimitive.Item>
-));
-SelectItem.displayName = SelectPrimitive.Item.displayName;
+))
+SelectItem.displayName = SelectPrimitive.Item.displayName
 
 const SelectSeparator = React.forwardRef<
   React.ComponentRef<typeof SelectPrimitive.Separator>,
@@ -679,8 +678,8 @@ const SelectSeparator = React.forwardRef<
     className={cn("-mx-1 my-1 h-px bg-zinc-200 dark:bg-zinc-800", className)}
     {...props}
   />
-));
-SelectSeparator.displayName = SelectPrimitive.Separator.displayName;
+))
+SelectSeparator.displayName = SelectPrimitive.Separator.displayName
 
 export {
   Select,
@@ -691,4 +690,4 @@ export {
   SelectSeparator,
   SelectTrigger,
   SelectValue,
-};
+}

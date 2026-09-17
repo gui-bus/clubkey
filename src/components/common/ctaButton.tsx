@@ -9,8 +9,7 @@ import { cn } from "@/src/lib/utils"
 export type CtaButtonSize = "xs" | "sm" | "md" | "lg"
 export type CtaButtonVariant = "primary" | "secondary"
 
-export interface CtaButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface CtaButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   href?: string
   target?: string
   rel?: string
@@ -33,7 +32,8 @@ const sizeClasses: Record<CtaButtonSize, string> = {
 
 const variantClasses: Record<CtaButtonVariant, string> = {
   primary: "bg-brand-primary text-white border-0 shadow-md hover:shadow-lg",
-  secondary: "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 border border-zinc-200/80 dark:border-zinc-800/80 shadow-xs",
+  secondary:
+    "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 border border-zinc-200/80 dark:border-zinc-800/80 shadow-xs",
 }
 
 const defaultSliderClasses: Record<CtaButtonVariant, string> = {
@@ -91,7 +91,8 @@ export const CtaButton = React.forwardRef<
       sizeClasses[size],
       variantClasses[variant],
       isFullWidth && "w-full",
-      disabled && "opacity-50 cursor-not-allowed pointer-events-none active:scale-100",
+      disabled &&
+        "opacity-50 cursor-not-allowed pointer-events-none active:scale-100",
       className
     )
 

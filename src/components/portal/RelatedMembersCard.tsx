@@ -1,10 +1,13 @@
 "use client"
 
 import * as React from "react"
+
 import Image from "next/image"
 import Link from "next/link"
+
 import { Member, getInitials, getMemberSlug } from "@/src/data/portalData"
 import { ArrowRight, MapPin } from "@phosphor-icons/react"
+
 import { cn } from "@/src/lib/utils"
 
 export interface RelatedMembersCardProps {

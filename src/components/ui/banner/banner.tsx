@@ -1,33 +1,35 @@
-"use client";
+"use client"
 
-import { Icon } from "@iconify/react";
-import React from "react";
-import { cn } from "../../../lib/utils";
+import React from "react"
 
-export type BannerRadius = "none" | "sm" | "md" | "lg" | "xl" | "2xl" | "full";
+import { Icon } from "@iconify/react"
+
+import { cn } from "../../../lib/utils"
+
+export type BannerRadius = "none" | "sm" | "md" | "lg" | "xl" | "2xl" | "full"
 
 export interface AnnouncementItem {
-  id: string | number;
-  content: React.ReactNode;
-  icon?: React.ReactNode;
-  action?: React.ReactNode;
+  id: string | number
+  content: React.ReactNode
+  icon?: React.ReactNode
+  action?: React.ReactNode
 }
 
 export interface BannerProps extends React.HTMLAttributes<HTMLDivElement> {
-  variant?: "default" | "primary" | "success" | "warning" | "danger";
-  position?: "static" | "sticky-top" | "sticky-bottom";
-  radius?: BannerRadius;
-  announcements?: AnnouncementItem[];
-  storageKey?: string;
-  isDismissible?: boolean;
-  onDismiss?: () => void;
-  action?: React.ReactNode;
-  icon?: React.ReactNode;
-  hideIcon?: boolean;
-  customIcon?: React.ReactNode;
-  autoPlay?: boolean;
-  autoPlayInterval?: number;
-  showProgress?: boolean;
+  variant?: "default" | "primary" | "success" | "warning" | "danger"
+  position?: "static" | "sticky-top" | "sticky-bottom"
+  radius?: BannerRadius
+  announcements?: AnnouncementItem[]
+  storageKey?: string
+  isDismissible?: boolean
+  onDismiss?: () => void
+  action?: React.ReactNode
+  icon?: React.ReactNode
+  hideIcon?: boolean
+  customIcon?: React.ReactNode
+  autoPlay?: boolean
+  autoPlayInterval?: number
+  showProgress?: boolean
 }
 
 const radiusMap: Record<BannerRadius, string> = {
@@ -38,7 +40,7 @@ const radiusMap: Record<BannerRadius, string> = {
   xl: "rounded-xl",
   "2xl": "rounded-2xl",
   full: "rounded-full",
-};
+}
 
 export function Banner({
   children,
@@ -59,62 +61,62 @@ export function Banner({
   className,
   ...props
 }: BannerProps) {
-  const [isDismissed, setIsDismissed] = React.useState(false);
-  const [currentIndex, setCurrentIndex] = React.useState(0);
-  const [progress, setProgress] = React.useState(0);
+  const [isDismissed, setIsDismissed] = React.useState(false)
+  const [currentIndex, setCurrentIndex] = React.useState(0)
+  const [progress, setProgress] = React.useState(0)
 
   React.useEffect(() => {
     if (storageKey && typeof window !== "undefined") {
       const dismissed = localStorage.getItem(
-        `bloom-banner-dismissed-${storageKey}`,
-      );
+        `bloom-banner-dismissed-${storageKey}`
+      )
       if (dismissed === "true") {
-        queueMicrotask(() => setIsDismissed(true));
+        queueMicrotask(() => setIsDismissed(true))
       }
     }
-  }, [storageKey]);
+  }, [storageKey])
 
-  const hasCarousel = announcements && announcements.length > 0;
-  const count = announcements?.length ?? 0;
+  const hasCarousel = announcements && announcements.length > 0
+  const count = announcements?.length ?? 0
 
   const nextAnnouncement = React.useCallback(() => {
     if (hasCarousel) {
-      setCurrentIndex((prev) => (prev + 1) % count);
-      setProgress(0);
+      setCurrentIndex((prev) => (prev + 1) % count)
+      setProgress(0)
     }
-  }, [hasCarousel, count]);
+  }, [hasCarousel, count])
 
   const prevAnnouncement = React.useCallback(() => {
     if (hasCarousel) {
-      setCurrentIndex((prev) => (prev === 0 ? count - 1 : prev - 1));
-      setProgress(0);
+      setCurrentIndex((prev) => (prev === 0 ? count - 1 : prev - 1))
+      setProgress(0)
     }
-  }, [hasCarousel, count]);
+  }, [hasCarousel, count])
 
   React.useEffect(() => {
-    if (!hasCarousel || !autoPlay || count <= 1) return;
+    if (!hasCarousel || !autoPlay || count <= 1) return
 
     if (showProgress) {
-      queueMicrotask(() => setProgress(0));
-      const step = 50;
-      const increment = (step / autoPlayInterval) * 100;
+      queueMicrotask(() => setProgress(0))
+      const step = 50
+      const increment = (step / autoPlayInterval) * 100
       const interval = setInterval(() => {
         setProgress((prev) => {
           if (prev >= 100) {
-            return 0;
+            return 0
           }
-          return prev + increment;
-        });
-      }, step);
-      const advance = setTimeout(nextAnnouncement, autoPlayInterval);
+          return prev + increment
+        })
+      }, step)
+      const advance = setTimeout(nextAnnouncement, autoPlayInterval)
       return () => {
-        clearInterval(interval);
-        clearTimeout(advance);
-      };
+        clearInterval(interval)
+        clearTimeout(advance)
+      }
     }
 
-    const timer = setTimeout(nextAnnouncement, autoPlayInterval);
-    return () => clearTimeout(timer);
+    const timer = setTimeout(nextAnnouncement, autoPlayInterval)
+    return () => clearTimeout(timer)
   }, [
     hasCarousel,
     autoPlay,
@@ -123,17 +125,17 @@ export function Banner({
     currentIndex,
     showProgress,
     nextAnnouncement,
-  ]);
+  ])
 
   const handleDismiss = React.useCallback(() => {
-    setIsDismissed(true);
+    setIsDismissed(true)
     if (storageKey && typeof window !== "undefined") {
-      localStorage.setItem(`bloom-banner-dismissed-${storageKey}`, "true");
+      localStorage.setItem(`bloom-banner-dismissed-${storageKey}`, "true")
     }
-    onDismiss?.();
-  }, [storageKey, onDismiss]);
+    onDismiss?.()
+  }, [storageKey, onDismiss])
 
-  if (isDismissed) return null;
+  if (isDismissed) return null
 
   const variantStyles = {
     default: {
@@ -171,30 +173,30 @@ export function Banner({
       bg: "bg-white dark:bg-zinc-900",
       text: "text-rose-600 dark:text-rose-400",
     },
-  };
+  }
 
   const positionStyles = {
     static: "relative",
     "sticky-top": "sticky top-0 z-40 rounded-none border-x-0 border-t-0",
     "sticky-bottom": "sticky bottom-0 z-40 rounded-none border-x-0 border-b-0",
-  };
+  }
 
-  const styles = variantStyles[variant];
-  const isSticky = position !== "static";
+  const styles = variantStyles[variant]
+  const isSticky = position !== "static"
 
-  const currentAnnouncement = hasCarousel ? announcements[currentIndex] : null;
+  const currentAnnouncement = hasCarousel ? announcements[currentIndex] : null
   const activeContent = currentAnnouncement
     ? currentAnnouncement.content
-    : children;
+    : children
   const activeIcon = currentAnnouncement
     ? (currentAnnouncement.icon ?? icon)
-    : icon;
+    : icon
   const activeAction = currentAnnouncement
     ? (currentAnnouncement.action ?? action)
-    : action;
+    : action
 
-  const resolvedIcon = customIcon ?? activeIcon;
-  const showIconSlot = !hideIcon && resolvedIcon;
+  const resolvedIcon = customIcon ?? activeIcon
+  const showIconSlot = !hideIcon && resolvedIcon
 
   return (
     <div
@@ -204,7 +206,7 @@ export function Banner({
         isSticky ? positionStyles[position] : radiusMap[radius],
         !isSticky && "p-3 px-4",
         isSticky && "px-4 py-3",
-        className,
+        className
       )}
       {...props}
     >
@@ -225,7 +227,7 @@ export function Banner({
         <div
           className={cn(
             "flex size-8 shrink-0 items-center justify-center rounded-lg border",
-            styles.icon,
+            styles.icon
           )}
         >
           {resolvedIcon}
@@ -240,7 +242,7 @@ export function Banner({
         <div
           className={cn(
             "flex items-center gap-0.5 shrink-0 text-xs font-mono",
-            styles.text,
+            styles.text
           )}
         >
           <button
@@ -274,7 +276,7 @@ export function Banner({
           className={cn(
             "flex-shrink-0 rounded-lg p-1.5 transition-colors cursor-pointer",
             "text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600",
-            "dark:hover:bg-zinc-800 dark:hover:text-zinc-300",
+            "dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
           )}
           aria-label="Dismiss banner"
         >
@@ -282,5 +284,5 @@ export function Banner({
         </button>
       )}
     </div>
-  );
+  )
 }

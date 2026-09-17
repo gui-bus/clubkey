@@ -1,10 +1,12 @@
-"use client";
+"use client"
 
-import * as TogglePrimitive from "@radix-ui/react-toggle";
-import { cva, type VariantProps } from "class-variance-authority";
-import * as React from "react";
-import { designRadius } from "../../../lib/design-system";
-import { cn } from "../../../lib/utils";
+import * as React from "react"
+
+import * as TogglePrimitive from "@radix-ui/react-toggle"
+import { type VariantProps, cva } from "class-variance-authority"
+
+import { designRadius } from "../../../lib/design-system"
+import { cn } from "../../../lib/utils"
 
 const toggleVariants = cva(
   "inline-flex items-center justify-center font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-35 cursor-pointer select-none border border-transparent",
@@ -162,16 +164,17 @@ const toggleVariants = cva(
       color: "default",
       size: "md",
     },
-  },
-);
+  }
+)
 
 export interface ToggleProps
-  extends Omit<
+  extends
+    Omit<
       React.ComponentPropsWithoutRef<typeof TogglePrimitive.Root>,
       "color" | "size"
     >,
     VariantProps<typeof toggleVariants> {
-  radius?: keyof typeof designRadius;
+  radius?: keyof typeof designRadius
 }
 
 const Toggle = React.forwardRef<
@@ -183,12 +186,12 @@ const Toggle = React.forwardRef<
     className={cn(
       toggleVariants({ variant, size, color }),
       designRadius[radius],
-      className,
+      className
     )}
     {...props}
   />
-));
+))
 
-Toggle.displayName = TogglePrimitive.Root.displayName;
+Toggle.displayName = TogglePrimitive.Root.displayName
 
-export { Toggle, toggleVariants };
+export { Toggle, toggleVariants }

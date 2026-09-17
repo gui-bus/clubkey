@@ -1,17 +1,21 @@
 "use client"
 
 import * as React from "react"
+
 import Link from "next/link"
 import { useRouter } from "next/navigation"
+
+import { usePortalStore } from "@/src/store/usePortalStore"
 import { useForm } from "react-hook-form"
 
-import { AuthSplitLayout } from "@/src/components/auth/authSplitLayout"
-import { CtaButton } from "@/src/components/common/ctaButton"
 import { Input } from "@/src/components/ui/input/input"
 import { PasswordInput } from "@/src/components/ui/passwordInput/passwordInput"
 import { toast } from "@/src/components/ui/toast/toast"
+
+import { AuthSplitLayout } from "@/src/components/auth/authSplitLayout"
+import { CtaButton } from "@/src/components/common/ctaButton"
+
 import { brandConfig } from "@/src/config/brand.config"
-import { usePortalStore } from "@/src/store/usePortalStore"
 
 interface FormValues {
   email: string
@@ -26,8 +30,8 @@ export default function SignInPage(): React.JSX.Element {
   const { register, handleSubmit } = useForm<FormValues>({
     defaultValues: {
       email: "",
-      password: ""
-    }
+      password: "",
+    },
   })
 
   const onSubmit = (data: FormValues) => {
@@ -45,7 +49,11 @@ export default function SignInPage(): React.JSX.Element {
       formTitle="Acesse sua conta"
       formSubtitle={`Entre com suas credenciais para acessar o portal de membros da ${brandConfig.name}.`}
     >
-      <form noValidate onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
+      <form
+        noValidate
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex flex-col gap-5"
+      >
         <div className="flex flex-col gap-1.5">
           <label
             htmlFor="email"

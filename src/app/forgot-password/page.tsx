@@ -1,19 +1,22 @@
 "use client"
 
 import * as React from "react"
-import Link from "next/link"
-import { ArrowLeft, EnvelopeOpen } from "@phosphor-icons/react"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
 
-import { AuthSplitLayout } from "@/src/components/auth/authSplitLayout"
-import { CtaButton } from "@/src/components/common/ctaButton"
-import { Input } from "@/src/components/ui/input/input"
-import { toast } from "@/src/components/ui/toast/toast"
+import Link from "next/link"
+
 import {
   type ForgotPasswordFormData,
   forgotPasswordSchema,
 } from "@/src/schemas/auth.schema"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { ArrowLeft, EnvelopeOpen } from "@phosphor-icons/react"
+import { useForm } from "react-hook-form"
+
+import { Input } from "@/src/components/ui/input/input"
+import { toast } from "@/src/components/ui/toast/toast"
+
+import { AuthSplitLayout } from "@/src/components/auth/authSplitLayout"
+import { CtaButton } from "@/src/components/common/ctaButton"
 
 export default function ForgotPasswordPage(): React.JSX.Element {
   const [isLoading, setIsLoading] = React.useState(false)
@@ -60,7 +63,8 @@ export default function ForgotPasswordPage(): React.JSX.Element {
       bannerImage="/utils/banners/img_02.png"
       bannerTitle={
         <>
-          Recupere seu acesso <span className="text-brand-primary">e continue viajando</span>
+          Recupere seu acesso{" "}
+          <span className="text-brand-primary">e continue viajando</span>
         </>
       }
       bannerDescription="Vamos te ajudar a redefinir sua senha com total segurança para você voltar a planejar suas próximas experiências."
@@ -85,7 +89,8 @@ export default function ForgotPasswordPage(): React.JSX.Element {
           </div>
 
           <p className="text-xs text-zinc-500 dark:text-zinc-400 font-light">
-            Não encontrou o e-mail? Verifique também sua caixa de spam ou lixo eletrônico.
+            Não encontrou o e-mail? Verifique também sua caixa de spam ou lixo
+            eletrônico.
           </p>
 
           <div className="flex flex-col gap-3 w-full pt-2">
@@ -125,11 +130,16 @@ export default function ForgotPasswordPage(): React.JSX.Element {
               Recuperar senha
             </h1>
             <p className="mt-2 text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 font-light leading-relaxed">
-              Informe o e-mail cadastrado na sua conta para receber as instruções de redefinição de senha.
+              Informe o e-mail cadastrado na sua conta para receber as
+              instruções de redefinição de senha.
             </p>
           </div>
 
-          <form noValidate onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
+          <form
+            noValidate
+            onSubmit={handleSubmit(onSubmit)}
+            className="flex flex-col gap-5"
+          >
             <div className="flex flex-col gap-1.5">
               <label
                 htmlFor="email"
@@ -148,7 +158,9 @@ export default function ForgotPasswordPage(): React.JSX.Element {
                 {...register("email")}
               />
               {errors.email && (
-                <span className="text-xs text-red-500">{errors.email.message}</span>
+                <span className="text-xs text-red-500">
+                  {errors.email.message}
+                </span>
               )}
             </div>
 

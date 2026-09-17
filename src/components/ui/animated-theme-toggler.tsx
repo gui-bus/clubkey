@@ -1,8 +1,10 @@
 "use client"
 
 import { useCallback, useEffect, useRef, useState } from "react"
+
 import { Moon, Sun } from "@phosphor-icons/react"
 import { flushSync } from "react-dom"
+
 import { cn } from "@/src/lib/utils"
 
 export type TransitionVariant =
@@ -14,8 +16,7 @@ export type TransitionVariant =
   | "rectangle"
   | "star"
 
-export interface AnimatedThemeTogglerProps
-  extends React.ComponentPropsWithoutRef<"button"> {
+export interface AnimatedThemeTogglerProps extends React.ComponentPropsWithoutRef<"button"> {
   duration?: number
   variant?: TransitionVariant
   fromCenter?: boolean
@@ -291,7 +292,8 @@ export const AnimatedThemeToggler = ({
       className={cn(className)}
       {...props}
     >
-      {children ?? (isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />)}
+      {children ??
+        (isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />)}
       <span className="sr-only">Toggle theme</span>
     </button>
   )

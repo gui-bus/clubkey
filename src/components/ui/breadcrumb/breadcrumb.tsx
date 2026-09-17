@@ -143,7 +143,8 @@ const BreadcrumbEllipsisDropdown = ({
                 className="px-2 py-1 text-xs hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg"
               >
                 {React.isValidElement(item) && item.type === BreadcrumbItem
-                  ? (item as React.ReactElement<{ children?: React.ReactNode }>).props.children
+                  ? (item as React.ReactElement<{ children?: React.ReactNode }>)
+                      .props.children
                   : item}
               </div>
             ))}

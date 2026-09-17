@@ -1,7 +1,8 @@
 "use client"
 
 import * as React from "react"
-import { motion, AnimatePresence } from "framer-motion"
+
+import { AnimatePresence, motion } from "framer-motion"
 
 import { Container } from "@/src/components/common/container"
 
@@ -91,7 +92,8 @@ export function FaqSection(): React.JSX.Element {
             </h2>
           </div>
           <p className="text-base sm:text-lg text-zinc-600 dark:text-zinc-400 font-light max-w-md leading-relaxed">
-            Respostas diretas sobre o funcionamento do clube, catálogo exclusivo, confirmação imediata e acompanhamento de ponta a ponta.
+            Respostas diretas sobre o funcionamento do clube, catálogo
+            exclusivo, confirmação imediata e acompanhamento de ponta a ponta.
           </p>
         </div>
 

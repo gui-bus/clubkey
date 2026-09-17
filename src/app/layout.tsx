@@ -1,19 +1,21 @@
+import { Suspense } from "react"
+
 import { Metadata, Viewport } from "next"
 
 import { GoogleAnalytics } from "@next/third-parties/google"
+import { NuqsAdapter } from "nuqs/adapters/next/app"
+
+import { Toast } from "@/src/components/ui/toast/toast"
 
 import { BrandStyles } from "@/src/components/common/brandStyles"
 import { ThemeProvider } from "@/src/components/common/themeProvider"
+import { MemberMessengerWidget } from "@/src/components/portal/MemberMessengerWidget"
 
 import { cn } from "@/src/lib/utils"
 
 import { fontVariables } from "@/src/config/fonts"
 import { siteConfig } from "@/src/config/site"
 
-import { Suspense } from "react"
-import { NuqsAdapter } from "nuqs/adapters/next/app"
-import { Toast } from "@/src/components/ui/toast/toast"
-import { MemberMessengerWidget } from "@/src/components/portal/MemberMessengerWidget"
 import "@/src/app/globals.css"
 
 export const viewport: Viewport = {

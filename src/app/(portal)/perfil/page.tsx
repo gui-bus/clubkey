@@ -1,13 +1,11 @@
 "use client"
 
 import * as React from "react"
+
 import Image from "next/image"
 
 import { getInitials } from "@/src/data/portalData"
 import { usePortalStore } from "@/src/store/usePortalStore"
-import { useMounted } from "@/src/hooks/useMounted"
-import { cn } from "@/src/lib/utils"
-import { maskCpf, maskCnpj, maskDate } from "@/src/lib/masks"
 import {
   ArrowRight,
   Check,
@@ -39,31 +37,38 @@ import {
   DialogTitle,
 } from "@/src/components/ui/dialog/dialog"
 import { FileUpload } from "@/src/components/ui/fileUpload/fileUpload"
-import { ImageCropper, type ImageCropperRef } from "@/src/components/ui/imageCropper/imageCropper"
+import {
+  ImageCropper,
+  type ImageCropperRef,
+} from "@/src/components/ui/imageCropper/imageCropper"
 import { Input } from "@/src/components/ui/input/input"
 import { InputOtp } from "@/src/components/ui/inputOtp/inputOtp"
-import { PhoneInput } from "@/src/components/auth/phoneInput"
-import { CitySelect } from "@/src/components/common/citySelect"
 import { TagInput } from "@/src/components/ui/tagInput/tagInput"
 import { toast } from "@/src/components/ui/toast/toast"
+
+import { PhoneInput } from "@/src/components/auth/phoneInput"
+import { CitySelect } from "@/src/components/common/citySelect"
 import { Container } from "@/src/components/common/container"
 import { CtaButton } from "@/src/components/common/ctaButton"
+
+import { maskCnpj, maskCpf, maskDate } from "@/src/lib/masks"
+import { cn } from "@/src/lib/utils"
+
+import { useMounted } from "@/src/hooks/useMounted"
 
 const PRESET_COVERS = [
   { label: "Membros & Networking", src: "/utils/banners/pessoas.webp" },
   { label: "Agenda & Eventos", src: "/utils/banners/agenda.webp" },
   { label: "Benefícios Exclusivos", src: "/utils/banners/beneficios.webp" },
-  { label: "Experiências & Lifestyle", src: "/utils/banners/experiencias.webp" },
+  {
+    label: "Experiências & Lifestyle",
+    src: "/utils/banners/experiencias.webp",
+  },
 ]
 
 export default function ProfilePage(): React.JSX.Element {
-  const {
-    userProfile,
-    updateProfile,
-    is2FAEnabled,
-    enable2FA,
-    disable2FA,
-  } = usePortalStore()
+  const { userProfile, updateProfile, is2FAEnabled, enable2FA, disable2FA } =
+    usePortalStore()
 
   const mounted = useMounted()
   const [isModalOpen, setIsModalOpen] = React.useState(false)
@@ -75,8 +80,12 @@ export default function ProfilePage(): React.JSX.Element {
   const [pendingCover, setPendingCover] = React.useState(
     userProfile.coverImage || "/utils/banners/pessoas.webp"
   )
-  const [uploadedAvatarSrc, setUploadedAvatarSrc] = React.useState<string | null>(null)
-  const [croppedAvatarBase64, setCroppedAvatarBase64] = React.useState<string | null>(null)
+  const [uploadedAvatarSrc, setUploadedAvatarSrc] = React.useState<
+    string | null
+  >(null)
+  const [croppedAvatarBase64, setCroppedAvatarBase64] = React.useState<
+    string | null
+  >(null)
   const cropperRef = React.useRef<ImageCropperRef>(null)
 
   const [formData, setFormData] = React.useState({
@@ -324,7 +333,8 @@ export default function ProfilePage(): React.JSX.Element {
                   {userProfile.name}
                 </h1>
                 <p className="text-sm sm:text-base font-semibold text-zinc-900 dark:text-white mt-0.5 truncate">
-                  {userProfile.role} {userProfile.company ? `na ${userProfile.company}` : ""}
+                  {userProfile.role}{" "}
+                  {userProfile.company ? `na ${userProfile.company}` : ""}
                 </p>
               </div>
             </div>
@@ -356,7 +366,9 @@ export default function ProfilePage(): React.JSX.Element {
                 </p>
               </div>
               <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                Campos marcados com <span className="text-red-500 font-bold">*</span> são obrigatórios
+                Campos marcados com{" "}
+                <span className="text-red-500 font-bold">*</span> são
+                obrigatórios
               </p>
             </div>
 
@@ -401,7 +413,8 @@ export default function ProfilePage(): React.JSX.Element {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               <div className="flex flex-col gap-1.5">
                 <label className="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
-                  Nome completo <span className="text-red-500 font-bold">*</span>
+                  Nome completo{" "}
+                  <span className="text-red-500 font-bold">*</span>
                 </label>
                 <Input
                   value={formData.name}
@@ -426,7 +439,9 @@ export default function ProfilePage(): React.JSX.Element {
 
               <div className="flex flex-col gap-1.5">
                 <label className="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
-                  {formData.nationality === "brasileiro" ? "CPF" : "Documento de Identificação"}{" "}
+                  {formData.nationality === "brasileiro"
+                    ? "CPF"
+                    : "Documento de Identificação"}{" "}
                   <span className="text-red-500 font-bold">*</span>
                 </label>
                 <Input
@@ -449,11 +464,14 @@ export default function ProfilePage(): React.JSX.Element {
 
               <div className="flex flex-col gap-1.5">
                 <label className="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
-                  Data de nascimento <span className="text-red-500 font-bold">*</span>
+                  Data de nascimento{" "}
+                  <span className="text-red-500 font-bold">*</span>
                 </label>
                 <Input
                   value={formData.birthDate}
-                  onChange={(e) => handleChange("birthDate", maskDate(e.target.value))}
+                  onChange={(e) =>
+                    handleChange("birthDate", maskDate(e.target.value))
+                  }
                   placeholder="DD/MM/AAAA"
                   required
                 />
@@ -461,7 +479,8 @@ export default function ProfilePage(): React.JSX.Element {
 
               <div className="flex flex-col gap-1.5 md:col-span-2">
                 <label className="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
-                  Telefone celular <span className="text-red-500 font-bold">*</span>
+                  Telefone celular{" "}
+                  <span className="text-red-500 font-bold">*</span>
                 </label>
                 <PhoneInput
                   value={formData.phone}
@@ -499,7 +518,9 @@ export default function ProfilePage(): React.JSX.Element {
                 </label>
                 <Input
                   value={formData.cnpj}
-                  onChange={(e) => handleChange("cnpj", maskCnpj(e.target.value))}
+                  onChange={(e) =>
+                    handleChange("cnpj", maskCnpj(e.target.value))
+                  }
                   placeholder="00.000.000/0000-00"
                 />
               </div>
@@ -511,7 +532,9 @@ export default function ProfilePage(): React.JSX.Element {
                 <Input
                   type="email"
                   value={formData.corporateEmail}
-                  onChange={(e) => handleChange("corporateEmail", e.target.value)}
+                  onChange={(e) =>
+                    handleChange("corporateEmail", e.target.value)
+                  }
                   placeholder="contato@empresa.com"
                 />
               </div>
@@ -522,7 +545,9 @@ export default function ProfilePage(): React.JSX.Element {
                 </label>
                 <Input
                   value={formData.openingDate}
-                  onChange={(e) => handleChange("openingDate", maskDate(e.target.value))}
+                  onChange={(e) =>
+                    handleChange("openingDate", maskDate(e.target.value))
+                  }
                   placeholder="DD/MM/AAAA"
                 />
               </div>
@@ -535,7 +560,8 @@ export default function ProfilePage(): React.JSX.Element {
                 Atuação Profissional & Biografia
               </h2>
               <p className="text-xs text-zinc-500 dark:text-zinc-400 font-light mt-0.5">
-                Informações públicas exibidas no diretório de membros da comunidade
+                Informações públicas exibidas no diretório de membros da
+                comunidade
               </p>
             </div>
 
@@ -616,7 +642,8 @@ export default function ProfilePage(): React.JSX.Element {
                 O que estou procurando (Networking & Negócios)
               </h3>
               <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                Outros membros saberão onde podem agregar valor ao conectar com você
+                Outros membros saberão onde podem agregar valor ao conectar com
+                você
               </p>
             </div>
 
@@ -636,7 +663,8 @@ export default function ProfilePage(): React.JSX.Element {
                 O que posso oferecer
               </h3>
               <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                Seus pontos fortes, experiência, conexões e mentorias disponíveis
+                Seus pontos fortes, experiência, conexões e mentorias
+                disponíveis
               </p>
             </div>
 
@@ -682,7 +710,8 @@ export default function ProfilePage(): React.JSX.Element {
                   </Badge>
                 </div>
                 <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                  Aumente a segurança da sua conta com verificação por código TOTP (Google Authenticator ou 1Password).
+                  Aumente a segurança da sua conta com verificação por código
+                  TOTP (Google Authenticator ou 1Password).
                 </p>
               </div>
 
@@ -788,7 +817,8 @@ export default function ProfilePage(): React.JSX.Element {
               <span>Alterar Capa do Perfil</span>
             </DialogTitle>
             <DialogDescription className="text-xs text-zinc-500 dark:text-zinc-400">
-              Faça o upload de uma imagem personalizada ou escolha um dos temas oficiais do clube.
+              Faça o upload de uma imagem personalizada ou escolha um dos temas
+              oficiais do clube.
             </DialogDescription>
           </DialogHeader>
 
@@ -839,13 +869,18 @@ export default function ProfilePage(): React.JSX.Element {
                           fill
                           className={cn(
                             "object-cover transition-transform duration-300 group-hover:scale-105",
-                            isSelected ? "opacity-80" : "opacity-55 group-hover:opacity-75"
+                            isSelected
+                              ? "opacity-80"
+                              : "opacity-55 group-hover:opacity-75"
                           )}
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                         {isSelected && (
                           <div className="absolute top-2 right-2 w-5 h-5 rounded-full bg-brand-primary text-white flex items-center justify-center shadow-md">
-                            <Check className="w-3 h-3 text-white" weight="bold" />
+                            <Check
+                              className="w-3 h-3 text-white"
+                              weight="bold"
+                            />
                           </div>
                         )}
                       </div>
@@ -878,7 +913,10 @@ export default function ProfilePage(): React.JSX.Element {
                   <div className="w-12 h-12 rounded-full border-2 border-white dark:border-zinc-700 overflow-hidden bg-zinc-900 relative shadow-md">
                     <Avatar size="md" radius="full" className="w-full h-full">
                       {userProfile.avatar && (
-                        <AvatarImage src={userProfile.avatar} alt={userProfile.name} />
+                        <AvatarImage
+                          src={userProfile.avatar}
+                          alt={userProfile.name}
+                        />
                       )}
                       <AvatarFallback className="text-xs font-bold bg-zinc-900 text-white">
                         {getInitials(userProfile.name)}
@@ -890,7 +928,8 @@ export default function ProfilePage(): React.JSX.Element {
                       {userProfile.name}
                     </p>
                     <p className="text-[10px] text-zinc-300">
-                      {userProfile.role} {userProfile.company ? `• ${userProfile.company}` : ""}
+                      {userProfile.role}{" "}
+                      {userProfile.company ? `• ${userProfile.company}` : ""}
                     </p>
                   </div>
                 </div>
@@ -953,7 +992,8 @@ export default function ProfilePage(): React.JSX.Element {
               <span>Ativar Autenticação 2FA</span>
             </DialogTitle>
             <DialogDescription className="text-xs text-zinc-500 dark:text-zinc-400">
-              Escaneie o código QR com o seu aplicativo autenticador ou insira a chave manualmente para ativar.
+              Escaneie o código QR com o seu aplicativo autenticador ou insira a
+              chave manualmente para ativar.
             </DialogDescription>
           </DialogHeader>
 
@@ -965,7 +1005,8 @@ export default function ProfilePage(): React.JSX.Element {
                 </div>
               </div>
               <p className="text-[11px] text-zinc-500 dark:text-zinc-400 max-w-xs">
-                Abra o Google Authenticator ou seu app de preferência e aponte a câmera para a imagem acima.
+                Abra o Google Authenticator ou seu app de preferência e aponte a
+                câmera para a imagem acima.
               </p>
             </div>
 
@@ -1011,7 +1052,11 @@ export default function ProfilePage(): React.JSX.Element {
 
           <DialogFooter className="pt-3 border-t border-zinc-100 dark:border-zinc-800">
             <DialogClose asChild>
-              <Button variant="flat" size="sm" className="font-bold text-xs uppercase tracking-wider">
+              <Button
+                variant="flat"
+                size="sm"
+                className="font-bold text-xs uppercase tracking-wider"
+              >
                 Cancelar
               </Button>
             </DialogClose>
@@ -1045,7 +1090,8 @@ export default function ProfilePage(): React.JSX.Element {
               <span>Editar Foto de Perfil</span>
             </DialogTitle>
             <DialogDescription className="text-xs text-zinc-500 dark:text-zinc-400">
-              Selecione uma imagem e ajuste o enquadramento circular para o seu avatar.
+              Selecione uma imagem e ajuste o enquadramento circular para o seu
+              avatar.
             </DialogDescription>
           </DialogHeader>
 

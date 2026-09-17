@@ -1,10 +1,13 @@
 "use client"
 
 import * as React from "react"
+
 import Image from "next/image"
 import Link from "next/link"
 import { notFound, useParams, useRouter } from "next/navigation"
-import { AnimatePresence, motion } from "framer-motion"
+
+import { formatBRL } from "@/src/data/portalData"
+import { usePortalStore } from "@/src/store/usePortalStore"
 import {
   ArrowLeft,
   Bed,
@@ -24,13 +27,8 @@ import {
   Wine,
   XCircle,
 } from "@phosphor-icons/react"
+import { AnimatePresence, motion } from "framer-motion"
 
-import { formatBRL } from "@/src/data/portalData"
-import { usePortalStore } from "@/src/store/usePortalStore"
-import { Container } from "@/src/components/common/container"
-import { BackButton } from "@/src/components/portal/BackButton"
-import { GlassBadge } from "@/src/components/portal/GlassBadge"
-import { ShareButton } from "@/src/components/portal/ShareButton"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -43,6 +41,12 @@ import {
   AlertDialogTrigger,
 } from "@/src/components/ui/alertDialog/alertDialog"
 import { toast } from "@/src/components/ui/toast/toast"
+
+import { Container } from "@/src/components/common/container"
+import { BackButton } from "@/src/components/portal/BackButton"
+import { GlassBadge } from "@/src/components/portal/GlassBadge"
+import { ShareButton } from "@/src/components/portal/ShareButton"
+
 import { cn } from "@/src/lib/utils"
 
 export default function MinhaHospedagemDetailPage(): React.JSX.Element {
@@ -104,9 +108,13 @@ export default function MinhaHospedagemDetailPage(): React.JSX.Element {
           <span>•</span>
           <span>{stay.guests} hóspedes</span>
           <span>•</span>
-          <span>{stay.nights} {stay.nights === 1 ? "diária" : "diárias"}</span>
+          <span>
+            {stay.nights} {stay.nights === 1 ? "diária" : "diárias"}
+          </span>
           <span>•</span>
-          <span className="font-mono text-brand-primary font-bold">Voucher: {stay.confirmationCode}</span>
+          <span className="font-mono text-brand-primary font-bold">
+            Voucher: {stay.confirmationCode}
+          </span>
         </p>
       </div>
 
@@ -123,7 +131,11 @@ export default function MinhaHospedagemDetailPage(): React.JSX.Element {
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-black/20" />
 
             <div className="absolute top-4 left-4 z-10">
-              <GlassBadge icon={<Check className="w-3.5 h-3.5 text-emerald-400 stroke-[2.5]" />}>
+              <GlassBadge
+                icon={
+                  <Check className="w-3.5 h-3.5 text-emerald-400 stroke-[2.5]" />
+                }
+              >
                 Reserva Confirmada
               </GlassBadge>
             </div>
@@ -143,7 +155,9 @@ export default function MinhaHospedagemDetailPage(): React.JSX.Element {
                 </p>
                 <p className="text-[11px] text-zinc-300 flex items-center gap-1.5 mt-0.5">
                   <Clock className="w-3.5 h-3.5 text-brand-primary shrink-0" />
-                  <span>Check-in a partir das 15h00 • Check-out até às 12h00</span>
+                  <span>
+                    Check-in a partir das 15h00 • Check-out até às 12h00
+                  </span>
                 </p>
               </div>
             </div>
@@ -196,10 +210,15 @@ export default function MinhaHospedagemDetailPage(): React.JSX.Element {
               Sobre a acomodação reservada
             </h2>
             <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed">
-              Sua estadia na propriedade {stay.stayName} foi garantida através do benefício exclusivo de membro ClubKey. O empreendimento oferece curadoria premium de hospitalidade, privacidade absoluta e infraestrutura de alta gastronomia, bem-estar e lazer.
+              Sua estadia na propriedade {stay.stayName} foi garantida através
+              do benefício exclusivo de membro ClubKey. O empreendimento oferece
+              curadoria premium de hospitalidade, privacidade absoluta e
+              infraestrutura de alta gastronomia, bem-estar e lazer.
             </p>
             <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed">
-              No momento do check-in, apresente o voucher oficial impresso ou em formato digital no smartphone acompanhado de um documento de identidade com foto do titular da reserva.
+              No momento do check-in, apresente o voucher oficial impresso ou em
+              formato digital no smartphone acompanhado de um documento de
+              identidade com foto do titular da reserva.
             </p>
           </section>
 
@@ -251,7 +270,9 @@ export default function MinhaHospedagemDetailPage(): React.JSX.Element {
                   <span>Cancelamento & Reagendamento</span>
                 </div>
                 <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
-                  Cancelamento gratuito e sem ônus com até 7 dias de antecedência da data de entrada. Para alteração de datas, utilize os canais oficiais do portal.
+                  Cancelamento gratuito e sem ônus com até 7 dias de
+                  antecedência da data de entrada. Para alteração de datas,
+                  utilize os canais oficiais do portal.
                 </p>
               </div>
             </div>
@@ -284,26 +305,37 @@ export default function MinhaHospedagemDetailPage(): React.JSX.Element {
                 {stay.confirmationCode}
               </span>
               <span className="text-[11px] text-zinc-500 dark:text-zinc-400 block">
-                Titular: <strong className="text-zinc-900 dark:text-white font-semibold">{userProfile.name}</strong>
+                Titular:{" "}
+                <strong className="text-zinc-900 dark:text-white font-semibold">
+                  {userProfile.name}
+                </strong>
               </span>
             </div>
 
             <div className="space-y-2 text-xs text-zinc-600 dark:text-zinc-400 border-b border-zinc-100 dark:border-zinc-800 pb-5">
               <div className="flex justify-between items-center">
                 <span>Check-in:</span>
-                <strong className="text-zinc-900 dark:text-white font-semibold">{stay.checkIn.split(",")[0]}</strong>
+                <strong className="text-zinc-900 dark:text-white font-semibold">
+                  {stay.checkIn.split(",")[0]}
+                </strong>
               </div>
               <div className="flex justify-between items-center">
                 <span>Check-out:</span>
-                <strong className="text-zinc-900 dark:text-white font-semibold">{stay.checkOut.split(",")[0]}</strong>
+                <strong className="text-zinc-900 dark:text-white font-semibold">
+                  {stay.checkOut.split(",")[0]}
+                </strong>
               </div>
               <div className="flex justify-between items-center">
                 <span>Total de diárias:</span>
-                <strong className="text-zinc-900 dark:text-white font-semibold">{stay.nights} noites</strong>
+                <strong className="text-zinc-900 dark:text-white font-semibold">
+                  {stay.nights} noites
+                </strong>
               </div>
               <div className="flex justify-between items-center">
                 <span>Hóspedes:</span>
-                <strong className="text-zinc-900 dark:text-white font-semibold">{stay.guests} pessoas</strong>
+                <strong className="text-zinc-900 dark:text-white font-semibold">
+                  {stay.guests} pessoas
+                </strong>
               </div>
               <div className="flex justify-between items-center pt-2 border-t border-zinc-100 dark:border-zinc-800/60">
                 <span>Total da reserva:</span>
@@ -373,15 +405,14 @@ export default function MinhaHospedagemDetailPage(): React.JSX.Element {
                       Cancelar reserva em {stay.stayName}?
                     </AlertDialogTitle>
                     <AlertDialogDescription>
-                      Tem certeza que deseja solicitar o cancelamento desta reserva ({stay.roomType} • {stay.checkIn})? Nossa equipe de atendimento será notificada para o processo de estorno.
+                      Tem certeza que deseja solicitar o cancelamento desta
+                      reserva ({stay.roomType} • {stay.checkIn})? Nossa equipe
+                      de atendimento será notificada para o processo de estorno.
                     </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
                     <AlertDialogCancel>Manter reserva</AlertDialogCancel>
-                    <AlertDialogAction
-                      color="danger"
-                      onClick={handleCancel}
-                    >
+                    <AlertDialogAction color="danger" onClick={handleCancel}>
                       Confirmar cancelamento
                     </AlertDialogAction>
                   </AlertDialogFooter>

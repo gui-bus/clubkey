@@ -1,31 +1,33 @@
-"use client";
+"use client"
 
-import { WarningCircle, Warning, CheckCircle, Info, X } from "@phosphor-icons/react";
-import * as React from "react";
-import { cn } from "../../../lib/utils";
+import * as React from "react"
 
-type AlertColor = "default" | "info" | "success" | "warning" | "danger";
+import {
+  CheckCircle,
+  Info,
+  Warning,
+  WarningCircle,
+  X,
+} from "@phosphor-icons/react"
+
+import { cn } from "../../../lib/utils"
+
+type AlertColor = "default" | "info" | "success" | "warning" | "danger"
 
 type AlertVariant =
-  | "default"
-  | "bordered"
-  | "flat"
-  | "ghost"
-  | "shadow"
-  | "accent-left"
-  | "glow";
+  "default" | "bordered" | "flat" | "ghost" | "shadow" | "accent-left" | "glow"
 
 interface AlertContextValue {
-  color: AlertColor;
-  variant: AlertVariant;
+  color: AlertColor
+  variant: AlertVariant
 }
 
 const AlertContext = React.createContext<AlertContextValue>({
   color: "info",
   variant: "default",
-});
+})
 
-const useAlertContext = () => React.useContext(AlertContext);
+const useAlertContext = () => React.useContext(AlertContext)
 
 const titleColorMap: Record<AlertColor, string> = {
   default: "text-zinc-900 dark:text-zinc-100 font-semibold",
@@ -33,7 +35,7 @@ const titleColorMap: Record<AlertColor, string> = {
   success: "text-emerald-600 dark:text-emerald-400 font-semibold",
   warning: "text-amber-600 dark:text-amber-400 font-semibold",
   danger: "text-rose-600 dark:text-rose-400 font-semibold",
-};
+}
 
 const iconColorMap: Record<AlertColor, string> = {
   default: "text-zinc-500 dark:text-zinc-400",
@@ -41,7 +43,7 @@ const iconColorMap: Record<AlertColor, string> = {
   success: "text-emerald-500",
   warning: "text-amber-500",
   danger: "text-rose-500",
-};
+}
 
 const accentLeftBorderMap: Record<AlertColor, string> = {
   default: "border-l-4 border-l-zinc-500",
@@ -49,7 +51,7 @@ const accentLeftBorderMap: Record<AlertColor, string> = {
   success: "border-l-4 border-l-emerald-500",
   warning: "border-l-4 border-l-amber-500",
   danger: "border-l-4 border-l-rose-500",
-};
+}
 
 const glowMap: Record<AlertColor, string> = {
   default:
@@ -61,7 +63,7 @@ const glowMap: Record<AlertColor, string> = {
     "shadow-[0_0_15px_rgba(245,158,11,0.3)] border-amber-400/50 dark:border-amber-500/50",
   danger:
     "shadow-[0_0_15px_rgba(244,63,94,0.3)] border-rose-400/50 dark:border-rose-500/50",
-};
+}
 
 const variantCardMap: Record<AlertVariant, string> = {
   default:
@@ -76,7 +78,7 @@ const variantCardMap: Record<AlertVariant, string> = {
   "accent-left":
     "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 border-y border-r border-zinc-200/80 dark:border-zinc-800/80 shadow-xs",
   glow: "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 border",
-};
+}
 
 const iconMap: Record<AlertColor, React.ElementType> = {
   default: Info,
@@ -84,24 +86,26 @@ const iconMap: Record<AlertColor, React.ElementType> = {
   success: CheckCircle,
   warning: Warning,
   danger: WarningCircle,
-};
+}
 
-export interface AlertProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
-  variant?: AlertVariant;
-  color?: AlertColor;
-  title?: React.ReactNode;
-  icon?: React.ReactNode;
-  customIcon?: React.ReactNode;
-  startContent?: React.ReactNode;
-  endContent?: React.ReactNode;
-  hideIcon?: boolean;
-  isClosable?: boolean;
-  isDismissible?: boolean;
-  durationMs?: number;
-  onClose?: () => void;
-  action?: React.ReactNode;
-  showWatermark?: boolean;
+export interface AlertProps extends Omit<
+  React.HTMLAttributes<HTMLDivElement>,
+  "title"
+> {
+  variant?: AlertVariant
+  color?: AlertColor
+  title?: React.ReactNode
+  icon?: React.ReactNode
+  customIcon?: React.ReactNode
+  startContent?: React.ReactNode
+  endContent?: React.ReactNode
+  hideIcon?: boolean
+  isClosable?: boolean
+  isDismissible?: boolean
+  durationMs?: number
+  onClose?: () => void
+  action?: React.ReactNode
+  showWatermark?: boolean
 }
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
@@ -125,28 +129,28 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
       children,
       ...props
     },
-    ref,
+    ref
   ) => {
-    const [isVisible, setIsVisible] = React.useState(true);
+    const [isVisible, setIsVisible] = React.useState(true)
 
     const handleClose = React.useCallback(() => {
-      setIsVisible(false);
-      onClose?.();
-    }, [onClose]);
+      setIsVisible(false)
+      onClose?.()
+    }, [onClose])
 
     React.useEffect(() => {
       if ((isDismissible || durationMs) && durationMs && durationMs > 0) {
         const timer = setTimeout(() => {
-          handleClose();
-        }, durationMs);
-        return () => clearTimeout(timer);
+          handleClose()
+        }, durationMs)
+        return () => clearTimeout(timer)
       }
-    }, [isDismissible, durationMs, handleClose]);
+    }, [isDismissible, durationMs, handleClose])
 
-    if (!isVisible) return null;
+    if (!isVisible) return null
 
-    const IconComponent = iconMap[color];
-    const activeIcon = customIcon ?? icon;
+    const IconComponent = iconMap[color]
+    const activeIcon = customIcon ?? icon
 
     const renderedStart =
       !showWatermark &&
@@ -156,15 +160,15 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
             <IconComponent
               className={cn("size-5 shrink-0 mt-0.5", iconColorMap[color])}
             />
-          ))));
+          ))))
 
     const watermarkElement = showWatermark && !hideIcon && (
       <div className="absolute right-4 bottom-0 -mb-4 -mr-2 opacity-[0.08] dark:opacity-[0.04] pointer-events-none select-none text-zinc-900 dark:text-white">
         {activeIcon ?? <IconComponent className="size-24" />}
       </div>
-    );
+    )
 
-    const canClose = isClosable || isDismissible;
+    const canClose = isClosable || isDismissible
 
     return (
       <AlertContext.Provider value={{ color, variant }}>
@@ -176,7 +180,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
             variantCardMap[variant],
             variant === "accent-left" && accentLeftBorderMap[color],
             variant === "glow" && glowMap[color],
-            className,
+            className
           )}
           {...props}
         >
@@ -228,16 +232,16 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
           )}
         </div>
       </AlertContext.Provider>
-    );
-  },
-);
-Alert.displayName = "Alert";
+    )
+  }
+)
+Alert.displayName = "Alert"
 
 const AlertTitle = React.forwardRef<
   HTMLHeadingElement,
   React.HTMLAttributes<HTMLHeadingElement>
 >(({ className, children, ...props }, ref) => {
-  const { color } = useAlertContext();
+  const { color } = useAlertContext()
 
   return (
     <h5
@@ -245,15 +249,15 @@ const AlertTitle = React.forwardRef<
       className={cn(
         "font-semibold text-sm leading-none tracking-tight",
         titleColorMap[color],
-        className,
+        className
       )}
       {...props}
     >
       {children}
     </h5>
-  );
-});
-AlertTitle.displayName = "AlertTitle";
+  )
+})
+AlertTitle.displayName = "AlertTitle"
 
 const AlertDescription = React.forwardRef<
   HTMLDivElement,
@@ -263,14 +267,14 @@ const AlertDescription = React.forwardRef<
     ref={ref}
     className={cn(
       "text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed mt-1.5",
-      className,
+      className
     )}
     {...props}
   >
     {children}
   </div>
-));
-AlertDescription.displayName = "AlertDescription";
+))
+AlertDescription.displayName = "AlertDescription"
 
-export type { AlertColor, AlertVariant };
-export { Alert, AlertDescription, AlertTitle };
+export type { AlertColor, AlertVariant }
+export { Alert, AlertDescription, AlertTitle }

@@ -1,16 +1,19 @@
-"use client";
+"use client"
 
-import * as SliderPrimitive from "@radix-ui/react-slider";
-import * as React from "react";
-import { cn } from "../../../lib/utils";
+import * as React from "react"
+
+import * as SliderPrimitive from "@radix-ui/react-slider"
+
+import { cn } from "../../../lib/utils"
 
 export interface SliderMark {
-  value: number;
-  label?: string;
+  value: number
+  label?: string
 }
 
-export interface SliderProps
-  extends React.ComponentPropsWithoutRef<typeof SliderPrimitive.Root> {
+export interface SliderProps extends React.ComponentPropsWithoutRef<
+  typeof SliderPrimitive.Root
+> {
   color?:
     | "default"
     | "primary"
@@ -18,18 +21,18 @@ export interface SliderProps
     | "accent"
     | "success"
     | "warning"
-    | "danger";
-  size?: "sm" | "md" | "lg";
-  label?: React.ReactNode;
-  showValue?: boolean;
-  showTooltip?: boolean;
-  formatTooltip?: (value: number) => string;
-  formatValue?: (val: number[]) => string;
-  marks?: SliderMark[];
-  histogramData?: number[];
-  histogramHeight?: number;
-  isRequired?: boolean;
-  isInvalid?: boolean;
+    | "danger"
+  size?: "sm" | "md" | "lg"
+  label?: React.ReactNode
+  showValue?: boolean
+  showTooltip?: boolean
+  formatTooltip?: (value: number) => string
+  formatValue?: (val: number[]) => string
+  marks?: SliderMark[]
+  histogramData?: number[]
+  histogramHeight?: number
+  isRequired?: boolean
+  isInvalid?: boolean
 }
 
 const trackColorMap = {
@@ -40,7 +43,7 @@ const trackColorMap = {
   success: "bg-emerald-500",
   warning: "bg-amber-500",
   danger: "bg-rose-500",
-};
+}
 
 const thumbBorderMap = {
   default: "border-zinc-400 dark:border-zinc-600 focus-visible:ring-sky-500/20",
@@ -50,13 +53,13 @@ const thumbBorderMap = {
   success: "border-emerald-500 focus-visible:ring-emerald-500/20",
   warning: "border-amber-500 focus-visible:ring-amber-500/20",
   danger: "border-rose-500 focus-visible:ring-rose-500/20",
-};
+}
 
 const sizeMap = {
   sm: { track: "h-1", thumb: "size-3.5" },
   md: { track: "h-2", thumb: "size-4" },
   lg: { track: "h-3", thumb: "size-5" },
-};
+}
 
 const Slider = React.forwardRef<
   React.ComponentRef<typeof SliderPrimitive.Root>,
@@ -84,48 +87,48 @@ const Slider = React.forwardRef<
       isInvalid: _isInvalid = false,
       ...props
     },
-    ref,
+    ref
   ) => {
     const initialVal = React.useMemo(() => {
-      if (Array.isArray(value)) return value;
-      if (Array.isArray(defaultValue)) return defaultValue;
-      return [min];
-    }, [value, defaultValue, min]);
+      if (Array.isArray(value)) return value
+      if (Array.isArray(defaultValue)) return defaultValue
+      return [min]
+    }, [value, defaultValue, min])
 
-    const [currentVal, setCurrentVal] = React.useState<number[]>(initialVal);
+    const [currentVal, setCurrentVal] = React.useState<number[]>(initialVal)
     const [hoveredThumbIndex, setHoveredThumbIndex] = React.useState<
       number | null
-    >(null);
+    >(null)
 
     React.useEffect(() => {
       if (Array.isArray(value)) {
-        setCurrentVal(value);
+        setCurrentVal(value)
       }
-    }, [value]);
+    }, [value])
 
     const handleValueChange = (vals: number[]) => {
       if (value === undefined) {
-        setCurrentVal(vals);
+        setCurrentVal(vals)
       }
-      onValueChange?.(vals);
-    };
+      onValueChange?.(vals)
+    }
 
     const formattedDisplay = React.useMemo(() => {
-      if (formatValue) return formatValue(currentVal);
-      return currentVal.join(" - ");
-    }, [currentVal, formatValue]);
+      if (formatValue) return formatValue(currentVal)
+      return currentVal.join(" - ")
+    }, [currentVal, formatValue])
 
     const maxHistogramVal = React.useMemo(() => {
-      if (!histogramData || histogramData.length === 0) return 1;
-      return Math.max(...histogramData);
-    }, [histogramData]);
+      if (!histogramData || histogramData.length === 0) return 1
+      return Math.max(...histogramData)
+    }, [histogramData])
 
     const activeRange = React.useMemo(() => {
-      if (currentVal.length === 0) return [min, max];
-      if (currentVal.length === 1) return [min, currentVal[0]];
-      const sorted = [...currentVal].sort((a, b) => a - b);
-      return [sorted[0], sorted[sorted.length - 1]];
-    }, [currentVal, min, max]);
+      if (currentVal.length === 0) return [min, max]
+      if (currentVal.length === 1) return [min, currentVal[0]]
+      const sorted = [...currentVal].sort((a, b) => a - b)
+      return [sorted[0], sorted[sorted.length - 1]]
+    }, [currentVal, min, max])
 
     return (
       <div className="w-full flex flex-col gap-2">
@@ -152,16 +155,13 @@ const Slider = React.forwardRef<
               className="w-full flex items-end gap-1 px-1 mb-1 select-none pointer-events-none"
             >
               {histogramData.map((val, idx) => {
-                const stepSize = (max - min) / histogramData.length;
-                const barMin = min + idx * stepSize;
-                const barMax = barMin + stepSize;
-                const heightPercent = Math.max(
-                  8,
-                  (val / maxHistogramVal) * 100,
-                );
+                const stepSize = (max - min) / histogramData.length
+                const barMin = min + idx * stepSize
+                const barMax = barMin + stepSize
+                const heightPercent = Math.max(8, (val / maxHistogramVal) * 100)
 
                 const isActive =
-                  barMax >= activeRange[0] && barMin <= activeRange[1];
+                  barMax >= activeRange[0] && barMin <= activeRange[1]
 
                 return (
                   <div
@@ -171,10 +171,10 @@ const Slider = React.forwardRef<
                       "flex-1 rounded-t transition-colors duration-200",
                       isActive
                         ? "bg-sky-500/80 dark:bg-sky-400/80"
-                        : "bg-zinc-200/80 dark:bg-zinc-800/80",
+                        : "bg-zinc-200/80 dark:bg-zinc-800/80"
                     )}
                   />
-                );
+                )
               })}
             </div>
           )}
@@ -189,14 +189,14 @@ const Slider = React.forwardRef<
               onValueChange={handleValueChange}
               className={cn(
                 "relative flex w-full touch-none select-none items-center cursor-pointer z-10",
-                className,
+                className
               )}
               {...props}
             >
               <SliderPrimitive.Track
                 className={cn(
                   "relative w-full grow overflow-hidden rounded-full bg-zinc-200 dark:bg-zinc-800",
-                  sizeMap[size].track,
+                  sizeMap[size].track
                 )}
               >
                 <SliderPrimitive.Range
@@ -207,9 +207,9 @@ const Slider = React.forwardRef<
               {currentVal.map((val, i) => {
                 const _percent = Math.min(
                   100,
-                  Math.max(0, ((val - min) / (max - min)) * 100),
-                );
-                const isHovered = hoveredThumbIndex === i;
+                  Math.max(0, ((val - min) / (max - min)) * 100)
+                )
+                const isHovered = hoveredThumbIndex === i
 
                 return (
                   <React.Fragment key={i}>
@@ -219,7 +219,7 @@ const Slider = React.forwardRef<
                       className={cn(
                         "block rounded-full border-2 bg-white dark:bg-zinc-900 shadow-xs transition-transform focus-visible:outline-none focus-visible:ring-4 disabled:pointer-events-none disabled:opacity-50 hover:scale-110 cursor-pointer relative",
                         sizeMap[size].thumb,
-                        thumbBorderMap[color],
+                        thumbBorderMap[color]
                       )}
                     >
                       {showTooltip && (
@@ -228,7 +228,7 @@ const Slider = React.forwardRef<
                             "absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 rounded-lg bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 text-[10px] font-bold font-mono shadow-md whitespace-nowrap pointer-events-none transition-all duration-150 origin-bottom",
                             isHovered
                               ? "opacity-100 scale-100 translate-y-0"
-                              : "opacity-0 scale-95 translate-y-1",
+                              : "opacity-0 scale-95 translate-y-1"
                           )}
                         >
                           {formatTooltip ? formatTooltip(val) : val}
@@ -237,7 +237,7 @@ const Slider = React.forwardRef<
                       )}
                     </SliderPrimitive.Thumb>
                   </React.Fragment>
-                );
+                )
               })}
             </SliderPrimitive.Root>
 
@@ -246,8 +246,8 @@ const Slider = React.forwardRef<
                 {marks.map((mark, i) => {
                   const percent = Math.min(
                     100,
-                    Math.max(0, ((mark.value - min) / (max - min)) * 100),
-                  );
+                    Math.max(0, ((mark.value - min) / (max - min)) * 100)
+                  )
                   return (
                     <div
                       key={i}
@@ -261,16 +261,16 @@ const Slider = React.forwardRef<
                         </span>
                       )}
                     </div>
-                  );
+                  )
                 })}
               </div>
             )}
           </div>
         </div>
       </div>
-    );
-  },
-);
-Slider.displayName = SliderPrimitive.Root.displayName;
+    )
+  }
+)
+Slider.displayName = SliderPrimitive.Root.displayName
 
-export { Slider };
+export { Slider }

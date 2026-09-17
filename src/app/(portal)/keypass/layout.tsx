@@ -1,8 +1,9 @@
 "use client"
 
 import * as React from "react"
-import { PortalHero } from "@/src/components/portal/PortalHero"
+
 import { KeyPassNav } from "@/src/components/portal/KeyPassNav"
+import { PortalHero } from "@/src/components/portal/PortalHero"
 
 export default function KeyPassLayout({
   children,
@@ -15,7 +16,7 @@ export default function KeyPassLayout({
         badge="Passe de Temporada • Status, Privilégios & Recompensas"
         title={
           <>
-            Níveis & <span className="text-brand-primary">Recompensas</span>
+            Tiers & <span className="text-brand-primary">Recompensas</span>
           </>
         }
         description="Evolua seu passe de associado, acumule pontos XP e desbloqueie tokens RIB e privilégios exclusivos no clube."

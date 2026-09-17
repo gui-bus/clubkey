@@ -1,18 +1,17 @@
 "use client"
 
 import * as React from "react"
-import Link from "next/link"
+
 import Image from "next/image"
+import Link from "next/link"
 import { usePathname } from "next/navigation"
-import {
-  ChartLineUp,
-  Target,
-  Trophy,
-  BookOpen,
-} from "@phosphor-icons/react"
-import { Container } from "@/src/components/common/container"
-import { usePortalStore } from "@/src/store/usePortalStore"
+
 import { TIERS_CONFIG } from "@/src/data/portalData"
+import { usePortalStore } from "@/src/store/usePortalStore"
+import { BookOpen, ChartLineUp, Target, Trophy } from "@phosphor-icons/react"
+
+import { Container } from "@/src/components/common/container"
+
 import { cn } from "@/src/lib/utils"
 
 const NAV_TABS = [
@@ -33,7 +32,7 @@ const NAV_TABS = [
     icon: Trophy,
   },
   {
-    name: "Níveis & Regulamento",
+    name: "Tiers & Regulamento",
     href: "/keypass/regras",
     icon: BookOpen,
   },

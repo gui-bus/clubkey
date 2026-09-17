@@ -1,21 +1,24 @@
 "use client"
 
 import * as React from "react"
+
 import { redirect } from "next/navigation"
 
-import { brandConfig } from "@/src/config/brand.config"
 import { usePortalStore } from "@/src/store/usePortalStore"
-import { TopBanner } from "@/src/components/landing/TopBanner"
-import { Navbar } from "@/src/components/landing/Navbar"
-import { Hero } from "@/src/components/landing/Hero"
-import { WhatIsClubKey } from "@/src/components/landing/WhatIsClubKey"
-import { PartnersMarquee } from "@/src/components/landing/PartnersMarquee"
+
 import { ExperienceBanner } from "@/src/components/landing/ExperienceBanner"
-import { HowItWorksCatalog } from "@/src/components/landing/HowItWorksCatalog"
 import { FaqSection } from "@/src/components/landing/FaqSection"
-import { Footer } from "@/src/components/landing/Footer"
 import { FloatingCta } from "@/src/components/landing/FloatingCta"
+import { Footer } from "@/src/components/landing/Footer"
+import { Hero } from "@/src/components/landing/Hero"
+import { HowItWorksCatalog } from "@/src/components/landing/HowItWorksCatalog"
+import { Navbar } from "@/src/components/landing/Navbar"
+import { PartnersMarquee } from "@/src/components/landing/PartnersMarquee"
+import { TopBanner } from "@/src/components/landing/TopBanner"
+import { WhatIsClubKey } from "@/src/components/landing/WhatIsClubKey"
 import { PortalHome } from "@/src/components/portal/PortalHome"
+
+import { brandConfig } from "@/src/config/brand.config"
 
 export default function Page(): React.JSX.Element {
   const { isAuthenticated } = usePortalStore()

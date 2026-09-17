@@ -12,6 +12,7 @@ import {
 } from "@/src/data/portalData"
 import { usePortalStore } from "@/src/store/usePortalStore"
 import { ArrowRight, Check, Clock, Gift, MapPin } from "@phosphor-icons/react"
+
 import { CtaButton } from "@/src/components/common/ctaButton"
 
 interface ExperienceCardProps {

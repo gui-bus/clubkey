@@ -1,10 +1,14 @@
 "use client"
 
 import * as React from "react"
+
 import { CalendarPlus } from "@phosphor-icons/react"
+
 import { toast } from "@/src/components/ui/toast/toast"
-import { cn } from "@/src/lib/utils"
+
 import { CtaButton, CtaButtonSize } from "@/src/components/common/ctaButton"
+
+import { cn } from "@/src/lib/utils"
 
 export interface AddToCalendarButtonProps {
   title: string
@@ -25,7 +29,9 @@ export function AddToCalendarButton({
   className,
   size = "sm",
 }: AddToCalendarButtonProps): React.JSX.Element {
-  const handleAddToCalendar = (e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => {
+  const handleAddToCalendar = (
+    e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>
+  ) => {
     e.preventDefault()
     e.stopPropagation()
 

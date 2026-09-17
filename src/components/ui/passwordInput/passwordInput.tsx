@@ -1,10 +1,12 @@
 "use client"
 
 import * as React from "react"
-import { type VariantProps } from "class-variance-authority"
+
 import { Check, Circle, Eye, EyeSlash, X } from "@phosphor-icons/react"
+import { type VariantProps } from "class-variance-authority"
 
 import { Input, type inputVariants } from "@/src/components/ui/input/input"
+
 import { cn } from "@/src/lib/utils"
 
 export interface PasswordRule {
@@ -14,7 +16,8 @@ export interface PasswordRule {
 }
 
 export interface PasswordInputProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "size">,
+  extends
+    Omit<React.InputHTMLAttributes<HTMLInputElement>, "size">,
     VariantProps<typeof inputVariants> {
   minLength?: number
   requireUppercase?: boolean

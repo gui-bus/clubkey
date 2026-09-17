@@ -1,12 +1,16 @@
-"use client";
+"use client"
 
-import { cva } from "class-variance-authority";
-import * as React from "react";
-import { designRadius } from "../../../lib/design-system";
-import { cn } from "../../../lib/utils";
+import * as React from "react"
 
-export interface TextareaProps
-  extends Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, "size"> {
+import { cva } from "class-variance-authority"
+
+import { designRadius } from "../../../lib/design-system"
+import { cn } from "../../../lib/utils"
+
+export interface TextareaProps extends Omit<
+  React.TextareaHTMLAttributes<HTMLTextAreaElement>,
+  "size"
+> {
   variant?:
     | "default"
     | "bordered"
@@ -15,7 +19,7 @@ export interface TextareaProps
     | "filled"
     | "glassmorphism"
     | "gradient-border"
-    | "glow";
+    | "glow"
   color?:
     | "default"
     | "primary"
@@ -23,19 +27,19 @@ export interface TextareaProps
     | "accent"
     | "success"
     | "warning"
-    | "danger";
-  size?: "sm" | "md" | "lg";
-  radius?: keyof typeof designRadius;
-  label?: React.ReactNode;
-  labelPlacement?: "top" | "left" | "inside";
-  description?: React.ReactNode;
-  errorMessage?: React.ReactNode;
-  isInvalid?: boolean;
-  maxCount?: number;
-  autoResize?: boolean;
-  minRows?: number;
-  maxRows?: number;
-  isRequired?: boolean;
+    | "danger"
+  size?: "sm" | "md" | "lg"
+  radius?: keyof typeof designRadius
+  label?: React.ReactNode
+  labelPlacement?: "top" | "left" | "inside"
+  description?: React.ReactNode
+  errorMessage?: React.ReactNode
+  isInvalid?: boolean
+  maxCount?: number
+  autoResize?: boolean
+  minRows?: number
+  maxRows?: number
+  isRequired?: boolean
 }
 
 const textareaVariants = cva(
@@ -68,8 +72,8 @@ const textareaVariants = cva(
       variant: "default",
       size: "md",
     },
-  },
-);
+  }
+)
 
 const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
   (
@@ -97,44 +101,44 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
       rows,
       ...props
     },
-    ref,
+    ref
   ) => {
-    const generatedId = React.useId();
-    const textareaId = id || generatedId;
-    const innerRef = React.useRef<HTMLTextAreaElement>(null);
+    const generatedId = React.useId()
+    const textareaId = id || generatedId
+    const innerRef = React.useRef<HTMLTextAreaElement>(null)
     React.useImperativeHandle(
       ref,
-      () => innerRef.current as HTMLTextAreaElement,
-    );
+      () => innerRef.current as HTMLTextAreaElement
+    )
 
     const [currentLength, setCurrentLength] = React.useState<number>(() => {
-      const initialVal = value || defaultValue || "";
-      return String(initialVal).length;
-    });
+      const initialVal = value || defaultValue || ""
+      return String(initialVal).length
+    })
 
     const adjustHeight = React.useCallback(() => {
-      const textarea = innerRef.current;
-      if (!textarea || !autoResize) return;
-      textarea.style.height = "auto";
-      const lineHeight = 20;
-      const minHeight = minRows * lineHeight;
-      const maxHeight = maxRows * lineHeight;
+      const textarea = innerRef.current
+      if (!textarea || !autoResize) return
+      textarea.style.height = "auto"
+      const lineHeight = 20
+      const minHeight = minRows * lineHeight
+      const maxHeight = maxRows * lineHeight
       const newHeight = Math.min(
         Math.max(textarea.scrollHeight, minHeight),
-        maxHeight,
-      );
-      textarea.style.height = `${newHeight}px`;
-    }, [autoResize, minRows, maxRows]);
+        maxHeight
+      )
+      textarea.style.height = `${newHeight}px`
+    }, [autoResize, minRows, maxRows])
 
     React.useEffect(() => {
-      adjustHeight();
-    }, [adjustHeight]);
+      adjustHeight()
+    }, [adjustHeight])
 
     const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-      setCurrentLength(e.target.value.length);
-      adjustHeight();
-      onChange?.(e);
-    };
+      setCurrentLength(e.target.value.length)
+      adjustHeight()
+      onChange?.(e)
+    }
 
     const labelEl = label && (
       <label
@@ -142,13 +146,13 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
         className={cn(
           "text-xs font-bold text-zinc-900 dark:text-zinc-100 select-none",
           labelPlacement === "inside" &&
-            "absolute top-2 left-3.5 text-[10px] text-zinc-400 dark:text-zinc-500 z-10 pointer-events-none",
+            "absolute top-2 left-3.5 text-[10px] text-zinc-400 dark:text-zinc-500 z-10 pointer-events-none"
         )}
       >
         {label}
         {isRequired && <span className="text-rose-500 ml-0.5">*</span>}
       </label>
-    );
+    )
 
     const textareaContainer = (
       <div
@@ -158,7 +162,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
           isInvalid &&
             "border-rose-500 focus-within:border-rose-500 focus-within:ring-rose-500/20 text-rose-600 dark:text-rose-400",
           labelPlacement === "inside" && "relative pt-6",
-          className,
+          className
         )}
       >
         <textarea
@@ -173,12 +177,12 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
           rows={rows || (autoResize ? minRows : undefined)}
           className={cn(
             "w-full h-full bg-transparent outline-none placeholder:text-zinc-400 dark:placeholder:text-zinc-500 text-zinc-900 dark:text-zinc-100",
-            autoResize ? "resize-none" : "resize-y",
+            autoResize ? "resize-none" : "resize-y"
           )}
           {...props}
         />
       </div>
-    );
+    )
 
     const bottomContent = (
       <div className="flex justify-between items-center text-xs">
@@ -197,7 +201,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
           </span>
         )}
       </div>
-    );
+    )
 
     if (labelPlacement === "left") {
       return (
@@ -208,7 +212,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
             {bottomContent}
           </div>
         </div>
-      );
+      )
     }
 
     return (
@@ -218,9 +222,9 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
         {textareaContainer}
         {bottomContent}
       </div>
-    );
-  },
-);
-Textarea.displayName = "Textarea";
+    )
+  }
+)
+Textarea.displayName = "Textarea"
 
-export { Textarea };
+export { Textarea }

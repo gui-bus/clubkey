@@ -4,12 +4,13 @@ import * as React from "react"
 
 import Image from "next/image"
 
+import { usePortalStore } from "@/src/store/usePortalStore"
 import { motion } from "framer-motion"
 
 import { Container } from "@/src/components/common/container"
 import { CtaButton } from "@/src/components/common/ctaButton"
+
 import { brandConfig } from "@/src/config/brand.config"
-import { usePortalStore } from "@/src/store/usePortalStore"
 
 const emptySubscribe = () => () => {}
 

@@ -1,11 +1,14 @@
 "use client"
 
 import * as React from "react"
+
 import Link from "next/link"
+
 import { motion } from "framer-motion"
 
 import { Container } from "@/src/components/common/container"
 import { CtaButton } from "@/src/components/common/ctaButton"
+
 import { brandConfig } from "@/src/config/brand.config"
 
 export function ExperienceBanner(): React.JSX.Element {
@@ -44,10 +47,7 @@ export function ExperienceBanner(): React.JSX.Element {
           </p>
 
           <div className="flex flex-wrap items-center gap-4">
-            <CtaButton
-              href={brandConfig.links.subscription}
-              size="lg"
-            >
+            <CtaButton href={brandConfig.links.subscription} size="lg">
               Solicite agora
             </CtaButton>
 

@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation"
+
 import { DEFAULT_MEMBER_STAYS, getStaySlug } from "@/src/data/portalData"
 
 interface PageProps {

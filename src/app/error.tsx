@@ -19,9 +19,7 @@ export default function Error({ reset }: ErrorProps): React.JSX.Element {
         Ocorreu um erro inesperado.
       </p>
       <div className="mt-8">
-        <CtaButton onClick={() => reset()}>
-          Tentar novamente
-        </CtaButton>
+        <CtaButton onClick={() => reset()}>Tentar novamente</CtaButton>
       </div>
     </div>
   )

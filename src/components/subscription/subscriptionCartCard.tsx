@@ -1,7 +1,9 @@
 "use client"
 
 import * as React from "react"
+
 import Image from "next/image"
+
 import { ShoppingCart } from "@phosphor-icons/react"
 
 import { brandConfig } from "@/src/config/brand.config"
@@ -124,7 +126,9 @@ export function SubscriptionCartCard({
               Total do pedido
             </span>
             <span className="text-[11px] text-zinc-500 dark:text-zinc-400 font-light">
-              {isAnnual ? "Pagamento único à vista" : "Cobrança mensal no cartão"}
+              {isAnnual
+                ? "Pagamento único à vista"
+                : "Cobrança mensal no cartão"}
             </span>
           </div>
           <div className="text-right">

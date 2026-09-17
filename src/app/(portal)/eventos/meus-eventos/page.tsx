@@ -4,7 +4,12 @@ import * as React from "react"
 
 import Link from "next/link"
 
-import { EVENTS, MONTH_LABELS, MONTH_MAP, MONTH_OPTIONS } from "@/src/data/portalData"
+import {
+  EVENTS,
+  MONTH_LABELS,
+  MONTH_MAP,
+  MONTH_OPTIONS,
+} from "@/src/data/portalData"
 import { usePortalStore } from "@/src/store/usePortalStore"
 import { Calendar, MagnifyingGlass } from "@phosphor-icons/react"
 
@@ -139,10 +144,7 @@ export default function MeusEventosPage(): React.JSX.Element {
                 <span className="px-2.5 py-1 rounded-sm bg-brand-primary/10 text-brand-primary font-bold flex items-center gap-1.5">
                   <Calendar className="w-3 h-3" />
                   <span>
-                    {
-                      MONTH_OPTIONS.find((v) => v.value === activeMonth)
-                        ?.label
-                    }
+                    {MONTH_OPTIONS.find((v) => v.value === activeMonth)?.label}
                   </span>
                 </span>
               )}

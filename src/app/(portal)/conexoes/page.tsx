@@ -3,7 +3,6 @@
 import * as React from "react"
 
 import Image from "next/image"
-
 import Link from "next/link"
 
 import { MEMBERS } from "@/src/data/portalData"
@@ -43,7 +42,8 @@ export default function ConexoesPage(): React.JSX.Element {
   const [currentPage, setCurrentPage] = React.useState(1)
 
   const activeConnectionsCount = React.useMemo(() => {
-    return Object.values(connectedMembers).filter((s) => s === "connected").length
+    return Object.values(connectedMembers).filter((s) => s === "connected")
+      .length
   }, [connectedMembers])
 
   const receivedInvitesCount = receivedPendingInvites.length
@@ -53,7 +53,11 @@ export default function ConexoesPage(): React.JSX.Element {
   }, [connectedMembers])
 
   const suggestedMatch = React.useMemo(() => {
-    return availableMembers.find((m) => m.id === 11) || availableMembers[0] || MEMBERS[10]
+    return (
+      availableMembers.find((m) => m.id === 11) ||
+      availableMembers[0] ||
+      MEMBERS[10]
+    )
   }, [availableMembers])
   const matchReason =
     "Renata lidera rodadas no ticket que você busca para as marcas do seu portfólio e já co-investiu com dois membros do clube."
@@ -152,7 +156,10 @@ export default function ConexoesPage(): React.JSX.Element {
     })
   }, [searchQuery, activeTab, availableMembers])
 
-  const totalPages = Math.max(1, Math.ceil(filteredMembers.length / ITEMS_PER_PAGE))
+  const totalPages = Math.max(
+    1,
+    Math.ceil(filteredMembers.length / ITEMS_PER_PAGE)
+  )
   const paginatedMembers = React.useMemo(() => {
     const start = (currentPage - 1) * ITEMS_PER_PAGE
     return filteredMembers.slice(start, start + ITEMS_PER_PAGE)
@@ -230,9 +237,12 @@ export default function ConexoesPage(): React.JSX.Element {
           </div>
         )}
 
-        {!searchQuery && activeTab === "todos" && suggestedMatch && connectedMembers[suggestedMatch.id] !== "connected" && (
-          <MatchCard member={suggestedMatch} reason={matchReason} />
-        )}
+        {!searchQuery &&
+          activeTab === "todos" &&
+          suggestedMatch &&
+          connectedMembers[suggestedMatch.id] !== "connected" && (
+            <MatchCard member={suggestedMatch} reason={matchReason} />
+          )}
 
         <div className="space-y-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -253,7 +263,10 @@ export default function ConexoesPage(): React.JSX.Element {
               <span>Minhas Conexões ({activeConnectionsCount})</span>
               {receivedInvitesCount > 0 && (
                 <span className="ml-2 px-1.5 py-0.2 rounded-xs bg-brand-primary text-white text-[10px] font-black">
-                  {receivedInvitesCount} {receivedInvitesCount === 1 ? "novo convite" : "novos convites"}
+                  {receivedInvitesCount}{" "}
+                  {receivedInvitesCount === 1
+                    ? "novo convite"
+                    : "novos convites"}
                 </span>
               )}
             </CtaButton>
@@ -293,11 +306,21 @@ export default function ConexoesPage(): React.JSX.Element {
               {totalPages > 1 && (
                 <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-zinc-200 dark:border-zinc-800">
                   <span className="text-xs text-zinc-500 dark:text-zinc-400">
-                    Mostrando <strong>{(currentPage - 1) * ITEMS_PER_PAGE + 1}</strong> a{" "}
-                    <strong>{Math.min(currentPage * ITEMS_PER_PAGE, filteredMembers.length)}</strong> de{" "}
-                    <strong>{filteredMembers.length}</strong> membros
+                    Mostrando{" "}
+                    <strong>{(currentPage - 1) * ITEMS_PER_PAGE + 1}</strong> a{" "}
+                    <strong>
+                      {Math.min(
+                        currentPage * ITEMS_PER_PAGE,
+                        filteredMembers.length
+                      )}
+                    </strong>{" "}
+                    de <strong>{filteredMembers.length}</strong> membros
                   </span>
-                  <Pagination radius="sm" color="primary" className="w-auto justify-center sm:justify-end">
+                  <Pagination
+                    radius="sm"
+                    color="primary"
+                    className="w-auto justify-center sm:justify-end"
+                  >
                     <PaginationContent>
                       <PaginationItem>
                         <PaginationPrevious
@@ -309,19 +332,24 @@ export default function ConexoesPage(): React.JSX.Element {
                           disabled={currentPage === 1}
                         />
                       </PaginationItem>
-                      {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                        <PaginationItem key={page}>
-                          <PaginationLink
-                            isActive={currentPage === page}
-                            onClick={() => {
-                              setCurrentPage(page)
-                              window.scrollTo({ top: 380, behavior: "smooth" })
-                            }}
-                          >
-                            {page}
-                          </PaginationLink>
-                        </PaginationItem>
-                      ))}
+                      {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                        (page) => (
+                          <PaginationItem key={page}>
+                            <PaginationLink
+                              isActive={currentPage === page}
+                              onClick={() => {
+                                setCurrentPage(page)
+                                window.scrollTo({
+                                  top: 380,
+                                  behavior: "smooth",
+                                })
+                              }}
+                            >
+                              {page}
+                            </PaginationLink>
+                          </PaginationItem>
+                        )
+                      )}
                       <PaginationItem>
                         <PaginationNext
                           label="Próxima"

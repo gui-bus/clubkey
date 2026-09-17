@@ -1,20 +1,24 @@
 "use client"
 
 import * as React from "react"
+
 import Link from "next/link"
+
+import { type SignUpFormData, signUpSchema } from "@/src/schemas/auth.schema"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Controller, useForm } from "react-hook-form"
 import { toast } from "sonner"
 
-import { PhoneInput } from "@/src/components/auth/phoneInput"
-import { TermsCard } from "@/src/components/auth/termsCard"
 import { Checkbox } from "@/src/components/ui/checkbox/checkbox"
-import { CtaButton } from "@/src/components/common/ctaButton"
 import { Input } from "@/src/components/ui/input/input"
 import { PasswordInput } from "@/src/components/ui/passwordInput/passwordInput"
-import { maskCpf, maskCnpj, maskDate } from "@/src/lib/masks"
+
+import { PhoneInput } from "@/src/components/auth/phoneInput"
+import { TermsCard } from "@/src/components/auth/termsCard"
+import { CtaButton } from "@/src/components/common/ctaButton"
+
+import { maskCnpj, maskCpf, maskDate } from "@/src/lib/masks"
 import { cn } from "@/src/lib/utils"
-import { type SignUpFormData, signUpSchema } from "@/src/schemas/auth.schema"
 
 export interface SignUpFormProps {
   onSuccess: (email: string) => void
@@ -67,7 +71,11 @@ export function SignUpForm({ onSuccess }: SignUpFormProps): React.JSX.Element {
   }
 
   return (
-    <form noValidate onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-10 w-full">
+    <form
+      noValidate
+      onSubmit={handleSubmit(onSubmit)}
+      className="flex flex-col gap-10 w-full"
+    >
       <div className="space-y-6 w-full">
         <div className="border-b border-zinc-200 dark:border-zinc-800 pb-3 flex flex-col sm:flex-row sm:items-end justify-between gap-2">
           <div>
@@ -79,7 +87,8 @@ export function SignUpForm({ onSuccess }: SignUpFormProps): React.JSX.Element {
             </p>
           </div>
           <p className="text-xs text-zinc-500 dark:text-zinc-400">
-            Campos marcados com <span className="text-red-500 font-bold">*</span> são obrigatórios
+            Campos marcados com{" "}
+            <span className="text-red-500 font-bold">*</span> são obrigatórios
           </p>
         </div>
 
@@ -135,7 +144,9 @@ export function SignUpForm({ onSuccess }: SignUpFormProps): React.JSX.Element {
               {...register("fullName")}
             />
             {errors.fullName && (
-              <span className="text-xs text-red-500">{errors.fullName.message}</span>
+              <span className="text-xs text-red-500">
+                {errors.fullName.message}
+              </span>
             )}
           </div>
 
@@ -151,13 +162,18 @@ export function SignUpForm({ onSuccess }: SignUpFormProps): React.JSX.Element {
               {...register("email")}
             />
             {errors.email && (
-              <span className="text-xs text-red-500">{errors.email.message}</span>
+              <span className="text-xs text-red-500">
+                {errors.email.message}
+              </span>
             )}
           </div>
 
           <div className="flex flex-col gap-1.5">
             <label className="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
-              {nationality === "brasileiro" ? "CPF" : "Documento de Identificação"} <span className="text-red-500 font-bold">*</span>
+              {nationality === "brasileiro"
+                ? "CPF"
+                : "Documento de Identificação"}{" "}
+              <span className="text-red-500 font-bold">*</span>
             </label>
             <Controller
               name="cpf"
@@ -167,7 +183,9 @@ export function SignUpForm({ onSuccess }: SignUpFormProps): React.JSX.Element {
                   value={field.value}
                   onChange={(e) => {
                     const formatted =
-                      nationality === "brasileiro" ? maskCpf(e.target.value) : e.target.value
+                      nationality === "brasileiro"
+                        ? maskCpf(e.target.value)
+                        : e.target.value
                     field.onChange(formatted)
                     if (nationality === "brasileiro") {
                       if (formatted.length === 14) {
@@ -183,7 +201,9 @@ export function SignUpForm({ onSuccess }: SignUpFormProps): React.JSX.Element {
                   }}
                   onBlur={field.onBlur}
                   placeholder={
-                    nationality === "brasileiro" ? "000.000.000-00" : "Número do documento"
+                    nationality === "brasileiro"
+                      ? "000.000.000-00"
+                      : "Número do documento"
                   }
                   variant={errors.cpf ? "error" : "default"}
                   disabled={isLoading}
@@ -197,7 +217,8 @@ export function SignUpForm({ onSuccess }: SignUpFormProps): React.JSX.Element {
 
           <div className="flex flex-col gap-1.5">
             <label className="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
-              Data de nascimento <span className="text-red-500 font-bold">*</span>
+              Data de nascimento{" "}
+              <span className="text-red-500 font-bold">*</span>
             </label>
             <Controller
               name="birthDate"
@@ -213,7 +234,9 @@ export function SignUpForm({ onSuccess }: SignUpFormProps): React.JSX.Element {
               )}
             />
             {errors.birthDate && (
-              <span className="text-xs text-red-500">{errors.birthDate.message}</span>
+              <span className="text-xs text-red-500">
+                {errors.birthDate.message}
+              </span>
             )}
           </div>
 
@@ -259,7 +282,9 @@ export function SignUpForm({ onSuccess }: SignUpFormProps): React.JSX.Element {
               {...register("companyName")}
             />
             {errors.companyName && (
-              <span className="text-xs text-red-500">{errors.companyName.message}</span>
+              <span className="text-xs text-red-500">
+                {errors.companyName.message}
+              </span>
             )}
           </div>
 
@@ -290,7 +315,9 @@ export function SignUpForm({ onSuccess }: SignUpFormProps): React.JSX.Element {
               )}
             />
             {errors.cnpj && (
-              <span className="text-xs text-red-500">{errors.cnpj.message}</span>
+              <span className="text-xs text-red-500">
+                {errors.cnpj.message}
+              </span>
             )}
           </div>
 
@@ -306,7 +333,9 @@ export function SignUpForm({ onSuccess }: SignUpFormProps): React.JSX.Element {
               {...register("corporateEmail")}
             />
             {errors.corporateEmail && (
-              <span className="text-xs text-red-500">{errors.corporateEmail.message}</span>
+              <span className="text-xs text-red-500">
+                {errors.corporateEmail.message}
+              </span>
             )}
           </div>
 
@@ -328,7 +357,9 @@ export function SignUpForm({ onSuccess }: SignUpFormProps): React.JSX.Element {
               )}
             />
             {errors.openingDate && (
-              <span className="text-xs text-red-500">{errors.openingDate.message}</span>
+              <span className="text-xs text-red-500">
+                {errors.openingDate.message}
+              </span>
             )}
           </div>
         </div>
@@ -363,7 +394,9 @@ export function SignUpForm({ onSuccess }: SignUpFormProps): React.JSX.Element {
               {...register("password")}
             />
             {errors.password && (
-              <span className="text-xs text-red-500">{errors.password.message}</span>
+              <span className="text-xs text-red-500">
+                {errors.password.message}
+              </span>
             )}
           </div>
 
@@ -380,7 +413,9 @@ export function SignUpForm({ onSuccess }: SignUpFormProps): React.JSX.Element {
               {...register("confirmPassword")}
             />
             {errors.confirmPassword && (
-              <span className="text-xs text-red-500">{errors.confirmPassword.message}</span>
+              <span className="text-xs text-red-500">
+                {errors.confirmPassword.message}
+              </span>
             )}
           </div>
         </div>
@@ -390,7 +425,11 @@ export function SignUpForm({ onSuccess }: SignUpFormProps): React.JSX.Element {
             <Checkbox
               id="referral-check"
               checked={hasReferral}
-              onCheckedChange={(checked) => setValue("hasReferral", checked === true, { shouldValidate: true })}
+              onCheckedChange={(checked) =>
+                setValue("hasReferral", checked === true, {
+                  shouldValidate: true,
+                })
+              }
             />
             <label
               htmlFor="referral-check"
@@ -432,12 +471,7 @@ export function SignUpForm({ onSuccess }: SignUpFormProps): React.JSX.Element {
       />
 
       <div className="flex flex-col items-center gap-4 pt-2 w-full">
-        <CtaButton
-          type="submit"
-          disabled={isLoading}
-          isFullWidth
-          size="lg"
-        >
+        <CtaButton type="submit" disabled={isLoading} isFullWidth size="lg">
           {isLoading ? "Criando conta..." : "Criar conta"}
         </CtaButton>
 

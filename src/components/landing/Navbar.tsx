@@ -1,21 +1,33 @@
 "use client"
 
 import * as React from "react"
+
 import Image from "next/image"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
+
 import {
-  List,
-  User,
-  SignOut,
+  TIERS_CONFIG,
+  calculateTierProgress,
+  getInitials,
+} from "@/src/data/portalData"
+import { usePortalStore } from "@/src/store/usePortalStore"
+import {
   Calendar,
-  MapPin,
   CreditCard,
+  List,
+  MapPin,
+  SignOut,
+  User,
 } from "@phosphor-icons/react"
 
-import { Container } from "@/src/components/common/container"
-import { CtaButton } from "@/src/components/common/ctaButton"
-import { ThemeToggle } from "@/src/components/common/themeToggle"
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/src/components/ui/avatar/avatar"
+import { Badge } from "@/src/components/ui/badge/badge"
+import { ScrollArea } from "@/src/components/ui/scrollArea/scrollArea"
 import {
   Sheet,
   SheetContent,
@@ -23,19 +35,16 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/src/components/ui/sheet/sheet"
-import { Avatar, AvatarImage, AvatarFallback } from "@/src/components/ui/avatar/avatar"
-import { Badge } from "@/src/components/ui/badge/badge"
-import { brandConfig } from "@/src/config/brand.config"
-import { cn } from "@/src/lib/utils"
-import { usePortalStore } from "@/src/store/usePortalStore"
-import {
-  getInitials,
-  calculateTierProgress,
-  TIERS_CONFIG,
-} from "@/src/data/portalData"
+
+import { Container } from "@/src/components/common/container"
+import { CtaButton } from "@/src/components/common/ctaButton"
+import { ThemeToggle } from "@/src/components/common/themeToggle"
 import { NotificationsDropdown } from "@/src/components/portal/NotificationsDropdown"
 import { UserDropdownMenu } from "@/src/components/portal/UserDropdownMenu"
-import { ScrollArea } from "@/src/components/ui/scrollArea/scrollArea"
+
+import { cn } from "@/src/lib/utils"
+
+import { brandConfig } from "@/src/config/brand.config"
 
 const isClubKey = brandConfig.id === "clubkey"
 
@@ -103,53 +112,50 @@ export function Navbar({
   const userEmail = userProfile?.email || "william@tabatacapital.com"
 
   const isDetailRoute = Boolean(
-    ((pathname?.startsWith("/rooms/") && pathname !== "/rooms") ||
-      (pathname?.startsWith("/hospedagens/") &&
-        pathname !== "/hospedagens" &&
-        pathname !== "/hospedagens/minhas-hospedagens") ||
-      (pathname?.startsWith("/eventos/") &&
-        pathname !== "/eventos" &&
-        pathname !== "/eventos/meus-eventos") ||
-      (pathname?.startsWith("/agenda/") && pathname !== "/agenda") ||
-      (pathname?.startsWith("/experiencias/") &&
-        pathname !== "/experiencias") ||
-      (pathname?.startsWith("/conexoes/") && pathname !== "/conexoes") ||
-      (pathname?.startsWith("/pessoas/") && pathname !== "/pessoas") ||
-      pathname === "/perfil")
+    (pathname?.startsWith("/rooms/") && pathname !== "/rooms") ||
+    (pathname?.startsWith("/hospedagens/") &&
+      pathname !== "/hospedagens" &&
+      pathname !== "/hospedagens/minhas-hospedagens") ||
+    (pathname?.startsWith("/eventos/") &&
+      pathname !== "/eventos" &&
+      pathname !== "/eventos/meus-eventos") ||
+    (pathname?.startsWith("/agenda/") && pathname !== "/agenda") ||
+    (pathname?.startsWith("/experiencias/") && pathname !== "/experiencias") ||
+    (pathname?.startsWith("/conexoes/") && pathname !== "/conexoes") ||
+    (pathname?.startsWith("/pessoas/") && pathname !== "/pessoas") ||
+    pathname === "/perfil"
   )
 
   const isPortalRoute = Boolean(
     (pathname === "/" && isAuthenticated) ||
-      pathname === "/eventos" ||
-      pathname?.startsWith("/eventos/") ||
-      pathname === "/agenda" ||
-      pathname?.startsWith("/agenda/") ||
-      pathname === "/experiencias" ||
-      pathname?.startsWith("/experiencias/") ||
-      pathname === "/conexoes" ||
-      pathname?.startsWith("/conexoes/") ||
-      pathname === "/pessoas" ||
-      pathname?.startsWith("/pessoas/") ||
-      pathname === "/beneficios" ||
-      pathname === "/keypass" ||
-      pathname?.startsWith("/keypass/") ||
-      pathname === "/perfil" ||
-      pathname?.startsWith("/perfil/") ||
-      pathname?.startsWith("/hospedagens/minhas-hospedagens")
+    pathname === "/eventos" ||
+    pathname?.startsWith("/eventos/") ||
+    pathname === "/agenda" ||
+    pathname?.startsWith("/agenda/") ||
+    pathname === "/experiencias" ||
+    pathname?.startsWith("/experiencias/") ||
+    pathname === "/conexoes" ||
+    pathname?.startsWith("/conexoes/") ||
+    pathname === "/pessoas" ||
+    pathname?.startsWith("/pessoas/") ||
+    pathname === "/beneficios" ||
+    pathname === "/keypass" ||
+    pathname?.startsWith("/keypass/") ||
+    pathname === "/perfil" ||
+    pathname?.startsWith("/perfil/") ||
+    pathname?.startsWith("/hospedagens/minhas-hospedagens")
   )
 
   const isAuthRoute = Boolean(
     pathname === "/sign-in" ||
-      pathname === "/sign-up" ||
-      pathname === "/login" ||
-      pathname === "/forgot-password" ||
-      pathname === "/reset-password"
+    pathname === "/sign-up" ||
+    pathname === "/login" ||
+    pathname === "/forgot-password" ||
+    pathname === "/reset-password"
   )
 
   const transparent =
-    isTransparent !== undefined
-      ? isTransparent
-      : !isAuthRoute && !isDetailRoute
+    isTransparent !== undefined ? isTransparent : !isAuthRoute && !isDetailRoute
 
   const isDarkBar = true
 
@@ -232,11 +238,11 @@ export function Navbar({
               isAuthenticated ? "pt-0" : "pt-20 sm:pt-14 md:pt-12"
             )
           : isDarkBar
-          ? cn(
-              "relative bg-[#0c0c0c] border-b border-white/10 max-w-440 mx-auto",
-              isAuthenticated ? "pt-0" : "pt-20 sm:pt-14 md:pt-12"
-            )
-          : "sticky top-0 bg-white/95 dark:bg-[#141416]/95 backdrop-blur-md border-b border-zinc-200/80 dark:border-zinc-800/80 text-zinc-900 dark:text-white"
+            ? cn(
+                "relative bg-[#0c0c0c] border-b border-white/10 max-w-440 mx-auto",
+                isAuthenticated ? "pt-0" : "pt-20 sm:pt-14 md:pt-12"
+              )
+            : "sticky top-0 bg-white/95 dark:bg-[#141416]/95 backdrop-blur-md border-b border-zinc-200/80 dark:border-zinc-800/80 text-zinc-900 dark:text-white"
       )}
     >
       <header className="w-full bg-transparent py-3 sm:py-4">
@@ -274,9 +280,7 @@ export function Navbar({
                 <span
                   className={cn(
                     "font-heading font-black text-xl sm:text-2xl tracking-wider uppercase",
-                    isDarkBar
-                      ? "text-white"
-                      : "text-zinc-900 dark:text-white"
+                    isDarkBar ? "text-white" : "text-zinc-900 dark:text-white"
                   )}
                 >
                   {brandConfig.assets.logoText || brandConfig.name}
@@ -289,9 +293,7 @@ export function Navbar({
                 <div
                   className={cn(
                     "h-4 sm:h-4.5 w-px",
-                    isDarkBar
-                      ? "bg-white/20"
-                      : "bg-zinc-300 dark:bg-zinc-700"
+                    isDarkBar ? "bg-white/20" : "bg-zinc-300 dark:bg-zinc-700"
                   )}
                 />
 
@@ -408,8 +410,6 @@ export function Navbar({
           )}
 
           <div className="flex items-center gap-4 sm:gap-5 flex-shrink-0">
-          
-
             {isAuthenticated && (
               <Link
                 href="/keypass"
@@ -433,9 +433,7 @@ export function Navbar({
                 <div
                   className={cn(
                     "h-3.5 w-px",
-                    isDarkBar
-                      ? "bg-white/20"
-                      : "bg-zinc-300 dark:bg-zinc-700"
+                    isDarkBar ? "bg-white/20" : "bg-zinc-300 dark:bg-zinc-700"
                   )}
                 />
 
@@ -460,11 +458,9 @@ export function Navbar({
               </Link>
             )}
 
-              {isAuthenticated && (
-                <NotificationsDropdown isDarkBar={isDarkBar} />
-              )}
+            {isAuthenticated && <NotificationsDropdown isDarkBar={isDarkBar} />}
 
-              <ThemeToggle className="hidden sm:flex" />
+            <ThemeToggle className="hidden sm:flex" />
 
             {!isAuthenticated ? (
               <Link
@@ -731,7 +727,13 @@ export function Navbar({
                                   <MapPin className="w-3.5 h-3.5 text-brand-primary shrink-0" />
                                   Hospedagens
                                 </span>
-                                <Badge color="primary" variant="flat" size="sm" radius="sm" className="text-[9px] px-1.5 h-4 leading-none">
+                                <Badge
+                                  color="primary"
+                                  variant="flat"
+                                  size="sm"
+                                  radius="sm"
+                                  className="text-[9px] px-1.5 h-4 leading-none"
+                                >
                                   {staysCount}
                                 </Badge>
                               </Link>
@@ -745,7 +747,13 @@ export function Navbar({
                                   <Calendar className="w-3.5 h-3.5 text-brand-primary shrink-0" />
                                   Eventos
                                 </span>
-                                <Badge color="primary" variant="flat" size="sm" radius="sm" className="text-[9px] px-1.5 h-4 leading-none">
+                                <Badge
+                                  color="primary"
+                                  variant="flat"
+                                  size="sm"
+                                  radius="sm"
+                                  className="text-[9px] px-1.5 h-4 leading-none"
+                                >
                                   {eventsCount}
                                 </Badge>
                               </Link>

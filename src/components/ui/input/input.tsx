@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+
 import { type VariantProps, cva } from "class-variance-authority"
 
 import { cn } from "@/src/lib/utils"
@@ -16,7 +17,8 @@ const inputVariants = cva(
       },
       variant: {
         default: "border-zinc-200 dark:border-zinc-800",
-        error: "border-red-500 focus-visible:ring-red-500/20 focus-visible:border-red-500",
+        error:
+          "border-red-500 focus-visible:ring-red-500/20 focus-visible:border-red-500",
       },
     },
     defaultVariants: {
@@ -27,7 +29,8 @@ const inputVariants = cva(
 )
 
 export interface InputProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "size">,
+  extends
+    Omit<React.InputHTMLAttributes<HTMLInputElement>, "size">,
     VariantProps<typeof inputVariants> {
   startIcon?: React.ReactNode
   endIcon?: React.ReactNode

@@ -1,10 +1,14 @@
 "use client"
 
 import * as React from "react"
+
 import Image from "next/image"
-import { CheckCircle, Clock, Handshake } from "@phosphor-icons/react"
+
 import { MissionItem } from "@/src/data/portalData"
+import { CheckCircle, Clock, Handshake } from "@phosphor-icons/react"
+
 import { CtaButton } from "@/src/components/common/ctaButton"
+
 import { cn } from "@/src/lib/utils"
 
 interface NetworkingMissionsProps {
@@ -23,14 +27,18 @@ export function NetworkingMissions({
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-zinc-100 dark:border-zinc-800">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-sm bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white flex items-center justify-center shrink-0">
-            <Handshake className="w-5 h-5 text-zinc-900 dark:text-white" weight="fill" />
+            <Handshake
+              className="w-5 h-5 text-zinc-900 dark:text-white"
+              weight="fill"
+            />
           </div>
           <div>
             <span className="text-sm font-black uppercase tracking-wider text-zinc-900 dark:text-white block">
               Missões de Networking • KeyPass
             </span>
             <span className="text-xs text-zinc-900 dark:text-white font-medium">
-              Conecte-se com membros da comunidade para desbloquear XP acelerada e Tokens RIB
+              Conecte-se com membros da comunidade para desbloquear XP acelerada
+              e Tokens RIB
             </span>
           </div>
         </div>
@@ -44,7 +52,10 @@ export function NetworkingMissions({
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {missions.map((mission) => {
-          const currentProg = Math.min(mission.totalRequired, activeConnectionsCount)
+          const currentProg = Math.min(
+            mission.totalRequired,
+            activeConnectionsCount
+          )
           const isCompleted = currentProg >= mission.totalRequired
           const canClaim = isCompleted && !mission.isClaimed
           const progressPct = Math.min(
@@ -60,8 +71,8 @@ export function NetworkingMissions({
                 canClaim
                   ? "border-brand-primary ring-2 ring-brand-primary/20"
                   : mission.isClaimed
-                  ? "border-emerald-500/40 dark:border-emerald-500/30"
-                  : "border-zinc-200 dark:border-zinc-800"
+                    ? "border-emerald-500/40 dark:border-emerald-500/30"
+                    : "border-zinc-200 dark:border-zinc-800"
               )}
             >
               <div className="space-y-3">
@@ -120,9 +131,7 @@ export function NetworkingMissions({
                   <div
                     className={cn(
                       "h-full rounded-full transition-all duration-500",
-                      mission.isClaimed
-                        ? "bg-emerald-500"
-                        : "bg-brand-primary"
+                      mission.isClaimed ? "bg-emerald-500" : "bg-brand-primary"
                     )}
                     style={{ width: `${progressPct}%` }}
                   />
@@ -150,13 +159,20 @@ export function NetworkingMissions({
                     </CtaButton>
                   ) : mission.isClaimed ? (
                     <div className="flex items-center justify-center gap-1.5 py-1 text-xs font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 rounded-sm border border-emerald-500/20 whitespace-nowrap">
-                      <CheckCircle className="w-3.5 h-3.5 shrink-0" weight="fill" />
+                      <CheckCircle
+                        className="w-3.5 h-3.5 shrink-0"
+                        weight="fill"
+                      />
                       <span>Recompensa Resgatada</span>
                     </div>
                   ) : (
                     <div className="inline-flex items-center justify-center gap-1.5 w-full py-1 text-xs font-medium text-zinc-900 dark:text-white whitespace-nowrap shrink-0">
                       <Clock className="w-3.5 h-3.5 shrink-0" />
-                      <span>Faltam {Math.max(0, mission.totalRequired - currentProg)} conexões</span>
+                      <span>
+                        Faltam{" "}
+                        {Math.max(0, mission.totalRequired - currentProg)}{" "}
+                        conexões
+                      </span>
                     </div>
                   )}
                 </div>

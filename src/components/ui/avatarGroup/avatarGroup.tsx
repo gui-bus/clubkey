@@ -1,52 +1,61 @@
-"use client";
+"use client"
 
-import * as React from "react";
+import * as React from "react"
+
 import {
   Avatar,
   AvatarContext,
   AvatarFallback,
   type AvatarProps,
-} from "@/components/ui/avatar/avatar";
+} from "@/components/ui/avatar/avatar"
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip/tooltip";
-import { cn } from "../../../lib/utils";
+} from "@/components/ui/tooltip/tooltip"
 
-export type AvatarGroupOrientation = "horizontal" | "vertical";
-export type AvatarGroupOverlap = "sm" | "md" | "lg";
+import { cn } from "../../../lib/utils"
+
+export type AvatarGroupOrientation = "horizontal" | "vertical"
+export type AvatarGroupOverlap = "sm" | "md" | "lg"
 
 export interface AvatarGroupProps extends React.HTMLAttributes<HTMLDivElement> {
-  children: React.ReactNode;
-  max?: number;
-  total?: number;
-  orientation?: AvatarGroupOrientation;
-  overlap?: AvatarGroupOverlap;
-  size?: AvatarProps["size"];
-  color?: AvatarProps["color"];
-  radius?: AvatarProps["radius"];
-  isBordered?: boolean;
-  isGrid?: boolean;
-  isDisabled?: boolean;
-  isPressable?: boolean;
-  showTooltip?: boolean;
-  tooltipColor?: "default" | "primary" | "secondary" | "accent" | "success" | "warning" | "danger";
-  renderCount?: (count: number) => React.ReactNode;
+  children: React.ReactNode
+  max?: number
+  total?: number
+  orientation?: AvatarGroupOrientation
+  overlap?: AvatarGroupOverlap
+  size?: AvatarProps["size"]
+  color?: AvatarProps["color"]
+  radius?: AvatarProps["radius"]
+  isBordered?: boolean
+  isGrid?: boolean
+  isDisabled?: boolean
+  isPressable?: boolean
+  showTooltip?: boolean
+  tooltipColor?:
+    | "default"
+    | "primary"
+    | "secondary"
+    | "accent"
+    | "success"
+    | "warning"
+    | "danger"
+  renderCount?: (count: number) => React.ReactNode
 }
 
 const overlapHorizontal: Record<AvatarGroupOverlap, string> = {
   sm: "-space-x-1.5 hover:-space-x-1",
   md: "-space-x-3 hover:-space-x-1.5",
   lg: "-space-x-4 hover:-space-x-2",
-};
+}
 
 const overlapVertical: Record<AvatarGroupOverlap, string> = {
   sm: "-space-y-1.5 hover:-space-y-1",
   md: "-space-y-3 hover:-space-y-1.5",
   lg: "-space-y-4 hover:-space-y-2",
-};
+}
 
 const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
   (
@@ -69,20 +78,20 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
       className,
       ...props
     },
-    ref,
+    ref
   ) => {
-    const childrenArray = React.Children.toArray(children);
-    const countTotal = total ?? childrenArray.length;
+    const childrenArray = React.Children.toArray(children)
+    const countTotal = total ?? childrenArray.length
     const hasMax =
-      typeof max === "number" && max > 0 && max < childrenArray.length;
-    const visibleAvatars = hasMax ? childrenArray.slice(0, max) : childrenArray;
+      typeof max === "number" && max > 0 && max < childrenArray.length
+    const visibleAvatars = hasMax ? childrenArray.slice(0, max) : childrenArray
     const excessCount = hasMax
       ? countTotal - max
       : countTotal > childrenArray.length
         ? countTotal - childrenArray.length
-        : 0;
+        : 0
 
-    const isVertical = orientation === "vertical";
+    const isVertical = orientation === "vertical"
 
     const groupContent = (
       <AvatarContext.Provider value={{ color, isInGroup: true }}>
@@ -98,12 +107,12 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
                 ? cn("flex-col items-start", overlapVertical[overlap])
                 : cn("items-center", overlapHorizontal[overlap]),
             isDisabled && "opacity-50 grayscale pointer-events-none",
-            className,
+            className
           )}
           {...props}
         >
           {visibleAvatars.map((child, index) => {
-            if (!React.isValidElement<AvatarProps>(child)) return child;
+            if (!React.isValidElement<AvatarProps>(child)) return child
 
             const clonedAvatar = React.cloneElement(child, {
               size: child.props.size || size,
@@ -123,24 +132,24 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
                   : isPressable,
               className: cn(
                 "ring-2 ring-white dark:ring-zinc-900 transition-all duration-300 ease-out",
-                child.props.className,
+                child.props.className
               ),
-            });
+            })
 
             const avatarItem = (
               <div
                 className={cn(
                   "relative transition-all duration-300 ease-out hover:z-30 hover:scale-105",
-                  isVertical ? "hover:translate-x-1" : "hover:-translate-y-1",
+                  isVertical ? "hover:translate-x-1" : "hover:-translate-y-1"
                 )}
                 style={{ zIndex: visibleAvatars.length - index }}
               >
                 {clonedAvatar}
               </div>
-            );
+            )
 
             if (showTooltip) {
-              const label = child.props.title || "User";
+              const label = child.props.title || "User"
               return (
                 <Tooltip key={index}>
                   <TooltipTrigger asChild>{avatarItem}</TooltipTrigger>
@@ -148,17 +157,17 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
                     {label}
                   </TooltipContent>
                 </Tooltip>
-              );
+              )
             }
 
-            return <React.Fragment key={index}>{avatarItem}</React.Fragment>;
+            return <React.Fragment key={index}>{avatarItem}</React.Fragment>
           })}
 
           {excessCount > 0 && (
             <div
               className={cn(
                 "relative transition-all duration-300 ease-out hover:z-30 hover:scale-105",
-                isVertical ? "hover:translate-x-1" : "hover:-translate-y-1",
+                isVertical ? "hover:translate-x-1" : "hover:-translate-y-1"
               )}
               style={{ zIndex: 0 }}
             >
@@ -181,16 +190,16 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
           )}
         </div>
       </AvatarContext.Provider>
-    );
+    )
 
     if (showTooltip) {
-      return <TooltipProvider>{groupContent}</TooltipProvider>;
+      return <TooltipProvider>{groupContent}</TooltipProvider>
     }
 
-    return groupContent;
-  },
-);
+    return groupContent
+  }
+)
 
-AvatarGroup.displayName = "AvatarGroup";
+AvatarGroup.displayName = "AvatarGroup"
 
-export { AvatarGroup };
+export { AvatarGroup }

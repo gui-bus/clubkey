@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation"
+
 import { getRoomDetail } from "@/src/data/mockRoomDetails"
 
 interface PageProps {

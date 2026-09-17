@@ -4,7 +4,12 @@ import * as React from "react"
 
 import Link from "next/link"
 
-import { EVENTS, MONTH_LABELS, MONTH_MAP, MONTH_OPTIONS } from "@/src/data/portalData"
+import {
+  EVENTS,
+  MONTH_LABELS,
+  MONTH_MAP,
+  MONTH_OPTIONS,
+} from "@/src/data/portalData"
 import { Calendar, MagnifyingGlass } from "@phosphor-icons/react"
 
 import { Button } from "@/src/components/ui/button/button"

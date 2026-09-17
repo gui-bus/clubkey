@@ -8,8 +8,8 @@ import {
   CheckCircle,
   CloudArrowUp,
   Crop,
-  File as FileIcon,
   FileAudio,
+  File as FileIcon,
   FileImage,
   FilePdf,
   FileVideo,
@@ -419,8 +419,7 @@ export function FileUpload({
           {description}
         </p>
         <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">
-          Tamanho máx.: {maxSizeMB}MB{" "}
-          {allowPaste && "• Suporta colar (Ctrl+V)"}
+          Tamanho máx.: {maxSizeMB}MB {allowPaste && "• Suporta colar (Ctrl+V)"}
         </p>
       </div>
 
@@ -472,7 +471,8 @@ export function FileUpload({
                         className={cn(
                           item.status === "completed" &&
                             "text-emerald-500 font-semibold inline-flex items-center gap-1",
-                          item.status === "uploading" && "text-brand-primary font-semibold",
+                          item.status === "uploading" &&
+                            "text-brand-primary font-semibold",
                           item.status === "paused" &&
                             "text-amber-500 font-semibold inline-flex items-center gap-1",
                           item.status === "error" &&
@@ -482,7 +482,9 @@ export function FileUpload({
                         {item.status === "error" ? (
                           <>
                             <WarningCircle className="size-3.5 shrink-0" />
-                            <span>{item.errorMessage ?? "Erro de validação"}</span>
+                            <span>
+                              {item.errorMessage ?? "Erro de validação"}
+                            </span>
                           </>
                         ) : item.status === "completed" ? (
                           <>
@@ -546,7 +548,9 @@ export function FileUpload({
                   <div
                     className={cn(
                       "h-full transition-all duration-300 rounded-full",
-                      item.status === "paused" ? "bg-amber-500" : "bg-brand-primary"
+                      item.status === "paused"
+                        ? "bg-amber-500"
+                        : "bg-brand-primary"
                     )}
                     style={{ width: `${item.progress}%` }}
                   />

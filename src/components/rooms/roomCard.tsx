@@ -1,13 +1,26 @@
 "use client"
 
 import * as React from "react"
+
 import Image from "next/image"
 import Link from "next/link"
-import { Bathtub, Bed, Bookmark, CaretLeft, CaretRight, Door, Flame, Lightning, Users } from "@phosphor-icons/react"
 
 import { type RoomProperty } from "@/src/data/mockRooms"
+import {
+  Bathtub,
+  Bed,
+  Bookmark,
+  CaretLeft,
+  CaretRight,
+  Door,
+  Flame,
+  Lightning,
+  Users,
+} from "@phosphor-icons/react"
+
 import { DiscountRibbon } from "@/src/components/common/discountRibbon"
 import { GlassBadge } from "@/src/components/portal/GlassBadge"
+
 import { cn } from "@/src/lib/utils"
 
 export interface RoomCardProps {
@@ -82,7 +95,8 @@ export function RoomCard({
         price: airbnbPrice,
         width: 42,
         height: 12,
-        imgClass: "h-2.5 sm:h-3 w-auto object-contain opacity-90 group-hover/source:opacity-100",
+        imgClass:
+          "h-2.5 sm:h-3 w-auto object-contain opacity-90 group-hover/source:opacity-100",
       },
       {
         source: "booking" as const,
@@ -91,7 +105,8 @@ export function RoomCard({
         price: bookingPrice,
         width: 48,
         height: 10,
-        imgClass: "h-2 sm:h-2.5 w-auto object-contain opacity-90 group-hover/source:opacity-100",
+        imgClass:
+          "h-2 sm:h-2.5 w-auto object-contain opacity-90 group-hover/source:opacity-100",
       },
       {
         source: "trivago" as const,
@@ -100,7 +115,8 @@ export function RoomCard({
         price: trivagoPrice,
         width: 48,
         height: 12,
-        imgClass: "h-2.5 sm:h-3 w-auto object-contain opacity-90 group-hover/source:opacity-100",
+        imgClass:
+          "h-2.5 sm:h-3 w-auto object-contain opacity-90 group-hover/source:opacity-100",
       },
     ],
     [airbnbPrice, bookingPrice, trivagoPrice]
@@ -145,9 +161,7 @@ export function RoomCard({
             key={photoUrl + idx}
             className={cn(
               "absolute inset-0 transition-opacity duration-300 select-none pointer-events-none",
-              idx === currentPhotoIndex
-                ? "opacity-100 z-10"
-                : "opacity-0 z-0"
+              idx === currentPhotoIndex ? "opacity-100 z-10" : "opacity-0 z-0"
             )}
           >
             <Image
@@ -217,7 +231,9 @@ export function RoomCard({
             xmlns="http://www.w3.org/2000/svg"
             className={cn(
               "transition-colors duration-200",
-              isFav ? "fill-yellow-400" : "fill-black/45 hover:fill-black/65 backdrop-blur-xs"
+              isFav
+                ? "fill-yellow-400"
+                : "fill-black/45 hover:fill-black/65 backdrop-blur-xs"
             )}
           >
             <path d="M0 0 H34 V46 L17 35 L0 46 Z" />
@@ -283,7 +299,9 @@ export function RoomCard({
               <Door className="w-3.5 h-3.5 text-zinc-400 dark:text-zinc-500 shrink-0" />
               <span>{room.rooms}</span>
             </div>
-            <span className="text-zinc-300 dark:text-zinc-700 select-none">•</span>
+            <span className="text-zinc-300 dark:text-zinc-700 select-none">
+              •
+            </span>
             <div
               className="flex items-center gap-1.5"
               title={`${room.max_guest} Hóspedes`}
@@ -291,7 +309,9 @@ export function RoomCard({
               <Users className="w-3.5 h-3.5 text-zinc-400 dark:text-zinc-500 shrink-0" />
               <span>{room.max_guest}</span>
             </div>
-            <span className="text-zinc-300 dark:text-zinc-700 select-none">•</span>
+            <span className="text-zinc-300 dark:text-zinc-700 select-none">
+              •
+            </span>
             <div
               className="flex items-center gap-1.5"
               title={`${room.beds} Camas`}
@@ -299,7 +319,9 @@ export function RoomCard({
               <Bed className="w-3.5 h-3.5 text-zinc-400 dark:text-zinc-500 shrink-0" />
               <span>{room.beds}</span>
             </div>
-            <span className="text-zinc-300 dark:text-zinc-700 select-none">•</span>
+            <span className="text-zinc-300 dark:text-zinc-700 select-none">
+              •
+            </span>
             <div
               className="flex items-center gap-1.5"
               title={`${room.bathrooms} Banheiros`}
@@ -332,7 +354,10 @@ export function RoomCard({
                   width={ota.width}
                   height={ota.height}
                   draggable={false}
-                  className={cn(ota.imgClass, "select-none pointer-events-none")}
+                  className={cn(
+                    ota.imgClass,
+                    "select-none pointer-events-none"
+                  )}
                 />
                 <span className="text-[11px] font-semibold text-zinc-500 dark:text-zinc-400 group-hover/source:text-zinc-900 dark:group-hover/source:text-white mt-1">
                   R$ {ota.price}

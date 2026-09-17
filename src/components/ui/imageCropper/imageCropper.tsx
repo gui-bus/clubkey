@@ -1,32 +1,39 @@
-"use client";
+"use client"
 
-import { Crop, DownloadSimple, ArrowCounterClockwise } from "@phosphor-icons/react";
-import * as React from "react";
+import * as React from "react"
 import {
   useCallback,
   useEffect,
   useImperativeHandle,
   useRef,
   useState,
-} from "react";
-import { Button } from "@/src/components/ui/button/button";
-import { Slider } from "@/src/components/ui/slider/slider";
-import { cn } from "@/src/lib/utils";
+} from "react"
+
+import {
+  ArrowCounterClockwise,
+  Crop,
+  DownloadSimple,
+} from "@phosphor-icons/react"
+
+import { Button } from "@/src/components/ui/button/button"
+import { Slider } from "@/src/components/ui/slider/slider"
+
+import { cn } from "@/src/lib/utils"
 
 export interface ImageCropperRef {
-  crop: () => string | null;
-  reset: () => void;
+  crop: () => string | null
+  reset: () => void
 }
 
 export interface ImageCropperProps {
-  src: string;
-  aspectRatio?: number;
-  onCrop?: (base64: string) => void;
-  circular?: boolean;
-  showCropButton?: boolean;
-  width?: number;
-  height?: number;
-  defaultZoom?: number;
+  src: string
+  aspectRatio?: number
+  onCrop?: (base64: string) => void
+  circular?: boolean
+  showCropButton?: boolean
+  width?: number
+  height?: number
+  defaultZoom?: number
 }
 
 export const ImageCropper = React.forwardRef<
@@ -44,173 +51,173 @@ export const ImageCropper = React.forwardRef<
       height,
       defaultZoom = 10,
     },
-    ref,
+    ref
   ) => {
-    const containerRef = useRef<HTMLDivElement>(null);
-    const imageRef = useRef<HTMLImageElement>(null);
-    const canvasRef = useRef<HTMLCanvasElement>(null);
+    const containerRef = useRef<HTMLDivElement>(null)
+    const imageRef = useRef<HTMLImageElement>(null)
+    const canvasRef = useRef<HTMLCanvasElement>(null)
 
-    const [zoom, setZoom] = useState(defaultZoom);
-    const scale = zoom / 100;
-    const [rotation, setRotation] = useState(0);
-    const [position, setPosition] = useState({ x: 0, y: 0 });
-    const [isDragging, setIsDragging] = useState(false);
-    const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
-    const [croppedImage, setCroppedImage] = useState<string | null>(null);
-    const [imageLoaded, setImageLoaded] = useState(false);
-    const [boxSize, setBoxSize] = useState({ width: 260, height: 260 });
+    const [zoom, setZoom] = useState(defaultZoom)
+    const scale = zoom / 100
+    const [rotation, setRotation] = useState(0)
+    const [position, setPosition] = useState({ x: 0, y: 0 })
+    const [isDragging, setIsDragging] = useState(false)
+    const [dragStart, setDragStart] = useState({ x: 0, y: 0 })
+    const [croppedImage, setCroppedImage] = useState<string | null>(null)
+    const [imageLoaded, setImageLoaded] = useState(false)
+    const [boxSize, setBoxSize] = useState({ width: 260, height: 260 })
 
-    const isCustomSize = width !== undefined && height !== undefined;
-    const effectiveCircular = isCustomSize ? false : circular;
+    const isCustomSize = width !== undefined && height !== undefined
+    const effectiveCircular = isCustomSize ? false : circular
     const effectiveAspectRatio = isCustomSize
       ? (width ?? 0) / (height ?? 0)
       : effectiveCircular
         ? 1
-        : aspectRatio;
+        : aspectRatio
 
     useEffect(() => {
-      if (!containerRef.current) return;
+      if (!containerRef.current) return
       const updateSize = () => {
-        if (!containerRef.current) return;
-        const containerWidth = containerRef.current.clientWidth || 500;
-        const containerHeight = containerRef.current.clientHeight || 360;
-        let cropBoxWidth = containerWidth * 0.8;
-        let cropBoxHeight = containerHeight * 0.8;
+        if (!containerRef.current) return
+        const containerWidth = containerRef.current.clientWidth || 500
+        const containerHeight = containerRef.current.clientHeight || 360
+        let cropBoxWidth = containerWidth * 0.8
+        let cropBoxHeight = containerHeight * 0.8
 
         if (cropBoxWidth / cropBoxHeight > effectiveAspectRatio) {
-          cropBoxWidth = cropBoxHeight * effectiveAspectRatio;
+          cropBoxWidth = cropBoxHeight * effectiveAspectRatio
         } else {
-          cropBoxHeight = cropBoxWidth / effectiveAspectRatio;
+          cropBoxHeight = cropBoxWidth / effectiveAspectRatio
         }
-        setBoxSize({ width: cropBoxWidth, height: cropBoxHeight });
-      };
+        setBoxSize({ width: cropBoxWidth, height: cropBoxHeight })
+      }
 
-      updateSize();
-      window.addEventListener("resize", updateSize);
-      return () => window.removeEventListener("resize", updateSize);
-    }, [effectiveAspectRatio]);
+      updateSize()
+      window.addEventListener("resize", updateSize)
+      return () => window.removeEventListener("resize", updateSize)
+    }, [effectiveAspectRatio])
 
     useEffect(() => {
       if (imageRef.current) {
         if (imageRef.current.complete) {
-          setImageLoaded(true);
+          setImageLoaded(true)
         } else {
-          setImageLoaded(false);
+          setImageLoaded(false)
         }
       }
-    }, [src]);
+    }, [src])
 
     const handleMouseDown = (e: React.MouseEvent | React.TouchEvent) => {
-      setIsDragging(true);
-      const clientX = "touches" in e ? e.touches[0].clientX : e.clientX;
-      const clientY = "touches" in e ? e.touches[0].clientY : e.clientY;
-      setDragStart({ x: clientX - position.x, y: clientY - position.y });
-    };
+      setIsDragging(true)
+      const clientX = "touches" in e ? e.touches[0].clientX : e.clientX
+      const clientY = "touches" in e ? e.touches[0].clientY : e.clientY
+      setDragStart({ x: clientX - position.x, y: clientY - position.y })
+    }
 
     const handleMouseMove = useCallback(
       (e: MouseEvent | TouchEvent) => {
-        if (!isDragging) return;
-        e.preventDefault();
-        const clientX = "touches" in e ? e.touches[0].clientX : e.clientX;
-        const clientY = "touches" in e ? e.touches[0].clientY : e.clientY;
+        if (!isDragging) return
+        e.preventDefault()
+        const clientX = "touches" in e ? e.touches[0].clientX : e.clientX
+        const clientY = "touches" in e ? e.touches[0].clientY : e.clientY
         setPosition({
           x: clientX - dragStart.x,
           y: clientY - dragStart.y,
-        });
+        })
       },
-      [isDragging, dragStart],
-    );
+      [isDragging, dragStart]
+    )
 
     const handleMouseUp = useCallback(() => {
-      setIsDragging(false);
-    }, []);
+      setIsDragging(false)
+    }, [])
 
     useEffect(() => {
       if (isDragging) {
         window.addEventListener("mousemove", handleMouseMove, {
           passive: false,
-        });
-        window.addEventListener("mouseup", handleMouseUp);
+        })
+        window.addEventListener("mouseup", handleMouseUp)
         window.addEventListener("touchmove", handleMouseMove, {
           passive: false,
-        });
-        window.addEventListener("touchend", handleMouseUp);
+        })
+        window.addEventListener("touchend", handleMouseUp)
       }
       return () => {
-        window.removeEventListener("mousemove", handleMouseMove);
-        window.removeEventListener("mouseup", handleMouseUp);
-        window.removeEventListener("touchmove", handleMouseMove);
-        window.removeEventListener("touchend", handleMouseUp);
-      };
-    }, [isDragging, handleMouseMove, handleMouseUp]);
+        window.removeEventListener("mousemove", handleMouseMove)
+        window.removeEventListener("mouseup", handleMouseUp)
+        window.removeEventListener("touchmove", handleMouseMove)
+        window.removeEventListener("touchend", handleMouseUp)
+      }
+    }, [isDragging, handleMouseMove, handleMouseUp])
 
     const handleReset = useCallback(() => {
-      setZoom(defaultZoom);
-      setRotation(0);
-      setPosition({ x: 0, y: 0 });
-      setCroppedImage(null);
-    }, [defaultZoom]);
+      setZoom(defaultZoom)
+      setRotation(0)
+      setPosition({ x: 0, y: 0 })
+      setCroppedImage(null)
+    }, [defaultZoom])
 
     const handleCrop = useCallback(() => {
       if (!imageRef.current || !containerRef.current || !canvasRef.current)
-        return null;
+        return null
 
-      const image = imageRef.current;
-      const canvas = canvasRef.current;
-      const ctx = canvas.getContext("2d");
+      const image = imageRef.current
+      const canvas = canvasRef.current
+      const ctx = canvas.getContext("2d")
 
-      if (!ctx) return null;
+      if (!ctx) return null
 
-      const cropBoxWidth = boxSize.width;
-      const cropBoxHeight = boxSize.height;
+      const cropBoxWidth = boxSize.width
+      const cropBoxHeight = boxSize.height
 
       if (isCustomSize) {
-        canvas.width = width ?? 0;
-        canvas.height = height ?? 0;
+        canvas.width = width ?? 0
+        canvas.height = height ?? 0
       } else {
-        canvas.width = cropBoxWidth;
-        canvas.height = cropBoxHeight;
+        canvas.width = cropBoxWidth
+        canvas.height = cropBoxHeight
       }
 
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.clearRect(0, 0, canvas.width, canvas.height)
 
       if (effectiveCircular) {
-        ctx.beginPath();
+        ctx.beginPath()
         ctx.arc(
           canvas.width / 2,
           canvas.height / 2,
           Math.min(canvas.width, canvas.height) / 2,
           0,
-          Math.PI * 2,
-        );
-        ctx.clip();
+          Math.PI * 2
+        )
+        ctx.clip()
       }
 
       if (isCustomSize) {
-        const scaleFactor = (width ?? 0) / cropBoxWidth;
+        const scaleFactor = (width ?? 0) / cropBoxWidth
         ctx.translate(
           canvas.width / 2 + position.x * scaleFactor,
-          canvas.height / 2 + position.y * scaleFactor,
-        );
-        ctx.rotate((rotation * Math.PI) / 180);
-        ctx.scale(scale * scaleFactor, scale * scaleFactor);
+          canvas.height / 2 + position.y * scaleFactor
+        )
+        ctx.rotate((rotation * Math.PI) / 180)
+        ctx.scale(scale * scaleFactor, scale * scaleFactor)
       } else {
         ctx.translate(
           canvas.width / 2 + position.x,
-          canvas.height / 2 + position.y,
-        );
-        ctx.rotate((rotation * Math.PI) / 180);
-        ctx.scale(scale, scale);
+          canvas.height / 2 + position.y
+        )
+        ctx.rotate((rotation * Math.PI) / 180)
+        ctx.scale(scale, scale)
       }
 
-      ctx.drawImage(image, -image.naturalWidth / 2, -image.naturalHeight / 2);
+      ctx.drawImage(image, -image.naturalWidth / 2, -image.naturalHeight / 2)
 
-      const base64 = canvas.toDataURL("image/png");
-      setCroppedImage(base64);
+      const base64 = canvas.toDataURL("image/png")
+      setCroppedImage(base64)
       if (onCrop) {
-        onCrop(base64);
+        onCrop(base64)
       }
-      return base64;
+      return base64
     }, [
       effectiveCircular,
       onCrop,
@@ -221,7 +228,7 @@ export const ImageCropper = React.forwardRef<
       width,
       height,
       boxSize,
-    ]);
+    ])
 
     useImperativeHandle(
       ref,
@@ -229,8 +236,8 @@ export const ImageCropper = React.forwardRef<
         crop: handleCrop,
         reset: handleReset,
       }),
-      [handleCrop, handleReset],
-    );
+      [handleCrop, handleReset]
+    )
 
     return (
       <div className="flex flex-col gap-4">
@@ -261,7 +268,7 @@ export const ImageCropper = React.forwardRef<
               <div
                 className={cn(
                   "border-2 border-white/80 shadow-[0_0_0_9999px_rgba(0,0,0,0.5)] transition-all",
-                  effectiveCircular ? "rounded-full" : "rounded-none",
+                  effectiveCircular ? "rounded-full" : "rounded-none"
                 )}
                 style={{
                   width: `${boxSize.width}px`,
@@ -344,7 +351,7 @@ export const ImageCropper = React.forwardRef<
               alt="Cropped result"
               className={cn(
                 "h-auto shadow-sm",
-                effectiveCircular ? "rounded-full" : "rounded-xl",
+                effectiveCircular ? "rounded-full" : "rounded-xl"
               )}
               style={{
                 width: isCustomSize ? `${width}px` : "120px",
@@ -362,7 +369,7 @@ export const ImageCropper = React.forwardRef<
           </div>
         )}
       </div>
-    );
-  },
-);
-ImageCropper.displayName = "ImageCropper";
+    )
+  }
+)
+ImageCropper.displayName = "ImageCropper"

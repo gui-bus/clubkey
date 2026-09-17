@@ -1,8 +1,9 @@
 "use client"
 
 import * as React from "react"
-import { motion } from "framer-motion"
+
 import { Check } from "@phosphor-icons/react"
+import { motion } from "framer-motion"
 
 import { Container } from "@/src/components/common/container"
 import { CtaButton } from "@/src/components/common/ctaButton"
@@ -125,10 +126,7 @@ export function HowItWorksCatalog(): React.JSX.Element {
             </p>
 
             <div>
-              <CtaButton
-                href="/hospedagens"
-                size="lg"
-              >
+              <CtaButton href="/hospedagens" size="lg">
                 Explorar catálogo
               </CtaButton>
             </div>

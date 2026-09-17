@@ -1,26 +1,37 @@
 "use client"
 
 import * as React from "react"
+
 import Link from "next/link"
+
 import {
-  Bell,
-  Check,
-  X,
-  ChatCircleDots,
-} from "@phosphor-icons/react"
-import { MEMBERS, Member, getInitials, getMemberSlug, ChatMessage } from "@/src/data/portalData"
+  ChatMessage,
+  MEMBERS,
+  Member,
+  getInitials,
+  getMemberSlug,
+} from "@/src/data/portalData"
 import { usePortalStore } from "@/src/store/usePortalStore"
+import { Bell, ChatCircleDots, Check, X } from "@phosphor-icons/react"
+
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/src/components/ui/avatar/avatar"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/src/components/ui/dropdownMenu/dropdownMenu"
-import { Avatar, AvatarFallback, AvatarImage } from "@/src/components/ui/avatar/avatar"
 import { ScrollArea } from "@/src/components/ui/scrollArea/scrollArea"
-import { CtaButton } from "@/src/components/common/ctaButton"
 import { toast } from "@/src/components/ui/toast/toast"
-import { useMounted } from "@/src/hooks/useMounted"
+
+import { CtaButton } from "@/src/components/common/ctaButton"
+
 import { cn } from "@/src/lib/utils"
+
+import { useMounted } from "@/src/hooks/useMounted"
 
 export interface NotificationsDropdownProps {
   isDarkBar?: boolean
@@ -74,7 +85,11 @@ export function NotificationsDropdown({
 
   const unreadMessageThreads = React.useMemo(() => {
     if (!mounted) return []
-    const results: { member: Member; lastMessage: ChatMessage; unreadCount: number }[] = []
+    const results: {
+      member: Member
+      lastMessage: ChatMessage
+      unreadCount: number
+    }[] = []
     Object.entries(chatMessages).forEach(([idStr, thread]) => {
       const memberId = Number(idStr)
       const member = MEMBERS.find((m) => m.id === memberId)
@@ -180,63 +195,75 @@ export function NotificationsDropdown({
                       Nenhuma notificação nova
                     </p>
                     <p className="text-[11px] text-zinc-500 dark:text-zinc-400 max-w-[240px] mx-auto">
-                      Você está em dia com todas as suas mensagens e conexões do clube.
+                      Você está em dia com todas as suas mensagens e conexões do
+                      clube.
                     </p>
                   </div>
                 </div>
               ) : (
                 <>
-                  {unreadMessageThreads.map(({ member, lastMessage, unreadCount }) => (
-                    <div
-                      key={`chat-${member.id}`}
-                      className="p-3.5 hover:bg-zinc-50 dark:hover:bg-zinc-900/40 transition-colors space-y-2.5 bg-brand-primary/[0.02]"
-                    >
-                      <div className="flex items-start gap-3">
-                        <Avatar size="md" className="shrink-0 mt-0.5 rounded-sm overflow-hidden border border-zinc-200 dark:border-zinc-800">
-                          {member.avatar && (
-                            <AvatarImage src={member.avatar} alt={member.name} />
-                          )}
-                          <AvatarFallback className="font-bold text-[10px] bg-zinc-900 text-white dark:bg-zinc-800">
-                            {getInitials(member.name)}
-                          </AvatarFallback>
-                        </Avatar>
+                  {unreadMessageThreads.map(
+                    ({ member, lastMessage, unreadCount }) => (
+                      <div
+                        key={`chat-${member.id}`}
+                        className="p-3.5 hover:bg-zinc-50 dark:hover:bg-zinc-900/40 transition-colors space-y-2.5 bg-brand-primary/[0.02]"
+                      >
+                        <div className="flex items-start gap-3">
+                          <Avatar
+                            size="md"
+                            className="shrink-0 mt-0.5 rounded-sm overflow-hidden border border-zinc-200 dark:border-zinc-800"
+                          >
+                            {member.avatar && (
+                              <AvatarImage
+                                src={member.avatar}
+                                alt={member.name}
+                              />
+                            )}
+                            <AvatarFallback className="font-bold text-[10px] bg-zinc-900 text-white dark:bg-zinc-800">
+                              {getInitials(member.name)}
+                            </AvatarFallback>
+                          </Avatar>
 
-                        <div className="flex-1 min-w-0 space-y-1">
-                          <div className="flex items-center justify-between gap-1">
-                            <span className="text-xs font-bold text-zinc-900 dark:text-white truncate">
-                              {member.name}
-                            </span>
-                            <span className="text-[9px] font-bold uppercase tracking-wider text-sky-600 dark:text-sky-400 bg-sky-500/10 px-1.5 py-0.5 rounded-xs shrink-0">
-                              Mensagem {unreadCount > 1 ? `(${unreadCount})` : ""}
-                            </span>
+                          <div className="flex-1 min-w-0 space-y-1">
+                            <div className="flex items-center justify-between gap-1">
+                              <span className="text-xs font-bold text-zinc-900 dark:text-white truncate">
+                                {member.name}
+                              </span>
+                              <span className="text-[9px] font-bold uppercase tracking-wider text-sky-600 dark:text-sky-400 bg-sky-500/10 px-1.5 py-0.5 rounded-xs shrink-0">
+                                Mensagem{" "}
+                                {unreadCount > 1 ? `(${unreadCount})` : ""}
+                              </span>
+                            </div>
+
+                            <p className="text-[11px] text-zinc-600 dark:text-zinc-300 truncate">
+                              <span className="font-medium">{member.role}</span>
+                              <span className="mx-1 text-zinc-400">•</span>
+                              <span className="font-bold text-zinc-900 dark:text-white">
+                                {member.company}
+                              </span>
+                            </p>
+
+                            <p className="text-[11px] text-zinc-800 dark:text-zinc-200 font-medium line-clamp-2 bg-zinc-100/80 dark:bg-zinc-800/80 p-1.5 rounded-xs mt-1 border border-zinc-200/50 dark:border-zinc-700/50">
+                              &ldquo;{lastMessage.text}&rdquo;
+                            </p>
                           </div>
+                        </div>
 
-                          <p className="text-[11px] text-zinc-600 dark:text-zinc-300 truncate">
-                            <span className="font-medium">{member.role}</span>
-                            <span className="mx-1 text-zinc-400">•</span>
-                            <span className="font-bold text-zinc-900 dark:text-white">{member.company}</span>
-                          </p>
-
-                          <p className="text-[11px] text-zinc-800 dark:text-zinc-200 font-medium line-clamp-2 bg-zinc-100/80 dark:bg-zinc-800/80 p-1.5 rounded-xs mt-1 border border-zinc-200/50 dark:border-zinc-700/50">
-                            &ldquo;{lastMessage.text}&rdquo;
-                          </p>
+                        <div className="flex items-center gap-2 pt-0.5 pl-11">
+                          <CtaButton
+                            type="button"
+                            variant="primary"
+                            size="xs"
+                            onClick={() => handleOpenConversation(member.id)}
+                            className="flex-1 h-7 text-[11px] font-bold shadow-none hover:shadow-none"
+                          >
+                            <ChatCircleDots className="w-3.5 h-3.5 mr-1" />
+                            <span>Responder no Chat</span>
+                          </CtaButton>
                         </div>
                       </div>
-
-                      <div className="flex items-center gap-2 pt-0.5 pl-11">
-                        <CtaButton
-                          type="button"
-                          variant="primary"
-                          size="xs"
-                          onClick={() => handleOpenConversation(member.id)}
-                          className="flex-1 h-7 text-[11px] font-bold shadow-none hover:shadow-none"
-                        >
-                          <ChatCircleDots className="w-3.5 h-3.5 mr-1" />
-                          <span>Responder no Chat</span>
-                        </CtaButton>
-                      </div>
-                    </div>
-                  ))}
+                    )
+                  )}
 
                   {pendingMembers.map((member) => (
                     <div
@@ -244,9 +271,15 @@ export function NotificationsDropdown({
                       className="p-3.5 hover:bg-zinc-50 dark:hover:bg-zinc-900/40 transition-colors space-y-3"
                     >
                       <div className="flex items-start gap-3">
-                        <Avatar size="md" className="shrink-0 mt-0.5 rounded-sm overflow-hidden border border-zinc-200 dark:border-zinc-800">
+                        <Avatar
+                          size="md"
+                          className="shrink-0 mt-0.5 rounded-sm overflow-hidden border border-zinc-200 dark:border-zinc-800"
+                        >
                           {member.avatar && (
-                            <AvatarImage src={member.avatar} alt={member.name} />
+                            <AvatarImage
+                              src={member.avatar}
+                              alt={member.name}
+                            />
                           )}
                           <AvatarFallback className="font-bold text-[10px] bg-zinc-900 text-white dark:bg-zinc-800">
                             {getInitials(member.name)}
@@ -270,7 +303,9 @@ export function NotificationsDropdown({
                           <p className="text-[11px] text-zinc-600 dark:text-zinc-300 truncate">
                             <span className="font-medium">{member.role}</span>
                             <span className="mx-1 text-zinc-400">•</span>
-                            <span className="font-bold text-zinc-900 dark:text-white">{member.company}</span>
+                            <span className="font-bold text-zinc-900 dark:text-white">
+                              {member.company}
+                            </span>
                           </p>
 
                           <p className="text-[11px] text-zinc-500 dark:text-zinc-400">

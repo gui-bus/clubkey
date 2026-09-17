@@ -3,7 +3,6 @@
 import * as React from "react"
 
 import Image from "next/image"
-import { useQueryState, parseAsInteger } from "nuqs"
 
 import { BenefitItem, getInitials } from "@/src/data/portalData"
 import {
@@ -13,6 +12,7 @@ import {
   Gift,
   ShieldCheck,
 } from "@phosphor-icons/react"
+import { parseAsInteger, useQueryState } from "nuqs"
 
 import {
   Dialog,

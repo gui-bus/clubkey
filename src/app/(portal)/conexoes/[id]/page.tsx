@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation"
+
 import { MEMBERS, getMemberSlug } from "@/src/data/portalData"
 
 interface PageProps {

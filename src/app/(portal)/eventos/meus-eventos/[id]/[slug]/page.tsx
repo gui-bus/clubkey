@@ -28,8 +28,6 @@ import {
   XCircle,
 } from "@phosphor-icons/react"
 
-import { Badge } from "@/src/components/ui/badge/badge"
-import { Button } from "@/src/components/ui/button/button"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -41,6 +39,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/src/components/ui/alertDialog/alertDialog"
+import { Badge } from "@/src/components/ui/badge/badge"
+import { Button } from "@/src/components/ui/button/button"
 import { toast } from "@/src/components/ui/toast/toast"
 
 import { Container } from "@/src/components/common/container"
@@ -263,15 +263,14 @@ export default function MeuEventoDetailPage(): React.JSX.Element {
                     Cancelar presença no encontro?
                   </AlertDialogTitle>
                   <AlertDialogDescription>
-                    Tem certeza que deseja cancelar sua presença em &ldquo;{event.title}&rdquo; ({event.day} de {event.month})? Sua vaga será liberada para outros membros do clube.
+                    Tem certeza que deseja cancelar sua presença em &ldquo;
+                    {event.title}&rdquo; ({event.day} de {event.month})? Sua
+                    vaga será liberada para outros membros do clube.
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                   <AlertDialogCancel>Manter presença</AlertDialogCancel>
-                  <AlertDialogAction
-                    color="danger"
-                    onClick={handleCancelRSVP}
-                  >
+                  <AlertDialogAction color="danger" onClick={handleCancelRSVP}>
                     Confirmar cancelamento
                   </AlertDialogAction>
                 </AlertDialogFooter>

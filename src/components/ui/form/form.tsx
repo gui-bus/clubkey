@@ -1,6 +1,7 @@
-"use client";
+"use client"
 
-import type * as React from "react";
+import type * as React from "react"
+
 import {
   Controller,
   type FieldValues,
@@ -12,14 +13,16 @@ import {
   useForm,
   useFormContext,
   useWatch,
-} from "react-hook-form";
-import { cn } from "../../../lib/utils";
+} from "react-hook-form"
 
-export interface FormProps<TFieldValues extends FieldValues = FieldValues>
-  extends Omit<React.FormHTMLAttributes<HTMLFormElement>, "onSubmit"> {
-  form: UseFormReturn<TFieldValues>;
-  onSubmit: SubmitHandler<TFieldValues>;
-  scrollToFirstError?: boolean;
+import { cn } from "../../../lib/utils"
+
+export interface FormProps<
+  TFieldValues extends FieldValues = FieldValues,
+> extends Omit<React.FormHTMLAttributes<HTMLFormElement>, "onSubmit"> {
+  form: UseFormReturn<TFieldValues>
+  onSubmit: SubmitHandler<TFieldValues>
+  scrollToFirstError?: boolean
 }
 
 export function Form<TFieldValues extends FieldValues = FieldValues>({
@@ -31,22 +34,22 @@ export function Form<TFieldValues extends FieldValues = FieldValues>({
   ...props
 }: FormProps<TFieldValues>) {
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    await form.handleSubmit(onSubmit)(e);
+    e.preventDefault()
+    await form.handleSubmit(onSubmit)(e)
 
     if (scrollToFirstError && Object.keys(form.formState.errors).length > 0) {
       setTimeout(() => {
-        const firstErrorKey = Object.keys(form.formState.errors)[0];
+        const firstErrorKey = Object.keys(form.formState.errors)[0]
         const errorElement = document.querySelector(
-          `[name="${firstErrorKey}"], #${firstErrorKey}`,
-        );
+          `[name="${firstErrorKey}"], #${firstErrorKey}`
+        )
         if (errorElement) {
-          errorElement.scrollIntoView({ behavior: "smooth", block: "center" });
-          (errorElement as HTMLElement).focus?.();
+          errorElement.scrollIntoView({ behavior: "smooth", block: "center" })
+          ;(errorElement as HTMLElement).focus?.()
         }
-      }, 50);
+      }, 50)
     }
-  };
+  }
 
   return (
     <FormProvider {...form}>
@@ -58,10 +61,10 @@ export function Form<TFieldValues extends FieldValues = FieldValues>({
         {children}
       </form>
     </FormProvider>
-  );
+  )
 }
 
-export type { SubmitHandler, UseFormProps, UseFormReturn };
+export type { SubmitHandler, UseFormProps, UseFormReturn }
 export {
   Controller,
   FormProvider,
@@ -69,4 +72,4 @@ export {
   useForm,
   useFormContext,
   useWatch,
-};
+}

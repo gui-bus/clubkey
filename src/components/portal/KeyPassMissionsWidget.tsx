@@ -1,17 +1,18 @@
 "use client"
 
 import * as React from "react"
-import Link from "next/link"
+
 import Image from "next/image"
-import {
-  ArrowRight,
-  CheckCircle,
-  Target,
-} from "@phosphor-icons/react"
-import { CtaButton } from "@/src/components/common/ctaButton"
-import { usePortalStore } from "@/src/store/usePortalStore"
+import Link from "next/link"
+
 import { MissionItem } from "@/src/data/portalData"
+import { usePortalStore } from "@/src/store/usePortalStore"
+import { ArrowRight, CheckCircle, Target } from "@phosphor-icons/react"
+
 import { toast } from "@/src/components/ui/toast/toast"
+
+import { CtaButton } from "@/src/components/common/ctaButton"
+
 import { cn } from "@/src/lib/utils"
 
 interface KeyPassMissionsWidgetProps {
@@ -23,19 +24,24 @@ export function KeyPassMissionsWidget({
 }: KeyPassMissionsWidgetProps): React.JSX.Element {
   const { missions, claimMission } = usePortalStore()
 
-  // Display top 3 missions (pending or claimable)
   const displayMissions = React.useMemo(() => {
     const claimable = missions.filter(
-      (m) => m.isCompleted && !m.isClaimed && m.currentProgress >= m.totalRequired
+      (m) =>
+        m.isCompleted && !m.isClaimed && m.currentProgress >= m.totalRequired
     )
     const pending = missions.filter(
-      (m) => !m.isClaimed && (!m.isCompleted || m.currentProgress < m.totalRequired)
+      (m) =>
+        !m.isClaimed && (!m.isCompleted || m.currentProgress < m.totalRequired)
     )
     return [...claimable, ...pending].slice(0, 3)
   }, [missions])
 
   const handleClaim = (mission: MissionItem) => {
-    if (!mission.isCompleted || mission.isClaimed || mission.currentProgress < mission.totalRequired) {
+    if (
+      !mission.isCompleted ||
+      mission.isClaimed ||
+      mission.currentProgress < mission.totalRequired
+    ) {
       return
     }
     claimMission(mission.id)
@@ -72,11 +78,14 @@ export function KeyPassMissionsWidget({
         className
       )}
     >
-      {/* Header Bar */}
+      {}
       <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800 pb-3">
         <div className="space-y-0.5">
           <div className="flex items-center gap-2">
-            <Target className="w-4 h-4 text-zinc-900 dark:text-white" weight="bold" />
+            <Target
+              className="w-4 h-4 text-zinc-900 dark:text-white"
+              weight="bold"
+            />
             <h3 className="text-base font-heading font-black uppercase tracking-tight text-zinc-900 dark:text-white">
               Metas & Missões em Destaque
             </h3>
@@ -95,7 +104,7 @@ export function KeyPassMissionsWidget({
         </Link>
       </div>
 
-      {/* Mission Cards List - Naturally grouped with normal tight spacing */}
+      {}
       <div className="space-y-2.5">
         {displayMissions.length === 0 ? (
           <div className="p-8 text-center rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/40 space-y-1.5">
@@ -113,7 +122,8 @@ export function KeyPassMissionsWidget({
               )
             )
             const isFullyCompleted =
-              mission.currentProgress >= mission.totalRequired && mission.isCompleted
+              mission.currentProgress >= mission.totalRequired &&
+              mission.isCompleted
             const isReadyToClaim = isFullyCompleted && !mission.isClaimed
 
             return (
@@ -121,7 +131,7 @@ export function KeyPassMissionsWidget({
                 key={mission.id}
                 className="p-3.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-2.5"
               >
-                {/* Card Top */}
+                {}
                 <div className="flex items-start justify-between gap-3">
                   <div className="space-y-0.5 min-w-0">
                     <span className="text-[9px] font-black uppercase tracking-wider text-zinc-400 block">
@@ -135,7 +145,7 @@ export function KeyPassMissionsWidget({
                     </p>
                   </div>
 
-                  {/* Clean XP & Token display */}
+                  {}
                   <div className="flex items-center gap-2 shrink-0 whitespace-nowrap">
                     <div className="flex items-center gap-1 text-xs text-zinc-700 dark:text-zinc-300 font-normal">
                       <div className="relative w-3.5 h-3.5 shrink-0">
@@ -157,11 +167,12 @@ export function KeyPassMissionsWidget({
                   </div>
                 </div>
 
-                {/* Progress bar */}
+                {}
                 <div className="space-y-1">
                   <div className="flex justify-between text-[10px] text-zinc-500 font-medium">
                     <span>
-                      Progresso: {mission.currentProgress} / {mission.totalRequired}
+                      Progresso: {mission.currentProgress} /{" "}
+                      {mission.totalRequired}
                     </span>
                     <span>{progressPct}%</span>
                   </div>
@@ -173,7 +184,7 @@ export function KeyPassMissionsWidget({
                   </div>
                 </div>
 
-                {/* Claim CTA only rendered when 100% complete */}
+                {}
                 {isReadyToClaim && (
                   <div className="flex justify-end pt-0.5">
                     <CtaButton

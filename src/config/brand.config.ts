@@ -145,7 +145,9 @@ const activeTenantKey = rawTenant.toLowerCase().trim() || "clubkey"
 export const brandConfig: BrandConfig =
   brandPresets[activeTenantKey] || brandPresets.clubkey
 
-export function generateBrandCssVariables(config: BrandConfig = brandConfig): string {
+export function generateBrandCssVariables(
+  config: BrandConfig = brandConfig
+): string {
   const light = config.colors.light
   const dark = config.colors.dark
 

@@ -1,10 +1,13 @@
 "use client"
 
 import * as React from "react"
+
 import Link from "next/link"
+
 import { ArrowSquareOut } from "@phosphor-icons/react"
 
 import { Checkbox } from "@/src/components/ui/checkbox/checkbox"
+
 import { cn } from "@/src/lib/utils"
 
 export interface TermsCardProps {
@@ -76,12 +79,14 @@ export function TermsCard({
       </div>
 
       <p className="text-xs text-zinc-600 dark:text-zinc-400 font-light leading-relaxed pl-7">
-        Declaro para os devidos fins que as informações cadastrais fornecidas são
-        verdadeiras, e assumo total responsabilidade sobre elas, estando sujeito
-        às penalidades previstas em lei (Art. 171 e 299 CP).
+        Declaro para os devidos fins que as informações cadastrais fornecidas
+        são verdadeiras, e assumo total responsabilidade sobre elas, estando
+        sujeito às penalidades previstas em lei (Art. 171 e 299 CP).
       </p>
 
-      {error && <span className="block text-xs text-red-500 pl-7">{error}</span>}
+      {error && (
+        <span className="block text-xs text-red-500 pl-7">{error}</span>
+      )}
     </div>
   )
 }

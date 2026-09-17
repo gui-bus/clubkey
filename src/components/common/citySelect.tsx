@@ -1,13 +1,20 @@
 "use client"
 
 import * as React from "react"
-import { CaretDown, Check, MagnifyingGlass, MapPin } from "@phosphor-icons/react"
-import { cn } from "@/src/lib/utils"
+
 import {
-  BRAZILIAN_STATES,
   BRAZILIAN_CITIES_BY_UF,
+  BRAZILIAN_STATES,
   type StateOption,
 } from "@/src/data/brazilianCities"
+import {
+  CaretDown,
+  Check,
+  MagnifyingGlass,
+  MapPin,
+} from "@phosphor-icons/react"
+
+import { cn } from "@/src/lib/utils"
 
 const citiesCache: Record<string, string[]> = {}
 
@@ -85,7 +92,10 @@ export function CitySelect({
         fetchedList.sort((a, b) => a.localeCompare(b, "pt-BR"))
 
         const combined = Array.from(
-          new Set([...(BRAZILIAN_CITIES_BY_UF[selectedUf] || []), ...fetchedList])
+          new Set([
+            ...(BRAZILIAN_CITIES_BY_UF[selectedUf] || []),
+            ...fetchedList,
+          ])
         ).sort((a, b) => a.localeCompare(b, "pt-BR"))
 
         citiesCache[selectedUf] = combined
@@ -304,7 +314,8 @@ export function CitySelect({
                   </div>
                 ) : (
                   filteredCities.map((city) => {
-                    const isSelected = city.toLowerCase() === cityName.toLowerCase()
+                    const isSelected =
+                      city.toLowerCase() === cityName.toLowerCase()
                     return (
                       <button
                         key={city}

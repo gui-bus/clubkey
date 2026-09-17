@@ -1,17 +1,19 @@
-"use client";
+"use client"
 
-import { Icon } from "@iconify/react";
-import { cva } from "class-variance-authority";
-import * as React from "react";
-import { Badge } from "@/src/components/ui/badge/badge";
-import { designRadius } from "../../../lib/design-system";
-import { cn } from "../../../lib/utils";
+import * as React from "react"
 
-export interface FileInputProps
-  extends Omit<
-    React.InputHTMLAttributes<HTMLInputElement>,
-    "size" | "onChange"
-  > {
+import { Icon } from "@iconify/react"
+import { cva } from "class-variance-authority"
+
+import { Badge } from "@/src/components/ui/badge/badge"
+
+import { designRadius } from "../../../lib/design-system"
+import { cn } from "../../../lib/utils"
+
+export interface FileInputProps extends Omit<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  "size" | "onChange"
+> {
   variant?:
     | "default"
     | "bordered"
@@ -20,20 +22,20 @@ export interface FileInputProps
     | "filled"
     | "glassmorphism"
     | "gradient-border"
-    | "glow";
-  size?: "sm" | "md" | "lg";
-  radius?: keyof typeof designRadius;
-  label?: React.ReactNode;
-  description?: React.ReactNode;
-  errorMessage?: React.ReactNode;
-  isInvalid?: boolean;
-  isLoading?: boolean;
-  isClearable?: boolean;
-  progress?: number;
-  showBadges?: boolean;
-  maxSizeMB?: number;
-  onFilesSelected?: (files: File[]) => void;
-  isRequired?: boolean;
+    | "glow"
+  size?: "sm" | "md" | "lg"
+  radius?: keyof typeof designRadius
+  label?: React.ReactNode
+  description?: React.ReactNode
+  errorMessage?: React.ReactNode
+  isInvalid?: boolean
+  isLoading?: boolean
+  isClearable?: boolean
+  progress?: number
+  showBadges?: boolean
+  maxSizeMB?: number
+  onFilesSelected?: (files: File[]) => void
+  isRequired?: boolean
 }
 
 const fileInputVariants = cva(
@@ -66,26 +68,26 @@ const fileInputVariants = cva(
       variant: "default",
       size: "md",
     },
-  },
-);
+  }
+)
 
 const matchAcceptRule = (
   fileName: string,
   fileType: string,
-  accept: string,
+  accept: string
 ) => {
-  const rules = accept.split(",").map((r) => r.trim().toLowerCase());
+  const rules = accept.split(",").map((r) => r.trim().toLowerCase())
   return rules.some((rule) => {
     if (rule.startsWith(".")) {
-      return fileName.toLowerCase().endsWith(rule);
+      return fileName.toLowerCase().endsWith(rule)
     }
     if (rule.endsWith("/*")) {
-      const baseType = rule.replace("/*", "");
-      return fileType.toLowerCase().startsWith(baseType);
+      const baseType = rule.replace("/*", "")
+      return fileType.toLowerCase().startsWith(baseType)
     }
-    return fileType.toLowerCase() === rule;
-  });
-};
+    return fileType.toLowerCase() === rule
+  })
+}
 
 export const FileInput = React.forwardRef<HTMLInputElement, FileInputProps>(
   (
@@ -111,63 +113,63 @@ export const FileInput = React.forwardRef<HTMLInputElement, FileInputProps>(
       isRequired = false,
       ...props
     },
-    ref,
+    ref
   ) => {
-    const inputRef = React.useRef<HTMLInputElement>(null);
-    React.useImperativeHandle(ref, () => inputRef.current as HTMLInputElement);
+    const inputRef = React.useRef<HTMLInputElement>(null)
+    React.useImperativeHandle(ref, () => inputRef.current as HTMLInputElement)
 
-    const [selectedFiles, setSelectedFiles] = React.useState<File[]>([]);
-    const [localError, setLocalError] = React.useState<string | null>(null);
+    const [selectedFiles, setSelectedFiles] = React.useState<File[]>([])
+    const [localError, setLocalError] = React.useState<string | null>(null)
 
     const handleFilesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       if (e.target.files) {
-        const filesArr = Array.from(e.target.files);
-        let errorMsg: string | null = null;
+        const filesArr = Array.from(e.target.files)
+        let errorMsg: string | null = null
 
         for (const file of filesArr) {
           if (maxSizeMB && file.size > maxSizeMB * 1024 * 1024) {
-            errorMsg = `File "${file.name}" exceeds the ${maxSizeMB}MB size limit.`;
-            break;
+            errorMsg = `File "${file.name}" exceeds the ${maxSizeMB}MB size limit.`
+            break
           }
           if (accept && !matchAcceptRule(file.name, file.type, accept)) {
-            errorMsg = `File "${file.name}" has an invalid type. Allowed: ${accept}.`;
-            break;
+            errorMsg = `File "${file.name}" has an invalid type. Allowed: ${accept}.`
+            break
           }
         }
 
         if (errorMsg) {
-          setLocalError(errorMsg);
-          setSelectedFiles([]);
-          onFilesSelected?.([]);
+          setLocalError(errorMsg)
+          setSelectedFiles([])
+          onFilesSelected?.([])
         } else {
-          setLocalError(null);
-          setSelectedFiles(filesArr);
-          onFilesSelected?.(filesArr);
+          setLocalError(null)
+          setSelectedFiles(filesArr)
+          onFilesSelected?.(filesArr)
         }
       }
-    };
+    }
 
     const handleClear = (e: React.MouseEvent) => {
-      e.stopPropagation();
-      setSelectedFiles([]);
-      setLocalError(null);
+      e.stopPropagation()
+      setSelectedFiles([])
+      setLocalError(null)
       if (inputRef.current) {
-        inputRef.current.value = "";
+        inputRef.current.value = ""
       }
-      onFilesSelected?.([]);
-    };
+      onFilesSelected?.([])
+    }
 
     const handleRemoveFile = (idxToRemove: number) => {
-      const nextFiles = selectedFiles.filter((_, i) => i !== idxToRemove);
-      setSelectedFiles(nextFiles);
-      setLocalError(null);
-      onFilesSelected?.(nextFiles);
+      const nextFiles = selectedFiles.filter((_, i) => i !== idxToRemove)
+      setSelectedFiles(nextFiles)
+      setLocalError(null)
+      onFilesSelected?.(nextFiles)
       if (inputRef.current) {
-        inputRef.current.value = "";
+        inputRef.current.value = ""
       }
-    };
+    }
 
-    const radiusClass = designRadius[radius] || "rounded-xl";
+    const radiusClass = designRadius[radius] || "rounded-xl"
 
     return (
       <div className={cn("flex flex-col gap-1.5 w-full max-w-md", className)}>
@@ -185,7 +187,7 @@ export const FileInput = React.forwardRef<HTMLInputElement, FileInputProps>(
             radiusClass,
             (isInvalid || !!localError) &&
               "border-rose-500 dark:border-rose-500 focus-within:ring-rose-500/20",
-            disabled && "opacity-50 cursor-not-allowed pointer-events-none",
+            disabled && "opacity-50 cursor-not-allowed pointer-events-none"
           )}
         >
           <input
@@ -203,7 +205,7 @@ export const FileInput = React.forwardRef<HTMLInputElement, FileInputProps>(
             icon="hugeicons:file-attachment"
             className={cn(
               "shrink-0 text-zinc-400 dark:text-zinc-500",
-              size === "sm" ? "size-3.5" : size === "lg" ? "size-5" : "size-4",
+              size === "sm" ? "size-3.5" : size === "lg" ? "size-5" : "size-4"
             )}
           />
 
@@ -212,7 +214,7 @@ export const FileInput = React.forwardRef<HTMLInputElement, FileInputProps>(
               "flex-1 text-left truncate font-medium",
               selectedFiles.length > 0
                 ? "text-zinc-900 dark:text-zinc-100"
-                : "text-zinc-400 dark:text-zinc-500",
+                : "text-zinc-400 dark:text-zinc-500"
             )}
           >
             {selectedFiles.length > 0
@@ -284,8 +286,8 @@ export const FileInput = React.forwardRef<HTMLInputElement, FileInputProps>(
           </p>
         )}
       </div>
-    );
-  },
-);
+    )
+  }
+)
 
-FileInput.displayName = "FileInput";
+FileInput.displayName = "FileInput"

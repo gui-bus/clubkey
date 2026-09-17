@@ -1,10 +1,12 @@
-"use client";
+"use client"
 
-import { Slot } from "@radix-ui/react-slot";
-import * as React from "react";
-import { designRadius } from "../../../lib/design-system";
-import { useKeyboardClick } from "@/lib/hooks";
-import { cn } from "../../../lib/utils";
+import * as React from "react"
+
+import { useKeyboardClick } from "@/lib/hooks"
+import { Slot } from "@radix-ui/react-slot"
+
+import { designRadius } from "../../../lib/design-system"
+import { cn } from "../../../lib/utils"
 
 type BadgeColor =
   | "default"
@@ -14,42 +16,36 @@ type BadgeColor =
   | "success"
   | "warning"
   | "danger"
-  | "info";
+  | "info"
 
-type BadgeVariant =
-  | "default"
-  | "bordered"
-  | "flat"
-  | "ghost"
-  | "shadow"
-  | "dot";
+type BadgeVariant = "default" | "bordered" | "flat" | "ghost" | "shadow" | "dot"
 
-type BadgeSize = "sm" | "md" | "lg";
+type BadgeSize = "sm" | "md" | "lg"
 
 export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
-  color?: BadgeColor;
-  variant?: BadgeVariant;
-  size?: BadgeSize;
-  radius?: keyof typeof designRadius;
-  startContent?: React.ReactNode;
-  endContent?: React.ReactNode;
-  dot?: boolean;
-  isDot?: boolean;
-  isPulsing?: boolean;
-  isRemovable?: boolean;
-  onRemove?: () => void;
-  isPressable?: boolean;
-  isDisabled?: boolean;
-  isInvisible?: boolean;
-  live?: boolean;
-  asChild?: boolean;
+  color?: BadgeColor
+  variant?: BadgeVariant
+  size?: BadgeSize
+  radius?: keyof typeof designRadius
+  startContent?: React.ReactNode
+  endContent?: React.ReactNode
+  dot?: boolean
+  isDot?: boolean
+  isPulsing?: boolean
+  isRemovable?: boolean
+  onRemove?: () => void
+  isPressable?: boolean
+  isDisabled?: boolean
+  isInvisible?: boolean
+  live?: boolean
+  asChild?: boolean
 }
 
 const badgeSizes: Record<BadgeSize, string> = {
   sm: "px-2 py-0.5 text-xs gap-1",
   md: "px-2.5 py-1 text-xs gap-1.5",
   lg: "px-3 py-1.5 text-sm gap-2",
-};
+}
 
 const badgeColorMap: Record<BadgeColor, Record<BadgeVariant, string>> = {
   default: {
@@ -139,7 +135,7 @@ const badgeColorMap: Record<BadgeColor, Record<BadgeVariant, string>> = {
       "bg-blue-600 text-white dark:bg-blue-500 shadow-md shadow-blue-500/20",
     dot: "bg-transparent text-blue-600 dark:text-blue-400 border border-transparent",
   },
-};
+}
 
 const dotColorMap: Record<BadgeColor, string> = {
   default: "bg-zinc-600 dark:bg-zinc-400",
@@ -150,7 +146,7 @@ const dotColorMap: Record<BadgeColor, string> = {
   warning: "bg-amber-500",
   danger: "bg-rose-500",
   info: "bg-blue-500",
-};
+}
 
 const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
   (
@@ -175,19 +171,19 @@ const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
       asChild = false,
       ...props
     },
-    ref,
+    ref
   ) => {
     const keyboardProps = useKeyboardClick<HTMLSpanElement>(
-      isPressable && !isDisabled,
-    );
+      isPressable && !isDisabled
+    )
 
-    if (isInvisible) return null;
+    if (isInvisible) return null
 
-    const isOnlyDotMode = isDot && !children;
-    const showDot = dot || isDot || variant === "dot";
+    const isOnlyDotMode = isDot && !children
+    const showDot = dot || isDot || variant === "dot"
 
     if (isOnlyDotMode) {
-      const DotComp = asChild ? Slot : "span";
+      const DotComp = asChild ? Slot : "span"
       return (
         <DotComp
           ref={ref}
@@ -195,7 +191,7 @@ const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
             "relative inline-flex shrink-0 size-2.5 rounded-full select-none",
             dotColorMap[color],
             isPulsing && "animate-pulse",
-            className,
+            className
           )}
           {...props}
         >
@@ -203,15 +199,15 @@ const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
             <span
               className={cn(
                 "absolute inset-0 rounded-full animate-ping opacity-75",
-                dotColorMap[color],
+                dotColorMap[color]
               )}
             />
           )}
         </DotComp>
-      );
+      )
     }
 
-    const Comp = asChild ? Slot : "span";
+    const Comp = asChild ? Slot : "span"
 
     return (
       <Comp
@@ -229,7 +225,7 @@ const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
             "cursor-pointer hover:scale-105 active:scale-95 hover:opacity-90 will-change-transform outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-ring",
           isDisabled &&
             "opacity-50 grayscale cursor-not-allowed pointer-events-none",
-          className,
+          className
         )}
         {...keyboardProps}
         {...props}
@@ -240,7 +236,7 @@ const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
               <span
                 className={cn(
                   "absolute inset-0 rounded-full animate-ping opacity-75",
-                  dotColorMap[color],
+                  dotColorMap[color]
                 )}
               />
             )}
@@ -248,7 +244,7 @@ const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
               aria-hidden="true"
               className={cn(
                 "size-2 rounded-full shrink-0 relative",
-                dotColorMap[color],
+                dotColorMap[color]
               )}
             />
           </span>
@@ -268,8 +264,8 @@ const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
           <button
             type="button"
             onClick={(e) => {
-              e.stopPropagation();
-              onRemove?.();
+              e.stopPropagation()
+              onRemove?.()
             }}
             className="ml-1 -mr-1 p-0.5 rounded-full hover:bg-black/10 dark:hover:bg-white/20 transition-colors cursor-pointer"
             aria-label="Remove badge"
@@ -290,11 +286,11 @@ const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
           </button>
         )}
       </Comp>
-    );
-  },
-);
+    )
+  }
+)
 
-Badge.displayName = "Badge";
+Badge.displayName = "Badge"
 
-export type { BadgeColor, BadgeSize, BadgeVariant };
-export { Badge };
+export type { BadgeColor, BadgeSize, BadgeVariant }
+export { Badge }
