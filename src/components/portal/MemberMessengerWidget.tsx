@@ -7,7 +7,6 @@ import Link from "next/link"
 
 import {
   MEMBERS,
-  Member,
   getInitials,
   getMemberSlug,
 } from "@/src/data/portalData"
@@ -18,6 +17,7 @@ import {
   ChatCircleDots,
   Minus,
   PaperPlaneRight,
+  Trash,
   X,
 } from "@phosphor-icons/react"
 import { parseAsInteger, useQueryState } from "nuqs"
@@ -30,10 +30,10 @@ import {
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/src/components/ui/dropdownMenu/dropdownMenu"
 import { ScrollArea } from "@/src/components/ui/scrollArea/scrollArea"
+import { toast } from "@/src/components/ui/toast/toast"
 
 import { CtaButton } from "@/src/components/common/ctaButton"
 
@@ -52,6 +52,7 @@ export function MemberMessengerWidget(): React.JSX.Element | null {
     closeChat,
     minimizeChat,
     sendChatMessage,
+    deleteChatConversation,
   } = usePortalStore()
 
   const [chatParam, setChatParam] = useQueryState(
@@ -64,8 +65,24 @@ export function MemberMessengerWidget(): React.JSX.Element | null {
   const messagesEndRef = React.useRef<HTMLDivElement>(null)
   const inputRef = React.useRef<HTMLInputElement>(null)
 
-  const isWidgetOpen = chatParam !== null || (isChatOpen && !isChatMinimized)
-  const currentMemberId = chatParam ?? activeChatMemberId ?? 2
+  const conversationsList = React.useMemo(() => {
+    const ids = Object.keys(chatMessages).map(Number)
+    return MEMBERS.filter((m) => ids.includes(m.id))
+  }, [chatMessages])
+
+  const activeMember = React.useMemo(() => {
+    if (chatParam !== null) {
+      return MEMBERS.find((m) => m.id === chatParam) || null
+    }
+    if (activeChatMemberId !== null) {
+      return MEMBERS.find((m) => m.id === activeChatMemberId) || null
+    }
+    return conversationsList[0] || null
+  }, [chatParam, activeChatMemberId, conversationsList])
+
+  const isWidgetOpen =
+    (chatParam !== null || (isChatOpen && !isChatMinimized)) &&
+    activeMember !== null
 
   React.useEffect(() => {
     if (chatParam !== null && chatParam !== activeChatMemberId) {
@@ -83,10 +100,6 @@ export function MemberMessengerWidget(): React.JSX.Element | null {
       setChatParam(activeChatMemberId)
     }
   }, [isChatOpen, isChatMinimized, activeChatMemberId, chatParam, setChatParam])
-
-  const activeMember = React.useMemo(() => {
-    return MEMBERS.find((m) => m.id === currentMemberId) || MEMBERS[2]
-  }, [currentMemberId])
 
   const activeThread = React.useMemo(() => {
     if (!activeMember) return []
@@ -114,13 +127,8 @@ export function MemberMessengerWidget(): React.JSX.Element | null {
         return MEMBERS.find((m) => m.id === memberId) || null
       }
     }
-    return activeMember
-  }, [chatMessages, activeMember])
-
-  const conversationsList = React.useMemo(() => {
-    const ids = Object.keys(chatMessages).map(Number)
-    return MEMBERS.filter((m) => ids.includes(m.id))
-  }, [chatMessages])
+    return activeMember || conversationsList[0] || null
+  }, [chatMessages, activeMember, conversationsList])
 
   React.useEffect(() => {
     if (isWidgetOpen) {
@@ -129,7 +137,13 @@ export function MemberMessengerWidget(): React.JSX.Element | null {
     }
   }, [isWidgetOpen, activeThread])
 
-  if (!mounted || !isAuthenticated) return null
+  if (
+    !mounted ||
+    !isAuthenticated ||
+    (conversationsList.length === 0 && chatParam === null)
+  ) {
+    return null
+  }
 
   const handleSendMessage = (e?: React.FormEvent) => {
     if (e) e.preventDefault()
@@ -143,9 +157,12 @@ export function MemberMessengerWidget(): React.JSX.Element | null {
       setChatParam(null)
       closeChat()
     } else {
-      const targetId = memberWithUnread?.id ?? activeMember?.id ?? 2
-      setChatParam(targetId)
-      openChat(targetId)
+      const targetId =
+        memberWithUnread?.id ?? activeMember?.id ?? conversationsList[0]?.id
+      if (targetId) {
+        setChatParam(targetId)
+        openChat(targetId)
+      }
     }
   }
 
@@ -164,89 +181,122 @@ export function MemberMessengerWidget(): React.JSX.Element | null {
     openChat(id)
   }
 
+  const handleDeleteConversation = (memberId: number, e?: React.MouseEvent) => {
+    if (e) {
+      e.stopPropagation()
+      e.preventDefault()
+    }
+    deleteChatConversation(memberId)
+    const remainingList = conversationsList.filter((m) => m.id !== memberId)
+    if (chatParam === memberId || activeChatMemberId === memberId) {
+      if (remainingList.length > 0) {
+        const nextId = remainingList[0].id
+        setChatParam(nextId)
+        openChat(nextId)
+      } else {
+        setChatParam(null)
+        closeChat()
+      }
+    }
+    toast.success("Conversa excluída")
+  }
+
   return (
     <div className="fixed inset-x-0 bottom-0 z-50 pointer-events-none w-full max-w-440 mx-auto">
       <aside
         aria-label="Chat Flutuante de Membros"
         className="pointer-events-auto flex flex-col items-end p-4 sm:p-6 ml-auto select-none"
       >
-        {isWidgetOpen && (
+        {isWidgetOpen && activeMember && (
           <div className="w-[calc(100vw-32px)] sm:w-[360px] max-w-[380px] h-[480px] max-h-[calc(100vh-100px)] bg-white dark:bg-[#141416] border border-zinc-200 dark:border-zinc-800 rounded-sm shadow-2xl flex flex-col overflow-hidden mb-3 animate-in fade-in-0 zoom-in-95 duration-150">
             <div className="p-3 bg-zinc-50/80 dark:bg-zinc-900/60 border-b border-zinc-100 dark:border-zinc-800 flex items-center justify-between gap-2">
-              <div className="flex items-center gap-2.5 min-w-0 flex-1">
-                <div className="relative shrink-0">
-                  <Avatar
-                    size="sm"
-                    className="rounded-sm overflow-hidden border border-zinc-200 dark:border-zinc-700"
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button
+                    type="button"
+                    className="flex items-center gap-2.5 min-w-0 flex-1 text-left group cursor-pointer outline-none"
                   >
-                    {activeMember.avatar && (
-                      <AvatarImage
-                        src={activeMember.avatar}
-                        alt={activeMember.name}
-                      />
-                    )}
-                    <AvatarFallback className="font-bold text-[10px] bg-zinc-900 text-white dark:bg-zinc-800">
-                      {getInitials(activeMember.name)}
-                    </AvatarFallback>
-                  </Avatar>
-                </div>
-
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-center gap-1.5">
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <button
-                          type="button"
-                          className="flex items-center gap-1 text-xs font-bold text-zinc-900 dark:text-white hover:text-brand-primary truncate cursor-pointer"
-                        >
-                          <span className="truncate">{activeMember.name}</span>
-                          <CaretDown className="w-3 h-3 text-zinc-400 shrink-0" />
-                        </button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent
-                        align="start"
-                        className="w-56 bg-white dark:bg-[#141416] border border-zinc-200 dark:border-zinc-800 p-1 rounded-sm shadow-xl z-50"
+                    <div className="relative shrink-0">
+                      <Avatar
+                        size="sm"
+                        className="rounded-sm overflow-hidden border border-zinc-200 dark:border-zinc-700"
                       >
-                        <div className="px-2 py-1.5 text-[9px] font-black uppercase tracking-widest text-zinc-400">
-                          Conversas Recentes
-                        </div>
-                        {conversationsList.map((m) => (
-                          <DropdownMenuItem
-                            key={m.id}
-                            onClick={() => handleSelectMember(m.id)}
-                            className={cn(
-                              "flex items-center gap-2 px-2 py-1.5 text-xs rounded-xs cursor-pointer",
-                              m.id === activeMember.id
-                                ? "bg-brand-primary/10 text-brand-primary font-bold"
-                                : "text-zinc-800 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800"
-                            )}
-                          >
-                            <Avatar size="xs" className="rounded-xs">
-                              {m.avatar && (
-                                <AvatarImage src={m.avatar} alt={m.name} />
-                              )}
-                              <AvatarFallback className="text-[8px] bg-zinc-900 text-white font-bold">
-                                {getInitials(m.name)}
-                              </AvatarFallback>
-                            </Avatar>
-                            <div className="min-w-0 flex-1 truncate">
-                              <p className="truncate text-xs font-semibold">
-                                {m.name}
-                              </p>
-                              <p className="truncate text-[10px] text-zinc-400">
-                                {m.company}
-                              </p>
-                            </div>
-                          </DropdownMenuItem>
-                        ))}
-                      </DropdownMenuContent>
-                    </DropdownMenu>
+                        {activeMember.avatar && (
+                          <AvatarImage
+                            src={activeMember.avatar}
+                            alt={activeMember.name}
+                          />
+                        )}
+                        <AvatarFallback className="font-bold text-[10px] bg-zinc-900 text-white dark:bg-zinc-800">
+                          {getInitials(activeMember.name)}
+                        </AvatarFallback>
+                      </Avatar>
+                    </div>
+
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-1">
+                        <span className="text-xs font-bold text-zinc-900 dark:text-white group-hover:text-brand-primary truncate transition-colors">
+                          {activeMember.name}
+                        </span>
+                        <CaretDown className="w-3 h-3 text-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-200 shrink-0 transition-colors" />
+                      </div>
+                      <p className="text-[10px] text-zinc-500 dark:text-zinc-400 truncate">
+                        {activeMember.role} • {activeMember.company}
+                      </p>
+                    </div>
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent
+                  align="start"
+                  className="w-64 bg-white dark:bg-[#141416] border border-zinc-200 dark:border-zinc-800 p-1 rounded-sm shadow-xl z-50"
+                >
+                  <div className="px-2 py-1.5 text-[9px] font-black uppercase tracking-widest text-zinc-400">
+                    Conversas ({conversationsList.length})
                   </div>
-                  <p className="text-[10px] text-zinc-500 dark:text-zinc-400 truncate">
-                    {activeMember.role} • {activeMember.company}
-                  </p>
-                </div>
-              </div>
+                  {conversationsList.map((m) => (
+                    <div
+                      key={m.id}
+                      className={cn(
+                        "group/item flex items-center justify-between gap-2 px-2 py-1.5 text-xs rounded-xs transition-colors",
+                        m.id === activeMember.id
+                          ? "bg-brand-primary/10 text-brand-primary font-bold"
+                          : "text-zinc-800 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                      )}
+                    >
+                      <button
+                        type="button"
+                        onClick={() => handleSelectMember(m.id)}
+                        className="flex items-center gap-2 min-w-0 flex-1 text-left cursor-pointer"
+                      >
+                        <Avatar size="xs" className="rounded-xs shrink-0">
+                          {m.avatar && (
+                            <AvatarImage src={m.avatar} alt={m.name} />
+                          )}
+                          <AvatarFallback className="text-[8px] bg-zinc-900 text-white font-bold">
+                            {getInitials(m.name)}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div className="min-w-0 flex-1 truncate">
+                          <p className="truncate text-xs font-semibold">
+                            {m.name}
+                          </p>
+                          <p className="truncate text-[10px] text-zinc-400">
+                            {m.company}
+                          </p>
+                        </div>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={(e) => handleDeleteConversation(m.id, e)}
+                        className="p-1 text-zinc-400 hover:text-rose-500 hover:bg-rose-500/10 rounded-xs transition-colors shrink-0 cursor-pointer"
+                        title={`Excluir conversa com ${m.name}`}
+                      >
+                        <Trash className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
 
               <div className="flex items-center gap-1 shrink-0 text-zinc-400">
                 <Link

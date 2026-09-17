@@ -83,6 +83,7 @@ interface PortalState {
   toggleChat: (memberId?: number) => void
   sendChatMessage: (memberId: number, text: string) => void
   markChatAsRead: (memberId: number) => void
+  deleteChatConversation: (memberId: number) => void
 }
 
 export const usePortalStore = create<PortalState>()(
@@ -623,6 +624,22 @@ export const usePortalStore = create<PortalState>()(
           }
         })
       },
+
+      deleteChatConversation: (memberId: number) => {
+        set((state) => {
+          const updated = { ...state.chatMessages }
+          delete updated[memberId]
+          const remainingIds = Object.keys(updated).map(Number)
+          const nextActiveId = remainingIds.length > 0 ? remainingIds[0] : null
+          const shouldClose = remainingIds.length === 0
+          return {
+            chatMessages: updated,
+            activeChatMemberId: nextActiveId,
+            isChatOpen: shouldClose ? false : state.isChatOpen,
+            isChatMinimized: shouldClose ? false : state.isChatMinimized,
+          }
+        })
+      },
     }),
     {
       name: "clubkey-portal-storage-v7",
@@ -631,10 +648,7 @@ export const usePortalStore = create<PortalState>()(
         const state = persistedState as PortalState
         if (!state) return state
         const migratedState = { ...state }
-        if (
-          !migratedState.chatMessages ||
-          Object.keys(migratedState.chatMessages).length === 0
-        ) {
+        if (!migratedState.chatMessages) {
           migratedState.chatMessages = DEFAULT_CHAT_MESSAGES
         }
         if (typeof migratedState.activeChatMemberId !== "number") {
