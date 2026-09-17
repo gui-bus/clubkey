@@ -23,19 +23,19 @@ export default function KeyPassRulesPage(): React.JSX.Element {
     <Container className="py-6 sm:py-8 space-y-4">
       {}
       <div className="space-y-3">
-        <div className="flex items-center justify-between gap-3">
-          <div className="space-y-0.5">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4">
+          <div className="space-y-0.5 min-w-0">
             <div className="flex items-center gap-2">
               <Trophy
-                className="w-4 h-4 text-zinc-900 dark:text-white"
+                className="w-4 h-4 text-zinc-900 dark:text-white shrink-0"
                 weight="bold"
               />
               <h2 className="text-lg sm:text-xl font-heading font-black uppercase tracking-tight text-zinc-900 dark:text-white">
-                Guia Completo dos 6 Níveis
+                Guia Completo dos 6 Tiers
               </h2>
             </div>
             <p className="text-xs text-zinc-500 dark:text-zinc-400 font-medium">
-              Progressão institucional com benefícios cumulativos a cada degrau
+              Progressão institucional com benefícios cumulativos a cada tier
               alcançado.
             </p>
           </div>
@@ -61,7 +61,7 @@ export default function KeyPassRulesPage(): React.JSX.Element {
                 <div className="flex items-start justify-between gap-3">
                   <div className="space-y-1">
                     <span className="text-[9px] font-black uppercase px-2 py-0.5 rounded-sm bg-zinc-100 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 border border-zinc-200 dark:border-zinc-700 block w-fit">
-                      Nível 0{tier.order} de 06
+                      Tier 0{tier.order} de 06
                     </span>
                     <h3 className="text-base font-heading font-black uppercase text-zinc-900 dark:text-white">
                       {tier.name}
@@ -199,7 +199,7 @@ export default function KeyPassRulesPage(): React.JSX.Element {
                     Associado
                   </strong>{" "}
                   são 100% seguros e vitais: não há rebaixamento nem risco de
-                  perda de status. Você nunca cai destes níveis, garantindo
+                  perda de status. Você nunca cai destes tiers, garantindo
                   acesso perpétuo às vantagens da plataforma.
                 </p>
               </div>
@@ -221,12 +221,12 @@ export default function KeyPassRulesPage(): React.JSX.Element {
                     2. Ciclo de Atividade (Titular+)
                   </h3>
                   <p className="text-[11px] text-zinc-500 dark:text-zinc-400 font-medium">
-                    Manutenção de níveis superiores
+                    Manutenção de tiers superiores
                   </p>
                 </div>
 
                 <p className="text-xs text-zinc-600 dark:text-zinc-400 font-medium leading-relaxed">
-                  A partir do nível{" "}
+                  A partir do tier{" "}
                   <strong className="text-zinc-900 dark:text-white font-bold">
                     Titular (2.000 XP)
                   </strong>
@@ -258,10 +258,10 @@ export default function KeyPassRulesPage(): React.JSX.Element {
                 </div>
 
                 <p className="text-xs text-zinc-600 dark:text-zinc-400 font-medium leading-relaxed">
-                  Em caso de inatividade de 6 meses, o nível fica pausado
+                  Em caso de inatividade de 6 meses, o tier fica pausado
                   temporariamente como Associado. Basta realizar qualquer ação
                   (reserva, evento, experiência ou conexão) para restaurar
-                  instantaneamente o seu nível pleno.
+                  instantaneamente o seu tier pleno.
                 </p>
               </div>
             </div>

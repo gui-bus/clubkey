@@ -163,11 +163,11 @@ export default function KeyPassRankingPage(): React.JSX.Element {
       </div>
 
       {}
-      <div className="flex items-center justify-between gap-3">
-        <div className="space-y-0.5">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4">
+        <div className="space-y-0.5 min-w-0">
           <div className="flex items-center gap-2">
             <Trophy
-              className="w-4 h-4 text-zinc-900 dark:text-white"
+              className="w-4 h-4 text-zinc-900 dark:text-white shrink-0"
               weight="bold"
             />
             <h2 className="text-lg sm:text-xl font-heading font-black uppercase tracking-tight text-zinc-900 dark:text-white">
@@ -180,7 +180,7 @@ export default function KeyPassRankingPage(): React.JSX.Element {
           </p>
         </div>
 
-        <span className="text-xs font-bold text-zinc-500 dark:text-zinc-400">
+        <span className="text-xs font-bold text-zinc-500 dark:text-zinc-400 shrink-0 self-start sm:self-auto">
           {MOCK_LEADERBOARD.length} Membros Qualificados
         </span>
       </div>

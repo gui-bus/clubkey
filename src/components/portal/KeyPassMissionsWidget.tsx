@@ -79,14 +79,14 @@ export function KeyPassMissionsWidget({
       )}
     >
       {}
-      <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800 pb-3">
-        <div className="space-y-0.5">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-zinc-100 dark:border-zinc-800 pb-3">
+        <div className="space-y-0.5 min-w-0">
           <div className="flex items-center gap-2">
             <Target
-              className="w-4 h-4 text-zinc-900 dark:text-white"
+              className="w-4 h-4 text-zinc-900 dark:text-white shrink-0"
               weight="bold"
             />
-            <h3 className="text-base font-heading font-black uppercase tracking-tight text-zinc-900 dark:text-white">
+            <h3 className="text-base font-heading font-black uppercase tracking-tight text-zinc-900 dark:text-white truncate">
               Metas & Missões em Destaque
             </h3>
           </div>
@@ -97,7 +97,7 @@ export function KeyPassMissionsWidget({
 
         <Link
           href="/keypass/missoes"
-          className="text-xs font-bold uppercase tracking-wider text-zinc-900 dark:text-white hover:text-brand-primary dark:hover:text-brand-primary inline-flex items-center gap-1 shrink-0 whitespace-nowrap group"
+          className="text-xs font-bold uppercase tracking-wider text-zinc-900 dark:text-white hover:text-brand-primary dark:hover:text-brand-primary inline-flex items-center gap-1 shrink-0 whitespace-nowrap self-start sm:self-auto group"
         >
           <span>Ver todas ({missions.length})</span>
           <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />

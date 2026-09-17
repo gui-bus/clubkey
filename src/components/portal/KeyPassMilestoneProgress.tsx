@@ -169,10 +169,10 @@ export function KeyPassMilestoneProgress({
     >
       {}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <div className="space-y-0.5">
+        <div className="space-y-0.5 min-w-0">
           <div className="flex items-center gap-2">
             <span className="text-[10px] font-black uppercase tracking-widest text-zinc-500 dark:text-zinc-400">
-              Temporada • Evolução do Nível
+              Temporada • Evolução do Tier
             </span>
           </div>
           <div className="flex flex-wrap items-baseline gap-2">
@@ -186,7 +186,7 @@ export function KeyPassMilestoneProgress({
           </div>
         </div>
 
-        <div className="flex items-center gap-3 text-xs font-medium text-zinc-600 dark:text-zinc-400">
+        <div className="flex flex-wrap items-center gap-3 text-xs font-medium text-zinc-600 dark:text-zinc-400 shrink-0 self-start sm:self-auto">
           <span>
             Faltam{" "}
             <strong className="text-zinc-900 dark:text-white font-black">
@@ -202,7 +202,7 @@ export function KeyPassMilestoneProgress({
                 className="object-contain"
               />
             </div>
-            <span>(+2 RIB no nível)</span>
+            <span>(+2 RIB no tier)</span>
           </span>
         </div>
       </div>

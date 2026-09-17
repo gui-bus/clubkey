@@ -63,14 +63,14 @@ export function KeyPassHistoryWidget({
       )}
     >
       {}
-      <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800 pb-3 shrink-0">
-        <div className="space-y-0.5">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-zinc-100 dark:border-zinc-800 pb-3 shrink-0">
+        <div className="space-y-0.5 min-w-0">
           <div className="flex items-center gap-2">
             <Receipt
-              className="w-4 h-4 text-zinc-900 dark:text-white"
+              className="w-4 h-4 text-zinc-900 dark:text-white shrink-0"
               weight="bold"
             />
-            <h3 className="text-base font-heading font-black uppercase tracking-tight text-zinc-900 dark:text-white">
+            <h3 className="text-base font-heading font-black uppercase tracking-tight text-zinc-900 dark:text-white truncate">
               Histórico de Pontos XP
             </h3>
           </div>
@@ -79,7 +79,7 @@ export function KeyPassHistoryWidget({
           </p>
         </div>
 
-        <span className="text-[11px] font-bold text-zinc-400 shrink-0">
+        <span className="text-[11px] font-bold text-zinc-400 shrink-0 self-start sm:self-auto">
           {xpHistory.length} registros
         </span>
       </div>

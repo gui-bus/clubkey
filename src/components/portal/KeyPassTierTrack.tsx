@@ -60,9 +60,9 @@ export function KeyPassTierTrack({
     <div className={cn("space-y-4", className)}>
       {}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <div>
+        <div className="space-y-0.5 min-w-0">
           <h2 className="text-lg sm:text-xl font-heading font-black uppercase tracking-tight text-zinc-900 dark:text-white">
-            Trilha de Níveis de Associação
+            Trilha de Tiers de Associação
           </h2>
           <p className="text-xs text-zinc-600 dark:text-zinc-400 font-medium">
             A cada promoção você recebe 2 Tokens RIB e desbloqueia novos
@@ -168,7 +168,7 @@ export function KeyPassTierTrack({
                 <div>
                   {isUserCurrent ? (
                     <span className="text-[9px] font-black uppercase text-zinc-900 dark:text-white tracking-wider block">
-                      Nível Vigente
+                      Tier Vigente
                     </span>
                   ) : isPassed ? (
                     <span className="text-[9px] font-bold text-zinc-600 dark:text-zinc-400 uppercase tracking-wider block">
@@ -210,11 +210,11 @@ export function KeyPassTierTrack({
               <div className="space-y-1">
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded-sm bg-zinc-100 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 border border-zinc-200 dark:border-zinc-700">
-                    Nível 0{selectedTier.order} de 06
+                    Tier 0{selectedTier.order} de 06
                   </span>
                   {selectedTier.id === userTier.id ? (
                     <span className="text-[10px] font-black uppercase text-zinc-900 dark:text-white border border-zinc-300 dark:border-zinc-700 px-2 py-0.5 rounded-sm">
-                      Seu Nível Atual
+                      Seu Tier Atual
                     </span>
                   ) : (
                     <span className="text-[10px] font-bold text-zinc-600 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-800 px-2 py-0.5 rounded-sm">
@@ -235,7 +235,7 @@ export function KeyPassTierTrack({
             {}
             <div className="w-full lg:w-auto shrink-0 flex flex-col gap-2">
               <span className="text-[10px] font-black uppercase tracking-wider text-zinc-500 block">
-                Privilégios do Nível:
+                Privilégios do Tier:
               </span>
               <ul className="space-y-1">
                 {selectedTier.perks.slice(0, 3).map((perk, i) => (
@@ -258,7 +258,7 @@ export function KeyPassTierTrack({
                   onClick={() => onSelectTier(userTier.id)}
                   className="mt-1 text-xs font-bold text-zinc-900 dark:text-white underline hover:opacity-80 cursor-pointer self-start"
                 >
-                  Voltar ao seu nível ({userTier.name})
+                  Voltar ao seu tier ({userTier.name})
                 </button>
               )}
             </div>
