@@ -40,9 +40,9 @@ export default function KeyPassOverviewPage(): React.JSX.Element {
   const isViewingOtherTier = displayedTier.id !== userTier.id
 
   return (
-    <Container className="py-8 sm:py-10 space-y-6">
+    <Container className="py-6 sm:py-8 space-y-4">
       {/* 1. Executive Pass Header & Watermark Icon Stat HUD */}
-      <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 shadow-2xs space-y-6">
+      <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-5 sm:p-6 shadow-2xs space-y-4">
         <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8">
           {/* Left: Pass Identity (No border or background on tier image) */}
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 sm:gap-6">
@@ -211,7 +211,7 @@ export default function KeyPassOverviewPage(): React.JSX.Element {
       />
 
       {/* 4. Command Center Grid with Equalized Dynamic Heights */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 items-stretch">
         <KeyPassMissionsWidget className="h-full" />
         <KeyPassHistoryWidget className="h-full" />
       </div>

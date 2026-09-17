@@ -157,7 +157,7 @@ export function KeyPassMilestoneProgress({
   return (
     <div
       className={cn(
-        "rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 shadow-2xs space-y-6",
+        "rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-5 sm:p-6 shadow-2xs space-y-4",
         className
       )}
     >
@@ -252,7 +252,7 @@ export function KeyPassMilestoneProgress({
       </div>
 
       {/* 4 Milestone Detail Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 pt-1">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-1">
         {milestones.map((milestone) => {
           const isClaimable = milestone.isAchieved && !milestone.isClaimed
           const isJustClaimed = justClaimedIndex === milestone.index
