@@ -162,7 +162,7 @@ export function MemberEventDetailClient({
                   </span>
                   <p className="text-sm font-bold text-zinc-900 dark:text-white flex items-center gap-2">
                     <Building className="w-4 h-4 text-brand-primary shrink-0" />
-                    {organizer.name} ({organizer.company})
+                    {organizer.firstName} {organizer.lastName} ({organizer.company})
                   </p>
                 </div>
 
@@ -172,7 +172,7 @@ export function MemberEventDetailClient({
                   </span>
                   <p className="text-sm font-bold text-zinc-900 dark:text-white flex items-center gap-2 truncate">
                     <Users className="w-4 h-4 text-brand-primary shrink-0" />
-                    {userProfile.name}
+                    {userProfile.firstName} {userProfile.lastName}
                   </p>
                 </div>
               </div>

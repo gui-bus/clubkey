@@ -6,9 +6,10 @@ Este documento descreve todas as rotas RESTful necessárias para que o backend f
 
 ## 🔒 Padrões Globais da API
 
-- **Base URL**: `https://api.clubkey.com.br/api/v1` (ou `http://localhost:4000/api/v1` em ambiente local).
+- **Base URL**: `https://api.clubkey.com.br/api/v1` (ou `http://localhost:8000/api/v1` em ambiente local).
 - **Autenticação**: Header padrão `Authorization: Bearer <jwt_token>`.
 - **Formato de Dados**: `application/json` (UTF-8).
+- **Convenção de Nomenclatura**: **Estritamente `camelCase`** em todas as chaves JSON (requests e responses).
 - **Respostas de Sucesso**: HTTP 200 OK, 201 Created ou 204 No Content.
 - **Estrutura de Erro Padrão**:
 ```json
@@ -19,6 +20,26 @@ Este documento descreve todas as rotas RESTful necessárias para que o backend f
   "timestamp": "2026-09-17T17:00:00.000Z"
 }
 ```
+
+---
+
+## ⚡ Guia de Integração Frontend & Documentação OpenAPI (Scalar + Orval)
+
+O frontend do **ClubKey** utilizará a seguinte arquitetura de consumo de API:
+- **Axios**: Cliente HTTP para chamadas com interceptors de autenticação.
+- **TanStack React Query v5** (com `React Query Devtools`): Gerenciamento de cache, refetching em segundo plano e mutações otimistas.
+- **Orval**: Gerador automático de código que lê a especificação OpenAPI 3.x do backend e gera automaticamente todos os types TypeScript e hooks do React Query (`useQuery`, `useMutation`).
+
+### 💡 Recomendações para o Backend (PHP / Laravel / Symfony):
+1. **Documentação Automática com [Scalar](https://scalar.com/)**:
+   - Recomenda-se hospedar a interface do **Scalar** (ex: na rota `/docs` ou `/api/documentation`) para que a equipe de frontend possa testar as rotas interativamente.
+   - Em **Laravel**, recomenda-se utilizar o pacote [`dedoc/scramble`](https://scramble.dedoc.co/) (gera OpenAPI 3.x automaticamente sem anotações manuais) em conjunto com [`scalar/laravel`](https://github.com/scalar/laravel).
+2. **Exposição do JSON da OpenAPI**:
+   - Disponibilizar a rota pública `GET /docs/api.json` ou `GET /openapi.json` para que o frontend rode `npx orval` e sincronize os tipos em 1 segundo.
+3. **Definição de `operationId` nas Rotas**:
+   - Cada endpoint deve possuir um `operationId` explícito e semântico (ex: `getEventsList`, `createEventRsvp`, `getUserProfile`, `getNotificationsSummary`). O Orval usa o `operationId` para dar nome aos hooks do React Query (`useGetEventsList`, `useCreateEventRsvp`, etc.).
+4. **CORS (Cross-Origin)**:
+   - Configurar o backend para aceitar requisições de `http://localhost:3000` com `credentials: true` e headers `Authorization`, `Content-Type`, `Accept`.
 
 ---
 
@@ -41,11 +62,11 @@ Autentica o associado com e-mail e senha.
   "user": {
     "id": 1,
     "email": "associado@empresa.com.br",
-    "name": "Rodrigo Salles",
+    "firstName": "Rodrigo",
+    "lastName": "Salles",
     "role": "Founder & CEO",
     "company": "Venture Capital",
-    "avatar": "https://images.unsplash.com/...",
-    "activeClubId": "club-sp"
+    "avatar": "https://images.unsplash.com/..."
   }
 }
 ```
@@ -55,7 +76,8 @@ Cria uma nova conta / solicitação de adesão ao clube.
 - **Request Body**:
 ```json
 {
-  "fullName": "Rodrigo Salles",
+  "firstName": "Rodrigo",
+  "lastName": "Salles",
   "email": "associado@empresa.com.br",
   "phone": "+5511999999999",
   "company": "Venture Capital",
@@ -86,40 +108,15 @@ Redefine a senha através do token recebido por e-mail.
 
 ---
 
-## 2. 🏛️ Sedes & Clubes (`/clubs`)
-
-### `GET /clubs`
-Lista todos os clubes ativos da rede ClubKey.
-- **Response (200 OK)**:
-```json
-[
-  {
-    "id": "club-sp",
-    "name": "ClubKey São Paulo",
-    "city": "São Paulo",
-    "state": "SP",
-    "address": "Av. Brigadeiro Faria Lima, 3477 - Itaim Bibi, São Paulo - SP",
-    "coverImage": "/utils/banners/img_01.png"
-  }
-]
-```
-
-### `PATCH /clubs/active`
-Atualiza o clube ativo selecionado na sessão do associado.
-- **Request Body**: `{ "clubId": "club-rio" }`
-- **Response (200 OK)**: `{ "activeClubId": "club-rio" }`
-
----
-
-## 3. 👥 Membros & Networking (`/members`, `/connections`)
+## 2. 👥 Membros & Networking (`/members`, `/connections`)
 
 ### `GET /members`
 Lista membros da rede com paginação e filtros.
 - **Query Params**:
-  - `clubId` (opcional): Filtrar por sede (ex: `"club-sp"`).
   - `search` (opcional): Busca por nome, cargo ou empresa.
   - `seeking` (opcional): Tag de busca (ex: `"Investimentos"`).
   - `offering` (opcional): Tag de oferta (ex: `"Mentoria"`).
+  - `city` (opcional): Filtrar por cidade.
   - `page` (default: 1), `limit` (default: 20).
 - **Response (200 OK)**:
 ```json
@@ -127,14 +124,15 @@ Lista membros da rede com paginação e filtros.
   "items": [
     {
       "id": 1,
-      "name": "Rodrigo Salles",
+      "firstName": "Rodrigo",
+      "lastName": "Salles",
       "role": "Founder & CEO",
       "company": "Venture Capital",
       "city": "São Paulo",
       "avatar": "https://...",
       "coverImage": "https://...",
       "tierId": "patrono",
-      "membershipTier": "founding_member",
+      "membershipTier": "Patrono",
       "memberSince": "2024",
       "seeking": ["Investimentos", "M&A", "Board Member"],
       "offering": ["Venture Capital", "Mentoria", "Governança"],
@@ -175,11 +173,11 @@ Recusa solicitação, cancela convite enviado ou desfaz conexão existente.
 
 ---
 
-## 4. 📅 Eventos (`/events`)
+## 3. 📅 Eventos (`/events`)
 
 ### `GET /events`
-Lista eventos do clube ativo com suporte a filtros de categoria e busca.
-- **Query Params**: `clubId`, `category`, `search`, `page`, `limit`.
+Lista eventos da plataforma com suporte a filtros de categoria e busca.
+- **Query Params**: `category`, `search`, `page`, `limit`.
 - **Response (200 OK)**:
 ```json
 [
@@ -198,7 +196,7 @@ Lista eventos do clube ativo com suporte a filtros de categoria e busca.
     "xpReward": 250,
     "ribTokensReward": 1,
     "isExclusive": true,
-    "minTier": "chanceler",
+    "minTier": "patrono",
     "isUserConfirmed": true
   }
 ]
@@ -214,7 +212,8 @@ Retorna a lista de associados confirmados para a tela *"Quem Vai"*.
 [
   {
     "id": 1,
-    "name": "Rodrigo Salles",
+    "firstName": "Rodrigo",
+    "lastName": "Salles",
     "role": "Founder & CEO",
     "company": "Venture Capital",
     "avatar": "https://...",
@@ -240,7 +239,7 @@ Alterna a confirmação de presença (RSVP / Cancelar RSVP).
 
 ---
 
-## 5. 🍷 Experiências (`/experiences`)
+## 4. 🍷 Experiências (`/experiences`)
 
 ### `GET /experiences`
 Lista experiências gastronômicas, masterclasses e degustações privadas.
@@ -274,7 +273,7 @@ Processa a compra / reserva de cotas da experiência.
 
 ---
 
-## 6. 🏨 Hospedagens & Estadias (`/stays`)
+## 5. 🏨 Hospedagens & Estadias (`/stays`)
 
 ### `GET /stays`
 Lista acomodações, suítes e villas disponíveis para reserva.
@@ -311,7 +310,7 @@ Cancela uma reserva de hospedagem.
 
 ---
 
-## 7. 🎁 Benefícios & Parcerias (`/benefits`)
+## 6. 🎁 Benefícios & Parcerias (`/benefits`)
 
 ### `GET /benefits`
 Lista benefícios de parceiros com filtros de categoria (`"gastronomy"`, `"mobility"`, `"lifestyle"`, `"wellness"`).
@@ -334,7 +333,7 @@ Lista benefícios de parceiros com filtros de categoria (`"gastronomy"`, `"mobil
 
 ---
 
-## 8. 🛡️ KeyPass — Tiers, Missões, Conquistas & Ranking (`/keypass`)
+## 7. 🛡️ KeyPass — Tiers, Missões, Conquistas & Ranking (`/keypass`)
 
 ### `GET /keypass/me`
 Retorna o estado completo de pontuação e progresso do associado.
@@ -344,22 +343,22 @@ Retorna o estado completo de pontuação e progresso do associado.
   "xp": 14200,
   "ribTokens": 24,
   "currentTier": {
-    "id": "embaixador",
-    "name": "Embaixador",
+    "id": "incorporador",
+    "name": "Incorporador",
     "badge": "Tier V",
-    "minXp": 12000,
-    "maxXp": 25000,
+    "minXp": 10000,
+    "maxXp": 15999,
     "level": 5,
-    "image": "/utils/gamification/tiers/05_embaixador.webp"
+    "image": "/utils/gamification/tiers/05_incorporador.webp"
   },
   "nextTier": {
     "id": "patrono",
     "name": "Patrono",
-    "minXp": 25000
+    "minXp": 16000
   },
   "claimedMilestones": {
-    "embaixador_0": true,
-    "embaixador_1": false
+    "incorporador_0": true,
+    "incorporador_1": false
   }
 }
 ```
@@ -411,7 +410,8 @@ Retorna a tabela de classificação do ecossistema.
   {
     "rank": 1,
     "id": 3,
-    "name": "Eduardo Prado",
+    "firstName": "Eduardo",
+    "lastName": "Prado",
     "role": "Fundador",
     "company": "Prado Agro",
     "city": "Ribeirão Preto",
@@ -431,9 +431,130 @@ Retorna as recompensas de liberação semanal.
 ### `POST /keypass/weekly-drops/:id/claim`
 Resgata um drop semanal disponível.
 
+### `GET /keypass/tiers`
+Retorna a lista oficial dos 6 Tiers Executivos para a página de Regras (`/keypass/regras`).
+- **Response (200 OK)**:
+```json
+[
+  {
+    "id": "membro",
+    "order": 1,
+    "name": "Membro",
+    "subtitle": "Boas-vindas ao ecossistema",
+    "minXp": 0,
+    "maxXp": 499,
+    "image": "/utils/gamification/tiers/01_membro.webp",
+    "color": "#8E8E93",
+    "badgeColor": "default",
+    "isProtectedBase": true,
+    "description": "Tier de entrada vitalício e protegido. Complete seu cadastro e ative o 2FA para subir para Associado.",
+    "perks": [
+      "Acesso ao catálogo de hospedagens parceiras",
+      "Visualização de eventos abertos",
+      "Diretório básico de membros"
+    ]
+  },
+  {
+    "id": "associado",
+    "order": 2,
+    "name": "Associado",
+    "subtitle": "Membro verificado e protegido",
+    "minXp": 500,
+    "maxXp": 1999,
+    "image": "/utils/gamification/tiers/02_associado.webp",
+    "color": "#3B82F6",
+    "badgeColor": "primary",
+    "isProtectedBase": true,
+    "description": "Base segura de membro ativo. Tier vitalício e protegido: não há rebaixamento a partir deste patamar.",
+    "perks": [
+      "Tarifas exclusivas com até 20% OFF em estadias",
+      "Confirmação de presença em eventos regulares",
+      "Conexões diretas com outros membros",
+      "2 Tokens RIB ao subir de tier"
+    ]
+  },
+  {
+    "id": "titular",
+    "order": 3,
+    "name": "Titular",
+    "subtitle": "Engajamento recorrente e influência",
+    "minXp": 2000,
+    "maxXp": 4999,
+    "image": "/utils/gamification/tiers/03_titular.webp",
+    "color": "#10B981",
+    "badgeColor": "success",
+    "description": "Tier intermediário para membros ativos em eventos, viagens e conexões estratégicas.",
+    "perks": [
+      "Tarifas exclusivas com até 25% OFF em estadias",
+      "Prioridade na lista de espera de experiências",
+      "Acesso a jantares fechados e rodadas setoriais",
+      "Concierge standard para reservas prioritárias",
+      "2 Tokens RIB ao subir de tier"
+    ]
+  },
+  {
+    "id": "investidor",
+    "order": 4,
+    "name": "Investidor",
+    "subtitle": "Alta circulação e liderança",
+    "minXp": 5000,
+    "maxXp": 9999,
+    "image": "/utils/gamification/tiers/04_investidor.webp",
+    "color": "#F59E0B",
+    "badgeColor": "warning",
+    "description": "Destaque sênior na comunidade com acesso prioritário a deal flow e comitês de investimento.",
+    "perks": [
+      "Tarifas exclusivas com até 30% OFF em estadias",
+      "Acesso a reuniões de deal flow e co-investimento",
+      "Concierge VIP dedicado 24/7",
+      "Convites para experiências internacionais",
+      "2 Tokens RIB ao subir de tier"
+    ]
+  },
+  {
+    "id": "incorporador",
+    "order": 5,
+    "name": "Incorporador",
+    "subtitle": "Patamar máximo por pontuação",
+    "minXp": 10000,
+    "maxXp": 15999,
+    "image": "/utils/gamification/tiers/05_incorporador.webp",
+    "color": "#EC4899",
+    "badgeColor": "accent",
+    "description": "O mais alto tier regular da plataforma por pontuação contínua e contribuição estratégica.",
+    "perks": [
+      "Tarifas com desconto máximo de até 35% OFF",
+      "Acesso total a todas as experiências e regatas",
+      "Canal direto com fundadores do ClubKey",
+      "Mesa cativa nos encontros institucionais anuais",
+      "2 Tokens RIB ao subir de tier"
+    ]
+  },
+  {
+    "id": "patrono",
+    "order": 6,
+    "name": "Patrono",
+    "subtitle": "Posição #1 no Ranking Geral Global (> 16.000 XP)",
+    "minXp": 16000,
+    "maxXp": null,
+    "image": "/utils/gamification/tiers/06_patrono.webp",
+    "color": "#E85535",
+    "badgeColor": "danger",
+    "isSpecialPinnacle": true,
+    "description": "Título supremo e singular concedido exclusivamente ao membro com a maior pontuação de XP global (acima de 16.000 XP).",
+    "perks": [
+      "Insígnia dourada suprema em todo o ecossistema",
+      "Destaque comemorativo fixo no hall do Patrono",
+      "Cota especial de 5 Tokens RIB bônus por trimestre",
+      "Acesso irrestrito a todas as cotas e propriedades VIP"
+    ]
+  }
+]
+```
+
 ---
 
-## 9. 💬 Chat & Mensagens Diretas (`/chat`)
+## 8. 💬 Chat & Mensagens Diretas (`/chat`)
 
 ### `GET /chat/conversations`
 Lista conversas ativas com contatos e última mensagem.
@@ -454,7 +575,7 @@ Envia uma mensagem de texto privada.
 
 ---
 
-## 10. 👤 Perfil do Membro (`/profile`)
+## 9. 👤 Perfil do Membro (`/profile`)
 
 ### `GET /profile`
 Retorna os dados completos de perfil do usuário logado.
@@ -464,7 +585,8 @@ Atualiza os dados de perfil (bio, tags de negócio, telefone, redes sociais).
 - **Request Body**:
 ```json
 {
-  "name": "Rodrigo Salles",
+  "firstName": "Rodrigo",
+  "lastName": "Salles",
   "role": "Founder & CEO",
   "company": "Venture Capital",
   "bio": "Investidor em deep techs...",
@@ -481,3 +603,48 @@ Retorna os dados da assinatura ativa (plano, valor, data de renovação, cartão
 
 ### `POST /profile/2fa/toggle`
 Ativa ou desativa a autenticação em dois fatores.
+
+---
+
+## 10. 🔔 Central de Notificações (`/notifications`)
+
+### `GET /notifications/summary`
+Retorna o sumário de contadores e notificações ativas para o dropdown do cabeçalho.
+- **Response (200 OK)**:
+```json
+{
+  "totalUnread": 3,
+  "pendingInvitesCount": 1,
+  "unreadMessagesCount": 2,
+  "notifications": [
+    {
+      "id": "notif-001",
+      "type": "connection_request",
+      "title": "Solicitação de Conexão",
+      "message": "Carlos Eduardo enviou uma solicitação de networking para você.",
+      "isRead": false,
+      "createdAt": "2026-09-17T15:30:00Z",
+      "sender": {
+        "id": 4,
+        "firstName": "Carlos",
+        "lastName": "Eduardo",
+        "avatar": "https://...",
+        "role": "Managing Partner",
+        "company": "Prado Agro Global"
+      },
+      "metadata": {
+        "memberId": 4
+      }
+    }
+  ]
+}
+```
+
+### `PATCH /notifications/:id/read`
+Marca uma notificação individual como lida.
+- **Response (200 OK)**: `{ "id": "notif-001", "isRead": true }`
+
+### `POST /notifications/read-all`
+Marca todas as notificações como lidas.
+- **Response (200 OK)**: `{ "success": true, "markedCount": 3 }`
+

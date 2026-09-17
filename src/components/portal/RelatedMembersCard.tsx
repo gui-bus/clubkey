@@ -19,6 +19,8 @@ export function RelatedMembersCard({
   member,
   className,
 }: RelatedMembersCardProps): React.JSX.Element {
+  const fullName = `${member.firstName} ${member.lastName}`.trim()
+
   return (
     <Link
       href={`/conexoes/${member.id}/${getMemberSlug(member)}`}
@@ -31,13 +33,13 @@ export function RelatedMembersCard({
         {member.image || member.avatar ? (
           <Image
             src={member.image || member.avatar || ""}
-            alt={member.name}
+            alt={fullName}
             fill
             className="object-cover group-hover:scale-105 transition-transform duration-300 opacity-80 object-top"
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center font-black text-2xl bg-zinc-900 text-white dark:bg-zinc-800">
-            {getInitials(member.name)}
+            {getInitials(member.firstName, member.lastName)}
           </div>
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent sm:hidden" />
@@ -47,7 +49,7 @@ export function RelatedMembersCard({
         <div className="space-y-1">
           <div className="flex items-center justify-between gap-2 text-[11px] font-bold text-zinc-900 dark:text-white mb-1.5">
             <span className="inline-flex items-center px-2 py-0.5 rounded-xs bg-zinc-100 dark:bg-zinc-800 text-[10px] font-black uppercase tracking-wider text-zinc-900 dark:text-white border border-zinc-200 dark:border-zinc-700">
-              Membro Desde {member.since || 2021}
+              Membro Desde {member.memberSince || 2021}
             </span>
             <span className="text-zinc-900 dark:text-white font-medium flex items-center gap-1">
               <MapPin className="w-3.5 h-3.5 text-brand-primary shrink-0" />
@@ -55,7 +57,7 @@ export function RelatedMembersCard({
             </span>
           </div>
           <h3 className="text-sm sm:text-base font-heading font-black uppercase tracking-tight text-zinc-900 dark:text-white group-hover:text-brand-primary transition-colors line-clamp-1">
-            {member.name}
+            {fullName}
           </h3>
           <p className="text-xs text-zinc-900 dark:text-white truncate">
             {member.role} • {member.company}

@@ -56,7 +56,7 @@ export function MemberCard({
     e.stopPropagation()
     if (status !== "none") return
     toggleConnect(member.id)
-    toast.success(`Solicitação enviada para ${member.name}!`, {
+    toast.success(`Solicitação enviada para ${member.firstName} ${member.lastName}!`, {
       description: "Você poderá trocar mensagens antes do encontro.",
     })
   }
@@ -81,6 +81,8 @@ export function MemberCard({
     }
   }
 
+  const fullName = `${member.firstName} ${member.lastName}`.trim()
+
   return (
     <Link
       href={`/conexoes/${member.id}/${getMemberSlug(member)}`}
@@ -93,14 +95,14 @@ export function MemberCard({
         {member.avatar ? (
           <Image
             src={member.avatar}
-            alt={member.name}
+            alt={fullName}
             fill
             sizes="(max-width: 640px) 112px, 144px"
             className="object-cover group-hover/card:scale-105 transition-transform duration-500"
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center font-black text-xl bg-zinc-900 text-white dark:bg-zinc-800">
-            {getInitials(member.name)}
+            {getInitials(member.firstName, member.lastName)}
           </div>
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover/card:opacity-40 transition-opacity" />
@@ -118,7 +120,7 @@ export function MemberCard({
         <div className="space-y-2.5">
           <div className="min-w-0">
             <h3 className="text-xs sm:text-sm font-bold uppercase tracking-tight text-zinc-900 dark:text-white truncate group-hover/card:text-brand-primary transition-colors">
-              {member.name}
+              {fullName}
             </h3>
             <p className="text-[11px] truncate">
               <span className="font-medium text-zinc-900 dark:text-zinc-100">

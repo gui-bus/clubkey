@@ -5,6 +5,7 @@ import * as React from "react"
 import Image from "next/image"
 
 import { TIERS_LIST } from "@/src/data/portalData"
+import { usePortalStore } from "@/src/store/usePortalStore"
 import {
   ArrowsClockwise,
   ClockCounterClockwise,
@@ -19,6 +20,9 @@ import { Container } from "@/src/components/common/container"
 import { cn } from "@/src/lib/utils"
 
 export default function KeyPassRulesPage(): React.JSX.Element {
+  const { tiers } = usePortalStore()
+  const displayTiers = tiers && tiers.length > 0 ? tiers : TIERS_LIST
+
   return (
     <Container className="py-6 sm:py-8 space-y-4">
       {}
@@ -42,7 +46,7 @@ export default function KeyPassRulesPage(): React.JSX.Element {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {TIERS_LIST.map((tier, index) => (
+          {displayTiers.map((tier, index) => (
             <div
               key={tier.id}
               className={cn(

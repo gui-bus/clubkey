@@ -83,7 +83,8 @@ export function MemberProfileDetailClient({
   const nextMember =
     currentIndex < MEMBERS.length - 1 ? MEMBERS[currentIndex + 1] : MEMBERS[0]
 
-  const firstName = member.name.split(" ")[0]
+  const fullName = `${member.firstName} ${member.lastName}`.trim()
+  const firstName = member.firstName
   const [selectedBadge, setSelectedBadge] = React.useState<BadgeDefinition | null>(null)
 
   const memberTier = member.tierId ? TIERS_CONFIG[member.tierId] : null
@@ -95,13 +96,13 @@ export function MemberProfileDetailClient({
     const prevStatus = status
     const nextStatus = toggleConnect(member.id)
     if (nextStatus === "pending") {
-      toast.success(`Solicitação de conexão enviada para ${member.name}!`, {
+      toast.success(`Solicitação de conexão enviada para ${fullName}!`, {
         description: "Seu perfil com suas buscas e ofertas foi compartilhado.",
       })
     } else if (prevStatus === "pending") {
-      toast.info(`Solicitação para ${member.name} cancelada.`)
+      toast.info(`Solicitação para ${fullName} cancelada.`)
     } else if (prevStatus === "connected") {
-      toast.info(`Conexão com ${member.name} desfeita.`)
+      toast.info(`Conexão com ${fullName} desfeita.`)
     }
   }
 
@@ -139,7 +140,7 @@ export function MemberProfileDetailClient({
               />
               <span className="text-white/60 hidden sm:inline">/</span>
               <span className="text-xs font-bold text-white truncate max-w-xs sm:max-w-md hidden sm:inline">
-                {member.name}
+                {fullName}
               </span>
             </div>
 
@@ -180,18 +181,18 @@ export function MemberProfileDetailClient({
                 {(member.image || member.avatar) && (
                   <AvatarImage
                     src={member.image || member.avatar}
-                    alt={member.name}
+                    alt={`${member.firstName} ${member.lastName}`}
                     className="object-cover object-top"
                   />
                 )}
                 <AvatarFallback className="font-black text-2xl bg-zinc-900 text-white dark:bg-zinc-800">
-                  {getInitials(member.name)}
+                  {getInitials(member.firstName, member.lastName)}
                 </AvatarFallback>
               </Avatar>
 
               <div className="min-w-0 pb-1">
                 <h1 className="text-2xl sm:text-3xl md:text-4xl font-heading font-black uppercase tracking-tight text-zinc-900 dark:text-white truncate">
-                  {member.name}
+                  {member.firstName} {member.lastName}
                 </h1>
                 <p className="text-sm sm:text-base font-semibold text-zinc-900 dark:text-white mt-0.5 truncate">
                   {member.role} na {member.company}
@@ -209,7 +210,7 @@ export function MemberProfileDetailClient({
                   •
                 </span>
                 <span className="font-medium text-zinc-900 dark:text-white">
-                  Membro desde {member.since || 2021}
+                  Membro desde {member.memberSince || 2021}
                 </span>
                 {member.socials?.linkedin && (
                   <>
@@ -333,7 +334,7 @@ export function MemberProfileDetailClient({
                   Visão Geral
                 </span>
                 <p className="text-lg sm:text-xl font-light text-zinc-800 dark:text-zinc-200 leading-relaxed">
-                  {member.name} é {member.role.toLowerCase()} na{" "}
+                  {member.firstName} {member.lastName} é {member.role.toLowerCase()} na{" "}
                   {member.company}, atuando em {member.city}. Faz parte do
                   círculo restrito de membros com foco em geração de negócios,
                   parcerias institucionais e expansão do ecossistema.
@@ -427,7 +428,7 @@ export function MemberProfileDetailClient({
                       Membro Verificado
                     </p>
                     <p className="text-xs text-zinc-900 dark:text-white font-medium mt-0.5">
-                      Membro ativo desde {member.since || 2021}
+                      Membro ativo desde {member.memberSince || 2021}
                     </p>
                   </div>
                 </div>
@@ -656,7 +657,7 @@ export function MemberProfileDetailClient({
                         : "Disponível"}
                   </span>
                   <span className="text-xs font-bold uppercase tracking-wider text-zinc-900 dark:text-white">
-                    {member.since ? `Desde ${member.since}` : "Membro Ativo"}
+                    {member.memberSince ? `Desde ${member.memberSince}` : "Membro Ativo"}
                   </span>
                 </div>
                 <p className="text-xs text-zinc-900 dark:text-white pt-1 leading-relaxed font-normal">
@@ -747,7 +748,7 @@ export function MemberProfileDetailClient({
 
                 <div className="p-2 space-y-0.5">
                   <span className="text-xl font-heading font-black text-brand-primary block">
-                    {member.since || 2021}
+                    {member.memberSince || 2021}
                   </span>
                   <span className="text-[10px] font-black uppercase tracking-widest text-zinc-900 dark:text-white">
                     Membro desde

@@ -93,7 +93,8 @@ function MinhasConexoesContent(): React.JSX.Element {
     if (!q) return list
     return list.filter((m) => {
       const fullText = [
-        m.name,
+        m.firstName,
+        m.lastName,
         m.role,
         m.company,
         m.city,
@@ -137,24 +138,24 @@ function MinhasConexoesContent(): React.JSX.Element {
 
   const handleAccept = (member: Member) => {
     acceptInvite(member.id)
-    toast.success(`Conexão aceita com ${member.name}!`, {
+    toast.success(`Conexão aceita com ${member.firstName} ${member.lastName}!`, {
       description: "Você ganhou +50 XP e agora estão conectados diretamente.",
     })
   }
 
   const handleDecline = (member: Member) => {
     declineInvite(member.id)
-    toast.info(`Convite de ${member.name} recusado.`)
+    toast.info(`Convite de ${member.firstName} ${member.lastName} recusado.`)
   }
 
   const handleCancelSent = (member: Member) => {
     cancelSentInvite(member.id)
-    toast.info(`Solicitação para ${member.name} cancelada.`)
+    toast.info(`Solicitação para ${member.firstName} ${member.lastName} cancelada.`)
   }
 
   const handleDisconnect = (member: Member) => {
     removeConnection(member.id)
-    toast.info(`Conexão com ${member.name} desfeita.`)
+    toast.info(`Conexão com ${member.firstName} ${member.lastName} desfeita.`)
   }
 
   return (

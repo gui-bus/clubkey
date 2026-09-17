@@ -117,27 +117,26 @@ export function LeaderboardTargetCard({
               href={`/conexoes/${targetUser.id}/${getMemberSlug(targetUser)}`}
               className="font-bold text-zinc-900 dark:text-white hover:text-brand-primary underline whitespace-nowrap"
             >
-              {targetUser.name}
+              {targetUser.firstName} {targetUser.lastName}
             </Link>{" "}
             completando missões ou reservando novas experiências.
           </p>
         </div>
 
         <div className="flex items-center gap-4 w-full sm:w-auto justify-between sm:justify-end pt-2 sm:pt-0 border-t sm:border-t-0 border-zinc-100 dark:border-zinc-800 shrink-0">
-          {}
           <div className="flex items-center gap-2 shrink-0">
             <span className="text-3xl font-heading font-black text-zinc-900/[0.12] dark:text-white/[0.12] leading-none tabular-nums select-none shrink-0">
               {targetUser.rank < 10 ? `0${targetUser.rank}` : targetUser.rank}
             </span>
             <Avatar size="sm" radius="full" className="w-9 h-9 shrink-0">
-              <AvatarImage src={targetUser.avatar} alt={targetUser.name} />
+              <AvatarImage src={targetUser.avatar} alt={`${targetUser.firstName} ${targetUser.lastName}`} />
               <AvatarFallback className="text-xs font-bold bg-zinc-900 text-white">
-                {getInitials(targetUser.name)}
+                {getInitials(targetUser.firstName, targetUser.lastName)}
               </AvatarFallback>
             </Avatar>
             <div className="text-left min-w-0">
               <p className="text-xs font-bold text-zinc-900 dark:text-white truncate max-w-[120px]">
-                {targetUser.name}
+                {targetUser.firstName} {targetUser.lastName}
               </p>
               <p className="text-[10px] text-zinc-500 dark:text-zinc-400 tabular-nums whitespace-nowrap">
                 {targetUser.xp.toLocaleString("pt-BR")} XP

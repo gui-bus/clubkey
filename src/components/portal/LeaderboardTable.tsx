@@ -57,6 +57,7 @@ export function LeaderboardTable({
         className: "w-full",
         render: (member) => {
           const isUser = !!member.isCurrentUser
+          const fullName = `${member.firstName} ${member.lastName}`.trim()
           return (
             <Link
               href={
@@ -70,15 +71,15 @@ export function LeaderboardTable({
                 size="sm"
                 className="shrink-0 transition-transform group-hover/member:scale-105"
               >
-                <AvatarImage src={member.avatar} alt={member.name} />
+                <AvatarImage src={member.avatar} alt={fullName} />
                 <AvatarFallback className="font-bold text-[10px] bg-zinc-900 text-white">
-                  {getInitials(member.name)}
+                  {getInitials(member.firstName, member.lastName)}
                 </AvatarFallback>
               </Avatar>
               <div className="min-w-0">
                 <div className="flex items-center gap-2">
                   <span className="font-bold text-zinc-900 dark:text-white truncate group-hover/member:text-brand-primary group-hover/member:underline transition-colors">
-                    {member.name}
+                    {fullName}
                   </span>
                   {isUser && (
                     <span className="text-[9px] font-black uppercase px-1.5 py-0.5 rounded-xs bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 whitespace-nowrap shrink-0">

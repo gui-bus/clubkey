@@ -112,7 +112,7 @@ export function NotificationsDropdown({
     e.preventDefault()
     e.stopPropagation()
     acceptInvite(member.id)
-    toast.success(`Conexão aceita com ${member.name}!`, {
+    toast.success(`Conexão aceita com ${member.firstName} ${member.lastName}!`, {
       description: "Você ganhou +50 XP e agora estão conectados diretamente.",
     })
   }
@@ -121,7 +121,7 @@ export function NotificationsDropdown({
     e.preventDefault()
     e.stopPropagation()
     declineInvite(member.id)
-    toast.info(`Convite de ${member.name} recusado.`)
+    toast.info(`Convite de ${member.firstName} ${member.lastName} recusado.`)
   }
 
   const handleOpenConversation = (memberId: number) => {
@@ -216,18 +216,18 @@ export function NotificationsDropdown({
                             {member.avatar && (
                               <AvatarImage
                                 src={member.avatar}
-                                alt={member.name}
+                                alt={`${member.firstName} ${member.lastName}`}
                               />
                             )}
                             <AvatarFallback className="font-bold text-[10px] bg-zinc-900 text-white dark:bg-zinc-800">
-                              {getInitials(member.name)}
+                              {getInitials(member.firstName, member.lastName)}
                             </AvatarFallback>
                           </Avatar>
 
                           <div className="flex-1 min-w-0 space-y-1">
                             <div className="flex items-center justify-between gap-1">
                               <span className="text-xs font-bold text-zinc-900 dark:text-white truncate">
-                                {member.name}
+                                {member.firstName} {member.lastName}
                               </span>
                               <span className="text-[9px] font-bold uppercase tracking-wider text-sky-600 dark:text-sky-400 bg-sky-500/10 px-1.5 py-0.5 rounded-xs shrink-0">
                                 Mensagem{" "}
@@ -278,11 +278,11 @@ export function NotificationsDropdown({
                           {member.avatar && (
                             <AvatarImage
                               src={member.avatar}
-                              alt={member.name}
+                              alt={`${member.firstName} ${member.lastName}`}
                             />
                           )}
                           <AvatarFallback className="font-bold text-[10px] bg-zinc-900 text-white dark:bg-zinc-800">
-                            {getInitials(member.name)}
+                            {getInitials(member.firstName, member.lastName)}
                           </AvatarFallback>
                         </Avatar>
 
@@ -293,7 +293,7 @@ export function NotificationsDropdown({
                               onClick={() => setIsOpen(false)}
                               className="text-xs font-bold text-zinc-900 dark:text-white hover:text-brand-primary truncate"
                             >
-                              {member.name}
+                              {member.firstName} {member.lastName}
                             </Link>
                             <span className="text-[9px] font-bold uppercase tracking-wider text-brand-primary bg-brand-primary/10 px-1.5 py-0.5 rounded-xs shrink-0">
                               Conexão

@@ -104,7 +104,7 @@ export function Navbar({
 
   const currentTier = getUserTier ? getUserTier() : TIERS_CONFIG.titular
 
-  const userInitials = getInitials(userProfile?.name || "")
+  const userInitials = getInitials(userProfile?.firstName, userProfile?.lastName)
   const homeHref = isClubKey ? "/" : "/hospedagens"
   const userEmail = userProfile?.email || "william@tabatacapital.com"
 
@@ -540,7 +540,7 @@ export function Navbar({
                               {userProfile.avatar && (
                                 <AvatarImage
                                   src={userProfile.avatar}
-                                  alt={userProfile.name}
+                                  alt={`${userProfile.firstName} ${userProfile.lastName}`}
                                 />
                               )}
                               <AvatarFallback className="font-bold text-[10px] bg-zinc-900 text-white dark:bg-zinc-800">
@@ -549,7 +549,7 @@ export function Navbar({
                             </Avatar>
                             <div className="flex flex-col min-w-0">
                               <span className="text-xs font-bold text-zinc-900 dark:text-white uppercase tracking-tight truncate">
-                                {userProfile.name}
+                                {userProfile.firstName} {userProfile.lastName}
                               </span>
                               <span className="text-[10px] font-normal text-zinc-500 dark:text-zinc-400 truncate">
                                 {userEmail}

@@ -42,7 +42,7 @@ export function MatchCard({
   const mounted = useMounted()
 
   const status = mounted ? getConnectionStatus(member.id) : "none"
-  const firstName = member.name.split(" ")[0]
+  const fullName = `${member.firstName} ${member.lastName}`.trim()
   const memberSlug = getMemberSlug(member)
 
   const handleConnect = (
@@ -52,7 +52,7 @@ export function MatchCard({
     e.stopPropagation()
     if (status !== "none") return
     toggleConnect(member.id)
-    toast.success(`Solicitação enviada para ${member.name}!`, {
+    toast.success(`Solicitação enviada para ${fullName}!`, {
       description: "Você poderá trocar mensagens antes do encontro.",
     })
   }
@@ -95,18 +95,18 @@ export function MatchCard({
             {(member.image || member.avatar) && (
               <AvatarImage
                 src={member.image || member.avatar}
-                alt={member.name}
+                alt={fullName}
                 className="object-cover object-top"
               />
             )}
             <AvatarFallback className="font-black text-lg bg-zinc-900 text-white dark:bg-zinc-800">
-              {getInitials(member.name)}
+              {getInitials(member.firstName, member.lastName)}
             </AvatarFallback>
           </Avatar>
 
           <div className="min-w-0 space-y-1">
             <h2 className="text-xl sm:text-2xl font-heading font-black uppercase tracking-tight text-zinc-900 dark:text-white truncate">
-              {member.name}
+              {fullName}
             </h2>
             <p className="text-xs sm:text-sm font-semibold text-zinc-900 dark:text-white truncate">
               {member.role} • {member.company}
@@ -120,7 +120,7 @@ export function MatchCard({
                 •
               </span>
               <span className="font-medium text-zinc-900 dark:text-white">
-                Membro desde {member.since || 2021}
+                Membro desde {member.memberSince || 2021}
               </span>
             </div>
           </div>
@@ -191,7 +191,7 @@ export function MatchCard({
 
       <div className="space-y-1.5 pt-2 border-t border-zinc-100 dark:border-zinc-800">
         <span className="text-[10px] font-black uppercase tracking-widest text-zinc-900 dark:text-white block">
-          Por que conectar com {firstName}:
+          Por que conectar com {member.firstName}:
         </span>
         <p className="text-xs sm:text-sm text-zinc-900 dark:text-white leading-relaxed font-normal">
           {reason}
@@ -203,7 +203,7 @@ export function MatchCard({
           <div className="flex items-center gap-2">
             <Medal className="w-3.5 h-3.5 text-zinc-900 dark:text-white shrink-0" />
             <span className="text-[10px] font-black uppercase tracking-widest text-zinc-900 dark:text-white">
-              O que {firstName} oferece
+              O que {member.firstName} oferece
             </span>
           </div>
           <div className="flex flex-wrap gap-1.5">
@@ -222,7 +222,7 @@ export function MatchCard({
           <div className="flex items-center gap-2">
             <Target className="w-3.5 h-3.5 text-zinc-900 dark:text-white shrink-0" />
             <span className="text-[10px] font-black uppercase tracking-widest text-zinc-900 dark:text-white">
-              O que {firstName} procura
+              O que {member.firstName} procura
             </span>
           </div>
           <div className="flex flex-wrap gap-1.5">

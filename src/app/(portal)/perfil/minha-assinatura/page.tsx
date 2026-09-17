@@ -86,7 +86,7 @@ export default function MinhaAssinaturaPage(): React.JSX.Element {
                   <p className="text-xs text-zinc-500 dark:text-zinc-400">
                     Titular:{" "}
                     <strong className="text-zinc-900 dark:text-white">
-                      {userProfile.name}
+                      {userProfile.firstName} {userProfile.lastName}
                     </strong>{" "}
                     • {userProfile.email}
                   </p>

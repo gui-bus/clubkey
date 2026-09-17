@@ -82,10 +82,65 @@ clubkey/
 
 ---
 
-## 🔄 Como o Backend se Integrará ao Frontend
+## 🔄 Estratégia & Pipeline de Integração com o Backend
 
-1. **Camada de Serviços / API Client**:
-   - Bastará criar uma instância do `axios` ou `fetch` com interceptors para anexar o token `Authorization: Bearer <token>`.
-2. **Substituição do Zustand Mock pelo React Query ou Handlers**:
-   - As funções hoje presentes no `usePortalStore` (como `toggleEventRSVP`, `buyExperience`, `updateProfile`) passarão a invocar mutações HTTP na API REST do backend.
-   - Os contratos de retorno de dados esperados pelo frontend são exatamente as interfaces TypeScript já documentadas em `src/data/portalData.ts`.
+Quando o backend RESTful estiver implementado, a camada de dados do frontend será conectada através de uma pipeline moderna e 100% automatizada e type-safe:
+
+### 1. Stack de Integração no Frontend
+- **HTTP Client**: `Axios` com interceptors globais para injeção do header `Authorization: Bearer <token>`, refresh token transparente e tratamento padronizado de erros.
+- **Gerenciamento de Estado do Servidor**: `TanStack React Query v5` (`@tanstack/react-query`) para cache assíncrono, revalidação em background, optimistic updates e controle de mutações.
+- **Diagnóstico & Debug**: `React Query Devtools` (`@tanstack/react-query-devtools`) integrado em ambiente de desenvolvimento.
+- **Geração Automática de Código**: `Orval` (`orval`) para ler a especificação OpenAPI (Swagger/JSON) gerada pelo backend e gerar automaticamente:
+  - Todas as interfaces e tipos TypeScript de requisições e respostas.
+  - Hooks do React Query (`useQuery`, `useMutation`) tipados e prontos para uso.
+  - Funções de chamada HTTP vinculadas à instância customizada do Axios.
+
+### 2. Sugestão para o Backend (PHP / Laravel / Symfony): Documentação com Scalar
+Recomenda-se fortemente que o backend em **PHP** exponha a especificação **OpenAPI 3.0 / 3.1** e utilize o **[Scalar](https://scalar.com/)** como interface visual de documentação interativa de API (ex: acessível em `/docs` ou `/api/documentation`):
+
+- **Vantagens do Scalar**: Interface moderna, pesquisa rápida, modo claro/escuro integrado e cliente HTTP embutido para testes de rota.
+- **Pacotes recomendados no ecossistema PHP/Laravel**:
+  - `dedoc/scramble`: Gera a especificação OpenAPI automaticamente a partir dos FormRequests e rotas do Laravel, sem necessidade de escrever anotações manuais complexas.
+  - `scalar/laravel` ou `@scalar/api-reference`: Renderiza o visual do Scalar consumindo o JSON da OpenAPI (`/docs/api.json`).
+  - `l5-swagger` / `zircote/swagger-php`: Para controle explícito de anotações OpenAPI se preferir Swagger clássico com visual Scalar.
+
+### 3. Exemplo de Fluxo com Orval (`orval.config.ts`)
+Com o backend servindo o arquivo `openapi.json`, a geração de código no frontend é instantânea:
+
+```typescript
+// orval.config.ts (exemplo de configuração no frontend)
+import { defineConfig } from "orval"
+
+export default defineConfig({
+  clubkey: {
+    input: {
+      target: "http://localhost:8000/docs/api.json", // Endpoint OpenAPI do Backend PHP
+    },
+    output: {
+      mode: "tags-split",
+      target: "./src/api/endpoints",
+      schemas: "./src/api/model",
+      client: "react-query",
+      httpClient: "axios",
+      override: {
+        mutator: {
+          path: "./src/lib/axiosInstance.ts",
+          name: "customAxiosInstance",
+        },
+        query: {
+          useQuery: true,
+          useMutation: true,
+          signal: true,
+        },
+      },
+    },
+  },
+})
+```
+
+---
+
+## 🎯 Boas Práticas para o Desenvolvedor do Backend Garantir Compatibilidade com Orval
+1. **`operationId` em todas as rotas**: Cada endpoint OpenAPI deve conter um `operationId` claro e semântico (ex: `getEvents`, `createEventRsvp`, `getUserProfile`, `getKeypassTiers`), pois o Orval usará esses nomes para gerar os hooks (`useGetEvents`, `useCreateEventRsvp`, etc.).
+2. **Propriedades em `camelCase`**: Todos os campos de request/response JSON devem seguir `camelCase` para coincidir 1:1 com os tipos do frontend sem necessidade de transformadores.
+3. **CORS liberado para desenvolvimento**: Permitir origem `http://localhost:3000` com `credentials: true` e headers de autorização.

@@ -306,7 +306,7 @@ export function MemberStayDetailClient({
               <span className="text-[11px] text-zinc-500 dark:text-zinc-400 block">
                 Titular:{" "}
                 <strong className="text-zinc-900 dark:text-white font-semibold">
-                  {userProfile.name}
+                  {userProfile.firstName} {userProfile.lastName}
                 </strong>
               </span>
             </div>

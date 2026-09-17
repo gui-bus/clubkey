@@ -41,7 +41,8 @@ export function SignUpForm({ onSuccess }: SignUpFormProps): React.JSX.Element {
     mode: "onSubmit",
     defaultValues: {
       nationality: "brasileiro",
-      fullName: "",
+      firstName: "",
+      lastName: "",
       email: "",
       cpf: "",
       birthDate: "",
@@ -135,22 +136,39 @@ export function SignUpForm({ onSuccess }: SignUpFormProps): React.JSX.Element {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <div className="flex flex-col gap-1.5">
             <label className="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
-              Nome completo <span className="text-red-500 font-bold">*</span>
+              Primeiro Nome <span className="text-red-500 font-bold">*</span>
             </label>
             <Input
-              placeholder="Nome completo"
-              variant={errors.fullName ? "error" : "default"}
+              placeholder="Ex: William"
+              variant={errors.firstName ? "error" : "default"}
               disabled={isLoading}
-              {...register("fullName")}
+              {...register("firstName")}
             />
-            {errors.fullName && (
+            {errors.firstName && (
               <span className="text-xs text-red-500">
-                {errors.fullName.message}
+                {errors.firstName.message}
               </span>
             )}
           </div>
 
           <div className="flex flex-col gap-1.5">
+            <label className="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
+              Sobrenome <span className="text-red-500 font-bold">*</span>
+            </label>
+            <Input
+              placeholder="Ex: Tabata"
+              variant={errors.lastName ? "error" : "default"}
+              disabled={isLoading}
+              {...register("lastName")}
+            />
+            {errors.lastName && (
+              <span className="text-xs text-red-500">
+                {errors.lastName.message}
+              </span>
+            )}
+          </div>
+
+          <div className="flex flex-col gap-1.5 md:col-span-2">
             <label className="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
               E-mail <span className="text-red-500 font-bold">*</span>
             </label>

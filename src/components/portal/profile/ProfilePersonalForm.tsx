@@ -12,7 +12,8 @@ import { cn } from "@/src/lib/utils"
 
 export interface ProfileFormData {
   nationality: string
-  name: string
+  firstName: string
+  lastName: string
   email: string
   cpf: string
   birthDate: string
@@ -53,7 +54,6 @@ export function ProfilePersonalForm({
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-10 w-full">
-      {}
       <div className="space-y-6 w-full">
         <div className="border-b border-zinc-200 dark:border-zinc-800 pb-3 flex flex-col sm:flex-row sm:items-end justify-between gap-2">
           <div>
@@ -111,17 +111,29 @@ export function ProfilePersonalForm({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <div className="flex flex-col gap-1.5">
             <label className="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
-              Nome completo <span className="text-red-500 font-bold">*</span>
+              Primeiro Nome <span className="text-red-500 font-bold">*</span>
             </label>
             <Input
-              value={formData.name}
-              onChange={(e) => handleChange("name", e.target.value)}
-              placeholder="Nome completo"
+              value={formData.firstName}
+              onChange={(e) => handleChange("firstName", e.target.value)}
+              placeholder="Ex: William"
               required
             />
           </div>
 
           <div className="flex flex-col gap-1.5">
+            <label className="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
+              Sobrenome <span className="text-red-500 font-bold">*</span>
+            </label>
+            <Input
+              value={formData.lastName}
+              onChange={(e) => handleChange("lastName", e.target.value)}
+              placeholder="Ex: Tabata"
+              required
+            />
+          </div>
+
+          <div className="flex flex-col gap-1.5 md:col-span-2">
             <label className="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
               E-mail <span className="text-red-500 font-bold">*</span>
             </label>

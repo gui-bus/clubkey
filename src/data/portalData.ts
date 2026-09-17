@@ -1,15 +1,7 @@
-export interface Club {
-  id: string
-  name: string
-  mono: string
-  accent: string
-  accent2: string
-  line: string
-}
-
 export interface Member {
   id: number
-  name: string
+  firstName: string
+  lastName: string
   role: string
   company: string
   city: string
@@ -17,13 +9,12 @@ export interface Member {
   image?: string
   seeking: string[]
   offering: string[]
-  since?: string | number
+  memberSince?: string | number
   socials?: {
     linkedin?: string
     website?: string
     instagram?: string
   }
-
   tierId?: "membro" | "associado" | "titular" | "investidor" | "incorporador" | "patrono"
   xp?: number
   ribTokens?: number
@@ -102,7 +93,8 @@ export interface StayItem {
 }
 
 export interface UserProfile {
-  name: string
+  firstName: string
+  lastName: string
   email?: string
   nationality?: "brasileiro" | "estrangeiro"
   cpf?: string
@@ -122,37 +114,11 @@ export interface UserProfile {
   offering: string[]
 }
 
-export const CLUBS: Club[] = [
-  {
-    id: "alpha",
-    name: "Clube Alpha",
-    mono: "CA",
-    accent: "#FF6847",
-    accent2: "#E85535",
-    line: "Encontros mensais, curadoria de experiências e uma rede de 16 membros que abrem portas de verdade.",
-  },
-  {
-    id: "founders",
-    name: "Founders Circle",
-    mono: "FC",
-    accent: "#FF6847",
-    accent2: "#E85535",
-    line: "Fundadores em estágio de tração. Sala fechada, conversa direta, sem palco.",
-  },
-  {
-    id: "inv",
-    name: "Clube Investidores",
-    mono: "CI",
-    accent: "#FF6847",
-    accent2: "#E85535",
-    line: "Capital privado, co-investimento e deal flow qualificado entre pares.",
-  },
-]
-
 export const MEMBERS: Member[] = [
   {
     id: 0,
-    name: "Ana Beatriz Ramos",
+    firstName: "Ana Beatriz",
+    lastName: "Ramos",
     role: "Sócia-fundadora",
     company: "Vero Capital",
     city: "São Paulo",
@@ -160,7 +126,7 @@ export const MEMBERS: Member[] = [
       "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&auto=format&fit=crop&q=80",
     seeking: ["Co-investidores série A", "Advisor de fintech"],
     offering: ["Deal flow em fintech", "Acesso a family offices"],
-    since: 2021,
+    memberSince: 2021,
     socials: {
       linkedin: "https://linkedin.com",
       website: "https://verocapital.com.br",
@@ -173,7 +139,8 @@ export const MEMBERS: Member[] = [
   },
   {
     id: 1,
-    name: "Rodrigo Salles",
+    firstName: "Rodrigo",
+    lastName: "Salles",
     role: "CEO",
     company: "Norte Logística",
     city: "Curitiba",
@@ -181,7 +148,7 @@ export const MEMBERS: Member[] = [
       "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&auto=format&fit=crop&q=80",
     seeking: ["Sócio operacional no Nordeste", "Software de roteirização"],
     offering: ["Malha logística no Sul", "Contatos no varejo alimentar"],
-    since: 2020,
+    memberSince: 2020,
     socials: { linkedin: "https://linkedin.com" },
     tierId: "investidor",
     xp: 7650,
@@ -191,7 +158,8 @@ export const MEMBERS: Member[] = [
   },
   {
     id: 2,
-    name: "Camila Yoshida",
+    firstName: "Camila",
+    lastName: "Yoshida",
     role: "Diretora de Produto",
     company: "Banco Livre",
     city: "São Paulo",
@@ -199,7 +167,7 @@ export const MEMBERS: Member[] = [
       "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&auto=format&fit=crop&q=80",
     seeking: ["Head de design sênior", "Benchmark de onboarding"],
     offering: ["Mentoria de produto", "Base de teste com 4M de clientes"],
-    since: 2022,
+    memberSince: 2022,
     socials: {
       linkedin: "https://linkedin.com",
       instagram: "https://instagram.com",
@@ -212,7 +180,8 @@ export const MEMBERS: Member[] = [
   },
   {
     id: 3,
-    name: "Eduardo Prado",
+    firstName: "Eduardo",
+    lastName: "Prado",
     role: "Fundador",
     company: "Prado Agro",
     city: "Ribeirão Preto",
@@ -220,7 +189,7 @@ export const MEMBERS: Member[] = [
       "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&auto=format&fit=crop&q=80",
     seeking: ["Crédito rural estruturado", "Parceiro de exportação"],
     offering: ["Área arrendada em MT", "Rede de cooperativas"],
-    since: 2019,
+    memberSince: 2019,
     socials: { linkedin: "https://linkedin.com" },
     tierId: "patrono",
     xp: 16850,
@@ -230,7 +199,8 @@ export const MEMBERS: Member[] = [
   },
   {
     id: 4,
-    name: "Juliana Meireles",
+    firstName: "Juliana",
+    lastName: "Meireles",
     role: "Sócia",
     company: "Meireles Advogados",
     city: "Belo Horizonte",
@@ -238,7 +208,7 @@ export const MEMBERS: Member[] = [
       "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=400&auto=format&fit=crop&q=80",
     seeking: ["Casos de M&A no exterior"],
     offering: ["Estruturação societária", "Compliance para captação"],
-    since: 2021,
+    memberSince: 2021,
     socials: {
       linkedin: "https://linkedin.com",
       website: "https://meireles.adv.br",
@@ -251,7 +221,8 @@ export const MEMBERS: Member[] = [
   },
   {
     id: 5,
-    name: "Fernando Tanaka",
+    firstName: "Fernando",
+    lastName: "Tanaka",
     role: "CTO",
     company: "Órbita Health",
     city: "Florianópolis",
@@ -259,7 +230,7 @@ export const MEMBERS: Member[] = [
       "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&auto=format&fit=crop&q=80",
     seeking: ["Investidor anjo em saúde", "Parceria com hospitais"],
     offering: ["Time de engenharia sob demanda", "Integração com convênios"],
-    since: 2023,
+    memberSince: 2023,
     socials: { linkedin: "https://linkedin.com" },
     tierId: "investidor",
     xp: 5400,
@@ -269,7 +240,8 @@ export const MEMBERS: Member[] = [
   },
   {
     id: 6,
-    name: "Patrícia Loureiro",
+    firstName: "Patrícia",
+    lastName: "Loureiro",
     role: "Head de Expansão",
     company: "Rede Solar BR",
     city: "Recife",
@@ -277,7 +249,7 @@ export const MEMBERS: Member[] = [
       "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80",
     seeking: ["Terrenos para usinas", "Financiamento de longo prazo"],
     offering: ["Contratos de energia", "Rede de instaladores no NE"],
-    since: 2022,
+    memberSince: 2022,
     socials: { linkedin: "https://linkedin.com" },
     tierId: "associado",
     xp: 1800,
@@ -286,7 +258,8 @@ export const MEMBERS: Member[] = [
   },
   {
     id: 7,
-    name: "Marcelo Bittencourt",
+    firstName: "Marcelo",
+    lastName: "Bittencourt",
     role: "Presidente do Conselho",
     company: "Grupo Bittencourt",
     city: "Porto Alegre",
@@ -294,7 +267,7 @@ export const MEMBERS: Member[] = [
       "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&auto=format&fit=crop&q=80",
     seeking: ["Modelo de sucessão familiar"],
     offering: ["Conselheiro independente", "Rede de indústrias no Sul"],
-    since: 2018,
+    memberSince: 2018,
     socials: { linkedin: "https://linkedin.com" },
     tierId: "incorporador",
     xp: 11200,
@@ -304,7 +277,8 @@ export const MEMBERS: Member[] = [
   },
   {
     id: 8,
-    name: "Larissa Fontes",
+    firstName: "Larissa",
+    lastName: "Fontes",
     role: "Fundadora",
     company: "Casa Fontes",
     city: "São Paulo",
@@ -312,7 +286,7 @@ export const MEMBERS: Member[] = [
       "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&auto=format&fit=crop&q=80",
     seeking: ["Franqueados no Centro-Oeste", "Gestor de e-commerce"],
     offering: ["Curadoria de varejo de luxo", "Showroom em Cerqueira César"],
-    since: 2020,
+    memberSince: 2020,
     socials: {
       instagram: "https://instagram.com",
       website: "https://casafontes.com",
@@ -325,7 +299,8 @@ export const MEMBERS: Member[] = [
   },
   {
     id: 9,
-    name: "Otávio Nogueira",
+    firstName: "Otávio",
+    lastName: "Nogueira",
     role: "Diretor Financeiro",
     company: "Vetor Energia",
     city: "Rio de Janeiro",
@@ -333,7 +308,7 @@ export const MEMBERS: Member[] = [
       "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&auto=format&fit=crop&q=80",
     seeking: ["Hedge de câmbio", "Fundos de infraestrutura"],
     offering: ["Modelagem financeira", "Contatos na B3"],
-    since: 2021,
+    memberSince: 2021,
     socials: { linkedin: "https://linkedin.com" },
     tierId: "titular",
     xp: 2600,
@@ -343,7 +318,8 @@ export const MEMBERS: Member[] = [
   },
   {
     id: 10,
-    name: "Renata Cordeiro",
+    firstName: "Renata",
+    lastName: "Cordeiro",
     role: "Sócia",
     company: "Cordeiro Ventures",
     city: "São Paulo",
@@ -351,7 +327,7 @@ export const MEMBERS: Member[] = [
       "https://images.unsplash.com/photo-1573496799652-408c2ac9fe98?w=400&auto=format&fit=crop&q=80",
     seeking: ["Co-investimento em SaaS B2B"],
     offering: ["Cheque de R$ 2M a R$ 8M", "Rede de fundos na LatAm"],
-    since: 2019,
+    memberSince: 2019,
     socials: {
       linkedin: "https://linkedin.com",
       website: "https://cordeiro.vc",
@@ -363,7 +339,8 @@ export const MEMBERS: Member[] = [
   },
   {
     id: 11,
-    name: "Gustavo Arruda",
+    firstName: "Gustavo",
+    lastName: "Arruda",
     role: "CEO",
     company: "Arruda Construtora",
     city: "Brasília",
@@ -371,7 +348,7 @@ export const MEMBERS: Member[] = [
       "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&auto=format&fit=crop&q=80",
     seeking: ["Terrenos no Plano Piloto", "Parceiro em incorporação"],
     offering: ["Obra e engenharia", "Licenciamento no DF"],
-    since: 2022,
+    memberSince: 2022,
     socials: { linkedin: "https://linkedin.com" },
     tierId: "associado",
     xp: 1400,
@@ -380,7 +357,8 @@ export const MEMBERS: Member[] = [
   },
   {
     id: 12,
-    name: "Bianca Sampaio",
+    firstName: "Bianca",
+    lastName: "Sampaio",
     role: "Diretora de Marketing",
     company: "Ala Cosméticos",
     city: "São Paulo",
@@ -388,7 +366,7 @@ export const MEMBERS: Member[] = [
       "https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?w=400&auto=format&fit=crop&q=80",
     seeking: ["Agência de performance", "Influenciadores de nicho"],
     offering: ["Distribuição em 3 mil pontos", "Estratégia de marca"],
-    since: 2023,
+    memberSince: 2023,
     socials: {
       instagram: "https://instagram.com",
       linkedin: "https://linkedin.com",
@@ -400,7 +378,8 @@ export const MEMBERS: Member[] = [
   },
   {
     id: 13,
-    name: "Henrique Vasques",
+    firstName: "Henrique",
+    lastName: "Vasques",
     role: "Fundador",
     company: "Vasques Náutica",
     city: "Balneário Camboriú",
@@ -408,7 +387,7 @@ export const MEMBERS: Member[] = [
       "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&auto=format&fit=crop&q=80",
     seeking: ["Investidor para nova marina"],
     offering: ["Barcos para eventos do clube", "Rede no litoral catarinense"],
-    since: 2020,
+    memberSince: 2020,
     socials: { instagram: "https://instagram.com" },
     tierId: "membro",
     xp: 800,
@@ -417,7 +396,8 @@ export const MEMBERS: Member[] = [
   },
   {
     id: 14,
-    name: "Sofia Andrade",
+    firstName: "Sofia",
+    lastName: "Andrade",
     role: "Head de Pessoas",
     company: "Trilha Educação",
     city: "São Paulo",
@@ -425,7 +405,7 @@ export const MEMBERS: Member[] = [
       "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80",
     seeking: ["Executivos para C-level", "Programa de liderança"],
     offering: ["Headhunting", "Diagnóstico de cultura"],
-    since: 2021,
+    memberSince: 2021,
     socials: { linkedin: "https://linkedin.com" },
     tierId: "associado",
     xp: 1100,
@@ -434,7 +414,8 @@ export const MEMBERS: Member[] = [
   },
   {
     id: 15,
-    name: "Thiago Belmonte",
+    firstName: "Thiago",
+    lastName: "Belmonte",
     role: "Sócio",
     company: "Belmonte Imóveis",
     city: "São Paulo",
@@ -442,7 +423,7 @@ export const MEMBERS: Member[] = [
       "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&auto=format&fit=crop&q=80",
     seeking: ["Compradores para lajes corporativas"],
     offering: ["Portfólio de lajes AAA", "Leitura do mercado imobiliário"],
-    since: 2018,
+    memberSince: 2018,
     socials: {
       linkedin: "https://linkedin.com",
       website: "https://belmonte.com.br",
@@ -1227,7 +1208,8 @@ export const STAYS: StayItem[] = [
 ]
 
 export const DEFAULT_USER: UserProfile = {
-  name: "William Tabata",
+  firstName: "William",
+  lastName: "Tabata",
   email: "william@tabatacapital.com",
   nationality: "brasileiro",
   cpf: "123.456.789-00",
@@ -1258,9 +1240,21 @@ export const DEFAULT_USER: UserProfile = {
   ],
 }
 
-export function getInitials(name: string): string {
-  const parts = name.trim().split(/\s+/)
-  if (parts.length === 0 || !parts[0]) return ""
+export function getFullName(userOrMember?: { firstName?: string; lastName?: string; name?: string } | null): string {
+  if (!userOrMember) return ""
+  if (userOrMember.firstName || userOrMember.lastName) {
+    return `${userOrMember.firstName || ""} ${userOrMember.lastName || ""}`.trim()
+  }
+  return userOrMember.name || ""
+}
+
+export function getInitials(nameOrFirst?: string, lastName?: string): string {
+  if (nameOrFirst && lastName) {
+    return `${nameOrFirst.trim().charAt(0)}${lastName.trim().charAt(0)}`.toUpperCase()
+  }
+  if (!nameOrFirst) return "CK"
+  const parts = nameOrFirst.trim().split(/\s+/)
+  if (parts.length === 0 || !parts[0]) return "CK"
   if (parts.length === 1) return parts[0].substring(0, 2).toUpperCase()
   return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
 }
@@ -1406,8 +1400,14 @@ export function getExperienceSlug(
   return slugify(exp.title)
 }
 
-export function getMemberSlug(member: Member | { name: string }): string {
-  return slugify(member.name)
+export function getMemberSlug(
+  member: Member | { firstName?: string; lastName?: string; name?: string }
+): string {
+  const fullName =
+    member.firstName || member.lastName
+      ? `${member.firstName || ""} ${member.lastName || ""}`.trim()
+      : (member as { name?: string }).name || ""
+  return slugify(fullName)
 }
 
 export function getStaySlug(
@@ -1541,14 +1541,11 @@ export interface MissionItem {
   actionLabel?: string
 }
 
-export type BadgeRarity = "bronze" | "silver" | "gold" | "diamond"
-
 export interface BadgeDefinition {
   id: string
   name: string
   description: string
   iconName: string
-  rarity: BadgeRarity
   category:
     | "onboarding"
     | "estadias"
@@ -1589,7 +1586,8 @@ export type LeaderboardTimeframe = "all_time" | "monthly" | "quarterly"
 export interface LeaderboardMember {
   rank: number
   id: number
-  name: string
+  firstName: string
+  lastName: string
   role: string
   company: string
   city: string
@@ -1733,6 +1731,8 @@ export const TIERS_LIST: TierDefinition[] = [
   TIERS_CONFIG.incorporador,
   TIERS_CONFIG.patrono,
 ]
+
+export const DEFAULT_TIERS: TierDefinition[] = TIERS_LIST
 
 export const DEFAULT_CLAIMED_MILESTONES: Record<string, boolean> = {
   membro_1: true,
@@ -1984,7 +1984,8 @@ export const MOCK_LEADERBOARD: LeaderboardMember[] = [
   {
     rank: 1,
     id: 3,
-    name: "Eduardo Prado",
+    firstName: "Eduardo",
+    lastName: "Prado",
     role: "Fundador",
     company: "Prado Agro",
     city: "Ribeirão Preto",
@@ -1998,7 +1999,8 @@ export const MOCK_LEADERBOARD: LeaderboardMember[] = [
   {
     rank: 2,
     id: 0,
-    name: "Ana Beatriz Ramos",
+    firstName: "Ana Beatriz",
+    lastName: "Ramos",
     role: "Sócia-fundadora",
     company: "Vero Capital",
     city: "São Paulo",
@@ -2012,7 +2014,8 @@ export const MOCK_LEADERBOARD: LeaderboardMember[] = [
   {
     rank: 3,
     id: 7,
-    name: "Marcelo Bittencourt",
+    firstName: "Marcelo",
+    lastName: "Bittencourt",
     role: "Presidente do Conselho",
     company: "Grupo Bittencourt",
     city: "Porto Alegre",
@@ -2026,7 +2029,8 @@ export const MOCK_LEADERBOARD: LeaderboardMember[] = [
   {
     rank: 4,
     id: 2,
-    name: "Camila Yoshida",
+    firstName: "Camila",
+    lastName: "Yoshida",
     role: "Diretora de Produto",
     company: "Banco Livre",
     city: "São Paulo",
@@ -2040,7 +2044,8 @@ export const MOCK_LEADERBOARD: LeaderboardMember[] = [
   {
     rank: 5,
     id: 1,
-    name: "Rodrigo Salles",
+    firstName: "Rodrigo",
+    lastName: "Salles",
     role: "CEO",
     company: "Norte Logística",
     city: "Curitiba",
@@ -2054,7 +2059,8 @@ export const MOCK_LEADERBOARD: LeaderboardMember[] = [
   {
     rank: 6,
     id: 4,
-    name: "Juliana Meireles",
+    firstName: "Juliana",
+    lastName: "Meireles",
     role: "Sócia",
     company: "Meireles Advogados",
     city: "Belo Horizonte",
@@ -2068,7 +2074,8 @@ export const MOCK_LEADERBOARD: LeaderboardMember[] = [
   {
     rank: 7,
     id: 5,
-    name: "Fernando Tanaka",
+    firstName: "Fernando",
+    lastName: "Tanaka",
     role: "CTO",
     company: "Órbita Health",
     city: "Florianópolis",
@@ -2082,7 +2089,8 @@ export const MOCK_LEADERBOARD: LeaderboardMember[] = [
   {
     rank: 8,
     id: 999,
-    name: "William Tabata",
+    firstName: "William",
+    lastName: "Tabata",
     role: "Sócio-diretor",
     company: "Tabata Capital",
     city: "São Paulo",
@@ -2097,7 +2105,8 @@ export const MOCK_LEADERBOARD: LeaderboardMember[] = [
   {
     rank: 9,
     id: 9,
-    name: "Otávio Nogueira",
+    firstName: "Otávio",
+    lastName: "Nogueira",
     role: "Diretor Financeiro",
     company: "Vetor Energia",
     city: "Rio de Janeiro",
@@ -2111,7 +2120,8 @@ export const MOCK_LEADERBOARD: LeaderboardMember[] = [
   {
     rank: 10,
     id: 8,
-    name: "Larissa Fontes",
+    firstName: "Larissa",
+    lastName: "Fontes",
     role: "Fundadora",
     company: "Casa Fontes",
     city: "São Paulo",
@@ -2128,7 +2138,8 @@ export const MOCK_MONTHLY_LEADERBOARD: LeaderboardMember[] = [
   {
     rank: 1,
     id: 0,
-    name: "Ana Beatriz Ramos",
+    firstName: "Ana Beatriz",
+    lastName: "Ramos",
     role: "Sócia-fundadora",
     company: "Vero Capital",
     city: "São Paulo",
@@ -2142,7 +2153,8 @@ export const MOCK_MONTHLY_LEADERBOARD: LeaderboardMember[] = [
   {
     rank: 2,
     id: 999,
-    name: "William Tabata",
+    firstName: "William",
+    lastName: "Tabata",
     role: "Sócio-diretor",
     company: "Tabata Capital",
     city: "São Paulo",
@@ -2157,7 +2169,8 @@ export const MOCK_MONTHLY_LEADERBOARD: LeaderboardMember[] = [
   {
     rank: 3,
     id: 3,
-    name: "Eduardo Prado",
+    firstName: "Eduardo",
+    lastName: "Prado",
     role: "Fundador",
     company: "Prado Agro",
     city: "Ribeirão Preto",
@@ -2171,7 +2184,8 @@ export const MOCK_MONTHLY_LEADERBOARD: LeaderboardMember[] = [
   {
     rank: 4,
     id: 1,
-    name: "Rodrigo Salles",
+    firstName: "Rodrigo",
+    lastName: "Salles",
     role: "CEO",
     company: "Norte Logística",
     city: "Curitiba",
@@ -2185,7 +2199,8 @@ export const MOCK_MONTHLY_LEADERBOARD: LeaderboardMember[] = [
   {
     rank: 5,
     id: 2,
-    name: "Camila Yoshida",
+    firstName: "Camila",
+    lastName: "Yoshida",
     role: "Diretora de Produto",
     company: "Banco Livre",
     city: "São Paulo",
@@ -2199,7 +2214,8 @@ export const MOCK_MONTHLY_LEADERBOARD: LeaderboardMember[] = [
   {
     rank: 6,
     id: 7,
-    name: "Marcelo Bittencourt",
+    firstName: "Marcelo",
+    lastName: "Bittencourt",
     role: "Presidente do Conselho",
     company: "Grupo Bittencourt",
     city: "Porto Alegre",
@@ -2213,7 +2229,8 @@ export const MOCK_MONTHLY_LEADERBOARD: LeaderboardMember[] = [
   {
     rank: 7,
     id: 5,
-    name: "Fernando Tanaka",
+    firstName: "Fernando",
+    lastName: "Tanaka",
     role: "CTO",
     company: "Órbita Health",
     city: "Florianópolis",
@@ -2227,7 +2244,8 @@ export const MOCK_MONTHLY_LEADERBOARD: LeaderboardMember[] = [
   {
     rank: 8,
     id: 4,
-    name: "Juliana Meireles",
+    firstName: "Juliana",
+    lastName: "Meireles",
     role: "Sócia",
     company: "Meireles Advogados",
     city: "Belo Horizonte",
@@ -2241,7 +2259,8 @@ export const MOCK_MONTHLY_LEADERBOARD: LeaderboardMember[] = [
   {
     rank: 9,
     id: 8,
-    name: "Larissa Fontes",
+    firstName: "Larissa",
+    lastName: "Fontes",
     role: "Fundadora",
     company: "Casa Fontes",
     city: "São Paulo",
@@ -2255,7 +2274,8 @@ export const MOCK_MONTHLY_LEADERBOARD: LeaderboardMember[] = [
   {
     rank: 10,
     id: 9,
-    name: "Otávio Nogueira",
+    firstName: "Otávio",
+    lastName: "Nogueira",
     role: "Diretor Financeiro",
     company: "Vetor Energia",
     city: "Rio de Janeiro",
@@ -2272,7 +2292,8 @@ export const MOCK_QUARTERLY_LEADERBOARD: LeaderboardMember[] = [
   {
     rank: 1,
     id: 3,
-    name: "Eduardo Prado",
+    firstName: "Eduardo",
+    lastName: "Prado",
     role: "Fundador",
     company: "Prado Agro",
     city: "Ribeirão Preto",
@@ -2286,7 +2307,8 @@ export const MOCK_QUARTERLY_LEADERBOARD: LeaderboardMember[] = [
   {
     rank: 2,
     id: 0,
-    name: "Ana Beatriz Ramos",
+    firstName: "Ana Beatriz",
+    lastName: "Ramos",
     role: "Sócia-fundadora",
     company: "Vero Capital",
     city: "São Paulo",
@@ -2300,7 +2322,8 @@ export const MOCK_QUARTERLY_LEADERBOARD: LeaderboardMember[] = [
   {
     rank: 3,
     id: 7,
-    name: "Marcelo Bittencourt",
+    firstName: "Marcelo",
+    lastName: "Bittencourt",
     role: "Presidente do Conselho",
     company: "Grupo Bittencourt",
     city: "Porto Alegre",
@@ -2314,7 +2337,8 @@ export const MOCK_QUARTERLY_LEADERBOARD: LeaderboardMember[] = [
   {
     rank: 4,
     id: 999,
-    name: "William Tabata",
+    firstName: "William",
+    lastName: "Tabata",
     role: "Sócio-diretor",
     company: "Tabata Capital",
     city: "São Paulo",
@@ -2329,7 +2353,8 @@ export const MOCK_QUARTERLY_LEADERBOARD: LeaderboardMember[] = [
   {
     rank: 5,
     id: 2,
-    name: "Camila Yoshida",
+    firstName: "Camila",
+    lastName: "Yoshida",
     role: "Diretora de Produto",
     company: "Banco Livre",
     city: "São Paulo",
@@ -2343,7 +2368,8 @@ export const MOCK_QUARTERLY_LEADERBOARD: LeaderboardMember[] = [
   {
     rank: 6,
     id: 1,
-    name: "Rodrigo Salles",
+    firstName: "Rodrigo",
+    lastName: "Salles",
     role: "CEO",
     company: "Norte Logística",
     city: "Curitiba",
@@ -2357,7 +2383,8 @@ export const MOCK_QUARTERLY_LEADERBOARD: LeaderboardMember[] = [
   {
     rank: 7,
     id: 4,
-    name: "Juliana Meireles",
+    firstName: "Juliana",
+    lastName: "Meireles",
     role: "Sócia",
     company: "Meireles Advogados",
     city: "Belo Horizonte",
@@ -2371,7 +2398,8 @@ export const MOCK_QUARTERLY_LEADERBOARD: LeaderboardMember[] = [
   {
     rank: 8,
     id: 5,
-    name: "Fernando Tanaka",
+    firstName: "Fernando",
+    lastName: "Tanaka",
     role: "CTO",
     company: "Órbita Health",
     city: "Florianópolis",
@@ -2385,7 +2413,8 @@ export const MOCK_QUARTERLY_LEADERBOARD: LeaderboardMember[] = [
   {
     rank: 9,
     id: 9,
-    name: "Otávio Nogueira",
+    firstName: "Otávio",
+    lastName: "Nogueira",
     role: "Diretor Financeiro",
     company: "Vetor Energia",
     city: "Rio de Janeiro",
@@ -2399,7 +2428,8 @@ export const MOCK_QUARTERLY_LEADERBOARD: LeaderboardMember[] = [
   {
     rank: 10,
     id: 8,
-    name: "Larissa Fontes",
+    firstName: "Larissa",
+    lastName: "Fontes",
     role: "Fundadora",
     company: "Casa Fontes",
     city: "São Paulo",
@@ -2480,7 +2510,6 @@ export const DEFAULT_BADGES: BadgeDefinition[] = [
     name: "Membro Fundador",
     description: "Ingressou no Clube na temporada inaugural de 2026 com passe VIP vitalício.",
     iconName: "ShieldStar",
-    rarity: "diamond",
     category: "especial",
     unlockedAt: "10 de Outubro, 2026",
     isUnlocked: true,
@@ -2494,7 +2523,6 @@ export const DEFAULT_BADGES: BadgeDefinition[] = [
     name: "Blindagem Digital",
     description: "Ativou autenticação em dois fatores (2FA) protegendo sua credencial de membro.",
     iconName: "ShieldCheck",
-    rarity: "bronze",
     category: "onboarding",
     unlockedAt: "10 de Outubro, 2026",
     isUnlocked: true,
@@ -2507,7 +2535,6 @@ export const DEFAULT_BADGES: BadgeDefinition[] = [
     name: "Pioneiro das Estadias",
     description: "Realizou e concluiu as primeiras reservas de acomodações no catálogo ClubKey.",
     iconName: "Buildings",
-    rarity: "silver",
     category: "estadias",
     unlockedAt: "14 de Outubro, 2026",
     isUnlocked: true,
@@ -2520,7 +2547,6 @@ export const DEFAULT_BADGES: BadgeDefinition[] = [
     name: "Globe Trotter",
     description: "Hospede-se em 3 destinos diferentes para desbloquear a insígnia de viajante global.",
     iconName: "Compass",
-    rarity: "gold",
     category: "estadias",
     isUnlocked: false,
     progress: 2,
@@ -2533,7 +2559,6 @@ export const DEFAULT_BADGES: BadgeDefinition[] = [
     name: "Sommelier do Clube",
     description: "Participe de 2 degustações guiadas ou experiências exclusivas de enologia.",
     iconName: "Wine",
-    rarity: "silver",
     category: "experiencias",
     isUnlocked: false,
     progress: 1,
@@ -2545,7 +2570,6 @@ export const DEFAULT_BADGES: BadgeDefinition[] = [
     name: "Super Conector",
     description: "Estabeleça 10 conexões diretas na rede executiva de membros.",
     iconName: "UsersThree",
-    rarity: "gold",
     category: "networking",
     isUnlocked: false,
     progress: 4,
@@ -2558,7 +2582,6 @@ export const DEFAULT_BADGES: BadgeDefinition[] = [
     name: "Presença VIP",
     description: "Confirme presença em 5 encontros presenciais, jantares ou fóruns do clube.",
     iconName: "Sparkle",
-    rarity: "gold",
     category: "eventos",
     isUnlocked: false,
     progress: 2,
@@ -2570,7 +2593,6 @@ export const DEFAULT_BADGES: BadgeDefinition[] = [
     name: "Aspirante ao Top 5",
     description: "Alcance o seleto Top 5 do ranking geral global de associados.",
     iconName: "Crown",
-    rarity: "diamond",
     category: "ranking",
     isUnlocked: false,
     progress: 0,

@@ -75,9 +75,9 @@ export function PortalHome(): React.JSX.Element {
           <div className="flex items-center gap-4 sm:gap-5">
             <div className="relative shrink-0">
               <Avatar size="2xl" className="w-16 h-16 sm:w-20 sm:h-20">
-                <AvatarImage src={userProfile.avatar} alt={userProfile.name} />
+                <AvatarImage src={userProfile.avatar} alt={`${userProfile.firstName} ${userProfile.lastName}`} />
                 <AvatarFallback className="bg-zinc-800 text-white font-bold text-lg">
-                  {getInitials(userProfile.name)}
+                  {getInitials(userProfile.firstName, userProfile.lastName)}
                 </AvatarFallback>
               </Avatar>
             </div>
@@ -89,7 +89,7 @@ export function PortalHome(): React.JSX.Element {
                 </GlassBadge>
               </div>
               <h1 className="text-2xl sm:text-3xl md:text-4xl font-black uppercase tracking-tight text-white font-heading">
-                Bem-vindo(a), {userProfile.name.split(" ")[0]}
+                Bem-vindo(a), {userProfile.firstName}
               </h1>
               <p className="text-xs sm:text-sm text-zinc-300">
                 {userProfile.role} na {userProfile.company} • {userProfile.city}

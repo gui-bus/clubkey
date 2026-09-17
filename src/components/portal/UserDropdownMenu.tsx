@@ -56,7 +56,8 @@ export function UserDropdownMenu({
       (k) => !!confirmedEvents[Number(k)]
     ).length || 1
 
-  const userInitials = getInitials(userProfile.name || "")
+  const userFullName = `${userProfile.firstName} ${userProfile.lastName}`.trim()
+  const userInitials = getInitials(userProfile.firstName, userProfile.lastName)
   const userEmail = userProfile.email || "william@tabatacapital.com"
 
   const handleLogout = () => {
@@ -76,7 +77,7 @@ export function UserDropdownMenu({
           >
             <Avatar size="sm">
               {userProfile.avatar && (
-                <AvatarImage src={userProfile.avatar} alt={userProfile.name} />
+                <AvatarImage src={userProfile.avatar} alt={userFullName} />
               )}
               <AvatarFallback className="font-bold text-[10px] bg-zinc-900 text-white dark:bg-zinc-800">
                 {userInitials}
@@ -90,7 +91,7 @@ export function UserDropdownMenu({
                   isDarkBar ? "text-white" : "text-zinc-900 dark:text-white"
                 )}
               >
-                {userProfile.name}
+                {userFullName}
               </span>
               <span className="text-[10px] font-normal text-zinc-400 dark:text-zinc-400 truncate">
                 {userEmail}
@@ -112,7 +113,7 @@ export function UserDropdownMenu({
           <div className="px-3 py-2.5 border-b border-zinc-100 dark:border-zinc-800/80 mb-1 flex items-center gap-3">
             <Avatar size="sm">
               {userProfile.avatar && (
-                <AvatarImage src={userProfile.avatar} alt={userProfile.name} />
+                <AvatarImage src={userProfile.avatar} alt={userFullName} />
               )}
               <AvatarFallback className="font-bold text-[10px] bg-zinc-900 text-white dark:bg-zinc-800">
                 {userInitials}
@@ -120,7 +121,7 @@ export function UserDropdownMenu({
             </Avatar>
             <div className="min-w-0 flex-1">
               <p className="text-xs font-bold text-zinc-900 dark:text-white truncate">
-                {userProfile.name}
+                {userFullName}
               </p>
               <p className="text-[10px] text-zinc-500 dark:text-zinc-400 truncate">
                 {userEmail}

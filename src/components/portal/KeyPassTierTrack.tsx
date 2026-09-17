@@ -11,6 +11,7 @@ import {
   TierDefinition,
   TierId,
 } from "@/src/data/portalData"
+import { usePortalStore } from "@/src/store/usePortalStore"
 import {
   ArrowRight,
   Check,
@@ -35,7 +36,12 @@ export function KeyPassTierTrack({
   onSelectTier,
   className,
 }: KeyPassTierTrackProps): React.JSX.Element {
-  const selectedTier = TIERS_CONFIG[selectedTierId] || userTier
+  const { tiers } = usePortalStore()
+  const displayTiers = tiers && tiers.length > 0 ? tiers : TIERS_LIST
+  const selectedTier =
+    displayTiers.find((t) => t.id === selectedTierId) ||
+    TIERS_CONFIG[selectedTierId] ||
+    userTier
   const isViewingOtherTier = selectedTier.id !== userTier.id
 
   const getTierShortPerk = (tierId: TierId) => {
@@ -80,7 +86,7 @@ export function KeyPassTierTrack({
 
       {}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-        {TIERS_LIST.map((tier, index) => {
+        {displayTiers.map((tier, index) => {
           const isUserCurrent = tier.id === userTier.id
           const isSelected = tier.id === selectedTierId
           const isPassed = tier.order < userTier.order

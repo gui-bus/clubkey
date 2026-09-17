@@ -1,13 +1,12 @@
 import {
-  CLUBS,
   ChatMessage,
-  Club,
   DEFAULT_BADGES,
   DEFAULT_CHAT_MESSAGES,
   DEFAULT_CLAIMED_MILESTONES,
   DEFAULT_MEMBER_STAYS,
   DEFAULT_MEMBER_SUBSCRIPTION,
   DEFAULT_MISSIONS,
+  DEFAULT_TIERS,
   DEFAULT_USER,
   DEFAULT_WEEKLY_DROPS,
   DEFAULT_XP_ACTIVITIES,
@@ -31,7 +30,6 @@ export type MemberConnectionStatus = "none" | "pending" | "connected"
 
 interface PortalState {
   isAuthenticated: boolean
-  activeClubId: string
   confirmedEvents: Record<number, boolean>
   connectedMembers: Record<number, "pending" | "connected">
   receivedPendingInvites: number[]
@@ -46,6 +44,7 @@ interface PortalState {
   lastActivityDate: string
   isTierFrozen: boolean
   claimedMilestones: Record<string, boolean>
+  tiers: TierDefinition[]
   missions: MissionItem[]
   badges: BadgeDefinition[]
   weeklyDrops: WeeklyDropItem[]
@@ -56,10 +55,9 @@ interface PortalState {
   activeChatMemberId: number | null
   isChatOpen: boolean
   isChatMinimized: boolean
+  setTiers: (tiers: TierDefinition[]) => void
   login: (email?: string, name?: string) => void
   logout: () => void
-  setActiveClubId: (id: string) => void
-  getActiveClub: () => Club
   toggleEventRSVP: (eventId: number) => boolean
   toggleConnect: (memberId: number) => MemberConnectionStatus
   getConnectionStatus: (memberId: number) => MemberConnectionStatus
@@ -105,7 +103,6 @@ export const usePortalStore = create<PortalState>()(
   persist(
     (set, get) => ({
       isAuthenticated: true,
-      activeClubId: "alpha",
       confirmedEvents: { 1: true, 5: true },
       connectedMembers: {
         0: "connected",
@@ -127,6 +124,7 @@ export const usePortalStore = create<PortalState>()(
       lastActivityDate: new Date().toISOString(),
       isTierFrozen: false,
       claimedMilestones: DEFAULT_CLAIMED_MILESTONES,
+      tiers: DEFAULT_TIERS,
       missions: DEFAULT_MISSIONS,
       badges: DEFAULT_BADGES,
       weeklyDrops: DEFAULT_WEEKLY_DROPS,
@@ -138,18 +136,25 @@ export const usePortalStore = create<PortalState>()(
       isChatOpen: false,
       isChatMinimized: false,
 
+      setTiers: (tiers: TierDefinition[]) => {
+        set({ tiers })
+      },
+
       login: (email?: string, name?: string) => {
         const updatedProfile = { ...get().userProfile }
         if (email && email.trim()) {
           updatedProfile.email = email.trim()
         }
         if (name && name.trim()) {
-          updatedProfile.name = name.trim()
+          const parts = name.trim().split(/\s+/)
+          updatedProfile.firstName = parts[0]
+          updatedProfile.lastName = parts.slice(1).join(" ")
         } else if (email && email.includes("@")) {
           const username = email.split("@")[0]
           const formatted = username.charAt(0).toUpperCase() + username.slice(1)
-          if (!updatedProfile.name) {
-            updatedProfile.name = formatted
+          if (!updatedProfile.firstName) {
+            updatedProfile.firstName = formatted
+            updatedProfile.lastName = ""
           }
         }
         set({
@@ -162,13 +167,6 @@ export const usePortalStore = create<PortalState>()(
         set({
           isAuthenticated: false,
         })
-      },
-
-      setActiveClubId: (id: string) => set({ activeClubId: id }),
-
-      getActiveClub: () => {
-        const id = get().activeClubId
-        return CLUBS.find((c) => c.id === id) || CLUBS[0]
       },
 
       getUserTier: () => {
@@ -746,8 +744,8 @@ export const usePortalStore = create<PortalState>()(
           migratedState.isChatMinimized = false
         }
         if (
-          migratedState.userProfile?.name === "Marina Duarte" ||
-          !migratedState.userProfile?.name
+          !migratedState.userProfile?.firstName ||
+          migratedState.userProfile?.firstName === "Marina"
         ) {
           migratedState.userProfile = DEFAULT_USER
         }
@@ -771,6 +769,9 @@ export const usePortalStore = create<PortalState>()(
         }
         if (!migratedState.xpHistory || migratedState.xpHistory.length === 0) {
           migratedState.xpHistory = DEFAULT_XP_ACTIVITIES
+        }
+        if (!migratedState.tiers || migratedState.tiers.length === 0) {
+          migratedState.tiers = DEFAULT_TIERS
         }
         if (!migratedState.badges || migratedState.badges.length === 0) {
           migratedState.badges = DEFAULT_BADGES
@@ -800,8 +801,8 @@ export const usePortalStore = create<PortalState>()(
       onRehydrateStorage: () => (state) => {
         if (state) {
           if (
-            state.userProfile?.name === "Marina Duarte" ||
-            !state.userProfile?.name
+            !state.userProfile?.firstName ||
+            state.userProfile?.firstName === "Marina"
           ) {
             state.userProfile = DEFAULT_USER
           }
@@ -819,6 +820,9 @@ export const usePortalStore = create<PortalState>()(
           }
           if (typeof state.is2FAEnabled !== "boolean") {
             state.is2FAEnabled = true
+          }
+          if (!state.tiers || state.tiers.length === 0) {
+            state.tiers = DEFAULT_TIERS
           }
           if (!state.missions || state.missions.length === 0) {
             state.missions = DEFAULT_MISSIONS

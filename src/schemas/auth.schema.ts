@@ -52,7 +52,8 @@ export type ResetPasswordFormData = z.infer<typeof resetPasswordSchema>
 export const signUpSchema = z
   .object({
     nationality: z.enum(["brasileiro", "estrangeiro"]),
-    fullName: z.string().min(3, "Informe seu nome completo."),
+    firstName: z.string().min(2, "Informe seu primeiro nome."),
+    lastName: z.string().min(2, "Informe seu sobrenome."),
     email: z
       .string()
       .min(1, "Informe seu e-mail.")

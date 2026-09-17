@@ -224,11 +224,11 @@ export function MemberMessengerWidget(): React.JSX.Element | null {
                         {activeMember.avatar && (
                           <AvatarImage
                             src={activeMember.avatar}
-                            alt={activeMember.name}
+                            alt={`${activeMember.firstName} ${activeMember.lastName}`}
                           />
                         )}
                         <AvatarFallback className="font-bold text-[10px] bg-zinc-900 text-white dark:bg-zinc-800">
-                          {getInitials(activeMember.name)}
+                          {getInitials(activeMember.firstName, activeMember.lastName)}
                         </AvatarFallback>
                       </Avatar>
                     </div>
@@ -236,7 +236,7 @@ export function MemberMessengerWidget(): React.JSX.Element | null {
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-1">
                         <span className="text-xs font-bold text-zinc-900 dark:text-white group-hover:text-brand-primary truncate transition-colors">
-                          {activeMember.name}
+                          {activeMember.firstName} {activeMember.lastName}
                         </span>
                         <CaretDown className="w-3 h-3 text-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-200 shrink-0 transition-colors" />
                       </div>
@@ -270,15 +270,15 @@ export function MemberMessengerWidget(): React.JSX.Element | null {
                       >
                         <Avatar size="xs" className="rounded-xs shrink-0">
                           {m.avatar && (
-                            <AvatarImage src={m.avatar} alt={m.name} />
+                            <AvatarImage src={m.avatar} alt={`${m.firstName} ${m.lastName}`} />
                           )}
                           <AvatarFallback className="text-[8px] bg-zinc-900 text-white font-bold">
-                            {getInitials(m.name)}
+                            {getInitials(m.firstName, m.lastName)}
                           </AvatarFallback>
                         </Avatar>
                         <div className="min-w-0 flex-1 truncate">
                           <p className="truncate text-xs font-semibold">
-                            {m.name}
+                            {m.firstName} {m.lastName}
                           </p>
                           <p className="truncate text-[10px] text-zinc-400">
                             {m.company}
@@ -289,7 +289,7 @@ export function MemberMessengerWidget(): React.JSX.Element | null {
                         type="button"
                         onClick={(e) => handleDeleteConversation(m.id, e)}
                         className="p-1 text-zinc-400 hover:text-rose-500 hover:bg-rose-500/10 rounded-xs transition-colors shrink-0 cursor-pointer"
-                        title={`Excluir conversa com ${m.name}`}
+                        title={`Excluir conversa com ${m.firstName} ${m.lastName}`}
                       >
                         <Trash className="w-3.5 h-3.5" />
                       </button>
@@ -332,7 +332,7 @@ export function MemberMessengerWidget(): React.JSX.Element | null {
                     Canal Direto do Clube
                   </span>
                   <p className="text-[11px] text-zinc-600 dark:text-zinc-400">
-                    Você e {activeMember.name} estão conectados no ClubKey.
+                    Você e {activeMember.firstName} {activeMember.lastName} estão conectados no ClubKey.
                   </p>
                 </div>
 
@@ -375,7 +375,7 @@ export function MemberMessengerWidget(): React.JSX.Element | null {
                 type="text"
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value)}
-                placeholder={`Mensagem para ${activeMember.name.split(" ")[0]}...`}
+                placeholder={`Mensagem para ${activeMember.firstName}...`}
                 className="flex-1 bg-zinc-100 dark:bg-zinc-900/80 border border-zinc-200 dark:border-zinc-800 rounded-sm px-3 py-2 text-xs text-zinc-900 dark:text-white placeholder:text-zinc-400 outline-none focus:border-brand-primary transition-colors"
               />
               <CtaButton
@@ -402,7 +402,7 @@ export function MemberMessengerWidget(): React.JSX.Element | null {
             <div className="relative w-full h-full rounded-full overflow-hidden">
               <Image
                 src={memberWithUnread.avatar}
-                alt={memberWithUnread.name}
+                alt={`${memberWithUnread.firstName} ${memberWithUnread.lastName}`}
                 fill
                 className="object-cover"
               />

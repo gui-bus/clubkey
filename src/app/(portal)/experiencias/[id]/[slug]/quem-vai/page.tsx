@@ -130,7 +130,8 @@ export default function ExperienceParticipantsPage(): React.JSX.Element {
 
     return list.filter((m) => {
       const fullText = [
-        m.name,
+        m.firstName,
+        m.lastName,
         m.role,
         m.company,
         m.city,

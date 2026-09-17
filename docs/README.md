@@ -23,6 +23,7 @@ Cada documento descreve as funcionalidades da tela, dados consumidos, ações do
 - **[`pages/conexoes.md`](./pages/conexoes.md)**: Rede de Membros, Filtros de Networking (Seeking/Offering), Perfil Público do Associado, Minhas Conexões e Chat em Tempo Real.
 - **[`pages/keypass.md`](./pages/keypass.md)**: Sistema KeyPass — Tiers Executivos, Progresso de XP, Tokens RIB, Missões Qualificadoras, Conquistas/Insígnias, Drops Semanais e Ranking Global.
 - **[`pages/perfil.md`](./pages/perfil.md)**: Perfil do Membro Logado, Edição de Informações, Tags de Negócios, Segurança 2FA e Gestão de Assinatura.
+- **[`pages/notificacoes.md`](./pages/notificacoes.md)**: Central de Notificações Global (Dropdown de avisos, convites de networking pendentes e mensagens não lidas).
 - **[`pages/auth.md`](./pages/auth.md)**: Fluxos de Autenticação (Sign In, Sign Up, Recuperação e Redefinição de Senha).
 
 ---
@@ -34,3 +35,4 @@ Para criar o backend a partir deste repositório:
 2. **Leia [`API_SPECIFICATIONS.md`](./API_SPECIFICATIONS.md)** para implementar os controllers, services e rotas HTTP (Node/NestJS, FastAPI, Go, Laravel, etc.).
 3. **Consulte [`pages/*.md`](./pages/)** para entender as regras de negócio específicas de cada tela quando tiver dúvidas sobre filtros, paginação ou fluxos de usuário.
 4. **Consulte [`src/data/portalData.ts`](../src/data/portalData.ts)** no código-fonte para ver os tipos TypeScript exatos já utilizados pelo frontend.
+5. **Gere a OpenAPI & Documentação com [Scalar](https://scalar.com/)**: Exponha o endpoint `GET /docs/api.json` ou `GET /openapi.json` e atribua `operationId` único em cada rota. O frontend utilizará **Orval** (`orval`) para gerar automaticamente todos os tipos TypeScript e hooks do **TanStack React Query** via **Axios**.

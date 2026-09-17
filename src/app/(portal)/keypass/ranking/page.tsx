@@ -63,7 +63,7 @@ export default function KeyPassRankingPage(): React.JSX.Element {
                   TIERS_CONFIG[leader.tierId]?.image ||
                   "/utils/gamification/tiers/06_patrono.webp"
                 }
-                alt={leader.name}
+                alt={`${leader.firstName} ${leader.lastName}`}
                 fill
                 className="object-contain"
                 priority
@@ -91,7 +91,7 @@ export default function KeyPassRankingPage(): React.JSX.Element {
                   className="group/leader inline-block"
                 >
                   <h1 className="text-2xl sm:text-3xl font-heading font-black uppercase tracking-tight text-zinc-900 dark:text-white group-hover/leader:text-brand-primary group-hover/leader:underline transition-colors">
-                    {leader.name}
+                    {leader.firstName} {leader.lastName}
                   </h1>
                 </Link>
                 <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 font-medium">

@@ -200,14 +200,14 @@ export function EventDetailClient({
                   className="border border-white/20 group-hover/host:border-brand-primary transition-colors cursor-pointer"
                 >
                   {organizer.avatar && (
-                    <AvatarImage src={organizer.avatar} alt={organizer.name} />
+                    <AvatarImage src={organizer.avatar} alt={`${organizer.firstName} ${organizer.lastName}`} />
                   )}
                   <AvatarFallback className="font-bold text-[9px] bg-zinc-800 text-white">
-                    {getInitials(organizer.name)}
+                    {getInitials(organizer.firstName, organizer.lastName)}
                   </AvatarFallback>
                 </Avatar>
                 <span className="font-semibold text-white group-hover/host:text-brand-primary group-hover/host:underline transition-colors">
-                  {organizer.name}
+                  {organizer.firstName} {organizer.lastName}
                 </span>
                 <span className="text-zinc-400 text-xs">
                   ({organizer.company})

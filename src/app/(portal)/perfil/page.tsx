@@ -40,7 +40,8 @@ export default function ProfilePage(): React.JSX.Element {
 
   const formData: ProfileFormData = {
     nationality: userProfile.nationality || "brasileiro",
-    name: userProfile.name || "",
+    firstName: userProfile.firstName || "",
+    lastName: userProfile.lastName || "",
     email: userProfile.email || "",
     cpf: userProfile.cpf || "",
     birthDate: userProfile.birthDate || "",
@@ -58,7 +59,8 @@ export default function ProfilePage(): React.JSX.Element {
   const handleSaveProfile = (data: ProfileFormData) => {
     updateProfile({
       nationality: data.nationality as "brasileiro" | "estrangeiro",
-      name: data.name,
+      firstName: data.firstName,
+      lastName: data.lastName,
       email: data.email,
       cpf: data.cpf,
       birthDate: data.birthDate,
@@ -100,10 +102,12 @@ export default function ProfilePage(): React.JSX.Element {
     })
   }
 
+  const userFullName = `${userProfile.firstName} ${userProfile.lastName}`.trim()
+
   return (
     <div className="w-full flex flex-col pb-20 space-y-10">
       <ProfileHeader
-        name={userProfile.name}
+        name={userFullName}
         role={userProfile.role}
         company={userProfile.company}
         avatar={userProfile.avatar}
@@ -147,10 +151,10 @@ export default function ProfilePage(): React.JSX.Element {
         onSelectCover={setPendingCover}
         onApplyCover={handleApplyCover}
         userAvatar={userProfile.avatar}
-        userName={userProfile.name}
+        userName={userFullName}
         userRole={userProfile.role}
         userCompany={userProfile.company}
-        userInitials={getInitials(userProfile.name)}
+        userInitials={getInitials(userProfile.firstName, userProfile.lastName)}
       />
 
       <ProfileAvatarDialog

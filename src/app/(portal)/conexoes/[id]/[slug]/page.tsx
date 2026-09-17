@@ -23,8 +23,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     member.role && member.company
       ? `${member.role} na ${member.company}`
       : member.role || "Membro Executivo"
-  const title = `${member.name} — ${roleText}`
-  const description = `Conecte-se com ${member.name} (${roleText}) em ${member.city} através do círculo restrito de membros do ClubKey.`
+  const fullName = `${member.firstName} ${member.lastName}`
+  const title = `${fullName} — ${roleText}`
+  const description = `Conecte-se com ${fullName} (${roleText}) em ${member.city} através do círculo restrito de membros do ClubKey.`
   const image = member.avatar || member.image || "/utils/banners/pessoas.webp"
 
   return {
@@ -33,7 +34,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     openGraph: {
       title: `${title} | ClubKey`,
       description,
-      images: [{ url: image, alt: member.name }],
+      images: [{ url: image, alt: fullName }],
     },
     twitter: {
       card: "summary_large_image",

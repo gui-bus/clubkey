@@ -122,18 +122,18 @@ export function EventCard({ event }: EventCardProps): React.JSX.Element {
                 <div className="relative w-5 h-5 rounded-full overflow-hidden shrink-0 border border-zinc-200 dark:border-zinc-700">
                   <Image
                     src={organizer.avatar}
-                    alt={organizer.name}
+                    alt={`${organizer.firstName} ${organizer.lastName}`}
                     fill
                     className="object-cover"
                   />
                 </div>
               ) : (
                 <div className="w-5 h-5 rounded-full bg-zinc-800 text-white font-bold text-[8px] flex items-center justify-center shrink-0">
-                  {getInitials(organizer.name)}
+                  {getInitials(organizer.firstName, organizer.lastName)}
                 </div>
               )}
               <span className="text-zinc-700 dark:text-zinc-300 font-semibold truncate">
-                Host: {organizer.name} ({organizer.company})
+                Host: {organizer.firstName} {organizer.lastName} ({organizer.company})
               </span>
             </div>
 
@@ -187,7 +187,7 @@ export function EventCard({ event }: EventCardProps): React.JSX.Element {
                 {participantMembers.map((member) => (
                   <Avatar
                     key={member.id}
-                    title={`${member.name} • ${member.role} (${member.company})`}
+                    title={`${member.firstName} ${member.lastName} • ${member.role} (${member.company})`}
                     onClick={(e) => {
                       e.preventDefault()
                       e.stopPropagation()
@@ -198,10 +198,10 @@ export function EventCard({ event }: EventCardProps): React.JSX.Element {
                     className="cursor-pointer"
                   >
                     {member.avatar && (
-                      <AvatarImage src={member.avatar} alt={member.name} />
+                      <AvatarImage src={member.avatar} alt={`${member.firstName} ${member.lastName}`} />
                     )}
                     <AvatarFallback className="font-bold text-[9px] bg-zinc-800 text-white">
-                      {getInitials(member.name)}
+                      {getInitials(member.firstName, member.lastName)}
                     </AvatarFallback>
                   </Avatar>
                 ))}
