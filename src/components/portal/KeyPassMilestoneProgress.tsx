@@ -157,7 +157,7 @@ export function KeyPassMilestoneProgress({
   return (
     <div
       className={cn(
-        "rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-5 sm:p-6 shadow-2xs space-y-6",
+        "rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 shadow-2xs space-y-6",
         className
       )}
     >
