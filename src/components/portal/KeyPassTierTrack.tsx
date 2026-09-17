@@ -25,7 +25,7 @@ interface KeyPassTierTrackProps {
   userTier: TierDefinition
   selectedTierId: TierId
   onSelectTier: (tierId: TierId) => void
-  userXp: number
+  userXp?: number
   className?: string
 }
 
@@ -33,7 +33,6 @@ export function KeyPassTierTrack({
   userTier,
   selectedTierId,
   onSelectTier,
-  userXp,
   className,
 }: KeyPassTierTrackProps): React.JSX.Element {
   const selectedTier = TIERS_CONFIG[selectedTierId] || userTier

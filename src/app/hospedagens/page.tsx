@@ -2,8 +2,6 @@
 
 import * as React from "react"
 
-import Image from "next/image"
-
 import { destinationOptions } from "@/src/data/mockDestinations"
 import { catalogSections } from "@/src/data/mockRooms"
 import { Calendar, MapPin, Users } from "@phosphor-icons/react"
@@ -12,7 +10,6 @@ import { toast } from "@/src/components/ui/toast/toast"
 
 import { Container } from "@/src/components/common/container"
 import { FloatingCta } from "@/src/components/landing/FloatingCta"
-import { Footer } from "@/src/components/landing/Footer"
 import { Navbar } from "@/src/components/landing/Navbar"
 import { TopBanner } from "@/src/components/landing/TopBanner"
 import { PortalHero } from "@/src/components/portal/PortalHero"
@@ -134,7 +131,7 @@ export default function HospedagensPage(): React.JSX.Element {
   }
 
   return (
-    <main className="w-full bg-[#F1F1F1] dark:bg-[#161616] text-zinc-900 dark:text-white flex flex-col font-sans selection:bg-brand-primary/20 selection:text-brand-primary min-h-screen">
+    <main className="flex-1 w-full bg-[#F1F1F1] dark:bg-[#161616] text-zinc-900 dark:text-white flex flex-col font-sans selection:bg-brand-primary/20 selection:text-brand-primary">
       <TopBanner />
       <Navbar />
 
@@ -258,7 +255,6 @@ export default function HospedagensPage(): React.JSX.Element {
         </div>
       </Container>
 
-      <Footer />
       <FloatingCta />
     </main>
   )

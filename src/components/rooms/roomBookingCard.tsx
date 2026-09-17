@@ -41,7 +41,7 @@ export interface RoomBookingCardProps {
 }
 
 export function RoomBookingCard({
-  roomTitle,
+  roomTitle: _roomTitle,
   maxGuests,
   discountPrice,
   discountPercent,

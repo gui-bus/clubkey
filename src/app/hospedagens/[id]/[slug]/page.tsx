@@ -19,7 +19,6 @@ import { toast } from "@/src/components/ui/toast/toast"
 
 import { Container } from "@/src/components/common/container"
 import { FloatingCta } from "@/src/components/landing/FloatingCta"
-import { Footer } from "@/src/components/landing/Footer"
 import { Navbar } from "@/src/components/landing/Navbar"
 import { TopBanner } from "@/src/components/landing/TopBanner"
 import { ShareButton } from "@/src/components/portal/ShareButton"
@@ -97,7 +96,7 @@ export default function HospedagemDetailPage(): React.JSX.Element {
   }
 
   return (
-    <main className="min-h-screen w-full bg-[#F1F1F1] dark:bg-[#161616] text-[#111111] dark:text-white flex flex-col font-sans selection:bg-brand-primary/20 selection:text-brand-primary">
+    <main className="flex-1 w-full bg-[#F1F1F1] dark:bg-[#161616] text-[#111111] dark:text-white flex flex-col font-sans selection:bg-brand-primary/20 selection:text-brand-primary">
       <TopBanner />
       <Navbar isTransparent={false} />
 
@@ -307,7 +306,6 @@ export default function HospedagemDetailPage(): React.JSX.Element {
         </div>
       </Container>
 
-      <Footer />
       <FloatingCta />
     </main>
   )

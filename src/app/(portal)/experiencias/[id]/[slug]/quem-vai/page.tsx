@@ -5,7 +5,6 @@ import * as React from "react"
 import { notFound, useParams } from "next/navigation"
 
 import { EXPERIENCES, MEMBERS, getExperienceSlug } from "@/src/data/portalData"
-import { usePortalStore } from "@/src/store/usePortalStore"
 import {
   ArrowRight,
   Calendar,
@@ -38,9 +37,6 @@ export default function ExperienceParticipantsPage(): React.JSX.Element {
   if (!experience) {
     notFound()
   }
-
-  const { boughtExperiences } = usePortalStore()
-  const isBought = !!boughtExperiences[experience.id]
 
   const [searchQuery, setSearchQuery] = React.useState("")
   const [activeRole, setActiveRole] = React.useState("todos")

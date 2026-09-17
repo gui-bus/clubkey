@@ -9,7 +9,6 @@ import { usePortalStore } from "@/src/store/usePortalStore"
 import { ExperienceBanner } from "@/src/components/landing/ExperienceBanner"
 import { FaqSection } from "@/src/components/landing/FaqSection"
 import { FloatingCta } from "@/src/components/landing/FloatingCta"
-import { Footer } from "@/src/components/landing/Footer"
 import { Hero } from "@/src/components/landing/Hero"
 import { HowItWorksCatalog } from "@/src/components/landing/HowItWorksCatalog"
 import { Navbar } from "@/src/components/landing/Navbar"
@@ -29,7 +28,7 @@ export default function Page(): React.JSX.Element {
 
   if (isAuthenticated) {
     return (
-      <div className="min-h-screen w-full text-zinc-900 dark:text-white flex flex-col font-sans selection:bg-brand-primary/20 selection:text-brand-primary">
+      <div className="flex-1 w-full text-zinc-900 dark:text-white flex flex-col font-sans selection:bg-brand-primary/20 selection:text-brand-primary">
         <Navbar />
         <main className="flex-1 w-full flex flex-col">
           <PortalHome />
@@ -39,7 +38,7 @@ export default function Page(): React.JSX.Element {
   }
 
   return (
-    <main className="w-full bg-[#F1F1F1] dark:bg-[#161616] text-[#111111] dark:text-white flex flex-col font-sans selection:bg-brand-primary/20 selection:text-brand-primary">
+    <main className="flex-1 w-full bg-[#F1F1F1] dark:bg-[#161616] text-[#111111] dark:text-white flex flex-col font-sans selection:bg-brand-primary/20 selection:text-brand-primary">
       <TopBanner />
       <Navbar />
       <Hero />
@@ -48,7 +47,6 @@ export default function Page(): React.JSX.Element {
       <ExperienceBanner />
       <HowItWorksCatalog />
       <FaqSection />
-      <Footer />
       <FloatingCta />
     </main>
   )

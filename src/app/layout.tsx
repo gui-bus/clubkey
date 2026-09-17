@@ -9,6 +9,7 @@ import { Toast } from "@/src/components/ui/toast/toast"
 
 import { BrandStyles } from "@/src/components/common/brandStyles"
 import { ThemeProvider } from "@/src/components/common/themeProvider"
+import { Footer } from "@/src/components/landing/Footer"
 import { MemberMessengerWidget } from "@/src/components/portal/MemberMessengerWidget"
 
 import { cn } from "@/src/lib/utils"
@@ -95,12 +96,13 @@ export default async function RootLayout({
         <BrandStyles />
         <link rel="icon" href={siteConfig.favicon || "/favicon.ico"} />
       </head>
-      <body className="mx-auto w-full max-w-440 bg-background text-foreground selection:bg-brand-primary/20 selection:text-brand-primary">
+      <body className="mx-auto w-full max-w-440 bg-background text-foreground selection:bg-brand-primary/20 selection:text-brand-primary flex flex-col min-h-screen">
         <ThemeProvider>
           <NuqsAdapter>
             <Suspense fallback={<div className="min-h-screen w-full" />}>
-              {children}
+              <div className="flex-1 flex flex-col w-full">{children}</div>
             </Suspense>
+            <Footer />
             <Toast position="bottom-right" />
             <Suspense fallback={null}>
               <MemberMessengerWidget />

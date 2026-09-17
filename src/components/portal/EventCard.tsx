@@ -3,7 +3,6 @@
 import * as React from "react"
 
 import Image from "next/image"
-import Link from "next/link"
 import { useRouter } from "next/navigation"
 
 import {
@@ -18,7 +17,6 @@ import {
   ArrowUpRight,
   Check,
   Clock,
-  Lightning,
   MapPin,
   Plus,
   Users,
@@ -34,8 +32,6 @@ import { AvatarGroup } from "@/src/components/ui/avatarGroup/avatarGroup"
 import { toast } from "@/src/components/ui/toast/toast"
 
 import { CtaButton } from "@/src/components/common/ctaButton"
-
-import { cn } from "@/src/lib/utils"
 
 import { useMounted } from "@/src/hooks/useMounted"
 

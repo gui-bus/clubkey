@@ -8,7 +8,6 @@ import { usePathname, useRouter } from "next/navigation"
 
 import {
   TIERS_CONFIG,
-  calculateTierProgress,
   getInitials,
 } from "@/src/data/portalData"
 import { usePortalStore } from "@/src/store/usePortalStore"
@@ -91,7 +90,6 @@ export function Navbar({
     logout,
     memberStays,
     confirmedEvents,
-    xp,
     ribTokens,
     getUserTier,
   } = usePortalStore()
@@ -105,7 +103,6 @@ export function Navbar({
     ).length || 1
 
   const currentTier = getUserTier ? getUserTier() : TIERS_CONFIG.titular
-  const tierProgress = calculateTierProgress(xp || 2850, currentTier)
 
   const userInitials = getInitials(userProfile?.name || "")
   const homeHref = isClubKey ? "/" : "/hospedagens"
@@ -113,37 +110,17 @@ export function Navbar({
 
   const isDetailRoute = Boolean(
     (pathname?.startsWith("/rooms/") && pathname !== "/rooms") ||
-    (pathname?.startsWith("/hospedagens/") &&
-      pathname !== "/hospedagens" &&
-      pathname !== "/hospedagens/minhas-hospedagens") ||
-    (pathname?.startsWith("/eventos/") &&
-      pathname !== "/eventos" &&
-      pathname !== "/eventos/meus-eventos") ||
-    (pathname?.startsWith("/agenda/") && pathname !== "/agenda") ||
-    (pathname?.startsWith("/experiencias/") && pathname !== "/experiencias") ||
-    (pathname?.startsWith("/conexoes/") && pathname !== "/conexoes") ||
-    (pathname?.startsWith("/pessoas/") && pathname !== "/pessoas") ||
-    pathname === "/perfil"
-  )
-
-  const isPortalRoute = Boolean(
-    (pathname === "/" && isAuthenticated) ||
-    pathname === "/eventos" ||
-    pathname?.startsWith("/eventos/") ||
-    pathname === "/agenda" ||
-    pathname?.startsWith("/agenda/") ||
-    pathname === "/experiencias" ||
-    pathname?.startsWith("/experiencias/") ||
-    pathname === "/conexoes" ||
-    pathname?.startsWith("/conexoes/") ||
-    pathname === "/pessoas" ||
-    pathname?.startsWith("/pessoas/") ||
-    pathname === "/beneficios" ||
-    pathname === "/keypass" ||
-    pathname?.startsWith("/keypass/") ||
-    pathname === "/perfil" ||
-    pathname?.startsWith("/perfil/") ||
-    pathname?.startsWith("/hospedagens/minhas-hospedagens")
+      (pathname?.startsWith("/hospedagens/") &&
+        pathname !== "/hospedagens" &&
+        pathname !== "/hospedagens/minhas-hospedagens") ||
+      (pathname?.startsWith("/eventos/") &&
+        pathname !== "/eventos" &&
+        pathname !== "/eventos/meus-eventos") ||
+      (pathname?.startsWith("/agenda/") && pathname !== "/agenda") ||
+      (pathname?.startsWith("/experiencias/") && pathname !== "/experiencias") ||
+      (pathname?.startsWith("/conexoes/") && pathname !== "/conexoes") ||
+      (pathname?.startsWith("/pessoas/") && pathname !== "/pessoas") ||
+      pathname === "/perfil"
   )
 
   const isAuthRoute = Boolean(

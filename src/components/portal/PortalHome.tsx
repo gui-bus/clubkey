@@ -12,7 +12,6 @@ import {
   BuildingApartment,
   Buildings,
   Calendar,
-  CheckCircle,
   Compass,
   Gift,
   ShieldCheck,

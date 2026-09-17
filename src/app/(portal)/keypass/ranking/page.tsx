@@ -22,6 +22,7 @@ import {
 
 import { Container } from "@/src/components/common/container"
 import { GlassBadge } from "@/src/components/portal/GlassBadge"
+import { KeyPassStatCard } from "@/src/components/portal/KeyPassStatCard"
 
 import { cn } from "@/src/lib/utils"
 
@@ -91,73 +92,25 @@ export default function KeyPassRankingPage(): React.JSX.Element {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full lg:w-auto shrink-0">
-            {}
-            <div className="relative overflow-hidden p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-800/40 space-y-1.5 min-w-[140px]">
-              <div className="absolute -right-3 -bottom-3 pointer-events-none select-none opacity-[0.07] dark:opacity-[0.12]">
-                <div className="relative w-16 h-16">
-                  <Image
-                    src="/utils/gamification/utils/xp.webp"
-                    alt=""
-                    fill
-                    className="object-contain"
-                  />
-                </div>
-              </div>
+            <KeyPassStatCard
+              label="XP do Líder"
+              value={patrono.xp.toLocaleString("pt-BR")}
+              subtitle="Pontuação máxima"
+              iconSrc="/utils/gamification/utils/xp.webp"
+              iconAlt="XP"
+              watermarkSrc="/utils/gamification/utils/xp.webp"
+              className="min-w-[140px]"
+            />
 
-              <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 block">
-                XP do Líder
-              </span>
-              <div className="flex items-center gap-1.5">
-                <div className="relative w-4 h-4 shrink-0">
-                  <Image
-                    src="/utils/gamification/utils/xp.webp"
-                    alt="XP"
-                    fill
-                    className="object-contain"
-                  />
-                </div>
-                <span className="text-2xl font-black font-heading tracking-tight text-zinc-900 dark:text-white">
-                  {patrono.xp.toLocaleString("pt-BR")}
-                </span>
-              </div>
-              <span className="text-[10px] text-zinc-500 font-medium block">
-                Pontuação máxima
-              </span>
-            </div>
-
-            {}
-            <div className="relative overflow-hidden p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-800/40 space-y-1.5 min-w-[140px]">
-              <div className="absolute -right-3 -bottom-3 pointer-events-none select-none opacity-[0.07] dark:opacity-[0.12]">
-                <div className="relative w-16 h-16">
-                  <Image
-                    src="/utils/gamification/utils/RIB.svg"
-                    alt=""
-                    fill
-                    className="object-contain"
-                  />
-                </div>
-              </div>
-
-              <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 block">
-                Tokens Acumulados
-              </span>
-              <div className="flex items-center gap-1.5">
-                <div className="relative w-4 h-4 shrink-0">
-                  <Image
-                    src="/utils/gamification/utils/RIB.svg"
-                    alt="RIB"
-                    fill
-                    className="object-contain"
-                  />
-                </div>
-                <span className="text-2xl font-black font-heading tracking-tight text-zinc-900 dark:text-white">
-                  {patrono.ribTokens}
-                </span>
-              </div>
-              <span className="text-[10px] text-zinc-500 font-medium block">
-                Saldo de tokens
-              </span>
-            </div>
+            <KeyPassStatCard
+              label="Tokens Acumulados"
+              value={patrono.ribTokens}
+              subtitle="Saldo de tokens"
+              iconSrc="/utils/gamification/utils/RIB.svg"
+              iconAlt="RIB"
+              watermarkSrc="/utils/gamification/utils/RIB.svg"
+              className="min-w-[140px]"
+            />
           </div>
         </div>
       </div>

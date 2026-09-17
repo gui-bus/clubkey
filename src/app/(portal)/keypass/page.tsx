@@ -13,6 +13,7 @@ import { Container } from "@/src/components/common/container"
 import { KeyPassHistoryWidget } from "@/src/components/portal/KeyPassHistoryWidget"
 import { KeyPassMilestoneProgress } from "@/src/components/portal/KeyPassMilestoneProgress"
 import { KeyPassMissionsWidget } from "@/src/components/portal/KeyPassMissionsWidget"
+import { KeyPassStatCard } from "@/src/components/portal/KeyPassStatCard"
 import { KeyPassTierTrack } from "@/src/components/portal/KeyPassTierTrack"
 
 export default function KeyPassOverviewPage(): React.JSX.Element {
@@ -90,79 +91,25 @@ export default function KeyPassOverviewPage(): React.JSX.Element {
 
           {}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 w-full lg:w-auto shrink-0">
-            {}
+            <KeyPassStatCard
+              label="Pontos XP"
+              value={xp.toLocaleString("pt-BR")}
+              subtitle="Acumulado total"
+              iconSrc="/utils/gamification/utils/xp.webp"
+              iconAlt="XP"
+              watermarkSrc="/utils/gamification/utils/xp.webp"
+            />
+
+            <KeyPassStatCard
+              label="Saldo em Tokens"
+              value={ribTokens}
+              subtitle="Tokens RIB disponíveis"
+              iconSrc="/utils/gamification/utils/RIB.svg"
+              iconAlt="RIB"
+              watermarkSrc="/utils/gamification/utils/RIB.svg"
+            />
+
             <div className="relative overflow-hidden p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-800/40 space-y-1.5 min-w-[130px]">
-              {}
-              <div className="absolute -right-3 -bottom-3 pointer-events-none select-none opacity-[0.07] dark:opacity-[0.12]">
-                <div className="relative w-20 h-20">
-                  <Image
-                    src="/utils/gamification/utils/xp.webp"
-                    alt=""
-                    fill
-                    className="object-contain"
-                  />
-                </div>
-              </div>
-
-              <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 block">
-                Pontos XP
-              </span>
-              <div className="flex items-center gap-1.5">
-                <div className="relative w-4 h-4 shrink-0">
-                  <Image
-                    src="/utils/gamification/utils/xp.webp"
-                    alt="XP"
-                    fill
-                    className="object-contain"
-                  />
-                </div>
-                <span className="text-2xl font-black font-heading tracking-tight text-zinc-900 dark:text-white">
-                  {xp.toLocaleString("pt-BR")}
-                </span>
-              </div>
-              <span className="text-[10px] text-zinc-500 font-medium block">
-                Acumulado total
-              </span>
-            </div>
-
-            {}
-            <div className="relative overflow-hidden p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-800/40 space-y-1.5 min-w-[130px]">
-              {}
-              <div className="absolute -right-3 -bottom-3 pointer-events-none select-none opacity-[0.07] dark:opacity-[0.12]">
-                <div className="relative w-20 h-20">
-                  <Image
-                    src="/utils/gamification/utils/RIB.svg"
-                    alt=""
-                    fill
-                    className="object-contain"
-                  />
-                </div>
-              </div>
-
-              <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 block">
-                Saldo em Tokens
-              </span>
-              <div className="flex items-center gap-1.5">
-                <div className="relative w-4 h-4 shrink-0">
-                  <Image
-                    src="/utils/gamification/utils/RIB.svg"
-                    alt="RIB"
-                    fill
-                    className="object-contain"
-                  />
-                </div>
-                <span className="text-2xl font-black font-heading tracking-tight text-zinc-900 dark:text-white">
-                  {ribTokens}
-                </span>
-              </div>
-              <span className="text-[10px] text-zinc-500 font-medium block">
-                Tokens RIB disponíveis
-              </span>
-            </div>
-
-            {}
-            <div className="relative overflow-hidden p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-800/40 space-y-1.5 min-w-[130px]">
-              {}
               <div className="absolute -right-2 -bottom-2 pointer-events-none select-none opacity-[0.06] dark:opacity-[0.10]">
                 <Trophy
                   className="w-20 h-20 text-zinc-900 dark:text-white"
@@ -178,9 +125,9 @@ export default function KeyPassOverviewPage(): React.JSX.Element {
               </span>
               <Link
                 href="/keypass/ranking"
-                className="text-[10px] font-bold text-zinc-800 dark:text-zinc-200 hover:text-brand-primary underline block truncate"
+                className="text-[10px] text-zinc-500 dark:text-zinc-400 font-medium hover:text-brand-primary dark:hover:text-white transition-colors block"
               >
-                Ver Classificação →
+                Ver Leaderboard &rarr;
               </Link>
             </div>
           </div>

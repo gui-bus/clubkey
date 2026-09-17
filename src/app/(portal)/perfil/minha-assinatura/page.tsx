@@ -2,8 +2,6 @@
 
 import * as React from "react"
 
-import Link from "next/link"
-
 import { formatBRL } from "@/src/data/portalData"
 import { usePortalStore } from "@/src/store/usePortalStore"
 import {

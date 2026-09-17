@@ -27,7 +27,7 @@ const genericNavLinks = [
   { href: brandConfig.links.login, label: "Área do Membro" },
 ] as const
 
-const memberLinks = [
+const publicMemberLinks = [
   { href: brandConfig.links.login, label: "Já sou associado (Login)" },
   { href: brandConfig.links.subscription, label: "Quero ser associado" },
   { href: "/hospedagens", label: "Explorar Hospedagens" },
@@ -35,6 +35,27 @@ const memberLinks = [
     href: `mailto:${brandConfig.links.contactEmail}`,
     label: "Suporte & Concierge",
   },
+] as const
+
+const portalNavLinks = [
+  { href: "/", label: "Início" },
+  { href: "/hospedagens", label: "Hospedagens" },
+  { href: "/eventos", label: "Eventos" },
+  { href: "/experiencias", label: "Experiências" },
+  { href: "/beneficios", label: "Benefícios" },
+  { href: "/conexoes", label: "Conexões" },
+  { href: "/keypass", label: "KeyPass & Tiers" },
+] as const
+
+const portalMemberLinks = [
+  { href: "/perfil", label: "Meu Perfil" },
+  { href: "/perfil/minha-assinatura", label: "Minha Assinatura" },
+  { href: "/hospedagens/minhas-hospedagens", label: "Minhas Hospedagens" },
+  { href: "/eventos/meus-eventos", label: "Meus Eventos" },
+  { href: "/conexoes/minhas-conexoes", label: "Minhas Conexões" },
+  { href: "/keypass/missoes", label: "Missões KeyPass" },
+  { href: "/keypass/ranking", label: "Ranking Geral" },
+  { href: "/keypass/regras", label: "Tiers & Regulamento" },
 ] as const
 
 const emptySubscribe = () => () => {}
@@ -48,18 +69,27 @@ export function Footer(): React.JSX.Element | null {
   const isAuthenticated = usePortalStore((state) => state.isAuthenticated)
   const isClubKey = brandConfig.id === "clubkey"
   const homeHref = isClubKey ? "/" : "/hospedagens"
-  const activeNavLinks = isClubKey ? clubKeyNavLinks : genericNavLinks
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" })
   }
 
-  if (!mounted || isAuthenticated) {
+  if (!mounted) {
     return null
   }
 
+  const activeNavLinks = isAuthenticated
+    ? portalNavLinks
+    : isClubKey
+      ? clubKeyNavLinks
+      : genericNavLinks
+
+  const activeMemberLinks = isAuthenticated
+    ? portalMemberLinks
+    : publicMemberLinks
+
   return (
-    <footer className="bg-[#161616] text-zinc-400 pt-16 pb-12 border-t border-zinc-800 w-full relative overflow-hidden">
+    <footer className="bg-[#161616] text-zinc-400 pt-16 pb-12 border-t border-zinc-800 w-full relative overflow-hidden mt-auto">
       <Container className="relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-16">
           <div className="lg:col-span-2 space-y-4">
@@ -84,19 +114,25 @@ export function Footer(): React.JSX.Element | null {
               )}
             </Link>
             <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed max-w-sm font-light">
-              {brandConfig.description}
+              {isAuthenticated
+                ? `Portal exclusivo para associados ${brandConfig.name}. Acesso privilegiado a tarifas com até 60% OFF em acomodações de alto padrão, eventos e experiências únicas.`
+                : brandConfig.description}
             </p>
             <div className="pt-2">
               <div className="inline-flex items-center gap-2 text-xs font-mono font-bold text-brand-primary">
                 <ShieldCheck className="w-4 h-4" />
-                <span>CLUBE PRIVADO DE HOSPITALIDADE</span>
+                <span>
+                  {isAuthenticated
+                    ? "PORTAL EXCLUSIVO DO ASSOCIADO"
+                    : "CLUBE PRIVADO DE HOSPITALIDADE"}
+                </span>
               </div>
             </div>
           </div>
 
           <div className="space-y-4">
             <h4 className="text-xs font-mono font-bold uppercase tracking-widest text-white">
-              Navegação
+              {isAuthenticated ? "Explorar Portal" : "Navegação"}
             </h4>
             <ul className="space-y-2.5 text-xs text-zinc-400">
               {activeNavLinks.map((item) => (
@@ -114,10 +150,10 @@ export function Footer(): React.JSX.Element | null {
 
           <div className="space-y-4">
             <h4 className="text-xs font-mono font-bold uppercase tracking-widest text-white">
-              Associados
+              {isAuthenticated ? "Área do Membro" : "Associados"}
             </h4>
             <ul className="space-y-2.5 text-xs text-zinc-400">
-              {memberLinks.map((item) => (
+              {activeMemberLinks.map((item) => (
                 <li key={item.label}>
                   <Link
                     href={item.href}
@@ -132,7 +168,7 @@ export function Footer(): React.JSX.Element | null {
 
           <div className="space-y-4">
             <h4 className="text-xs font-mono font-bold uppercase tracking-widest text-white">
-              Contato
+              {isAuthenticated ? "Concierge & Contato" : "Contato"}
             </h4>
             <ul className="space-y-2.5 text-xs text-zinc-400">
               <li>
@@ -146,9 +182,21 @@ export function Footer(): React.JSX.Element | null {
               </li>
               <li className="pt-2">
                 <span className="text-zinc-500 text-[11px] leading-relaxed block font-light">
-                  Atendimento de concierge de segunda a sexta, das 9h às 18h.
+                  {isAuthenticated
+                    ? "Atendimento prioritário de concierge de segunda a sexta, das 9h às 18h."
+                    : "Atendimento de concierge de segunda a sexta, das 9h às 18h."}
                 </span>
               </li>
+              {isAuthenticated && (
+                <li className="pt-1">
+                  <Link
+                    href="/keypass/regras"
+                    className="text-[11px] text-zinc-400 hover:text-brand-primary transition-colors"
+                  >
+                    Dúvidas sobre Tiers e KeyPass? Ver Regulamento &rarr;
+                  </Link>
+                </li>
+              )}
             </ul>
           </div>
         </div>
@@ -160,18 +208,49 @@ export function Footer(): React.JSX.Element | null {
           </div>
 
           <div className="flex items-center gap-6">
-            <Link
-              href="/hospedagens"
-              className="hover:text-white transition-colors"
-            >
-              Hospedagens
-            </Link>
-            <Link
-              href={brandConfig.links.subscription}
-              className="hover:text-white transition-colors"
-            >
-              Assinatura
-            </Link>
+            {isAuthenticated ? (
+              <>
+                <Link
+                  href="/hospedagens"
+                  className="hover:text-white transition-colors"
+                >
+                  Hospedagens
+                </Link>
+                <Link
+                  href="/eventos"
+                  className="hover:text-white transition-colors"
+                >
+                  Eventos
+                </Link>
+                <Link
+                  href="/keypass"
+                  className="hover:text-white transition-colors"
+                >
+                  KeyPass
+                </Link>
+                <Link
+                  href="/perfil"
+                  className="hover:text-white transition-colors"
+                >
+                  Perfil
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link
+                  href="/hospedagens"
+                  className="hover:text-white transition-colors"
+                >
+                  Hospedagens
+                </Link>
+                <Link
+                  href={brandConfig.links.subscription}
+                  className="hover:text-white transition-colors"
+                >
+                  Assinatura
+                </Link>
+              </>
+            )}
             <button
               type="button"
               onClick={scrollToTop}

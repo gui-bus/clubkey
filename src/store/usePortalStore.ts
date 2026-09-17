@@ -216,7 +216,7 @@ export const usePortalStore = create<PortalState>()(
         const bonusActivity: XpActivity | null = leveledUp
           ? {
               id: `promo-${Date.now()}`,
-              title: `Subida de nível para o Nível ${newTier.name} (+2 RIB)`,
+              title: `Subida de tier para o Tier ${newTier.name} (+2 RIB)`,
               xp: 0,
               date: new Intl.DateTimeFormat("pt-BR", {
                 day: "2-digit",

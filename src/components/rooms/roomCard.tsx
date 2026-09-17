@@ -14,7 +14,6 @@ import {
   CaretRight,
   Door,
   Flame,
-  Lightning,
   Users,
 } from "@phosphor-icons/react"
 

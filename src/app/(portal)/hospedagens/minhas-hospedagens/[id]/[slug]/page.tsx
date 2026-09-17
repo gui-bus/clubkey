@@ -3,26 +3,21 @@
 import * as React from "react"
 
 import Image from "next/image"
-import Link from "next/link"
 import { notFound, useParams, useRouter } from "next/navigation"
 
 import { formatBRL } from "@/src/data/portalData"
 import { usePortalStore } from "@/src/store/usePortalStore"
 import {
-  ArrowLeft,
   Bed,
-  Buildings,
   Calendar,
   Check,
   CheckCircle,
   Clock,
   Coffee,
   Copy,
-  Info,
   MapPin,
   ShieldCheck,
   ShieldWarning,
-  Ticket,
   Users,
   Wine,
   XCircle,

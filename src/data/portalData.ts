@@ -2055,7 +2055,7 @@ export const DEFAULT_XP_ACTIVITIES: XpActivity[] = [
   },
   {
     id: "act-10",
-    title: "Promoção para o Nível Titular (+2 RIB)",
+    title: "Promoção para o Tier Titular (+2 RIB)",
     xp: 600,
     date: "01 de Novembro, 2026",
     category: "bonus",
