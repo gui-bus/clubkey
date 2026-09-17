@@ -1,47 +1,81 @@
 "use client"
 
 import * as React from "react"
-
 import Image from "next/image"
 import Link from "next/link"
-
 import {
-  MOCK_LEADERBOARD,
-  TIERS_CONFIG,
-  getInitials,
-  getMemberSlug,
-} from "@/src/data/portalData"
-import { usePortalStore } from "@/src/store/usePortalStore"
-import { Crown, Trophy } from "@phosphor-icons/react"
+  CaretDown,
+  CaretUp,
+  Crown,
+  Minus,
+  Trophy,
+} from "@phosphor-icons/react"
 
 import {
   Avatar,
   AvatarFallback,
   AvatarImage,
 } from "@/src/components/ui/avatar/avatar"
-
 import { Container } from "@/src/components/common/container"
-import { GlassBadge } from "@/src/components/portal/GlassBadge"
 import { KeyPassStatCard } from "@/src/components/portal/KeyPassStatCard"
-
+import { LeaderboardTargetCard } from "@/src/components/portal/LeaderboardTargetCard"
+import {
+  MOCK_LEADERBOARD,
+  MOCK_MONTHLY_LEADERBOARD,
+  MOCK_QUARTERLY_LEADERBOARD,
+  TIERS_CONFIG,
+  getInitials,
+  getMemberSlug,
+} from "@/src/data/portalData"
+import { usePortalStore } from "@/src/store/usePortalStore"
 import { cn } from "@/src/lib/utils"
 
 export default function KeyPassRankingPage(): React.JSX.Element {
-  const { xp, ribTokens } = usePortalStore()
+  const {
+    xp,
+    ribTokens,
+    leaderboardTimeframe,
+    setLeaderboardTimeframe,
+  } = usePortalStore()
 
-  const patrono =
-    MOCK_LEADERBOARD.find((m) => m.rank === 1) || MOCK_LEADERBOARD[0]
+  const leaderboard = React.useMemo(() => {
+    switch (leaderboardTimeframe) {
+      case "monthly":
+        return MOCK_MONTHLY_LEADERBOARD
+      case "quarterly":
+        return MOCK_QUARTERLY_LEADERBOARD
+      default:
+        return MOCK_LEADERBOARD
+    }
+  }, [leaderboardTimeframe])
+
+  const leader = leaderboard[0] || MOCK_LEADERBOARD[0]
+  const currentUserIndex = leaderboard.findIndex((m) => m.isCurrentUser)
+  const currentUser =
+    currentUserIndex >= 0 ? leaderboard[currentUserIndex] : leaderboard[7]
+  const targetUser =
+    currentUserIndex > 0 ? leaderboard[currentUserIndex - 1] : null
+
+  const timeframeLabel =
+    leaderboardTimeframe === "monthly"
+      ? "Mês Atual (Outubro)"
+      : leaderboardTimeframe === "quarterly"
+        ? "Temporada Q4 (2026)"
+        : "Geral (All-time)"
 
   return (
-    <Container className="py-6 sm:py-8 space-y-4">
+    <Container className="py-6 sm:py-8 space-y-6">
       {}
-      <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-5 sm:p-6 shadow-2xs relative overflow-hidden">
+      <div className="rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-5 sm:p-6 shadow-2xs relative overflow-hidden">
         <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 relative z-10">
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 sm:gap-6">
             <div className="relative w-20 h-20 sm:w-24 sm:h-24 shrink-0 flex items-center justify-center">
               <Image
-                src="/utils/gamification/tiers/06_patrono.webp"
-                alt="Patrono do Clube"
+                src={
+                  TIERS_CONFIG[leader.tierId]?.image ||
+                  "/utils/gamification/tiers/06_patrono.webp"
+                }
+                alt={leader.name}
                 fill
                 className="object-contain"
                 priority
@@ -50,42 +84,35 @@ export default function KeyPassRankingPage(): React.JSX.Element {
 
             <div className="space-y-1.5">
               <div className="flex flex-wrap items-center gap-2">
-                <GlassBadge
-                  size="sm"
-                  icon={
-                    <Crown
-                      className="w-3.5 h-3.5 text-zinc-700 dark:text-zinc-300"
-                      weight="bold"
-                    />
-                  }
-                  className="bg-zinc-100/90 dark:bg-zinc-800/80 text-zinc-800 dark:text-zinc-200 border-zinc-200 dark:border-zinc-700 text-[10px] font-black tracking-wider shadow-2xs"
-                >
-                  Posição #1 Global
-                </GlassBadge>
-                <span className="text-xs font-bold text-zinc-500 dark:text-zinc-400">
-                  Patrono Oficial em Exercício
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xs bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 text-[10px] font-black uppercase tracking-wider whitespace-nowrap shrink-0">
+                  <Crown
+                    className="w-3.5 h-3.5 shrink-0"
+                    weight="bold"
+                  />
+                  <span>Posição #1 ({timeframeLabel})</span>
                 </span>
               </div>
 
               <div>
                 <Link
                   href={
-                    patrono.isCurrentUser
+                    leader.isCurrentUser
                       ? "/perfil"
-                      : `/conexoes/${patrono.id}/${getMemberSlug(patrono)}`
+                      : `/conexoes/${leader.id}/${getMemberSlug(leader)}`
                   }
-                  className="group/patrono inline-block"
+                  className="group/leader inline-block"
                 >
-                  <h1 className="text-2xl sm:text-3xl font-heading font-black uppercase tracking-tight text-zinc-900 dark:text-white group-hover/patrono:text-brand-primary group-hover/patrono:underline transition-colors">
-                    {patrono.name}
+                  <h1 className="text-2xl sm:text-3xl font-heading font-black uppercase tracking-tight text-zinc-900 dark:text-white group-hover/leader:text-brand-primary group-hover/leader:underline transition-colors">
+                    {leader.name}
                   </h1>
                 </Link>
                 <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 font-medium">
-                  {patrono.role} na {patrono.company} • {patrono.city}
+                  {leader.role} na {leader.company} • {leader.city}
                 </p>
                 <p className="text-xs text-zinc-500 dark:text-zinc-400 max-w-xl font-medium leading-relaxed mt-1">
-                  Distinção máxima do ecossistema ClubKey com acesso permanente
-                  a cotas VIP e bonificação trimestral de Tokens RIB.
+                  Distinção máxima de prestígio no ecossistema ClubKey com
+                  acesso prioritário a cotas VIP e bonificação trimestral de
+                  Tokens RIB.
                 </p>
               </div>
             </div>
@@ -94,8 +121,8 @@ export default function KeyPassRankingPage(): React.JSX.Element {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full lg:w-auto shrink-0">
             <KeyPassStatCard
               label="XP do Líder"
-              value={patrono.xp.toLocaleString("pt-BR")}
-              subtitle="Pontuação máxima"
+              value={leader.xp.toLocaleString("pt-BR")}
+              subtitle="Pontuação acumulada"
               iconSrc="/utils/gamification/utils/xp.webp"
               iconAlt="XP"
               watermarkSrc="/utils/gamification/utils/xp.webp"
@@ -103,9 +130,9 @@ export default function KeyPassRankingPage(): React.JSX.Element {
             />
 
             <KeyPassStatCard
-              label="Tokens Acumulados"
-              value={patrono.ribTokens}
-              subtitle="Saldo de tokens"
+              label="Tokens RIB"
+              value={leader.ribTokens}
+              subtitle="Saldo no período"
               iconSrc="/utils/gamification/utils/RIB.svg"
               iconAlt="RIB"
               watermarkSrc="/utils/gamification/utils/RIB.svg"
@@ -116,15 +143,22 @@ export default function KeyPassRankingPage(): React.JSX.Element {
       </div>
 
       {}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4">
-        <div className="space-y-0.5 min-w-0">
+      <LeaderboardTargetCard
+        currentUser={currentUser}
+        targetUser={targetUser}
+        timeframeLabel={timeframeLabel}
+      />
+
+      {}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pt-2">
+        <div className="space-y-0.5">
           <div className="flex items-center gap-2">
             <Trophy
-              className="w-4 h-4 text-zinc-900 dark:text-white shrink-0"
+              className="w-4 h-4 text-brand-primary shrink-0"
               weight="bold"
             />
             <h2 className="text-lg sm:text-xl font-heading font-black uppercase tracking-tight text-zinc-900 dark:text-white">
-              Tabela de Classificação Geral
+              Tabela de Classificação
             </h2>
           </div>
           <p className="text-xs text-zinc-500 dark:text-zinc-400 font-medium">
@@ -133,13 +167,35 @@ export default function KeyPassRankingPage(): React.JSX.Element {
           </p>
         </div>
 
-        <span className="text-xs font-bold text-zinc-500 dark:text-zinc-400 shrink-0 self-start sm:self-auto">
-          {MOCK_LEADERBOARD.length} Membros Qualificados
-        </span>
+        {}
+        <div className="flex items-center gap-1.5 p-1 rounded-sm bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 self-start md:self-auto overflow-x-auto scrollbar-none">
+          {(
+            [
+              { label: "Geral (All-time)", value: "all_time" },
+              { label: "Mês Atual", value: "monthly" },
+              { label: "Temporada Q4", value: "quarterly" },
+            ] as const
+          ).map((t) => (
+            <button
+              key={t.value}
+              type="button"
+              onClick={() => setLeaderboardTimeframe(t.value)}
+              className={cn(
+                "px-3 py-1.5 rounded-xs text-xs font-bold transition-all cursor-pointer whitespace-nowrap",
+                leaderboardTimeframe === t.value
+                  ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-xs"
+                  : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white"
+              )}
+            >
+              {t.label}
+            </button>
+          ))}
+        </div>
       </div>
 
+
       {}
-      <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden shadow-2xs">
+      <div className="rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden shadow-2xs">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse text-xs">
             <thead>
@@ -152,15 +208,18 @@ export default function KeyPassRankingPage(): React.JSX.Element {
                   Tier Atual
                 </th>
                 <th className="py-3.5 px-4 text-left w-px whitespace-nowrap">
-                  XP Total
+                  XP ({timeframeLabel})
                 </th>
                 <th className="py-3.5 px-4 text-left w-px whitespace-nowrap">
                   Tokens RIB
                 </th>
+                <th className="py-3.5 px-4 text-center w-px whitespace-nowrap">
+                  Evolução
+                </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800/80">
-              {MOCK_LEADERBOARD.map((member) => {
+              {leaderboard.map((member) => {
                 const tier = TIERS_CONFIG[member.tierId]
                 const isUser = !!member.isCurrentUser
 
@@ -170,11 +229,10 @@ export default function KeyPassRankingPage(): React.JSX.Element {
                     className={cn(
                       "transition-colors",
                       isUser
-                        ? "bg-zinc-50 dark:bg-zinc-800/50 font-bold"
+                        ? "bg-zinc-100/70 dark:bg-zinc-800/60 font-bold"
                         : "hover:bg-zinc-50/60 dark:hover:bg-zinc-800/30"
                     )}
                   >
-                    {}
                     <td className="py-4 px-4 text-center select-none w-px whitespace-nowrap">
                       <span className="text-2xl sm:text-3xl font-heading font-black text-zinc-900/[0.15] dark:text-white/[0.18] leading-none">
                         {member.rank < 10 ? `0${member.rank}` : member.rank}
@@ -205,7 +263,7 @@ export default function KeyPassRankingPage(): React.JSX.Element {
                               {member.name}
                             </span>
                             {isUser && (
-                              <span className="text-[9px] font-black uppercase px-1.5 py-0.5 rounded-xs bg-zinc-900 dark:bg-white text-white dark:text-zinc-900">
+                              <span className="text-[9px] font-black uppercase px-1.5 py-0.5 rounded-xs bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 whitespace-nowrap shrink-0">
                                 Você
                               </span>
                             )}
@@ -234,7 +292,7 @@ export default function KeyPassRankingPage(): React.JSX.Element {
                     </td>
 
                     <td className="py-4 px-4 text-left whitespace-nowrap w-px">
-                      <div className="flex items-center gap-1.5 font-normal text-xs text-zinc-700 dark:text-zinc-300 tabular-nums whitespace-nowrap">
+                      <div className="flex items-center gap-1.5 font-bold text-xs text-zinc-900 dark:text-white tabular-nums whitespace-nowrap">
                         <div className="relative w-3.5 h-3.5 shrink-0">
                           <Image
                             src="/utils/gamification/utils/xp.webp"
@@ -244,16 +302,17 @@ export default function KeyPassRankingPage(): React.JSX.Element {
                           />
                         </div>
                         <span>
-                          {isUser
-                            ? xp.toLocaleString("pt-BR")
-                            : member.xp.toLocaleString("pt-BR")}{" "}
+                          {(isUser && leaderboardTimeframe === "all_time"
+                            ? xp
+                            : member.xp
+                          ).toLocaleString("pt-BR")}{" "}
                           XP
                         </span>
                       </div>
                     </td>
 
                     <td className="py-4 px-4 text-left whitespace-nowrap w-px">
-                      <div className="flex items-center gap-1.5 font-normal text-xs text-zinc-700 dark:text-zinc-300 tabular-nums whitespace-nowrap">
+                      <div className="flex items-center gap-1.5 font-bold text-xs text-zinc-900 dark:text-white tabular-nums whitespace-nowrap">
                         <div className="relative w-3.5 h-3.5 shrink-0">
                           <Image
                             src="/utils/gamification/utils/RIB.svg"
@@ -262,8 +321,31 @@ export default function KeyPassRankingPage(): React.JSX.Element {
                             className="object-contain"
                           />
                         </div>
-                        <span>{isUser ? ribTokens : member.ribTokens} RIB</span>
+                        <span>
+                          {isUser && leaderboardTimeframe === "all_time"
+                            ? ribTokens
+                            : member.ribTokens}{" "}
+                          RIB
+                        </span>
                       </div>
+                    </td>
+
+                    <td className="py-4 px-4 text-center whitespace-nowrap w-px">
+                      {member.change && member.change > 0 ? (
+                        <span className="inline-flex items-center gap-0.5 text-[11px] font-bold text-emerald-600 dark:text-emerald-400">
+                          <CaretUp className="w-3.5 h-3.5" weight="bold" />
+                          <span>+{member.change}</span>
+                        </span>
+                      ) : member.change && member.change < 0 ? (
+                        <span className="inline-flex items-center gap-0.5 text-[11px] font-bold text-red-500">
+                          <CaretDown className="w-3.5 h-3.5" weight="bold" />
+                          <span>{member.change}</span>
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center text-zinc-400">
+                          <Minus className="w-3.5 h-3.5" />
+                        </span>
+                      )}
                     </td>
                   </tr>
                 )

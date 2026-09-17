@@ -23,6 +23,12 @@ export interface Member {
     website?: string
     instagram?: string
   }
+
+  tierId?: "membro" | "associado" | "titular" | "investidor" | "incorporador" | "patrono"
+  xp?: number
+  ribTokens?: number
+  rank?: number
+  unlockedBadgeIds?: string[]
 }
 
 export interface EventHighlight {
@@ -159,6 +165,11 @@ export const MEMBERS: Member[] = [
       linkedin: "https://linkedin.com",
       website: "https://verocapital.com.br",
     },
+    tierId: "incorporador",
+    xp: 13400,
+    ribTokens: 14,
+    rank: 2,
+    unlockedBadgeIds: ["badge_early_adopter", "badge_blindagem_digital", "badge_pioneiro_estadias"],
   },
   {
     id: 1,
@@ -172,6 +183,11 @@ export const MEMBERS: Member[] = [
     offering: ["Malha logística no Sul", "Contatos no varejo alimentar"],
     since: 2020,
     socials: { linkedin: "https://linkedin.com" },
+    tierId: "investidor",
+    xp: 7650,
+    ribTokens: 8,
+    rank: 5,
+    unlockedBadgeIds: ["badge_early_adopter", "badge_blindagem_digital", "badge_pioneiro_estadias"],
   },
   {
     id: 2,
@@ -188,6 +204,11 @@ export const MEMBERS: Member[] = [
       linkedin: "https://linkedin.com",
       instagram: "https://instagram.com",
     },
+    tierId: "investidor",
+    xp: 8900,
+    ribTokens: 10,
+    rank: 4,
+    unlockedBadgeIds: ["badge_blindagem_digital", "badge_pioneiro_estadias"],
   },
   {
     id: 3,
@@ -201,6 +222,11 @@ export const MEMBERS: Member[] = [
     offering: ["Área arrendada em MT", "Rede de cooperativas"],
     since: 2019,
     socials: { linkedin: "https://linkedin.com" },
+    tierId: "patrono",
+    xp: 16850,
+    ribTokens: 18,
+    rank: 1,
+    unlockedBadgeIds: ["badge_early_adopter", "badge_blindagem_digital", "badge_pioneiro_estadias"],
   },
   {
     id: 4,
@@ -217,6 +243,11 @@ export const MEMBERS: Member[] = [
       linkedin: "https://linkedin.com",
       website: "https://meireles.adv.br",
     },
+    tierId: "investidor",
+    xp: 6200,
+    ribTokens: 8,
+    rank: 6,
+    unlockedBadgeIds: ["badge_early_adopter", "badge_blindagem_digital"],
   },
   {
     id: 5,
@@ -230,6 +261,11 @@ export const MEMBERS: Member[] = [
     offering: ["Time de engenharia sob demanda", "Integração com convênios"],
     since: 2023,
     socials: { linkedin: "https://linkedin.com" },
+    tierId: "investidor",
+    xp: 5400,
+    ribTokens: 6,
+    rank: 7,
+    unlockedBadgeIds: ["badge_blindagem_digital"],
   },
   {
     id: 6,
@@ -243,6 +279,10 @@ export const MEMBERS: Member[] = [
     offering: ["Contratos de energia", "Rede de instaladores no NE"],
     since: 2022,
     socials: { linkedin: "https://linkedin.com" },
+    tierId: "associado",
+    xp: 1800,
+    ribTokens: 2,
+    unlockedBadgeIds: ["badge_blindagem_digital"],
   },
   {
     id: 7,
@@ -256,6 +296,11 @@ export const MEMBERS: Member[] = [
     offering: ["Conselheiro independente", "Rede de indústrias no Sul"],
     since: 2018,
     socials: { linkedin: "https://linkedin.com" },
+    tierId: "incorporador",
+    xp: 11200,
+    ribTokens: 12,
+    rank: 3,
+    unlockedBadgeIds: ["badge_early_adopter", "badge_blindagem_digital", "badge_pioneiro_estadias"],
   },
   {
     id: 8,
@@ -272,6 +317,11 @@ export const MEMBERS: Member[] = [
       instagram: "https://instagram.com",
       website: "https://casafontes.com",
     },
+    tierId: "titular",
+    xp: 2350,
+    ribTokens: 4,
+    rank: 10,
+    unlockedBadgeIds: ["badge_early_adopter", "badge_blindagem_digital"],
   },
   {
     id: 9,
@@ -285,6 +335,11 @@ export const MEMBERS: Member[] = [
     offering: ["Modelagem financeira", "Contatos na B3"],
     since: 2021,
     socials: { linkedin: "https://linkedin.com" },
+    tierId: "titular",
+    xp: 2600,
+    ribTokens: 4,
+    rank: 9,
+    unlockedBadgeIds: ["badge_blindagem_digital", "badge_pioneiro_estadias"],
   },
   {
     id: 10,
@@ -301,6 +356,10 @@ export const MEMBERS: Member[] = [
       linkedin: "https://linkedin.com",
       website: "https://cordeiro.vc",
     },
+    tierId: "titular",
+    xp: 3100,
+    ribTokens: 4,
+    unlockedBadgeIds: ["badge_early_adopter", "badge_blindagem_digital"],
   },
   {
     id: 11,
@@ -314,6 +373,10 @@ export const MEMBERS: Member[] = [
     offering: ["Obra e engenharia", "Licenciamento no DF"],
     since: 2022,
     socials: { linkedin: "https://linkedin.com" },
+    tierId: "associado",
+    xp: 1400,
+    ribTokens: 2,
+    unlockedBadgeIds: ["badge_blindagem_digital"],
   },
   {
     id: 12,
@@ -330,6 +393,10 @@ export const MEMBERS: Member[] = [
       instagram: "https://instagram.com",
       linkedin: "https://linkedin.com",
     },
+    tierId: "associado",
+    xp: 1600,
+    ribTokens: 2,
+    unlockedBadgeIds: ["badge_blindagem_digital"],
   },
   {
     id: 13,
@@ -343,6 +410,10 @@ export const MEMBERS: Member[] = [
     offering: ["Barcos para eventos do clube", "Rede no litoral catarinense"],
     since: 2020,
     socials: { instagram: "https://instagram.com" },
+    tierId: "membro",
+    xp: 800,
+    ribTokens: 1,
+    unlockedBadgeIds: [],
   },
   {
     id: 14,
@@ -356,6 +427,10 @@ export const MEMBERS: Member[] = [
     offering: ["Headhunting", "Diagnóstico de cultura"],
     since: 2021,
     socials: { linkedin: "https://linkedin.com" },
+    tierId: "associado",
+    xp: 1100,
+    ribTokens: 2,
+    unlockedBadgeIds: ["badge_blindagem_digital"],
   },
   {
     id: 15,
@@ -372,6 +447,10 @@ export const MEMBERS: Member[] = [
       linkedin: "https://linkedin.com",
       website: "https://belmonte.com.br",
     },
+    tierId: "titular",
+    xp: 2900,
+    ribTokens: 4,
+    unlockedBadgeIds: ["badge_early_adopter", "badge_blindagem_digital", "badge_pioneiro_estadias"],
   },
 ]
 
@@ -1462,6 +1541,51 @@ export interface MissionItem {
   actionLabel?: string
 }
 
+export type BadgeRarity = "bronze" | "silver" | "gold" | "diamond"
+
+export interface BadgeDefinition {
+  id: string
+  name: string
+  description: string
+  iconName: string
+  rarity: BadgeRarity
+  category:
+    | "onboarding"
+    | "estadias"
+    | "eventos"
+    | "experiencias"
+    | "networking"
+    | "ranking"
+    | "especial"
+  unlockedAt?: string
+  isUnlocked: boolean
+  progress: number
+  maxProgress: number
+  xpBonus: number
+  tokensBonus?: number
+}
+
+export interface WeeklyDropItem {
+  id: string
+  title: string
+  description: string
+  category: "estadias" | "eventos" | "experiencias" | "networking" | "especial"
+  xpReward: number
+  tokensReward: number
+  expiresAt: string
+  daysRemaining: number
+  initialSecondsRemaining?: number
+  currentProgress: number
+  totalRequired: number
+  isCompleted: boolean
+  isClaimed: boolean
+  actionUrl: string
+  actionLabel: string
+  tag: string
+}
+
+export type LeaderboardTimeframe = "all_time" | "monthly" | "quarterly"
+
 export interface LeaderboardMember {
   rank: number
   id: number
@@ -1476,6 +1600,7 @@ export interface LeaderboardMember {
   xp: number
   ribTokens: number
   isCurrentUser?: boolean
+  change?: number
 }
 
 export const TIERS_CONFIG: Record<TierId, TierDefinition> = {
@@ -1868,6 +1993,7 @@ export const MOCK_LEADERBOARD: LeaderboardMember[] = [
     tierId: "patrono",
     xp: 16850,
     ribTokens: 18,
+    change: 0,
   },
   {
     rank: 2,
@@ -1881,6 +2007,7 @@ export const MOCK_LEADERBOARD: LeaderboardMember[] = [
     tierId: "incorporador",
     xp: 13400,
     ribTokens: 14,
+    change: 1,
   },
   {
     rank: 3,
@@ -1894,6 +2021,7 @@ export const MOCK_LEADERBOARD: LeaderboardMember[] = [
     tierId: "incorporador",
     xp: 11200,
     ribTokens: 12,
+    change: -1,
   },
   {
     rank: 4,
@@ -1907,6 +2035,7 @@ export const MOCK_LEADERBOARD: LeaderboardMember[] = [
     tierId: "investidor",
     xp: 8900,
     ribTokens: 10,
+    change: 0,
   },
   {
     rank: 5,
@@ -1920,6 +2049,7 @@ export const MOCK_LEADERBOARD: LeaderboardMember[] = [
     tierId: "investidor",
     xp: 7650,
     ribTokens: 8,
+    change: 2,
   },
   {
     rank: 6,
@@ -1933,6 +2063,7 @@ export const MOCK_LEADERBOARD: LeaderboardMember[] = [
     tierId: "investidor",
     xp: 6200,
     ribTokens: 8,
+    change: -1,
   },
   {
     rank: 7,
@@ -1946,6 +2077,7 @@ export const MOCK_LEADERBOARD: LeaderboardMember[] = [
     tierId: "investidor",
     xp: 5400,
     ribTokens: 6,
+    change: 0,
   },
   {
     rank: 8,
@@ -1960,6 +2092,7 @@ export const MOCK_LEADERBOARD: LeaderboardMember[] = [
     xp: 4000,
     ribTokens: 6,
     isCurrentUser: true,
+    change: 1,
   },
   {
     rank: 9,
@@ -1973,6 +2106,7 @@ export const MOCK_LEADERBOARD: LeaderboardMember[] = [
     tierId: "titular",
     xp: 2600,
     ribTokens: 4,
+    change: -1,
   },
   {
     rank: 10,
@@ -1986,6 +2120,463 @@ export const MOCK_LEADERBOARD: LeaderboardMember[] = [
     tierId: "titular",
     xp: 2350,
     ribTokens: 4,
+    change: 0,
+  },
+]
+
+export const MOCK_MONTHLY_LEADERBOARD: LeaderboardMember[] = [
+  {
+    rank: 1,
+    id: 0,
+    name: "Ana Beatriz Ramos",
+    role: "Sócia-fundadora",
+    company: "Vero Capital",
+    city: "São Paulo",
+    avatar:
+      "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&auto=format&fit=crop&q=80",
+    tierId: "incorporador",
+    xp: 2450,
+    ribTokens: 4,
+    change: 2,
+  },
+  {
+    rank: 2,
+    id: 999,
+    name: "William Tabata",
+    role: "Sócio-diretor",
+    company: "Tabata Capital",
+    city: "São Paulo",
+    avatar:
+      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80",
+    tierId: "titular",
+    xp: 1850,
+    ribTokens: 2,
+    isCurrentUser: true,
+    change: 3,
+  },
+  {
+    rank: 3,
+    id: 3,
+    name: "Eduardo Prado",
+    role: "Fundador",
+    company: "Prado Agro",
+    city: "Ribeirão Preto",
+    avatar:
+      "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&auto=format&fit=crop&q=80",
+    tierId: "patrono",
+    xp: 1600,
+    ribTokens: 3,
+    change: -1,
+  },
+  {
+    rank: 4,
+    id: 1,
+    name: "Rodrigo Salles",
+    role: "CEO",
+    company: "Norte Logística",
+    city: "Curitiba",
+    avatar:
+      "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&auto=format&fit=crop&q=80",
+    tierId: "investidor",
+    xp: 1450,
+    ribTokens: 2,
+    change: 1,
+  },
+  {
+    rank: 5,
+    id: 2,
+    name: "Camila Yoshida",
+    role: "Diretora de Produto",
+    company: "Banco Livre",
+    city: "São Paulo",
+    avatar:
+      "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&auto=format&fit=crop&q=80",
+    tierId: "investidor",
+    xp: 1200,
+    ribTokens: 2,
+    change: -1,
+  },
+  {
+    rank: 6,
+    id: 7,
+    name: "Marcelo Bittencourt",
+    role: "Presidente do Conselho",
+    company: "Grupo Bittencourt",
+    city: "Porto Alegre",
+    avatar:
+      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&auto=format&fit=crop&q=80",
+    tierId: "incorporador",
+    xp: 950,
+    ribTokens: 2,
+    change: -2,
+  },
+  {
+    rank: 7,
+    id: 5,
+    name: "Fernando Tanaka",
+    role: "CTO",
+    company: "Órbita Health",
+    city: "Florianópolis",
+    avatar:
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&auto=format&fit=crop&q=80",
+    tierId: "investidor",
+    xp: 900,
+    ribTokens: 1,
+    change: 0,
+  },
+  {
+    rank: 8,
+    id: 4,
+    name: "Juliana Meireles",
+    role: "Sócia",
+    company: "Meireles Advogados",
+    city: "Belo Horizonte",
+    avatar:
+      "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=400&auto=format&fit=crop&q=80",
+    tierId: "investidor",
+    xp: 850,
+    ribTokens: 1,
+    change: 0,
+  },
+  {
+    rank: 9,
+    id: 8,
+    name: "Larissa Fontes",
+    role: "Fundadora",
+    company: "Casa Fontes",
+    city: "São Paulo",
+    avatar:
+      "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&auto=format&fit=crop&q=80",
+    tierId: "titular",
+    xp: 650,
+    ribTokens: 1,
+    change: 1,
+  },
+  {
+    rank: 10,
+    id: 9,
+    name: "Otávio Nogueira",
+    role: "Diretor Financeiro",
+    company: "Vetor Energia",
+    city: "Rio de Janeiro",
+    avatar:
+      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&auto=format&fit=crop&q=80",
+    tierId: "titular",
+    xp: 500,
+    ribTokens: 0,
+    change: -1,
+  },
+]
+
+export const MOCK_QUARTERLY_LEADERBOARD: LeaderboardMember[] = [
+  {
+    rank: 1,
+    id: 3,
+    name: "Eduardo Prado",
+    role: "Fundador",
+    company: "Prado Agro",
+    city: "Ribeirão Preto",
+    avatar:
+      "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&auto=format&fit=crop&q=80",
+    tierId: "patrono",
+    xp: 5800,
+    ribTokens: 6,
+    change: 0,
+  },
+  {
+    rank: 2,
+    id: 0,
+    name: "Ana Beatriz Ramos",
+    role: "Sócia-fundadora",
+    company: "Vero Capital",
+    city: "São Paulo",
+    avatar:
+      "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&auto=format&fit=crop&q=80",
+    tierId: "incorporador",
+    xp: 4900,
+    ribTokens: 5,
+    change: 1,
+  },
+  {
+    rank: 3,
+    id: 7,
+    name: "Marcelo Bittencourt",
+    role: "Presidente do Conselho",
+    company: "Grupo Bittencourt",
+    city: "Porto Alegre",
+    avatar:
+      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&auto=format&fit=crop&q=80",
+    tierId: "incorporador",
+    xp: 4200,
+    ribTokens: 4,
+    change: -1,
+  },
+  {
+    rank: 4,
+    id: 999,
+    name: "William Tabata",
+    role: "Sócio-diretor",
+    company: "Tabata Capital",
+    city: "São Paulo",
+    avatar:
+      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80",
+    tierId: "titular",
+    xp: 3400,
+    ribTokens: 4,
+    isCurrentUser: true,
+    change: 2,
+  },
+  {
+    rank: 5,
+    id: 2,
+    name: "Camila Yoshida",
+    role: "Diretora de Produto",
+    company: "Banco Livre",
+    city: "São Paulo",
+    avatar:
+      "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&auto=format&fit=crop&q=80",
+    tierId: "investidor",
+    xp: 3100,
+    ribTokens: 3,
+    change: -1,
+  },
+  {
+    rank: 6,
+    id: 1,
+    name: "Rodrigo Salles",
+    role: "CEO",
+    company: "Norte Logística",
+    city: "Curitiba",
+    avatar:
+      "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&auto=format&fit=crop&q=80",
+    tierId: "investidor",
+    xp: 2800,
+    ribTokens: 3,
+    change: 0,
+  },
+  {
+    rank: 7,
+    id: 4,
+    name: "Juliana Meireles",
+    role: "Sócia",
+    company: "Meireles Advogados",
+    city: "Belo Horizonte",
+    avatar:
+      "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=400&auto=format&fit=crop&q=80",
+    tierId: "investidor",
+    xp: 2200,
+    ribTokens: 2,
+    change: 0,
+  },
+  {
+    rank: 8,
+    id: 5,
+    name: "Fernando Tanaka",
+    role: "CTO",
+    company: "Órbita Health",
+    city: "Florianópolis",
+    avatar:
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&auto=format&fit=crop&q=80",
+    tierId: "investidor",
+    xp: 1900,
+    ribTokens: 2,
+    change: 0,
+  },
+  {
+    rank: 9,
+    id: 9,
+    name: "Otávio Nogueira",
+    role: "Diretor Financeiro",
+    company: "Vetor Energia",
+    city: "Rio de Janeiro",
+    avatar:
+      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&auto=format&fit=crop&q=80",
+    tierId: "titular",
+    xp: 1300,
+    ribTokens: 1,
+    change: 0,
+  },
+  {
+    rank: 10,
+    id: 8,
+    name: "Larissa Fontes",
+    role: "Fundadora",
+    company: "Casa Fontes",
+    city: "São Paulo",
+    avatar:
+      "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&auto=format&fit=crop&q=80",
+    tierId: "titular",
+    xp: 1150,
+    ribTokens: 1,
+    change: 0,
+  },
+]
+
+export const WEEKLY_DROPS_CYCLE_SECONDS = 310460
+
+export const DEFAULT_WEEKLY_DROPS: WeeklyDropItem[] = [
+  {
+    id: "drop_founders_coffee",
+    title: "Café com Fundadores",
+    description:
+      "Inicie uma conversa no Messenger com 2 membros que são Founders, Sócios ou C-Level.",
+    category: "networking",
+    xpReward: 250,
+    tokensReward: 0,
+    expiresAt: "86h 14m 20s",
+    daysRemaining: 3,
+    initialSecondsRemaining: WEEKLY_DROPS_CYCLE_SECONDS,
+    currentProgress: 1,
+    totalRequired: 2,
+    isCompleted: false,
+    isClaimed: false,
+    actionUrl: "/conexoes",
+    actionLabel: "Conectar Membros",
+    tag: "Drop da Semana",
+  },
+  {
+    id: "drop_weekend_stay",
+    title: "Escapada de Primavera",
+    description:
+      "Faça uma reserva de hospedagem no catálogo para estadias com tarifa exclusiva de membro.",
+    category: "estadias",
+    xpReward: 500,
+    tokensReward: 1,
+    expiresAt: "86h 14m 20s",
+    daysRemaining: 3,
+    initialSecondsRemaining: WEEKLY_DROPS_CYCLE_SECONDS,
+    currentProgress: 0,
+    totalRequired: 1,
+    isCompleted: false,
+    isClaimed: false,
+    actionUrl: "/hospedagens",
+    actionLabel: "Ver Acomodações",
+    tag: "Bônus +1 Token RIB",
+  },
+  {
+    id: "drop_rsvp_summit",
+    title: "Vaga VIP no Painel Global",
+    description:
+      "Garanta seu assento presencial no Painel Estratégico de Atração de Capital Global.",
+    category: "eventos",
+    xpReward: 350,
+    tokensReward: 0,
+    expiresAt: "38h 28m 50s",
+    daysRemaining: 1,
+    initialSecondsRemaining: 138530,
+    currentProgress: 0,
+    totalRequired: 1,
+    isCompleted: false,
+    isClaimed: false,
+    actionUrl: "/eventos",
+    actionLabel: "Confirmar Presença",
+    tag: "Últimas Vagas",
+  },
+]
+
+export const DEFAULT_BADGES: BadgeDefinition[] = [
+  {
+    id: "badge_early_adopter",
+    name: "Membro Fundador",
+    description: "Ingressou no Clube na temporada inaugural de 2026 com passe VIP vitalício.",
+    iconName: "ShieldStar",
+    rarity: "diamond",
+    category: "especial",
+    unlockedAt: "10 de Outubro, 2026",
+    isUnlocked: true,
+    progress: 1,
+    maxProgress: 1,
+    xpBonus: 500,
+    tokensBonus: 1,
+  },
+  {
+    id: "badge_blindagem_digital",
+    name: "Blindagem Digital",
+    description: "Ativou autenticação em dois fatores (2FA) protegendo sua credencial de membro.",
+    iconName: "ShieldCheck",
+    rarity: "bronze",
+    category: "onboarding",
+    unlockedAt: "10 de Outubro, 2026",
+    isUnlocked: true,
+    progress: 1,
+    maxProgress: 1,
+    xpBonus: 250,
+  },
+  {
+    id: "badge_pioneiro_estadias",
+    name: "Pioneiro das Estadias",
+    description: "Realizou e concluiu as primeiras reservas de acomodações no catálogo ClubKey.",
+    iconName: "Buildings",
+    rarity: "silver",
+    category: "estadias",
+    unlockedAt: "14 de Outubro, 2026",
+    isUnlocked: true,
+    progress: 2,
+    maxProgress: 2,
+    xpBonus: 300,
+  },
+  {
+    id: "badge_globe_trotter",
+    name: "Globe Trotter",
+    description: "Hospede-se em 3 destinos diferentes para desbloquear a insígnia de viajante global.",
+    iconName: "Compass",
+    rarity: "gold",
+    category: "estadias",
+    isUnlocked: false,
+    progress: 2,
+    maxProgress: 3,
+    xpBonus: 600,
+    tokensBonus: 1,
+  },
+  {
+    id: "badge_sommelier_clube",
+    name: "Sommelier do Clube",
+    description: "Participe de 2 degustações guiadas ou experiências exclusivas de enologia.",
+    iconName: "Wine",
+    rarity: "silver",
+    category: "experiencias",
+    isUnlocked: false,
+    progress: 1,
+    maxProgress: 2,
+    xpBonus: 400,
+  },
+  {
+    id: "badge_super_conector",
+    name: "Super Conector",
+    description: "Estabeleça 10 conexões diretas na rede executiva de membros.",
+    iconName: "UsersThree",
+    rarity: "gold",
+    category: "networking",
+    isUnlocked: false,
+    progress: 4,
+    maxProgress: 10,
+    xpBonus: 750,
+    tokensBonus: 1,
+  },
+  {
+    id: "badge_presenca_vip",
+    name: "Presença VIP",
+    description: "Confirme presença em 5 encontros presenciais, jantares ou fóruns do clube.",
+    iconName: "Sparkle",
+    rarity: "gold",
+    category: "eventos",
+    isUnlocked: false,
+    progress: 2,
+    maxProgress: 5,
+    xpBonus: 500,
+  },
+  {
+    id: "badge_top_ranking",
+    name: "Aspirante ao Top 5",
+    description: "Alcance o seleto Top 5 do ranking geral global de associados.",
+    iconName: "Crown",
+    rarity: "diamond",
+    category: "ranking",
+    isUnlocked: false,
+    progress: 0,
+    maxProgress: 1,
+    xpBonus: 1200,
+    tokensBonus: 2,
   },
 ]
 

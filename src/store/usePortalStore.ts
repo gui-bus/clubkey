@@ -2,18 +2,25 @@ import {
   CLUBS,
   ChatMessage,
   Club,
+  DEFAULT_BADGES,
   DEFAULT_CHAT_MESSAGES,
   DEFAULT_CLAIMED_MILESTONES,
   DEFAULT_MEMBER_STAYS,
   DEFAULT_MEMBER_SUBSCRIPTION,
   DEFAULT_MISSIONS,
   DEFAULT_USER,
+  DEFAULT_WEEKLY_DROPS,
   DEFAULT_XP_ACTIVITIES,
+  BadgeDefinition,
+  LeaderboardTimeframe,
   MemberStayReservation,
   MemberSubscription,
   MissionItem,
   TierDefinition,
+  TierId,
   UserProfile,
+  WEEKLY_DROPS_CYCLE_SECONDS,
+  WeeklyDropItem,
   XpActivity,
   getTierByXp,
 } from "@/src/data/portalData"
@@ -40,6 +47,10 @@ interface PortalState {
   isTierFrozen: boolean
   claimedMilestones: Record<string, boolean>
   missions: MissionItem[]
+  badges: BadgeDefinition[]
+  weeklyDrops: WeeklyDropItem[]
+  leaderboardTimeframe: LeaderboardTimeframe
+  leaderboardTierFilter: "all" | TierId
   xpHistory: XpActivity[]
   chatMessages: Record<number, ChatMessage[]>
   activeChatMemberId: number | null
@@ -73,6 +84,10 @@ interface PortalState {
   enable2FA: () => void
   disable2FA: () => void
   claimMission: (missionId: string) => void
+  claimWeeklyDrop: (dropId: string) => void
+  unlockBadge: (badgeId: string) => void
+  setLeaderboardTimeframe: (timeframe: LeaderboardTimeframe) => void
+  setLeaderboardTierFilter: (tier: "all" | TierId) => void
   claimMilestone: (tierId: string, milestoneIndex: number) => void
   updateMissionProgress: (missionId: string, progressDelta: number) => void
   getUserTier: () => TierDefinition
@@ -113,6 +128,10 @@ export const usePortalStore = create<PortalState>()(
       isTierFrozen: false,
       claimedMilestones: DEFAULT_CLAIMED_MILESTONES,
       missions: DEFAULT_MISSIONS,
+      badges: DEFAULT_BADGES,
+      weeklyDrops: DEFAULT_WEEKLY_DROPS,
+      leaderboardTimeframe: "all_time",
+      leaderboardTierFilter: "all",
       xpHistory: DEFAULT_XP_ACTIVITIES,
       chatMessages: DEFAULT_CHAT_MESSAGES,
       activeChatMemberId: 2,
@@ -157,6 +176,14 @@ export const usePortalStore = create<PortalState>()(
         const isFrozen = get().isTierFrozen
         const claimed = get().claimedMilestones || DEFAULT_CLAIMED_MILESTONES
         return getTierByXp(xp, false, isFrozen, claimed)
+      },
+
+      setLeaderboardTimeframe: (timeframe: LeaderboardTimeframe) => {
+        set({ leaderboardTimeframe: timeframe })
+      },
+
+      setLeaderboardTierFilter: (tier: "all" | TierId) => {
+        set({ leaderboardTierFilter: tier })
       },
 
       claimMilestone: (tierId: string, milestoneIndex: number) => {
@@ -251,6 +278,20 @@ export const usePortalStore = create<PortalState>()(
               ? { ...m, isCompleted: true, currentProgress: 1 }
               : m
           ),
+          badges: state.badges.map((b) =>
+            b.id === "badge_blindagem_digital"
+              ? {
+                  ...b,
+                  isUnlocked: true,
+                  unlockedAt: new Intl.DateTimeFormat("pt-BR", {
+                    day: "2-digit",
+                    month: "long",
+                    year: "numeric",
+                  }).format(new Date()),
+                  progress: 1,
+                }
+              : b
+          ),
         }))
         get().addXP(250, "Ativação de Autenticação 2FA", "onboarding")
       },
@@ -272,6 +313,50 @@ export const usePortalStore = create<PortalState>()(
           `Conquista resgatada: ${mission.title}`,
           "missao",
           mission.tokensReward || 0
+        )
+      },
+
+      claimWeeklyDrop: (dropId: string) => {
+        const drop = get().weeklyDrops.find((d) => d.id === dropId)
+        if (!drop || !drop.isCompleted || drop.isClaimed) return
+        set((state) => ({
+          weeklyDrops: state.weeklyDrops.map((d) =>
+            d.id === dropId ? { ...d, isClaimed: true } : d
+          ),
+        }))
+        get().addXP(
+          drop.xpReward,
+          `Drop Semanal resgatado: ${drop.title}`,
+          "bonus",
+          drop.tokensReward || 0
+        )
+      },
+
+      unlockBadge: (badgeId: string) => {
+        const badge = get().badges.find((b) => b.id === badgeId)
+        if (!badge || badge.isUnlocked) return
+        const nowStr = new Intl.DateTimeFormat("pt-BR", {
+          day: "2-digit",
+          month: "long",
+          year: "numeric",
+        }).format(new Date())
+        set((state) => ({
+          badges: state.badges.map((b) =>
+            b.id === badgeId
+              ? {
+                  ...b,
+                  isUnlocked: true,
+                  unlockedAt: nowStr,
+                  progress: b.maxProgress,
+                }
+              : b
+          ),
+        }))
+        get().addXP(
+          badge.xpBonus,
+          `Insígnia desbloqueada: ${badge.name}`,
+          "bonus",
+          badge.tokensBonus || 0
         )
       },
 
@@ -642,8 +727,8 @@ export const usePortalStore = create<PortalState>()(
       },
     }),
     {
-      name: "clubkey-portal-storage-v7",
-      version: 7,
+      name: "clubkey-portal-storage-v8",
+      version: 8,
       migrate: (persistedState: unknown) => {
         const state = persistedState as PortalState
         if (!state) return state
@@ -687,6 +772,16 @@ export const usePortalStore = create<PortalState>()(
         if (!migratedState.xpHistory || migratedState.xpHistory.length === 0) {
           migratedState.xpHistory = DEFAULT_XP_ACTIVITIES
         }
+        if (!migratedState.badges || migratedState.badges.length === 0) {
+          migratedState.badges = DEFAULT_BADGES
+        }
+        migratedState.weeklyDrops = DEFAULT_WEEKLY_DROPS
+        if (!migratedState.leaderboardTimeframe) {
+          migratedState.leaderboardTimeframe = "all_time"
+        }
+        if (!migratedState.leaderboardTierFilter) {
+          migratedState.leaderboardTierFilter = "all"
+        }
         if (migratedState.connectedMembers) {
           const raw = migratedState.connectedMembers as Record<number, unknown>
           const fixed: Record<number, "pending" | "connected"> = {}
@@ -727,6 +822,29 @@ export const usePortalStore = create<PortalState>()(
           }
           if (!state.missions || state.missions.length === 0) {
             state.missions = DEFAULT_MISSIONS
+          }
+          if (!state.badges || state.badges.length === 0) {
+            state.badges = DEFAULT_BADGES
+          }
+          if (!state.weeklyDrops || state.weeklyDrops.length === 0) {
+            state.weeklyDrops = DEFAULT_WEEKLY_DROPS
+          } else {
+            state.weeklyDrops = state.weeklyDrops.map((drop) => {
+              const def = DEFAULT_WEEKLY_DROPS.find((d) => d.id === drop.id)
+              return {
+                ...drop,
+                initialSecondsRemaining:
+                  def?.initialSecondsRemaining ?? WEEKLY_DROPS_CYCLE_SECONDS,
+                expiresAt: def?.expiresAt ?? "86h 14m 20s",
+                daysRemaining: def?.daysRemaining ?? 3,
+              }
+            })
+          }
+          if (!state.leaderboardTimeframe) {
+            state.leaderboardTimeframe = "all_time"
+          }
+          if (!state.leaderboardTierFilter) {
+            state.leaderboardTierFilter = "all"
           }
           if (!state.xpHistory || state.xpHistory.length === 0) {
             state.xpHistory = DEFAULT_XP_ACTIVITIES

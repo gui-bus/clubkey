@@ -10,6 +10,7 @@ import { usePortalStore } from "@/src/store/usePortalStore"
 
 import {
   ProfileAvatarDialog,
+  ProfileBadgesSection,
   ProfileCoverDialog,
   ProfileHeader,
   ProfileNetworkingSection,
@@ -20,8 +21,14 @@ import {
 } from "@/src/components/portal/profile"
 
 export default function ProfilePage(): React.JSX.Element {
-  const { userProfile, updateProfile, is2FAEnabled, enable2FA, disable2FA } =
-    usePortalStore()
+  const {
+    userProfile,
+    updateProfile,
+    is2FAEnabled,
+    enable2FA,
+    disable2FA,
+    badges,
+  } = usePortalStore()
 
   const mounted = useMounted()
   const [isCoverModalOpen, setIsCoverModalOpen] = React.useState(false)
@@ -123,6 +130,8 @@ export default function ProfilePage(): React.JSX.Element {
           onUpdateSeeking={(tags) => updateProfile({ seeking: tags })}
           onUpdateOffering={(tags) => updateProfile({ offering: tags })}
         />
+
+        <ProfileBadgesSection badges={badges} />
 
         <ProfileSecuritySection
           is2FAEnabled={is2FAEnabled}

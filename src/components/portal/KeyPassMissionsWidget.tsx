@@ -45,7 +45,7 @@ export function KeyPassMissionsWidget({
       return
     }
     claimMission(mission.id)
-    toast.success(`Conquista Resgatada: ${mission.title}`, {
+    toast.success(`Missão Resgatada: ${mission.title}`, {
       description: `Você recebeu +${mission.xpReward} XP${
         mission.tokensReward ? ` e +${mission.tokensReward} Tokens RIB` : ""
       }!`,
@@ -96,7 +96,7 @@ export function KeyPassMissionsWidget({
         </div>
 
         <Link
-          href="/keypass/missoes"
+          href="/keypass/missoes?tab=carreira"
           className="text-xs font-bold uppercase tracking-wider text-zinc-900 dark:text-white hover:text-brand-primary dark:hover:text-brand-primary inline-flex items-center gap-1 shrink-0 whitespace-nowrap self-start sm:self-auto group"
         >
           <span>Ver todas ({missions.length})</span>
