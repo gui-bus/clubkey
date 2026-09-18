@@ -2,6 +2,8 @@
 
 import * as React from "react"
 
+import Image from "next/image"
+
 import { Icon } from "@iconify/react"
 import Autoplay from "embla-carousel-autoplay"
 import useEmblaCarousel, {
@@ -342,10 +344,12 @@ const CarouselThumbs = React.forwardRef<HTMLDivElement, CarouselThumbsProps>(
                 : "border-transparent opacity-60 hover:opacity-100"
             )}
           >
-            <img
+            <Image
               src={src}
               alt={`Thumbnail ${index + 1}`}
-              className="size-full object-cover"
+              fill
+              unoptimized
+              className="object-cover"
             />
           </button>
         ))}
