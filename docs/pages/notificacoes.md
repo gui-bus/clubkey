@@ -6,8 +6,8 @@ A **Central de Notificações** é o componente global presente no cabeçalho (*
 
 ## 🗺️ Localização & Escopo
 
-- **Componente**: `src/components/portal/NotificationsDropdown.tsx`
-- **Exibição**: Barra de navegação superior global (`Header.tsx`), ao lado do perfil e do switch de tema.
+- **Componente**: `src/components/portal/notificationsDropdown.tsx`
+- **Exibição**: Barra de navegação superior global (`header.tsx`), ao lado do perfil e do switch de tema.
 - **Acesso**: Privado (requer autenticação JWT).
 
 ---
@@ -179,7 +179,7 @@ Marca todas as notificações pendentes do usuário como lidas de uma só vez.
    - Clicar em *"Aceitar"* dispara `PATCH /api/v1/connections/:memberId/accept`, credita +50 XP ao usuário e exibe Toast Sonner: `"Conexão aceita com {nome}! +50 XP"`.
    - Clicar em *"Recusar"* dispara `DELETE /api/v1/connections/:memberId` e remove o item com feedback `"Convite recusado."`.
 2. **Clique na Notificação de Mensagem**:
-   - Fecha o dropdown, abre a janela de chat (`MemberMessengerWidget`) com a conversa do remetente selecionada e dispara a marcação de leitura.
+   - Fecha o dropdown, abre a janela de chat (`memberMessengerWidget.tsx`) com a conversa do remetente selecionada e dispara a marcação de leitura.
 3. **Hover & Fechamento Suave**:
    - O menu suporta abertura por hover com tolerância de 80ms no mouseLeave para navegação fluida sem fechar acidentalmente.
 

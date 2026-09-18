@@ -40,5 +40,5 @@ Para criar o backend a partir deste repositório:
 4. **Leia [`GAMIFICATION_RULES.md`](./GAMIFICATION_RULES.md)** para implementar a lógica de concessão de XP, cálculo de tier ativo, subida de patamar e retenção de 180 dias.
 5. **Leia [`API_SPECIFICATIONS.md`](./API_SPECIFICATIONS.md)** para implementar os controllers, services e rotas HTTP.
 6. **Consulte [`pages/*.md`](./pages/)** para entender as regras de negócio específicas de cada tela quando tiver dúvidas sobre filtros, paginação ou fluxos de usuário.
-7. **Consulte [`src/data/portalData.ts`](../src/data/portalData.ts)** no código-fonte para ver os tipos TypeScript exatos já utilizados pelo frontend.
+7. **Consulte [`src/types/`](../src/types/) e [`src/data/portalData.ts`](../src/data/portalData.ts)** no código-fonte para ver os tipos TypeScript centralizados e os datasets mockados utilizados pelo frontend.
 8. **Gere a OpenAPI & Documentação com [Scalar](https://scalar.com/)**: Exponha o endpoint `GET /docs/api.json` ou `GET /openapi.json` e atribua `operationId` único em cada rota. O frontend utilizará **Orval** (`orval`) para gerar automaticamente todos os tipos TypeScript e hooks do **TanStack React Query** via **Axios**.

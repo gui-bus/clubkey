@@ -11,7 +11,7 @@ O módulo de **Conexões & Networking** é o ecossistema relacional e profission
 | `/conexoes` | Diretório geral de membros com busca e filtros de tags | Client Component | Autenticado |
 | `/conexoes/[id]/[slug]` | Perfil público aprofundado do associado | Server + Client | Autenticado |
 | `/conexoes/minhas-conexoes` | Gestão de conexões ativas, convites recebidos e enviados | Client Component | Autenticado |
-| *(Global)* `MemberMessengerWidget` | Chat flutuante de mensagens diretas no canto inferior direito | Client Component | Autenticado |
+| *(Global)* `memberMessengerWidget.tsx` | Chat flutuante de mensagens diretas no canto inferior direito | Client Component | Autenticado |
 
 ---
 
@@ -24,7 +24,7 @@ O módulo de **Conexões & Networking** é o ecossistema relacional e profission
     - *O que Busco* (`seeking`): ex: `"Investimentos"`, `"AgroTech"`, `"M&A"`, `"Board Member"`.
     - *O que Ofereço* (`offering`): ex: `"Venture Capital"`, `"Mentoria"`, `"Governança"`, `"Expansão Global"`.
     - Filtro por Cidade e Nível de Tier.
-- **Grid de Associados (`MemberCard`)**:
+- **Grid de Associados (`memberCard.tsx`)**:
   - Foto de perfil (`avatar`) com fallback de iniciais estilizado (`getInitials`).
   - Nome completo, cargo executivo, empresa e cidade.
   - Badge de Tier Executivo (`membershipTier` / `tierId`).
@@ -36,17 +36,15 @@ O módulo de **Conexões & Networking** é o ecossistema relacional e profission
     - `connected`: *"Conectado"* (ícone `Check`)
 
 ### 2. Perfil Público do Associado (`/conexoes/[id]/[slug]`)
-- **`MemberProfileDetailClient`**:
-  - `BackButton`: Retorna à listagem anterior.
-  - `ShareButton`: Link compartilhável do perfil.
-  - **Banner de Capa & Foto de Perfil**: Imagem panorâmica de fundo (`coverImage`), avatar em alta resolução com moldura e badge de tier.
-  - **Informações Executivas**: Nome, cargo, empresa, cidade, ano de adesão (`memberSince`) e biografia executiva (`bio`).
-  - **Canais de Contato Verificados**: Ícones e links diretos para LinkedIn, Instagram e WhatsApp/Telefone.
-  - **Foco de Negócios**: Bloco com badges divididas entre *O que Busco* e *O que Ofereço*.
+- **`memberProfileDetailClient.tsx`** (estruturado com subcomponentes modulares em `src/components/portal/memberProfile/`):
+  - `backButton.tsx`: Retorna à listagem anterior.
+  - `shareButton.tsx`: Link compartilhável do perfil.
+  - **Banner de Capa & Foto de Perfil (`memberProfileHero.tsx`)**: Imagem panorâmica de fundo (`coverImage`), avatar em alta resolução com moldura e badge de tier.
+  - **Informações Executivas & Foco de Negócios (`memberProfileDetailsGrid.tsx`)**: Nome, cargo, empresa, cidade, ano de adesão (`memberSince`), biografia executiva com modal expansível (`memberProfileBioModal.tsx`), canais de contato verificados (LinkedIn, Instagram, WhatsApp) e badges de *O que Busco* e *O que Ofereço*.
   - **Insígnias Desbloqueadas (`DEFAULT_BADGES`)**: Grid completo com todas as conquistas do clube. Conquistas bloqueadas exibem cadeado e opacidade reduzida; conquistas ativas exibem ícone Phosphor colorido, nome, e abrem tooltip/modal explicativo com data de conquista e XP concedido.
-  - **Histórico em Eventos do Clube**: Lista de `EventCard` dos eventos em que o associado participou ou confirmou presença.
+  - **Histórico em Eventos do Clube**: Lista de `eventCard.tsx` dos eventos em que o associado participou ou confirmou presença.
   - **Envio de Mensagem Rápida**: Caixa de texto integrada para envio de DM imediata sem sair do perfil.
-  - **Navegação Entre Perfis (`RelatedMembersCard`)**: Permite transitar para o associado anterior ou seguinte da rede.
+  - **Navegação Entre Perfis (`relatedMembersCard.tsx`)**: Permite transitar para o associado anterior ou seguinte da rede.
 
 ### 3. Minhas Conexões (`/conexoes/minhas-conexoes`)
 - **Abas de Controle**:
@@ -54,7 +52,7 @@ O módulo de **Conexões & Networking** é o ecossistema relacional e profission
   - **Solicitações Recebidas**: Painel de convites pendentes com botões *"Aceitar"* e *"Recusar"*.
   - **Convites Enviados**: Lista de solicitações aguardando resposta com botão *"Cancelar Convite"*.
 
-### 4. Mensageiro Flutuante (`MemberMessengerWidget`)
+### 4. Mensageiro Flutuante (`memberMessengerWidget.tsx`)
 - Widget fixo no canto inferior direito do portal.
 - Exibe lista de conversas recentes com contatos conectados, status online e contador de mensagens não lidas.
 - Janela de bate-papo expansível/minimizável com rolagem automática, envio de mensagens via Enter e confirmação de leitura (`isRead`).

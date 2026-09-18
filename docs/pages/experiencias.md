@@ -24,16 +24,16 @@ O módulo de **Experiências** gerencia vivências exclusivas, jantares sensoria
 - **Barra de Filtros & Busca**:
   - Filtros de categoria: `"Todos"`, `"Vinhos & Degustação"`, `"Alta Gastronomia"`, `"Lifestyle"`, `"Arte & Cultura"`.
   - Input de busca por nome da experiência, chef ou local.
-- **Grid de Cards (`ExperienceCard`)**:
+- **Grid de Cards (`experienceCard.tsx`)**:
   - Foto em alta definição (`image`), categoria e subtítulo de duração/vagas (`sub`).
   - Preço por cota em BRL (`price`) e custo opcional em Tokens RIB (`ribTokensCost`).
   - Vagas restantes (`spotsLeft` de `capacity`) e recompensa em XP (`xpReward`).
   - Botão CTA *"Garantir Cota"* $\rightarrow$ `/experiencias/[id]/[slug]`.
 
 ### 2. Detalhes da Experiência (`/experiencias/[id]/[slug]`)
-- **`ExperienceDetailClient`**:
-  - `BackButton`: Retorna para `/experiencias`.
-  - `ShareButton`: Compartilha a vivência nas redes ou via link direto.
+- **`experienceDetailClient.tsx`**:
+  - `backButton.tsx`: Retorna para `/experiencias`.
+  - `shareButton.tsx`: Compartilha a vivência nas redes ou via link direto.
   - **Banner Hero & Dados Gerais**: Data, horário, endereço/localização e categoria.
   - **Card do Chef / Especialista**: Mini-bio do anfitrião com foto, especialidade e conquistas (estrelas Michelin, prêmios).
   - **Descrição Completa & Menu Degustação**: Detalhamento prato a prato ou etapas da vivência.

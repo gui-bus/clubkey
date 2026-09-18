@@ -23,7 +23,7 @@ O módulo de **Eventos** gerencia toda a programação presencial exclusiva do C
   - Título `"PROGRAMAÇÃO EXECUTIVA & EVENTOS"`.
   - Pílulas de filtro de categoria: `"Todos"`, `"Networking"`, `"Keynotes"`, `"Exclusivos"`, `"Gastronomia"`.
   - Barra de busca em tempo real com ícone de lupa.
-- **Grid de Cards (`EventCard`)**:
+- **Grid de Cards (`eventCard.tsx`)**:
   - Banner do evento (`image`), badge de categoria, badge de exclusividade de tier (se houver).
   - Título, data (`day` + `month`), horário (`time`), local (`location`).
   - Pilha de avatares dos primeiros associados confirmados (`participants`).
@@ -31,29 +31,29 @@ O módulo de **Eventos** gerencia toda a programação presencial exclusiva do C
   - Botão interativo de confirmação rápida (RSVP) com estado alternante (*"Confirmar Presença"* $\leftrightarrow$ *"Presença Confirmada"*).
 
 ### 2. Detalhes do Evento (`/eventos/[id]/[slug]`)
-- **`EventDetailClient`**:
-  - `BackButton`: Retorna para `/eventos`.
-  - `ShareButton`: Compartilha o link amigável via Web Share API ou cópia para área de transferência.
-  - `AddToCalendarButton`: Dropdown para adicionar o evento ao Google Calendar, Apple iCal e Outlook.
+- **`eventDetailClient.tsx`**:
+  - `backButton.tsx`: Retorna para `/eventos`.
+  - `shareButton.tsx`: Compartilha o link amigável via Web Share API ou cópia para área de transferência.
+  - `addToCalendarButton.tsx`: Dropdown para adicionar o evento ao Google Calendar, Apple iCal e Outlook.
   - **Banner Principal & Badges**: Exibe categoria, recompensa de XP e RIB Tokens, formato e traje exigido (`dressCode`).
   - **Card do Host / Anfitrião**: Foto, nome, cargo, empresa e tier do membro anfitrião (`organizer`).
   - **Barra de Ocupação**: `Progress` com porcentagem de vagas preenchidas (`fillPercentage`) e contagem de vagas restantes.
   - **Destaques da Programação (`highlights`)**: Lista de blocos com título e descrição do cronograma/regras (ex: Regra Chatham House, Mesa Redonda).
   - **Itens Inclusos (`inclusions`)**: Lista de benefícios inclusos (ex: Welcome Drink, Jantar em 4 etapas, Vagas reservadas).
   - **Widget "Quem Vai"**: Miniatura dos participantes confirmados com link para a visualização expandida.
-  - **Navegação Entre Eventos (`RelatedEventsCard`)**: Cards para navegar rapidamente para o evento anterior e próximo da grade.
+  - **Navegação Entre Eventos (`relatedEventsCard.tsx`)**: Cards para navegar rapidamente para o evento anterior e próximo da grade.
 
 ### 3. Tela "Quem Vai" (`/eventos/[id]/[slug]/quem-vai`)
 - Cabeçalho com o nome do evento e contagem total de confirmados.
 - Campo de busca para filtrar participantes por nome, cargo ou empresa.
-- Grid de `MemberCard` com foto, nome, cargo, empresa, tags de negócios e botão de conexão rápida (`toggleConnect`).
+- Grid de `memberCard.tsx` com foto, nome, cargo, empresa, tags de negócios e botão de conexão rápida (`toggleConnect`).
 
 ### 4. Meus Eventos & Voucher Digital (`/eventos/meus-eventos/[id]/[slug]`)
-- **`MemberEventDetailClient`**:
+- **`memberEventDetailClient.tsx`**:
   - Card de Ingresso / Passe Digital com código de validação único (ex: `"CK-EVT-8821"`).
   - QR Code dinâmico para validação na recepção do evento.
   - Instruções de Check-in, horário de abertura das portas e traje.
-  - Botão de ação perigosa *"Cancelar Presença no Evento"* com modal de confirmação (`ConfirmActionDialog`).
+  - Botão de ação perigosa *"Cancelar Presença no Evento"* com modal de confirmação (`confirmActionDialog.tsx`).
 
 ---
 

@@ -18,12 +18,12 @@ O módulo de **Hospedagens** disponibiliza a coleção privada de vilas, chalés
 ## 🖥️ Arquitetura Visual & Componentes por Tela
 
 ### 1. Catálogo de Hospedagens (`/hospedagens`)
-- **Barra de Busca & Filtros Inteligentes (`RoomsSearchFilterBar`)**:
+- **Barra de Busca & Filtros Inteligentes (`roomsSearchFilterBar.tsx`)**:
   - **Destino**: Input com autocompletar e sugestões de cidades/estados (ex: São Paulo, Trancoso, Angra dos Reis, Campos do Jordão, Milão).
   - **Período (Check-in & Check-out)**: Popover com calendário duplo (`datePicker`) para seleção do intervalo de datas.
   - **Hóspedes**: Seletor numérico de passageiros/acompanhantes (`1` a `6+` hóspedes).
   - **Botão "Buscar"**: Filtra a listagem dinamicamente.
-- **Carrosséis por Seção Temática (`SectionCarousel`)**:
+- **Carrosséis por Seção Temática (`sectionCarousel.tsx`)**:
   - *"Coleção Urbana & Executiva"*, *"Refúgios de Campo & Serra"*, *"Villas à Beira-Mar"*, *"Coleção Internacional"*.
   - Cada card exibe galeria de fotos, título da suíte, localização, capacidade máxima de hóspedes, diária padrão, diária exclusiva de membro com desconto do tier e botão de favoritar (`toggleFavorite`).
 
@@ -39,7 +39,7 @@ O módulo de **Hospedagens** disponibiliza a coleção privada de vilas, chalés
 
 ### 3. Minhas Hospedagens (`/hospedagens/minhas-hospedagens`)
 - **Abas de Navegação**: *"Reservas Ativas & Futuras"* e *"Histórico de Estadias"*.
-- **Cards de Reserva (`MemberStayCard`)**:
+- **Cards de Reserva (`memberStayCard.tsx`)**:
   - Foto da suíte, nome da acomodação, endereço.
   - Período (`checkIn` a `checkOut`), total de noites e número de hóspedes.
   - Badge de status colorido:
@@ -50,12 +50,12 @@ O módulo de **Hospedagens** disponibiliza a coleção privada de vilas, chalés
   - Botão *"Acessar Voucher & Check-in"* $\rightarrow$ `/minhas-hospedagens/[id]/[slug]`.
 
 ### 4. Voucher Digital de Estadia (`/hospedagens/minhas-hospedagens/[id]/[slug]`)
-- **`MemberStayDetailClient`**:
+- **`memberStayDetailClient.tsx`**:
   - Cartão de confirmação de luxo com código localizador (ex: `"CK-STAY-8821"`).
   - QR Code dinâmico para leitura rápida na recepção da propriedade.
   - Horários oficiais de Check-in (a partir das 15:00) e Check-out (até as 12:00).
   - Informações de contato do concierge da propriedade e instruções de acesso.
-  - Botão perigoso *"Cancelar Reserva"* com diálogo de confirmação (`ConfirmActionDialog`).
+  - Botão perigoso *"Cancelar Reserva"* com diálogo de confirmação (`confirmActionDialog.tsx`).
 
 ---
 
