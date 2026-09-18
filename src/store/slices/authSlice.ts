@@ -1,3 +1,4 @@
+import { DEFAULT_USER } from "@/src/data/portalData"
 import { StateCreator } from "zustand"
 
 import type { PortalState } from "../usePortalStore"
@@ -21,18 +22,23 @@ export const createAuthSlice: StateCreator<
   is2FAEnabled: true,
 
   login: (email?: string, name?: string) => {
-    const updatedProfile = { ...get().userProfile }
+    const currentProfile = get().userProfile || DEFAULT_USER
+    const updatedProfile = { ...DEFAULT_USER, ...currentProfile }
     if (email && email.trim()) {
       updatedProfile.email = email.trim()
     }
     if (name && name.trim()) {
       const parts = name.trim().split(/\s+/)
-      updatedProfile.firstName = parts[0]
-      updatedProfile.lastName = parts.slice(1).join(" ")
+      updatedProfile.firstName = parts[0] || DEFAULT_USER.firstName
+      updatedProfile.lastName =
+        parts.slice(1).join(" ") || DEFAULT_USER.lastName
     } else if (email && email.includes("@")) {
       const username = email.split("@")[0]
       const formatted = username.charAt(0).toUpperCase() + username.slice(1)
-      if (!updatedProfile.firstName) {
+      if (
+        !updatedProfile.firstName ||
+        updatedProfile.firstName === "undefined"
+      ) {
         updatedProfile.firstName = formatted
         updatedProfile.lastName = ""
       }

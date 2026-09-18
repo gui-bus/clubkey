@@ -5,7 +5,7 @@ import * as React from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 
-import { getInitials } from "@/src/data/portalData"
+import { DEFAULT_USER, getFullName, getInitials } from "@/src/data/portalData"
 import { usePortalStore } from "@/src/store/usePortalStore"
 import {
   Calendar,
@@ -56,9 +56,14 @@ export function UserDropdownMenu({
       (k) => !!confirmedEvents[Number(k)]
     ).length || 1
 
-  const userFullName = `${userProfile.firstName} ${userProfile.lastName}`.trim()
-  const userInitials = getInitials(userProfile.firstName, userProfile.lastName)
-  const userEmail = userProfile.email || "william@tabatacapital.com"
+  const userFirstName = userProfile?.firstName || DEFAULT_USER.firstName
+  const userLastName = userProfile?.lastName || DEFAULT_USER.lastName
+  const userFullName =
+    getFullName(userProfile) ||
+    `${DEFAULT_USER.firstName} ${DEFAULT_USER.lastName}`
+  const userInitials = getInitials(userFirstName, userLastName)
+  const userEmail = userProfile?.email || DEFAULT_USER.email
+  const userAvatar = userProfile?.avatar || DEFAULT_USER.avatar
 
   const handleLogout = () => {
     logout()
@@ -76,8 +81,8 @@ export function UserDropdownMenu({
             className="cursor-pointer outline-none select-none text-left flex items-center gap-2.5 transition-opacity hover:opacity-90 py-1 bg-transparent border-0"
           >
             <Avatar size="sm">
-              {userProfile.avatar && (
-                <AvatarImage src={userProfile.avatar} alt={userFullName} />
+              {userAvatar && (
+                <AvatarImage src={userAvatar} alt={userFullName} />
               )}
               <AvatarFallback className="font-bold text-[10px] bg-zinc-900 text-white dark:bg-zinc-800">
                 {userInitials}
@@ -112,8 +117,8 @@ export function UserDropdownMenu({
         >
           <div className="px-3 py-2.5 border-b border-zinc-100 dark:border-zinc-800/80 mb-1 flex items-center gap-3">
             <Avatar size="sm">
-              {userProfile.avatar && (
-                <AvatarImage src={userProfile.avatar} alt={userFullName} />
+              {userAvatar && (
+                <AvatarImage src={userAvatar} alt={userFullName} />
               )}
               <AvatarFallback className="font-bold text-[10px] bg-zinc-900 text-white dark:bg-zinc-800">
                 {userInitials}

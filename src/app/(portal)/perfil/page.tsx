@@ -2,7 +2,7 @@
 
 import * as React from "react"
 
-import { getInitials } from "@/src/data/portalData"
+import { DEFAULT_USER, getFullName, getInitials } from "@/src/data/portalData"
 import { usePortalStore } from "@/src/store/usePortalStore"
 
 import { toast } from "@/src/components/ui/toast/toast"
@@ -41,21 +41,24 @@ export default function ProfilePage(): React.JSX.Element {
   )
 
   const formData: ProfileFormData = {
-    nationality: userProfile.nationality || "brasileiro",
-    firstName: userProfile.firstName || "",
-    lastName: userProfile.lastName || "",
-    email: userProfile.email || "",
-    cpf: userProfile.cpf || "",
-    birthDate: userProfile.birthDate || "",
-    phone: userProfile.phone || { dialCode: "55", number: "" },
-    companyName: userProfile.companyName || "",
-    cnpj: userProfile.cnpj || "",
-    corporateEmail: userProfile.corporateEmail || "",
-    openingDate: userProfile.openingDate || "",
-    role: userProfile.role || "",
-    company: userProfile.company || "",
-    city: userProfile.city || "",
-    bio: userProfile.bio || "",
+    nationality:
+      userProfile?.nationality || DEFAULT_USER.nationality || "brasileiro",
+    firstName: userProfile?.firstName || DEFAULT_USER.firstName || "",
+    lastName: userProfile?.lastName || DEFAULT_USER.lastName || "",
+    email: userProfile?.email || DEFAULT_USER.email || "",
+    cpf: userProfile?.cpf || DEFAULT_USER.cpf || "",
+    birthDate: userProfile?.birthDate || DEFAULT_USER.birthDate || "",
+    phone: userProfile?.phone ||
+      DEFAULT_USER.phone || { dialCode: "55", number: "" },
+    companyName: userProfile?.companyName || DEFAULT_USER.companyName || "",
+    cnpj: userProfile?.cnpj || DEFAULT_USER.cnpj || "",
+    corporateEmail:
+      userProfile?.corporateEmail || DEFAULT_USER.corporateEmail || "",
+    openingDate: userProfile?.openingDate || DEFAULT_USER.openingDate || "",
+    role: userProfile?.role || DEFAULT_USER.role || "",
+    company: userProfile?.company || DEFAULT_USER.company || "",
+    city: userProfile?.city || DEFAULT_USER.city || "",
+    bio: userProfile?.bio || DEFAULT_USER.bio || "",
   }
 
   const handleSaveProfile = (data: ProfileFormData) => {
@@ -104,21 +107,28 @@ export default function ProfilePage(): React.JSX.Element {
     })
   }
 
-  const userFullName = `${userProfile.firstName} ${userProfile.lastName}`.trim()
+  const userFirstName = userProfile?.firstName || DEFAULT_USER.firstName
+  const userLastName = userProfile?.lastName || DEFAULT_USER.lastName
+  const userFullName =
+    getFullName(userProfile) ||
+    `${DEFAULT_USER.firstName} ${DEFAULT_USER.lastName}`
+  const userInitials = getInitials(userFirstName, userLastName)
+  const userRole = userProfile?.role || DEFAULT_USER.role
+  const userCompany = userProfile?.company || DEFAULT_USER.company
+  const userAvatar = userProfile?.avatar || DEFAULT_USER.avatar
+  const userCoverImage = userProfile?.coverImage || DEFAULT_USER.coverImage
 
   return (
     <div className="w-full flex flex-col pb-20 space-y-10">
       <ProfileHeader
         name={userFullName}
-        role={userProfile.role}
-        company={userProfile.company}
-        avatar={userProfile.avatar}
-        coverImage={userProfile.coverImage}
+        role={userRole}
+        company={userCompany}
+        avatar={userAvatar}
+        coverImage={userCoverImage}
         mounted={mounted}
         onOpenCoverDialog={() => {
-          setPendingCover(
-            userProfile.coverImage || "/utils/banners/pessoas.webp"
-          )
+          setPendingCover(userCoverImage || "/utils/banners/pessoas.webp")
           setIsCoverModalOpen(true)
         }}
         onOpenAvatarDialog={() => setIsAvatarModalOpen(true)}
@@ -131,8 +141,8 @@ export default function ProfilePage(): React.JSX.Element {
         />
 
         <ProfileNetworkingSection
-          seeking={userProfile.seeking || []}
-          offering={userProfile.offering || []}
+          seeking={userProfile?.seeking || DEFAULT_USER.seeking || []}
+          offering={userProfile?.offering || DEFAULT_USER.offering || []}
           onUpdateSeeking={(tags) => updateProfile({ seeking: tags })}
           onUpdateOffering={(tags) => updateProfile({ offering: tags })}
         />
@@ -152,11 +162,11 @@ export default function ProfilePage(): React.JSX.Element {
         pendingCover={pendingCover}
         onSelectCover={setPendingCover}
         onApplyCover={handleApplyCover}
-        userAvatar={userProfile.avatar}
+        userAvatar={userAvatar}
         userName={userFullName}
-        userRole={userProfile.role}
-        userCompany={userProfile.company}
-        userInitials={getInitials(userProfile.firstName, userProfile.lastName)}
+        userRole={userRole}
+        userCompany={userCompany}
+        userInitials={userInitials}
       />
 
       <ProfileAvatarDialog

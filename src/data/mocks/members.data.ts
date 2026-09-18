@@ -377,20 +377,51 @@ export const DEFAULT_USER: UserProfile = {
 export function getFullName(
   userOrMember?: { firstName?: string; lastName?: string; name?: string } | null
 ): string {
-  if (!userOrMember) return ""
-  if (userOrMember.firstName || userOrMember.lastName) {
-    return `${userOrMember.firstName || ""} ${userOrMember.lastName || ""}`.trim()
+  if (!userOrMember) return `${DEFAULT_USER.firstName} ${DEFAULT_USER.lastName}`
+  const first =
+    userOrMember.firstName &&
+    userOrMember.firstName !== "undefined" &&
+    userOrMember.firstName !== "null"
+      ? userOrMember.firstName.trim()
+      : ""
+  const last =
+    userOrMember.lastName &&
+    userOrMember.lastName !== "undefined" &&
+    userOrMember.lastName !== "null"
+      ? userOrMember.lastName.trim()
+      : ""
+  const combined = `${first} ${last}`.trim()
+  if (combined) return combined
+  if (
+    userOrMember.name &&
+    userOrMember.name !== "undefined" &&
+    userOrMember.name !== "null"
+  ) {
+    return userOrMember.name.trim()
   }
-  return userOrMember.name || ""
+  return `${DEFAULT_USER.firstName} ${DEFAULT_USER.lastName}`
 }
 
 export function getInitials(nameOrFirst?: string, lastName?: string): string {
-  if (nameOrFirst && lastName) {
-    return `${nameOrFirst.trim().charAt(0)}${lastName.trim().charAt(0)}`.toUpperCase()
+  const first =
+    nameOrFirst && nameOrFirst !== "undefined" && nameOrFirst !== "null"
+      ? nameOrFirst.trim()
+      : ""
+  const last =
+    lastName && lastName !== "undefined" && lastName !== "null"
+      ? lastName.trim()
+      : ""
+
+  if (first && last) {
+    return `${first.charAt(0)}${last.charAt(0)}`.toUpperCase()
   }
-  if (!nameOrFirst) return "CK"
-  const parts = nameOrFirst.trim().split(/\s+/)
-  if (parts.length === 0 || !parts[0]) return "CK"
-  if (parts.length === 1) return parts[0].substring(0, 2).toUpperCase()
-  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
+  if (first) {
+    const parts = first.split(/\s+/)
+    if (parts.length === 1 && parts[0])
+      return parts[0].substring(0, 2).toUpperCase()
+    if (parts.length > 1 && parts[0] && parts[parts.length - 1]) {
+      return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
+    }
+  }
+  return "WT"
 }

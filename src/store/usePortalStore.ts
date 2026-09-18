@@ -48,12 +48,48 @@ export const usePortalStore = create<PortalState>()(
       ...createGamificationSlice(...a),
     }),
     {
-      name: "clubkey-portal-storage-v8",
-      version: 8,
+      name: "clubkey-portal-storage-v9",
+      version: 9,
       migrate: (persistedState: unknown) => {
         const state = persistedState as PortalState
         if (!state) return state
         const migratedState = { ...state }
+
+        const rawProfile = (
+          migratedState as unknown as { userProfile?: Record<string, unknown> }
+        ).userProfile
+        const rawName = (rawProfile?.name as string) || ""
+        let firstName = (rawProfile?.firstName as string) || ""
+        let lastName = (rawProfile?.lastName as string) || ""
+
+        if (
+          (!firstName || firstName === "undefined" || firstName === "Marina") &&
+          rawName
+        ) {
+          const parts = rawName.trim().split(/\s+/)
+          firstName = parts[0] || DEFAULT_USER.firstName
+          lastName = parts.slice(1).join(" ") || DEFAULT_USER.lastName
+        }
+
+        if (!firstName || firstName === "undefined" || firstName === "Marina") {
+          firstName = DEFAULT_USER.firstName
+        }
+        if (!lastName || lastName === "undefined") {
+          lastName = DEFAULT_USER.lastName
+        }
+
+        migratedState.userProfile = {
+          ...DEFAULT_USER,
+          ...(rawProfile || {}),
+          firstName,
+          lastName,
+          role: (rawProfile?.role as string) || DEFAULT_USER.role,
+          company: (rawProfile?.company as string) || DEFAULT_USER.company,
+          city: (rawProfile?.city as string) || DEFAULT_USER.city,
+          avatar: (rawProfile?.avatar as string) || DEFAULT_USER.avatar,
+          email: (rawProfile?.email as string) || DEFAULT_USER.email,
+        }
+
         if (!migratedState.chatMessages) {
           migratedState.chatMessages = DEFAULT_CHAT_MESSAGES
         }
@@ -65,12 +101,6 @@ export const usePortalStore = create<PortalState>()(
         }
         if (typeof migratedState.isChatMinimized !== "boolean") {
           migratedState.isChatMinimized = false
-        }
-        if (
-          !migratedState.userProfile?.firstName ||
-          migratedState.userProfile?.firstName === "Marina"
-        ) {
-          migratedState.userProfile = DEFAULT_USER
         }
         if (
           !migratedState.memberStays ||
@@ -132,6 +162,33 @@ export const usePortalStore = create<PortalState>()(
           migratedState.connectedMembers = fixed
         }
         return migratedState
+      },
+      onRehydrateStorage: () => (state) => {
+        if (state) {
+          const profile = state.userProfile
+          const firstName =
+            profile?.firstName &&
+            profile.firstName !== "undefined" &&
+            profile.firstName !== "Marina"
+              ? profile.firstName
+              : DEFAULT_USER.firstName
+          const lastName =
+            profile?.lastName && profile.lastName !== "undefined"
+              ? profile.lastName
+              : DEFAULT_USER.lastName
+
+          state.userProfile = {
+            ...DEFAULT_USER,
+            ...(profile || {}),
+            firstName,
+            lastName,
+            role: profile?.role || DEFAULT_USER.role,
+            company: profile?.company || DEFAULT_USER.company,
+            city: profile?.city || DEFAULT_USER.city,
+            avatar: profile?.avatar || DEFAULT_USER.avatar,
+            email: profile?.email || DEFAULT_USER.email,
+          }
+        }
       },
     }
   )

@@ -6,7 +6,13 @@ import Image from "next/image"
 import Link from "next/link"
 import { notFound, useParams, useRouter } from "next/navigation"
 
-import { EVENTS, MEMBERS, getEventSlug } from "@/src/data/portalData"
+import {
+  DEFAULT_USER,
+  EVENTS,
+  MEMBERS,
+  getEventSlug,
+  getFullName,
+} from "@/src/data/portalData"
 import { usePortalStore } from "@/src/store/usePortalStore"
 import {
   ArrowRight,
@@ -170,7 +176,8 @@ export function MemberEventDetailClient({
                   </span>
                   <p className="text-sm font-bold text-zinc-900 dark:text-white flex items-center gap-2 truncate">
                     <Users className="w-4 h-4 text-brand-primary shrink-0" />
-                    {userProfile.firstName} {userProfile.lastName}
+                    {getFullName(userProfile) ||
+                      `${DEFAULT_USER.firstName} ${DEFAULT_USER.lastName}`}
                   </p>
                 </div>
               </div>

@@ -6,7 +6,12 @@ import Image from "next/image"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 
-import { TIERS_CONFIG, getInitials } from "@/src/data/portalData"
+import {
+  DEFAULT_USER,
+  TIERS_CONFIG,
+  getFullName,
+  getInitials,
+} from "@/src/data/portalData"
 import { usePortalStore } from "@/src/store/usePortalStore"
 import {
   Calendar,
@@ -101,12 +106,15 @@ export function Navbar({
 
   const currentTier = getUserTier ? getUserTier() : TIERS_CONFIG.titular
 
-  const userInitials = getInitials(
-    userProfile?.firstName,
-    userProfile?.lastName
-  )
+  const userFirstName = userProfile?.firstName || DEFAULT_USER.firstName
+  const userLastName = userProfile?.lastName || DEFAULT_USER.lastName
+  const userFullName =
+    getFullName(userProfile) ||
+    `${DEFAULT_USER.firstName} ${DEFAULT_USER.lastName}`
+  const userInitials = getInitials(userFirstName, userLastName)
   const homeHref = isClubKey ? "/" : "/hospedagens"
-  const userEmail = userProfile?.email || "william@tabatacapital.com"
+  const userEmail = userProfile?.email || DEFAULT_USER.email
+  const userAvatar = userProfile?.avatar || DEFAULT_USER.avatar
 
   const isDetailRoute = Boolean(
     (pathname?.startsWith("/rooms/") && pathname !== "/rooms") ||
@@ -537,10 +545,10 @@ export function Navbar({
                         {isAuthenticated && (
                           <div className="py-2.5 px-3 rounded-lg bg-zinc-100/70 dark:bg-zinc-800/40 border border-zinc-200/70 dark:border-zinc-800 flex items-center gap-3">
                             <Avatar size="sm">
-                              {userProfile.avatar && (
+                              {userAvatar && (
                                 <AvatarImage
-                                  src={userProfile.avatar}
-                                  alt={`${userProfile.firstName} ${userProfile.lastName}`}
+                                  src={userAvatar}
+                                  alt={userFullName}
                                 />
                               )}
                               <AvatarFallback className="font-bold text-[10px] bg-zinc-900 text-white dark:bg-zinc-800">
@@ -549,7 +557,7 @@ export function Navbar({
                             </Avatar>
                             <div className="flex flex-col min-w-0">
                               <span className="text-xs font-bold text-zinc-900 dark:text-white uppercase tracking-tight truncate">
-                                {userProfile.firstName} {userProfile.lastName}
+                                {userFullName}
                               </span>
                               <span className="text-[10px] font-normal text-zinc-500 dark:text-zinc-400 truncate">
                                 {userEmail}

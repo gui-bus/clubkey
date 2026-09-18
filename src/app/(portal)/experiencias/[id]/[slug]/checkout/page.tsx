@@ -6,9 +6,11 @@ import Image from "next/image"
 import { notFound, useParams } from "next/navigation"
 
 import {
+  DEFAULT_USER,
   EXPERIENCES,
   formatBRL,
   getExperienceSlug,
+  getFullName,
 } from "@/src/data/portalData"
 import { usePortalStore } from "@/src/store/usePortalStore"
 import {
@@ -65,10 +67,13 @@ export default function ExperienceCheckoutPage(): React.JSX.Element {
   const [copiedPix, setCopiedPix] = React.useState(false)
   const [agreeTerms, setAgreeTerms] = React.useState(true)
 
+  const userFirstName = userProfile?.firstName || DEFAULT_USER.firstName
+  const userFullName =
+    getFullName(userProfile) ||
+    `${DEFAULT_USER.firstName} ${DEFAULT_USER.lastName}`
+
   const [cardNumber, setCardNumber] = React.useState("")
-  const [holderName, setHolderName] = React.useState(
-    `${userProfile.firstName} ${userProfile.lastName}`.trim()
-  )
+  const [holderName, setHolderName] = React.useState(userFullName)
   const [expirationDate, setExpirationDate] = React.useState("")
   const [cvv, setCvv] = React.useState("")
   const [holderCpf, setHolderCpf] = React.useState("123.456.789-00")
@@ -147,7 +152,7 @@ export default function ExperienceCheckoutPage(): React.JSX.Element {
             <span>Vaga Confirmada • Acesso VIP</span>
           </div>
           <h1 className="text-3xl sm:text-4xl font-heading font-black tracking-tight uppercase text-zinc-900 dark:text-white">
-            Parabéns, {userProfile.firstName}!
+            Parabéns, {userFirstName}!
           </h1>
           <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed max-w-md mx-auto">
             Sua vaga exclusiva para{" "}
@@ -162,7 +167,7 @@ export default function ExperienceCheckoutPage(): React.JSX.Element {
           <div className="flex items-center justify-between text-xs sm:text-sm">
             <span className="text-zinc-500">Membro titular</span>
             <span className="font-bold text-zinc-900 dark:text-white">
-              {userProfile.firstName} {userProfile.lastName}
+              {userFullName}
             </span>
           </div>
           <div className="flex items-center justify-between text-xs sm:text-sm">

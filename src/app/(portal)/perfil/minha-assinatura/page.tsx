@@ -2,7 +2,7 @@
 
 import * as React from "react"
 
-import { formatBRL } from "@/src/data/portalData"
+import { DEFAULT_USER, formatBRL, getFullName } from "@/src/data/portalData"
 import { usePortalStore } from "@/src/store/usePortalStore"
 import {
   Calendar,
@@ -86,9 +86,10 @@ export default function MinhaAssinaturaPage(): React.JSX.Element {
                   <p className="text-xs text-zinc-500 dark:text-zinc-400">
                     Titular:{" "}
                     <strong className="text-zinc-900 dark:text-white">
-                      {userProfile.firstName} {userProfile.lastName}
+                      {getFullName(userProfile) ||
+                        `${DEFAULT_USER.firstName} ${DEFAULT_USER.lastName}`}
                     </strong>{" "}
-                    • {userProfile.email}
+                    • {userProfile?.email || DEFAULT_USER.email}
                   </p>
                 </div>
 

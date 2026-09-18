@@ -5,7 +5,7 @@ import * as React from "react"
 import Image from "next/image"
 import { notFound, useParams, useRouter } from "next/navigation"
 
-import { formatBRL } from "@/src/data/portalData"
+import { DEFAULT_USER, formatBRL, getFullName } from "@/src/data/portalData"
 import { usePortalStore } from "@/src/store/usePortalStore"
 import {
   Bed,
@@ -307,7 +307,8 @@ export function MemberStayDetailClient({
               <span className="text-[11px] text-zinc-500 dark:text-zinc-400 block">
                 Titular:{" "}
                 <strong className="text-zinc-900 dark:text-white font-semibold">
-                  {userProfile.firstName} {userProfile.lastName}
+                  {getFullName(userProfile) ||
+                    `${DEFAULT_USER.firstName} ${DEFAULT_USER.lastName}`}
                 </strong>
               </span>
             </div>

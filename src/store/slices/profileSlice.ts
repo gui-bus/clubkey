@@ -26,7 +26,8 @@ export const createProfileSlice: StateCreator<
   updateProfile: (profileUpdates: Partial<UserProfile>) => {
     set((state) => ({
       userProfile: {
-        ...state.userProfile,
+        ...DEFAULT_USER,
+        ...(state.userProfile || {}),
         ...profileUpdates,
       },
     }))

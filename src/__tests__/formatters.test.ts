@@ -1,4 +1,5 @@
-﻿import { describe, expect, it } from "vitest"
+import { getFullName, getInitials } from "@/src/data/portalData"
+import { describe, expect, it } from "vitest"
 
 import {
   formatBRL,
@@ -68,6 +69,23 @@ describe("Formatters Library", () => {
       const start = new Date("2026-10-10T12:00:00Z")
       const end = new Date("2026-10-15T12:00:00Z")
       expect(formatDateRange(start, end)).toContain("—")
+    })
+  })
+
+  describe("getFullName and getInitials", () => {
+    it("returns formatted name and initials correctly", () => {
+      expect(getFullName({ firstName: "William", lastName: "Tabata" })).toBe(
+        "William Tabata"
+      )
+      expect(getInitials("William", "Tabata")).toBe("WT")
+    })
+
+    it("handles undefined or empty gracefully with DEFAULT_USER fallback", () => {
+      expect(getFullName(null)).toBe("William Tabata")
+      expect(getFullName({ firstName: undefined, lastName: undefined })).toBe(
+        "William Tabata"
+      )
+      expect(getInitials(undefined, undefined)).toBe("WT")
     })
   })
 })

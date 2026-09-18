@@ -5,7 +5,12 @@ import * as React from "react"
 import Image from "next/image"
 import Link from "next/link"
 
-import { EVENTS, getInitials } from "@/src/data/portalData"
+import {
+  DEFAULT_USER,
+  EVENTS,
+  getFullName,
+  getInitials,
+} from "@/src/data/portalData"
 import { usePortalStore } from "@/src/store/usePortalStore"
 import {
   ArrowRight,
@@ -72,33 +77,46 @@ export function PortalHome(): React.JSX.Element {
         </div>
 
         <Container className="relative z-20 pt-28 pb-12 sm:pt-32 sm:pb-14 flex flex-col gap-8">
-          <div className="flex items-center gap-4 sm:gap-5">
-            <div className="relative shrink-0">
-              <Avatar size="2xl" className="w-16 h-16 sm:w-20 sm:h-20">
-                <AvatarImage
-                  src={userProfile.avatar}
-                  alt={`${userProfile.firstName} ${userProfile.lastName}`}
-                />
-                <AvatarFallback className="bg-zinc-800 text-white font-bold text-lg">
-                  {getInitials(userProfile.firstName, userProfile.lastName)}
-                </AvatarFallback>
-              </Avatar>
-            </div>
+          {(() => {
+            const userFirstName =
+              userProfile?.firstName || DEFAULT_USER.firstName
+            const userLastName = userProfile?.lastName || DEFAULT_USER.lastName
+            const userFullName =
+              getFullName(userProfile) ||
+              `${DEFAULT_USER.firstName} ${DEFAULT_USER.lastName}`
+            const userInitials = getInitials(userFirstName, userLastName)
+            const userRole = userProfile?.role || DEFAULT_USER.role
+            const userCompany = userProfile?.company || DEFAULT_USER.company
+            const userCity = userProfile?.city || DEFAULT_USER.city
+            const userAvatar = userProfile?.avatar || DEFAULT_USER.avatar
 
-            <div className="flex flex-col">
-              <div className="flex items-center mb-1">
-                <GlassBadge size="sm">
-                  {memberSubscription.tierBadge || "Membro VIP"}
-                </GlassBadge>
+            return (
+              <div className="flex items-center gap-4 sm:gap-5">
+                <div className="relative shrink-0">
+                  <Avatar size="2xl" className="w-16 h-16 sm:w-20 sm:h-20">
+                    <AvatarImage src={userAvatar} alt={userFullName} />
+                    <AvatarFallback className="bg-zinc-800 text-white font-bold text-lg">
+                      {userInitials}
+                    </AvatarFallback>
+                  </Avatar>
+                </div>
+
+                <div className="flex flex-col">
+                  <div className="flex items-center mb-1">
+                    <GlassBadge size="sm">
+                      {memberSubscription.tierBadge || "Membro VIP"}
+                    </GlassBadge>
+                  </div>
+                  <h1 className="text-2xl sm:text-3xl md:text-4xl font-black uppercase tracking-tight text-white font-heading">
+                    Bem-vindo(a), {userFirstName}
+                  </h1>
+                  <p className="text-xs sm:text-sm text-zinc-300">
+                    {userRole} na {userCompany} • {userCity}
+                  </p>
+                </div>
               </div>
-              <h1 className="text-2xl sm:text-3xl md:text-4xl font-black uppercase tracking-tight text-white font-heading">
-                Bem-vindo(a), {userProfile.firstName}
-              </h1>
-              <p className="text-xs sm:text-sm text-zinc-300">
-                {userProfile.role} na {userProfile.company} • {userProfile.city}
-              </p>
-            </div>
-          </div>
+            )
+          })()}
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 pt-2">
             <Link
