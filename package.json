@@ -5,6 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "prebuild": "node scripts/stripComments.js && prettier --write \"**/*.{ts,tsx}\" && eslint",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
@@ -17,8 +18,8 @@
     "typecheck": "tsc --noEmit",
     "analyze": "ANALYZE=true pnpm build",
     "clean": "rm -rf .next node_modules pnpm-lock.yaml",
-    "strip": "node scripts/strip-comments.js",
-    "cleanup": "node scripts/cleanup.js"
+    "strip": "node scripts/stripComments.js",
+    "prepare": "husky"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.9.1",
