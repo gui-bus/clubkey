@@ -26,8 +26,6 @@ export async function generateMetadata({
 
 export default function CheckoutLayout({
   children,
-}: {
-  children: React.ReactNode
-}): React.JSX.Element {
+}: LayoutProps): React.JSX.Element {
   return <>{children}</>
 }

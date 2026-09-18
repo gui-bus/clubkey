@@ -100,7 +100,7 @@ export const ButtonGroup = React.memo(
       <div
         role="group"
         aria-label={ariaLabel}
-        aria-orientation={orientation}
+        data-orientation={orientation}
         className={cn(
           "inline-flex",
           orientation === "vertical"

@@ -2,9 +2,6 @@
 
 import * as React from "react"
 
-import Image from "next/image"
-import Link from "next/link"
-
 import { MEMBERS } from "@/src/data/portalData"
 import { usePortalStore } from "@/src/store/usePortalStore"
 import { MagnifyingGlass, UserCheck, Users } from "@phosphor-icons/react"

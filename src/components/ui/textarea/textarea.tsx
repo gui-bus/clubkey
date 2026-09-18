@@ -80,7 +80,6 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
     {
       className,
       variant = "default",
-      color = "default",
       size = "md",
       radius = "lg",
       label,

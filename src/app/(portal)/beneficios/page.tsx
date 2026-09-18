@@ -2,8 +2,6 @@
 
 import * as React from "react"
 
-import Image from "next/image"
-
 import { BENEFITS } from "@/src/data/portalData"
 import {
   ArrowRight,

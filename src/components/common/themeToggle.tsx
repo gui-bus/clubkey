@@ -10,7 +10,7 @@ import { AnimatePresence, motion } from "framer-motion"
 import {
   AnimatedThemeToggler,
   type TransitionVariant,
-} from "@/src/components/ui/animated-theme-toggler"
+} from "@/src/components/ui/animatedThemeToggler"
 
 import { cn } from "@/src/lib/utils"
 

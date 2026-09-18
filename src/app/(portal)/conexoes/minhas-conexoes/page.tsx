@@ -88,36 +88,39 @@ function MinhasConexoesContent(): React.JSX.Element {
     )
   }, [missions])
 
-  const filterByQuery = (list: Member[]) => {
-    const q = searchQuery.trim().toLowerCase()
-    if (!q) return list
-    return list.filter((m) => {
-      const fullText = [
-        m.firstName,
-        m.lastName,
-        m.role,
-        m.company,
-        m.city,
-        ...m.seeking,
-        ...m.offering,
-      ]
-        .join(" ")
-        .toLowerCase()
-      return fullText.includes(q)
-    })
-  }
+  const filterByQuery = React.useCallback(
+    (list: Member[]) => {
+      const q = searchQuery.trim().toLowerCase()
+      if (!q) return list
+      return list.filter((m) => {
+        const fullText = [
+          m.firstName,
+          m.lastName,
+          m.role,
+          m.company,
+          m.city,
+          ...m.seeking,
+          ...m.offering,
+        ]
+          .join(" ")
+          .toLowerCase()
+        return fullText.includes(q)
+      })
+    },
+    [searchQuery]
+  )
 
   const filteredReceived = React.useMemo(
     () => filterByQuery(receivedInvitesList),
-    [receivedInvitesList, searchQuery]
+    [receivedInvitesList, filterByQuery]
   )
   const filteredActive = React.useMemo(
     () => filterByQuery(activeConnectionsList),
-    [activeConnectionsList, searchQuery]
+    [activeConnectionsList, filterByQuery]
   )
   const filteredSent = React.useMemo(
     () => filterByQuery(sentInvitesList),
-    [sentInvitesList, searchQuery]
+    [sentInvitesList, filterByQuery]
   )
 
   const hasActiveFilters = activeFilter !== "todos" || Boolean(searchQuery)

@@ -3,7 +3,6 @@
 import * as React from "react"
 
 import { Icon } from "@iconify/react"
-import { ArrowLeft, ArrowRight } from "@phosphor-icons/react"
 import Autoplay from "embla-carousel-autoplay"
 import useEmblaCarousel, {
   type UseEmblaCarouselType,

@@ -23,29 +23,15 @@ const Breadcrumb = React.forwardRef<
     variant?: BreadcrumbVariant
     separator?: React.ReactNode
   }
->(
-  (
-    {
-      children,
-      maxItems,
-      itemsBeforeCollapse = 1,
-      itemsAfterCollapse = 1,
-      variant = "default",
-      separator,
-      className,
-      ...props
-    },
-    ref
-  ) => {
-    return (
-      <BreadcrumbContext.Provider value={{ variant, separator }}>
-        <nav ref={ref} aria-label="breadcrumb" className={className} {...props}>
-          {children}
-        </nav>
-      </BreadcrumbContext.Provider>
-    )
-  }
-)
+>(({ children, variant = "default", separator, className, ...props }, ref) => {
+  return (
+    <BreadcrumbContext.Provider value={{ variant, separator }}>
+      <nav ref={ref} aria-label="breadcrumb" className={className} {...props}>
+        {children}
+      </nav>
+    </BreadcrumbContext.Provider>
+  )
+})
 Breadcrumb.displayName = "Breadcrumb"
 
 const BreadcrumbList = React.forwardRef<
@@ -278,7 +264,6 @@ BreadcrumbSeparator.displayName = "BreadcrumbSeparator"
 
 const BreadcrumbEllipsis = ({
   className,
-  children,
   ...props
 }: React.ComponentProps<"button">) => (
   <button

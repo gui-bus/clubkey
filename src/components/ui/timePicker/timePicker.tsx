@@ -48,31 +48,32 @@ export const TimePicker = React.forwardRef<HTMLDivElement, TimePickerProps>(
       isInvalid,
       isDisabled,
       useWheel = false,
-      locale = "en-US",
-      timeZone,
       isRequired = false,
       className,
       ...props
     },
     ref
   ) => {
-    const parseTime = (timeStr: string) => {
-      const [time, period] = timeStr.split(" ")
-      const [hours, minutes] = (time || "12:00").split(":")
-      return {
-        hours: hours || (format === "12h" ? "12" : "00"),
-        minutes: minutes || "00",
-        period: (period || "PM") as "AM" | "PM",
-      }
-    }
+    const parseTime = React.useCallback(
+      (timeStr: string) => {
+        const [time, period] = timeStr.split(" ")
+        const [hours, minutes] = (time || "12:00").split(":")
+        return {
+          hours: hours || (format === "12h" ? "12" : "00"),
+          minutes: minutes || "00",
+          period: (period || "PM") as "AM" | "PM",
+        }
+      },
+      [format]
+    )
 
-    const [timeState, setTimeState] = React.useState(parseTime(value))
+    const [timeState, setTimeState] = React.useState(() => parseTime(value))
 
     React.useEffect(() => {
       if (value) {
         setTimeState(parseTime(value))
       }
-    }, [value, format])
+    }, [value, parseTime])
 
     const updateTime = (updates: Partial<typeof timeState>) => {
       const newState = { ...timeState, ...updates }

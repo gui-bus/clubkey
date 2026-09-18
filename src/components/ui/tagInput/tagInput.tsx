@@ -97,7 +97,6 @@ export const TagInput = React.forwardRef<HTMLInputElement, TagInputProps>(
       value = [],
       onChange,
       variant = "default",
-      color = "default",
       size = "md",
       radius = "md",
       label,

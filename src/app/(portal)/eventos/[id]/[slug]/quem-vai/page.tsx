@@ -5,7 +5,6 @@ import * as React from "react"
 import { notFound, useParams } from "next/navigation"
 
 import { EVENTS, MEMBERS, getEventSlug } from "@/src/data/portalData"
-import { usePortalStore } from "@/src/store/usePortalStore"
 import {
   ArrowRight,
   Calendar,
@@ -38,9 +37,6 @@ export default function EventParticipantsPage(): React.JSX.Element {
   if (!event) {
     notFound()
   }
-
-  const { confirmedEvents } = usePortalStore()
-  const isConfirmed = !!confirmedEvents[event.id]
 
   const [searchQuery, setSearchQuery] = React.useState("")
   const [activeRole, setActiveRole] = React.useState("todos")

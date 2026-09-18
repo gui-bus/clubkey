@@ -137,69 +137,72 @@ export function FileUpload({
   const [cropZoom, setCropZoom] = React.useState<number>(1)
   const inputRef = React.useRef<HTMLInputElement>(null)
 
-  const _validateImageDimensions = (file: File): Promise<string | null> => {
-    return new Promise((resolve) => {
-      if (!validationRules || !file.type.startsWith("image/")) {
-        resolve(null)
-        return
-      }
+  const _validateImageDimensions = React.useCallback(
+    (file: File): Promise<string | null> => {
+      return new Promise((resolve) => {
+        if (!validationRules || !file.type.startsWith("image/")) {
+          resolve(null)
+          return
+        }
 
-      const img = new Image()
-      const objectUrl = URL.createObjectURL(file)
-      img.onload = () => {
-        URL.revokeObjectURL(objectUrl)
-        const { width, height } = img
-        const {
-          minWidth,
-          minHeight,
-          maxWidth,
-          maxHeight,
-          aspectRatio,
-          aspectRatioTolerance = 0.05,
-        } = validationRules
+        const img = new Image()
+        const objectUrl = URL.createObjectURL(file)
+        img.onload = () => {
+          URL.revokeObjectURL(objectUrl)
+          const { width, height } = img
+          const {
+            minWidth,
+            minHeight,
+            maxWidth,
+            maxHeight,
+            aspectRatio,
+            aspectRatioTolerance = 0.05,
+          } = validationRules
 
-        if (minWidth && width < minWidth) {
-          resolve(
-            `A largura da imagem (${width}px) é menor que o mínimo de ${minWidth}px.`
-          )
-          return
-        }
-        if (minHeight && height < minHeight) {
-          resolve(
-            `A altura da imagem (${height}px) é menor que o mínimo de ${minHeight}px.`
-          )
-          return
-        }
-        if (maxWidth && width > maxWidth) {
-          resolve(
-            `A largura da imagem (${width}px) excede o máximo de ${maxWidth}px.`
-          )
-          return
-        }
-        if (maxHeight && height > maxHeight) {
-          resolve(
-            `A altura da imagem (${height}px) excede o máximo de ${maxHeight}px.`
-          )
-          return
-        }
-        if (aspectRatio) {
-          const currentRatio = width / height
-          if (Math.abs(currentRatio - aspectRatio) > aspectRatioTolerance) {
+          if (minWidth && width < minWidth) {
             resolve(
-              `A proporção (${currentRatio.toFixed(2)}) não corresponde à proporção exigida (${aspectRatio.toFixed(2)}).`
+              `A largura da imagem (${width}px) é menor que o mínimo de ${minWidth}px.`
             )
             return
           }
+          if (minHeight && height < minHeight) {
+            resolve(
+              `A altura da imagem (${height}px) é menor que o mínimo de ${minHeight}px.`
+            )
+            return
+          }
+          if (maxWidth && width > maxWidth) {
+            resolve(
+              `A largura da imagem (${width}px) excede o máximo de ${maxWidth}px.`
+            )
+            return
+          }
+          if (maxHeight && height > maxHeight) {
+            resolve(
+              `A altura da imagem (${height}px) excede o máximo de ${maxHeight}px.`
+            )
+            return
+          }
+          if (aspectRatio) {
+            const currentRatio = width / height
+            if (Math.abs(currentRatio - aspectRatio) > aspectRatioTolerance) {
+              resolve(
+                `A proporção (${currentRatio.toFixed(2)}) não corresponde à proporção exigida (${aspectRatio.toFixed(2)}).`
+              )
+              return
+            }
+          }
+          resolve(null)
         }
-        resolve(null)
-      }
-      img.onerror = () => {
-        URL.revokeObjectURL(objectUrl)
-        resolve(null)
-      }
-      img.src = objectUrl
-    })
-  }
+        img.onerror = () => {
+          URL.revokeObjectURL(objectUrl)
+          resolve(null)
+        }
+        img.src = objectUrl
+      })
+    },
+    [validationRules]
+  )
 
   const processFiles = React.useCallback(
     async (filesList: File[]) => {
