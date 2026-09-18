@@ -1,31 +1,40 @@
-## 🌟 Visão Geral
+# 🗝️ ClubKey — Portal Executivo & Ecossistema de Membros
 
-O **ClubKey** é uma aplicação web moderna de alta performance e fortemente tipada projetada para o ecossistema do React 19 e Next.js 16 (App Router), equipada com a biblioteca de componentes **Bloom UI**, gerenciamento de estado leve com **Zustand**, sincronização e cache de servidor via **TanStack Query** e formulários validados com **React Hook Form + Zod**.
+O **ClubKey** é uma plataforma web executiva de alta performance, fortemente tipada e projetada sobre o ecossistema do **React 19** e **Next.js 16 (App Router + Turbopack)**. Integra a biblioteca de componentes **Bloom UI**, gerenciamento de estado global modular com **Zustand (Slice Pattern)**, validação robusta de formulários com **React Hook Form + Zod** e estilização moderna via **Tailwind CSS v4**.
 
 ---
 
-### Comandos de Desenvolvimento
+## 🚀 Comandos de Desenvolvimento
 
-Após criar seu projeto e acessar o diretório, utilize os scripts abaixo para gerenciar a aplicação:
+Utilize os comandos `npm` abaixo para gerenciar e executar o projeto:
 
 ```bash
 # Instale as dependências
-pnpm install
+npm install
 
-# Inicie o servidor de desenvolvimento
-pnpm dev
+# Inicie o servidor de desenvolvimento com Turbopack
+npm run dev
 
-# Realize a validação estática de tipos
-pnpm typecheck
+# Execute a validação estática de tipos (TypeScript)
+npm run typecheck
 
 # Execute a suíte de testes unitários (Vitest)
-pnpm test
+npm test
 
-# Execute a suíte de testes E2E (Playwright)
-pnpm test:e2e
+# Execute os testes unitários em modo interativo
+npm run test:watch
 
-# Realize a compilação otimizada para produção
-pnpm build
+# Execute o linter de código
+npm run lint
+
+# Formate o código com Prettier
+npm run format
+
+# Compile o projeto para produção (executa prebuild com stripComments + prettier + eslint)
+npm run build
+
+# Inicie o servidor de produção
+npm start
 ```
 
 ---
@@ -33,67 +42,89 @@ pnpm build
 ## 🛠️ Stack Tecnológica
 
 <div align="center">
-  <img alt="React" height="60" width="60" src="https://github.com/gui-bus/TechIcons/blob/main/Dark/React.svg">
-  <img alt="NextJS" height="60" width="60" src="https://github.com/gui-bus/TechIcons/blob/main/Dark/NextJS.svg">
-  <img alt="Typescript" height="60" width="60" src="https://github.com/gui-bus/TechIcons/blob/main/Dark/Typescript.svg">
-  <img alt="TailwindCSS" height="60" width="60" src="https://github.com/gui-bus/TechIcons/blob/main/Dark/TailwindCSS.svg">
-  <img alt="Bloom" height="60" width="60" src="https://github.com/gui-bus/TechIcons/blob/main/Dark/Bloom.svg">
-  <img alt="Framer Motion" height="60" width="60" src="https://github.com/gui-bus/TechIcons/blob/main/Dark/Framer%20Motion.svg">
-  <img alt="React Hook Form" height="60" width="60" src="https://github.com/gui-bus/TechIcons/blob/main/Dark/React%20Hook%20Form.svg">
-  <img alt="Zod" height="60" width="60" src="https://github.com/gui-bus/TechIcons/blob/main/Dark/Zod.svg">
-  <img alt="Tanstack" height="60" width="60" src="https://github.com/gui-bus/TechIcons/blob/main/Dark/Tanstack.svg">
-  <img alt="pnpm" height="60" width="60" src="https://github.com/gui-bus/TechIcons/blob/main/Dark/pnpm.svg">
-  <img alt="Vitest" height="60" width="60" src="https://github.com/gui-bus/TechIcons/blob/main/Dark/Vitest.svg">
-  <img alt="Playwright" height="60" width="60" src="https://github.com/gui-bus/TechIcons/blob/main/Dark/Playwright.svg">
-  <img alt="Husky" height="60" width="60" src="https://github.com/gui-bus/TechIcons/blob/main/Dark/Husky.svg">
-  <img alt="Zustand" height="60" width="60" src="https://github.com/gui-bus/TechIcons/blob/main/Dark/Zustand.svg">
+  <img alt="React" height="50" width="50" src="https://github.com/gui-bus/TechIcons/blob/main/Dark/React.svg">
+  <img alt="NextJS" height="50" width="50" src="https://github.com/gui-bus/TechIcons/blob/main/Dark/NextJS.svg">
+  <img alt="TypeScript" height="50" width="50" src="https://github.com/gui-bus/TechIcons/blob/main/Dark/Typescript.svg">
+  <img alt="TailwindCSS" height="50" width="50" src="https://github.com/gui-bus/TechIcons/blob/main/Dark/TailwindCSS.svg">
+  <img alt="Bloom" height="50" width="50" src="https://github.com/gui-bus/TechIcons/blob/main/Dark/Bloom.svg">
+  <img alt="Framer Motion" height="50" width="50" src="https://github.com/gui-bus/TechIcons/blob/main/Dark/Framer%20Motion.svg">
+  <img alt="React Hook Form" height="50" width="50" src="https://github.com/gui-bus/TechIcons/blob/main/Dark/React%20Hook%20Form.svg">
+  <img alt="Zod" height="50" width="50" src="https://github.com/gui-bus/TechIcons/blob/main/Dark/Zod.svg">
+  <img alt="TanStack" height="50" width="50" src="https://github.com/gui-bus/TechIcons/blob/main/Dark/Tanstack.svg">
+  <img alt="Vitest" height="50" width="50" src="https://github.com/gui-bus/TechIcons/blob/main/Dark/Vitest.svg">
+  <img alt="Husky" height="50" width="50" src="https://github.com/gui-bus/TechIcons/blob/main/Dark/Husky.svg">
+  <img alt="Zustand" height="50" width="50" src="https://github.com/gui-bus/TechIcons/blob/main/Dark/Zustand.svg">
 </div>
 
 ---
 
 ## 🏛️ Arquitetura do Sistema
 
-O ClubKey adota o design orientado a **Features (Recursos)** para garantir o isolamento e modularização lógica de cada domínio de negócio:
+A aplicação é estruturada segundo princípios de **Clean Architecture**, **SOLID** e **Single Responsibility Principle (SRP)**:
 
 ```mermaid
 graph TB
-    subgraph App ["🌐 Application Core Layout"]
-        Pages["📄 Next.js App Router (app/)"]
-        Provider["⚙️ QueryProvider (React Query client)"]
-        Switcher["🌍 LanguageSwitcher & ThemeToggle (pt/en)"]
+    subgraph AppRouter ["🌐 Next.js App Router (src/app/)"]
+        PortalLayout["(portal)/layout.tsx (Header, Sidebar, Messenger, Toast)"]
+        PortalPages["(portal)/* (Home, Eventos, Experiências, Hospedagens, Conexões, KeyPass, Perfil)"]
+        AuthPages["(auth)/* (Sign-in, Sign-up, Forgot/Reset Password)"]
     end
 
-    subgraph Features ["🧩 Features Architecture (features/)"]
-        SubFeature["src/features/<feature-name>/"]
-        FComp["components/ (Exclusive UI)"]
-        FHook["hooks/ (Custom Domain Logic)"]
-        FServ["services/ (API Calls and Mutations)"]
-        FStore["store/ (Zustand Domain State)"]
-        FType["types/ (Domain Type Definitions)"]
+    subgraph ComponentsLayer ["🧩 Camada de Componentes (src/components/)"]
+        PortalComp["portal/ (Componentes de Negócio & Subcomponentes)"]
+        AuthComp["auth/ (Formulários tipados de autenticação)"]
+        CommonComp["common/ (Container, DataTable, CtaButton)"]
+        BloomUI["ui/ (Design System Bloom UI + Radix Primitives)"]
     end
 
-    subgraph Shared ["💎 Shared Global Services"]
-        UI["📦 Bloom UI (@bloomui-react/components)"]
-        GlobalsCSS["globals.css (@theme & CSS Variables)"]
+    subgraph StateAndDomain ["🧠 Estado Global, Domínio & Dados"]
+        Store["store/slices/ (Zustand Slices: Auth, Networking, Chat, Events, Stays, Gamification, Profile)"]
+        Types["types/ (Contratos TypeScript centralizados por domínio)"]
+        Schemas["schemas/ (Validação Zod para formulários e ações)"]
+        DataMocks["data/mocks/ (Datasets isolados + portalData.ts)"]
+        Formatters["lib/formatters.ts (Formatadores de moeda, datas e tempo)"]
+        Hooks["hooks/ (useItemPagination, useScrollSpy, useMounted)"]
     end
 
-    subgraph CI ["🧪 Quality Gate"]
-        Vitest["🧪 Vitest (Unit/Component Testing)"]
-        Playwright["🎭 Playwright (E2E Smoke Tests)"]
+    subgraph QualityPipeline ["🧪 Pipeline de Qualidade & CI"]
+        Prebuild["Prebuild Hook (stripComments → prettier → eslint)"]
+        VitestRunner["Vitest Unit Tests (src/__tests__/)"]
+        HuskyGate["Husky + Commitlint (Conventional Commits em Inglês)"]
     end
 
-    Pages -->|Envolve com| Provider
-    Pages -->|Renderiza| Switcher
-    Pages -->|Importa do ponto de entrada das| SubFeature
-    SubFeature --> FComp
-    SubFeature --> FHook
-    SubFeature --> FServ
-    SubFeature --> FStore
-    SubFeature --> FType
-    
-    FComp -->|Consome componentes globais do| UI
-    Pages -->|Aplica estilos de| GlobalsCSS
-    
-    SubFeature -.->|Validado por| Vitest
-    Pages -.->|Testado de ponta a ponta por| Playwright
+    PortalPages --> PortalLayout
+    PortalPages --> PortalComp
+    AuthPages --> AuthComp
+    PortalComp --> BloomUI
+    PortalComp --> CommonComp
+    PortalComp --> Store
+    PortalComp --> Hooks
+    PortalComp --> Formatters
+    Store --> Types
+    AuthComp --> Schemas
+    DataMocks --> Types
+
+    QualityPipeline -.->|Valida antes do build| AppRouter
+    QualityPipeline -.->|Valida código e testes| StateAndDomain
 ```
+
+---
+
+## 📚 Documentação Técnica de Backend & APIs
+
+Toda a especificação completa de modelagem de dados, regras de negócio da gamificação (KeyPass), contratos de API RESTful e manuais por módulo estão documentados na pasta [`docs/`](./docs):
+
+- **[`docs/ARCHITECTURE.md`](./docs/ARCHITECTURE.md)**: Arquitetura técnica detalhada do frontend, convenções de código, pipeline e integração OpenAPI/Orval.
+- **[`docs/DATABASE_MODELS.md`](./docs/DATABASE_MODELS.md)**: Modelagem relacional de banco de dados completa para o time de backend.
+- **[`docs/API_SPECIFICATIONS.md`](./docs/API_SPECIFICATIONS.md)**: Especificação de todas as rotas RESTful, payloads e status codes.
+- **[`docs/ENUMS.md`](./docs/ENUMS.md)**: Dicionário central de Enums e constantes padronizadas.
+- **[`docs/GAMIFICATION_RULES.md`](./docs/GAMIFICATION_RULES.md)**: Manual oficial de pontuação, XP, tiers executivos e retenção do KeyPass.
+- **[`docs/SEED_DATA.md`](./docs/SEED_DATA.md)**: Datasets JSON prontos para seeders de banco de dados.
+- **[`docs/pages/`](./docs/pages)**: Documentação detalhada de regras e fluxos tela por tela.
+
+---
+
+## 🛡️ Padrões de Código & Git Commits
+
+- **Nomenclatura de Arquivos**: Todos os arquivos de código-fonte seguem rigorosamente a convenção `camelCase` em inglês (`eventDetailClient.tsx`, `roomsSearchFilterBar.tsx`, `useItemPagination.ts`, `member.types.ts`).
+- **Commits Convencionais**: Forçados via Husky (`commit-msg`) e Commitlint exclusivamente em inglês (ex: `feat(events): add rsvp confirmation modal`, `fix(auth): handle expired token error`).
