@@ -1,120 +1,24 @@
-export interface Member {
-  id: number
-  firstName: string
-  lastName: string
-  role: string
-  company: string
-  city: string
-  avatar?: string
-  image?: string
-  seeking: string[]
-  offering: string[]
-  memberSince?: string | number
-  socials?: {
-    linkedin?: string
-    website?: string
-    instagram?: string
-  }
-  tierId?: "membro" | "associado" | "titular" | "investidor" | "incorporador" | "patrono"
-  xp?: number
-  ribTokens?: number
-  rank?: number
-  unlockedBadgeIds?: string[]
-}
+import type {
+  BadgeDefinition,
+  BenefitItem,
+  ChatMessage,
+  EventItem,
+  ExperienceItem,
+  LeaderboardMember,
+  LeaderboardTimeframe,
+  Member,
+  MemberStayReservation,
+  MemberSubscription,
+  MissionItem,
+  StayItem,
+  TierDefinition,
+  TierId,
+  UserProfile,
+  WeeklyDropItem,
+  XpActivity,
+} from "@/src/types"
 
-export interface EventHighlight {
-  title: string
-  desc: string
-  icon?: string
-}
-
-export interface EventItem {
-  id: number
-  title: string
-  day: string
-  month: string
-  weekday: string
-  time: string
-  place: string
-  organizerId: number
-  capacity: number
-  initialConfirmed: number
-  desc: string
-  participants: number[]
-  category?: string
-  spots?: number
-  xp?: number
-  host?: {
-    firstName: string
-    lastName: string
-    role: string
-    avatar?: string
-  }
-  image?: string
-  dressCode?: string
-  format?: string
-  highlights?: EventHighlight[]
-  inclusions?: string[]
-}
-
-export interface ExperienceItem {
-  id: number
-  title: string
-  date: string
-  day?: string
-  month?: string
-  weekday?: string
-  time?: string
-  place: string
-  price: number
-  sub: string
-  desc: string
-  includes: string[]
-  participants: number[]
-  image?: string
-  xp?: number
-}
-
-export interface BenefitItem {
-  id: number
-  partner: string
-  category: string
-  discount: string
-  desc: string
-  image?: string
-}
-
-export interface StayItem {
-  id: number
-  name: string
-  city: string
-  origPrice: number
-  memberPrice: number
-  badge: string
-  image: string
-}
-
-export interface UserProfile {
-  firstName: string
-  lastName: string
-  email?: string
-  nationality?: "brasileiro" | "estrangeiro"
-  cpf?: string
-  birthDate?: string
-  phone?: { dialCode: string; number: string }
-  companyName?: string
-  cnpj?: string
-  corporateEmail?: string
-  openingDate?: string
-  role: string
-  company: string
-  city: string
-  avatar: string
-  coverImage?: string
-  bio: string
-  seeking: string[]
-  offering: string[]
-}
+export * from "@/src/types"
 
 export const MEMBERS: Member[] = [
   {
@@ -137,7 +41,11 @@ export const MEMBERS: Member[] = [
     xp: 13400,
     ribTokens: 14,
     rank: 2,
-    unlockedBadgeIds: ["badge_early_adopter", "badge_blindagem_digital", "badge_pioneiro_estadias"],
+    unlockedBadgeIds: [
+      "badge_early_adopter",
+      "badge_blindagem_digital",
+      "badge_pioneiro_estadias",
+    ],
   },
   {
     id: 1,
@@ -156,7 +64,11 @@ export const MEMBERS: Member[] = [
     xp: 7650,
     ribTokens: 8,
     rank: 5,
-    unlockedBadgeIds: ["badge_early_adopter", "badge_blindagem_digital", "badge_pioneiro_estadias"],
+    unlockedBadgeIds: [
+      "badge_early_adopter",
+      "badge_blindagem_digital",
+      "badge_pioneiro_estadias",
+    ],
   },
   {
     id: 2,
@@ -197,7 +109,11 @@ export const MEMBERS: Member[] = [
     xp: 16850,
     ribTokens: 18,
     rank: 1,
-    unlockedBadgeIds: ["badge_early_adopter", "badge_blindagem_digital", "badge_pioneiro_estadias"],
+    unlockedBadgeIds: [
+      "badge_early_adopter",
+      "badge_blindagem_digital",
+      "badge_pioneiro_estadias",
+    ],
   },
   {
     id: 4,
@@ -275,7 +191,11 @@ export const MEMBERS: Member[] = [
     xp: 11200,
     ribTokens: 12,
     rank: 3,
-    unlockedBadgeIds: ["badge_early_adopter", "badge_blindagem_digital", "badge_pioneiro_estadias"],
+    unlockedBadgeIds: [
+      "badge_early_adopter",
+      "badge_blindagem_digital",
+      "badge_pioneiro_estadias",
+    ],
   },
   {
     id: 8,
@@ -433,7 +353,11 @@ export const MEMBERS: Member[] = [
     tierId: "titular",
     xp: 2900,
     ribTokens: 4,
-    unlockedBadgeIds: ["badge_early_adopter", "badge_blindagem_digital", "badge_pioneiro_estadias"],
+    unlockedBadgeIds: [
+      "badge_early_adopter",
+      "badge_blindagem_digital",
+      "badge_pioneiro_estadias",
+    ],
   },
 ]
 
@@ -1242,7 +1166,9 @@ export const DEFAULT_USER: UserProfile = {
   ],
 }
 
-export function getFullName(userOrMember?: { firstName?: string; lastName?: string; name?: string } | null): string {
+export function getFullName(
+  userOrMember?: { firstName?: string; lastName?: string; name?: string } | null
+): string {
   if (!userOrMember) return ""
   if (userOrMember.firstName || userOrMember.lastName) {
     return `${userOrMember.firstName || ""} ${userOrMember.lastName || ""}`.trim()
@@ -1267,22 +1193,6 @@ export function formatBRL(amount: number): string {
     currency: "BRL",
     maximumFractionDigits: 0,
   }).format(amount)
-}
-
-export interface MemberStayReservation {
-  id: string
-  stayId: number
-  stayName: string
-  location: string
-  image: string
-  checkIn: string
-  checkOut: string
-  nights: number
-  guests: number
-  roomType: string
-  totalPrice: number
-  status: "confirmed" | "pending" | "completed" | "cancelled"
-  confirmationCode: string
 }
 
 export const DEFAULT_MEMBER_STAYS: MemberStayReservation[] = [
@@ -1319,29 +1229,6 @@ export const DEFAULT_MEMBER_STAYS: MemberStayReservation[] = [
     confirmationCode: "CK-UX-4490",
   },
 ]
-
-export interface MemberSubscription {
-  planName: string
-  tierBadge: string
-  status: "active" | "trialing" | "canceled"
-  renewalDate: string
-  priceMonthly: number
-  priceAnnual: number
-  period: "annual" | "monthly"
-  paymentMethod: {
-    brand: string
-    last4: string
-    expiry: string
-  }
-  invoices: {
-    id: string
-    date: string
-    amount: number
-    status: "paid" | "pending"
-    pdfUrl?: string
-  }[]
-  features: string[]
-}
 
 export const DEFAULT_MEMBER_SUBSCRIPTION: MemberSubscription = {
   planName: "ClubKey Founder Black",
@@ -1480,126 +1367,6 @@ export const MONTH_ORDER = [
   "NOV",
   "DEZ",
 ]
-
-export type TierId =
-  "membro" | "associado" | "titular" | "investidor" | "incorporador" | "patrono"
-
-export interface TierDefinition {
-  id: TierId
-  order: number
-  name: string
-  subtitle: string
-  minXp: number
-  maxXp: number | null
-  image: string
-  color: string
-  badgeColor:
-    | "default"
-    | "primary"
-    | "secondary"
-    | "accent"
-    | "success"
-    | "warning"
-    | "danger"
-  isProtectedBase?: boolean
-  isSpecialPinnacle?: boolean
-  description: string
-  perks: string[]
-}
-
-export interface XpActivity {
-  id: string
-  title: string
-  xp: number
-  date: string
-  category:
-    | "onboarding"
-    | "hospedagem"
-    | "evento"
-    | "experiencia"
-    | "conexao"
-    | "missao"
-    | "bonus"
-}
-
-export interface MissionItem {
-  id: string
-  title: string
-  description: string
-  category:
-    | "onboarding"
-    | "estadias"
-    | "eventos"
-    | "experiencias"
-    | "networking"
-    | "ranking"
-  xpReward: number
-  tokensReward?: number
-  currentProgress: number
-  totalRequired: number
-  isCompleted: boolean
-  isClaimed: boolean
-  actionUrl?: string
-  actionLabel?: string
-}
-
-export interface BadgeDefinition {
-  id: string
-  name: string
-  description: string
-  iconName: string
-  category:
-    | "onboarding"
-    | "estadias"
-    | "eventos"
-    | "experiencias"
-    | "networking"
-    | "ranking"
-    | "especial"
-  unlockedAt?: string
-  isUnlocked: boolean
-  progress: number
-  maxProgress: number
-  xpBonus: number
-  tokensBonus?: number
-}
-
-export interface WeeklyDropItem {
-  id: string
-  title: string
-  description: string
-  category: "estadias" | "eventos" | "experiencias" | "networking" | "especial"
-  xpReward: number
-  tokensReward: number
-  expiresAt: string
-  daysRemaining: number
-  initialSecondsRemaining?: number
-  currentProgress: number
-  totalRequired: number
-  isCompleted: boolean
-  isClaimed: boolean
-  actionUrl: string
-  actionLabel: string
-  tag: string
-}
-
-export type LeaderboardTimeframe = "all_time" | "monthly" | "quarterly"
-
-export interface LeaderboardMember {
-  rank: number
-  id: number
-  firstName: string
-  lastName: string
-  role: string
-  company: string
-  city: string
-  avatar: string
-  tierId: TierId
-  xp: number
-  ribTokens: number
-  isCurrentUser?: boolean
-  change?: number
-}
 
 export const TIERS_CONFIG: Record<TierId, TierDefinition> = {
   membro: {
@@ -2508,7 +2275,8 @@ export const DEFAULT_BADGES: BadgeDefinition[] = [
   {
     id: "badge_early_adopter",
     name: "Membro Fundador",
-    description: "Ingressou no Clube na temporada inaugural de 2026 com passe VIP vitalício.",
+    description:
+      "Ingressou no Clube na temporada inaugural de 2026 com passe VIP vitalício.",
     iconName: "ShieldStar",
     category: "especial",
     unlockedAt: "10 de Outubro, 2026",
@@ -2521,7 +2289,8 @@ export const DEFAULT_BADGES: BadgeDefinition[] = [
   {
     id: "badge_blindagem_digital",
     name: "Blindagem Digital",
-    description: "Ativou autenticação em dois fatores (2FA) protegendo sua credencial de membro.",
+    description:
+      "Ativou autenticação em dois fatores (2FA) protegendo sua credencial de membro.",
     iconName: "ShieldCheck",
     category: "onboarding",
     unlockedAt: "10 de Outubro, 2026",
@@ -2533,7 +2302,8 @@ export const DEFAULT_BADGES: BadgeDefinition[] = [
   {
     id: "badge_pioneiro_estadias",
     name: "Pioneiro das Estadias",
-    description: "Realizou e concluiu as primeiras reservas de acomodações no catálogo ClubKey.",
+    description:
+      "Realizou e concluiu as primeiras reservas de acomodações no catálogo ClubKey.",
     iconName: "Buildings",
     category: "estadias",
     unlockedAt: "14 de Outubro, 2026",
@@ -2545,7 +2315,8 @@ export const DEFAULT_BADGES: BadgeDefinition[] = [
   {
     id: "badge_globe_trotter",
     name: "Globe Trotter",
-    description: "Hospede-se em 3 destinos diferentes para desbloquear a insígnia de viajante global.",
+    description:
+      "Hospede-se em 3 destinos diferentes para desbloquear a insígnia de viajante global.",
     iconName: "Compass",
     category: "estadias",
     isUnlocked: false,
@@ -2557,7 +2328,8 @@ export const DEFAULT_BADGES: BadgeDefinition[] = [
   {
     id: "badge_sommelier_clube",
     name: "Sommelier do Clube",
-    description: "Participe de 2 degustações guiadas ou experiências exclusivas de enologia.",
+    description:
+      "Participe de 2 degustações guiadas ou experiências exclusivas de enologia.",
     iconName: "Wine",
     category: "experiencias",
     isUnlocked: false,
@@ -2580,7 +2352,8 @@ export const DEFAULT_BADGES: BadgeDefinition[] = [
   {
     id: "badge_presenca_vip",
     name: "Presença VIP",
-    description: "Confirme presença em 5 encontros presenciais, jantares ou fóruns do clube.",
+    description:
+      "Confirme presença em 5 encontros presenciais, jantares ou fóruns do clube.",
     iconName: "Sparkle",
     category: "eventos",
     isUnlocked: false,
@@ -2591,7 +2364,8 @@ export const DEFAULT_BADGES: BadgeDefinition[] = [
   {
     id: "badge_top_ranking",
     name: "Aspirante ao Top 5",
-    description: "Alcance o seleto Top 5 do ranking geral global de associados.",
+    description:
+      "Alcance o seleto Top 5 do ranking geral global de associados.",
     iconName: "Crown",
     category: "ranking",
     isUnlocked: false,
@@ -2674,14 +2448,6 @@ export const DEFAULT_XP_ACTIVITIES: XpActivity[] = [
     category: "bonus",
   },
 ]
-
-export interface ChatMessage {
-  id: string
-  senderId: "user" | number
-  text: string
-  timestamp: string
-  read: boolean
-}
 
 export const DEFAULT_CHAT_MESSAGES: Record<number, ChatMessage[]> = {
   2: [
