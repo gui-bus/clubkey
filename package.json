@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "type": "module",
   "private": true,
+  "packageManager": "pnpm@11.20.0",
   "scripts": {
     "dev": "next dev",
     "prebuild": "node scripts/stripComments.js && prettier --write \"**/*.{ts,tsx}\" && eslint",
@@ -16,6 +17,8 @@
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "typecheck": "tsc --noEmit",
+    "validate": "pnpm typecheck && pnpm lint && pnpm lint:secrets && pnpm test",
+    "ci:local": "pnpm validate && pnpm build",
     "analyze": "ANALYZE=true pnpm build",
     "clean": "rm -rf .next node_modules pnpm-lock.yaml",
     "strip": "node scripts/stripComments.js",

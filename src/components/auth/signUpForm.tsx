@@ -6,7 +6,7 @@ import Link from "next/link"
 
 import { type SignUpFormData, signUpSchema } from "@/src/schemas/auth.schema"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Controller, useForm } from "react-hook-form"
+import { Controller, useForm, useWatch } from "react-hook-form"
 import { toast } from "sonner"
 
 import { Checkbox } from "@/src/components/ui/checkbox/checkbox"
@@ -31,7 +31,6 @@ export function SignUpForm({ onSuccess }: SignUpFormProps): React.JSX.Element {
     register,
     handleSubmit,
     control,
-    watch,
     setValue,
     clearErrors,
     trigger,
@@ -59,8 +58,8 @@ export function SignUpForm({ onSuccess }: SignUpFormProps): React.JSX.Element {
     },
   })
 
-  const nationality = watch("nationality")
-  const hasReferral = watch("hasReferral")
+  const nationality = useWatch({ control, name: "nationality" })
+  const hasReferral = useWatch({ control, name: "hasReferral" })
 
   const onSubmit = (data: SignUpFormData) => {
     setIsLoading(true)
