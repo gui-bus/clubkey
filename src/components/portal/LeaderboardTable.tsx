@@ -1,8 +1,16 @@
 "use client"
 
 import * as React from "react"
+
 import Image from "next/image"
 import Link from "next/link"
+
+import {
+  type LeaderboardMember,
+  TIERS_CONFIG,
+  getInitials,
+  getMemberSlug,
+} from "@/src/data/portalData"
 import { CaretDown, CaretUp, Minus } from "@phosphor-icons/react"
 
 import {
@@ -10,13 +18,8 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "@/src/components/ui/avatar/avatar"
-import { DataTable, type TableColumn } from "@/src/components/common/DataTable"
-import {
-  type LeaderboardMember,
-  TIERS_CONFIG,
-  getInitials,
-  getMemberSlug,
-} from "@/src/data/portalData"
+
+import { DataTable, type TableColumn } from "@/src/components/common/dataTable"
 
 export interface LeaderboardTableProps {
   leaderboard: LeaderboardMember[]

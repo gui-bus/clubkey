@@ -59,9 +59,7 @@ export function SubscriptionForm({
   const [isPixGenerated, setIsPixGenerated] = React.useState(false)
   const [copiedPix, setCopiedPix] = React.useState(false)
 
-  const userFullName = user
-    ? `${user.firstName} ${user.lastName}`.trim()
-    : ""
+  const userFullName = user ? `${user.firstName} ${user.lastName}`.trim() : ""
 
   const cardForm = useForm<CreditCardPaymentFormData>({
     resolver: zodResolver(creditCardPaymentSchema),

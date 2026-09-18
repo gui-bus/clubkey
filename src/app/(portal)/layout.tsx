@@ -1,6 +1,6 @@
 import * as React from "react"
 
-import { Navbar } from "@/src/components/landing/Navbar"
+import { Navbar } from "@/src/components/landing/navbar"
 
 export default function PortalLayout({
   children,

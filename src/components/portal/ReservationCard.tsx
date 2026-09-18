@@ -39,7 +39,7 @@ import {
 import { toast } from "@/src/components/ui/toast/toast"
 
 import { CtaButton } from "@/src/components/common/ctaButton"
-import { GlassBadge } from "@/src/components/portal/GlassBadge"
+import { GlassBadge } from "@/src/components/portal/glassBadge"
 
 import { cn } from "@/src/lib/utils"
 

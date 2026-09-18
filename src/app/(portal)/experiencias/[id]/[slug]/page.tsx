@@ -1,25 +1,32 @@
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 
-import { ExperienceDetailClient } from "@/src/components/portal/ExperienceDetailClient"
 import { EXPERIENCES, formatBRL } from "@/src/data/portalData"
+
+import { ExperienceDetailClient } from "@/src/components/portal/experienceDetailClient"
 
 interface PageProps {
   params: Promise<{ id: string; slug: string }>
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
   const { id } = await params
   const experience = EXPERIENCES.find((e) => e.id === Number(id))
 
   if (!experience) {
     return {
       title: "Experiência Não Encontrada",
-      description: "A experiência solicitada não foi localizada no catálogo do ClubKey.",
+      description:
+        "A experiência solicitada não foi localizada no catálogo do ClubKey.",
     }
   }
 
-  const priceLabel = experience.price === 0 ? "Gratuita para Membros" : formatBRL(experience.price)
+  const priceLabel =
+    experience.price === 0
+      ? "Gratuita para Membros"
+      : formatBRL(experience.price)
   const title = `${experience.title} — ${experience.place}`
   const description = `${experience.date} • ${priceLabel}. ${experience.desc}`
   const image = experience.image || "/utils/banners/experiencias.webp"

@@ -6,11 +6,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { notFound, useParams, useRouter } from "next/navigation"
 
-import {
-  EVENTS,
-  MEMBERS,
-  getEventSlug,
-} from "@/src/data/portalData"
+import { EVENTS, MEMBERS, getEventSlug } from "@/src/data/portalData"
 import { usePortalStore } from "@/src/store/usePortalStore"
 import {
   ArrowRight,
@@ -41,8 +37,8 @@ import { Button } from "@/src/components/ui/button/button"
 import { toast } from "@/src/components/ui/toast/toast"
 
 import { Container } from "@/src/components/common/container"
-import { BackButton } from "@/src/components/portal/BackButton"
-import { MemberCard } from "@/src/components/portal/MemberCard"
+import { BackButton } from "@/src/components/portal/backButton"
+import { MemberCard } from "@/src/components/portal/memberCard"
 
 export function MemberEventDetailClient({
   eventId: initialEventId,
@@ -51,7 +47,8 @@ export function MemberEventDetailClient({
 }): React.JSX.Element {
   const params = useParams()
   const router = useRouter()
-  const idParam = initialEventId ?? (Array.isArray(params?.id) ? params.id[0] : params?.id)
+  const idParam =
+    initialEventId ?? (Array.isArray(params?.id) ? params.id[0] : params?.id)
   const eventId = Number(idParam)
   const event = EVENTS.find((e) => e.id === eventId)
 
@@ -162,7 +159,8 @@ export function MemberEventDetailClient({
                   </span>
                   <p className="text-sm font-bold text-zinc-900 dark:text-white flex items-center gap-2">
                     <Building className="w-4 h-4 text-brand-primary shrink-0" />
-                    {organizer.firstName} {organizer.lastName} ({organizer.company})
+                    {organizer.firstName} {organizer.lastName} (
+                    {organizer.company})
                   </p>
                 </div>
 

@@ -1,13 +1,20 @@
 "use client"
 
 import * as React from "react"
+
 import Image from "next/image"
+
+import {
+  WEEKLY_DROPS_CYCLE_SECONDS,
+  type WeeklyDropItem,
+} from "@/src/data/portalData"
 import { ArrowRight, CheckCircle, Clock, Sparkle } from "@phosphor-icons/react"
 
 import { Button } from "@/src/components/ui/button/button"
 import { Progress } from "@/src/components/ui/progress/progress"
+
 import { CtaButton } from "@/src/components/common/ctaButton"
-import { WEEKLY_DROPS_CYCLE_SECONDS, type WeeklyDropItem } from "@/src/data/portalData"
+
 import { cn } from "@/src/lib/utils"
 
 export interface WeeklyDropCardProps {
@@ -75,7 +82,10 @@ export function WeeklyDropCard({
       <div className="space-y-3.5">
         <div className="flex items-center justify-between gap-2">
           <div className="inline-flex items-center gap-1.5 text-xs font-bold text-zinc-700 dark:text-zinc-300 whitespace-nowrap shrink-0">
-            <Clock className="w-3.5 h-3.5 text-brand-primary shrink-0" weight="bold" />
+            <Clock
+              className="w-3.5 h-3.5 text-brand-primary shrink-0"
+              weight="bold"
+            />
             <span className="tabular-nums font-mono text-[11px] font-bold tracking-tight">
               {formattedCountdown}
             </span>
@@ -114,7 +124,9 @@ export function WeeklyDropCard({
                   className="object-contain"
                 />
               </div>
-              <span className="whitespace-nowrap">+{drop.tokensReward} RIB</span>
+              <span className="whitespace-nowrap">
+                +{drop.tokensReward} RIB
+              </span>
             </div>
           )}
         </div>
@@ -127,7 +139,8 @@ export function WeeklyDropCard({
               Progresso do Desafio
             </span>
             <span className="text-zinc-800 dark:text-zinc-200 font-bold text-[11px] tabular-nums">
-              {drop.currentProgress} de {drop.totalRequired} ({progressPercent}%)
+              {drop.currentProgress} de {drop.totalRequired} ({progressPercent}
+              %)
             </span>
           </div>
           <Progress
@@ -141,7 +154,10 @@ export function WeeklyDropCard({
         <div className="flex items-center justify-between gap-3 pt-1">
           {isFullyDone ? (
             <div className="w-full flex items-center justify-center gap-1.5 py-2 rounded-sm bg-zinc-100 dark:bg-zinc-800/80 text-zinc-600 dark:text-zinc-400 text-xs font-bold uppercase tracking-wider whitespace-nowrap">
-              <CheckCircle className="w-4 h-4 text-emerald-600 shrink-0" weight="fill" />
+              <CheckCircle
+                className="w-4 h-4 text-emerald-600 shrink-0"
+                weight="fill"
+              />
               <span>Drop Concluído & Resgatado</span>
             </div>
           ) : isReadyToClaim ? (

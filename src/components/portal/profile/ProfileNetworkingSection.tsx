@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+
 import { TagInput } from "@/src/components/ui/tagInput/tagInput"
 
 export interface ProfileNetworkingSectionProps {

@@ -133,7 +133,8 @@ export function EventCard({ event }: EventCardProps): React.JSX.Element {
                 </div>
               )}
               <span className="text-zinc-700 dark:text-zinc-300 font-semibold truncate">
-                Host: {organizer.firstName} {organizer.lastName} ({organizer.company})
+                Host: {organizer.firstName} {organizer.lastName} (
+                {organizer.company})
               </span>
             </div>
 
@@ -198,7 +199,10 @@ export function EventCard({ event }: EventCardProps): React.JSX.Element {
                     className="cursor-pointer"
                   >
                     {member.avatar && (
-                      <AvatarImage src={member.avatar} alt={`${member.firstName} ${member.lastName}`} />
+                      <AvatarImage
+                        src={member.avatar}
+                        alt={`${member.firstName} ${member.lastName}`}
+                      />
                     )}
                     <AvatarFallback className="font-bold text-[9px] bg-zinc-800 text-white">
                       {getInitials(member.firstName, member.lastName)}

@@ -26,8 +26,8 @@ import {
 import { Button } from "@/src/components/ui/button/button"
 
 import { Container } from "@/src/components/common/container"
-import { EventCard } from "@/src/components/portal/EventCard"
-import { GlassBadge } from "@/src/components/portal/GlassBadge"
+import { EventCard } from "@/src/components/portal/eventCard"
+import { GlassBadge } from "@/src/components/portal/glassBadge"
 
 export function PortalHome(): React.JSX.Element {
   const {
@@ -75,7 +75,10 @@ export function PortalHome(): React.JSX.Element {
           <div className="flex items-center gap-4 sm:gap-5">
             <div className="relative shrink-0">
               <Avatar size="2xl" className="w-16 h-16 sm:w-20 sm:h-20">
-                <AvatarImage src={userProfile.avatar} alt={`${userProfile.firstName} ${userProfile.lastName}`} />
+                <AvatarImage
+                  src={userProfile.avatar}
+                  alt={`${userProfile.firstName} ${userProfile.lastName}`}
+                />
                 <AvatarFallback className="bg-zinc-800 text-white font-bold text-lg">
                   {getInitials(userProfile.firstName, userProfile.lastName)}
                 </AvatarFallback>

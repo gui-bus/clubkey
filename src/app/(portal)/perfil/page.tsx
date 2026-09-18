@@ -2,23 +2,25 @@
 
 import * as React from "react"
 
-import { Container } from "@/src/components/common/container"
-import { toast } from "@/src/components/ui/toast/toast"
 import { getInitials } from "@/src/data/portalData"
-import { useMounted } from "@/src/hooks/useMounted"
 import { usePortalStore } from "@/src/store/usePortalStore"
 
+import { toast } from "@/src/components/ui/toast/toast"
+
+import { Container } from "@/src/components/common/container"
 import {
   ProfileAvatarDialog,
   ProfileBadgesSection,
   ProfileCoverDialog,
+  type ProfileFormData,
   ProfileHeader,
   ProfileNetworkingSection,
   ProfilePersonalForm,
-  type ProfileFormData,
   ProfileSecuritySection,
   ProfileTwoFactorDialog,
 } from "@/src/components/portal/profile"
+
+import { useMounted } from "@/src/hooks/useMounted"
 
 export default function ProfilePage(): React.JSX.Element {
   const {

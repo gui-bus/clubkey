@@ -21,10 +21,10 @@ import {
 
 import { Container } from "@/src/components/common/container"
 import { CtaButton } from "@/src/components/common/ctaButton"
-import { MatchCard } from "@/src/components/portal/MatchCard"
-import { MemberCard } from "@/src/components/portal/MemberCard"
-import { PortalHero } from "@/src/components/portal/PortalHero"
-import { PortalHeroFilterBar } from "@/src/components/portal/PortalHeroFilterBar"
+import { MatchCard } from "@/src/components/portal/matchCard"
+import { MemberCard } from "@/src/components/portal/memberCard"
+import { PortalHero } from "@/src/components/portal/portalHero"
+import { PortalHeroFilterBar } from "@/src/components/portal/portalHeroFilterBar"
 
 const ITEMS_PER_PAGE = 6
 

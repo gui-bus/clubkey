@@ -22,9 +22,9 @@ import { Button } from "@/src/components/ui/button/button"
 import { toast } from "@/src/components/ui/toast/toast"
 
 import { Container } from "@/src/components/common/container"
-import { PortalHero } from "@/src/components/portal/PortalHero"
-import { PortalHeroFilterBar } from "@/src/components/portal/PortalHeroFilterBar"
-import { ReservationCard } from "@/src/components/portal/ReservationCard"
+import { PortalHero } from "@/src/components/portal/portalHero"
+import { PortalHeroFilterBar } from "@/src/components/portal/portalHeroFilterBar"
+import { ReservationCard } from "@/src/components/portal/reservationCard"
 
 function getStayMonth(checkIn: string): { key: string; label: string } {
   const parts = checkIn.split(" de ")

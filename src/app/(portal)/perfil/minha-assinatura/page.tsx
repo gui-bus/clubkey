@@ -20,8 +20,8 @@ import { Button } from "@/src/components/ui/button/button"
 import { toast } from "@/src/components/ui/toast/toast"
 
 import { Container } from "@/src/components/common/container"
-import { BackButton } from "@/src/components/portal/BackButton"
-import { PortalHero } from "@/src/components/portal/PortalHero"
+import { BackButton } from "@/src/components/portal/backButton"
+import { PortalHero } from "@/src/components/portal/portalHero"
 
 export default function MinhaAssinaturaPage(): React.JSX.Element {
   const { memberSubscription, userProfile } = usePortalStore()

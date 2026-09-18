@@ -17,10 +17,10 @@ import { toast } from "@/src/components/ui/toast/toast"
 
 import { Container } from "@/src/components/common/container"
 import { CtaButton } from "@/src/components/common/ctaButton"
-import { MemberCard } from "@/src/components/portal/MemberCard"
-import { NetworkingMissions } from "@/src/components/portal/NetworkingMissions"
-import { PortalHero } from "@/src/components/portal/PortalHero"
-import { PortalHeroFilterBar } from "@/src/components/portal/PortalHeroFilterBar"
+import { MemberCard } from "@/src/components/portal/memberCard"
+import { NetworkingMissions } from "@/src/components/portal/networkingMissions"
+import { PortalHero } from "@/src/components/portal/portalHero"
+import { PortalHeroFilterBar } from "@/src/components/portal/portalHeroFilterBar"
 
 function MinhasConexoesContent(): React.JSX.Element {
   const {
@@ -138,9 +138,12 @@ function MinhasConexoesContent(): React.JSX.Element {
 
   const handleAccept = (member: Member) => {
     acceptInvite(member.id)
-    toast.success(`Conexão aceita com ${member.firstName} ${member.lastName}!`, {
-      description: "Você ganhou +50 XP e agora estão conectados diretamente.",
-    })
+    toast.success(
+      `Conexão aceita com ${member.firstName} ${member.lastName}!`,
+      {
+        description: "Você ganhou +50 XP e agora estão conectados diretamente.",
+      }
+    )
   }
 
   const handleDecline = (member: Member) => {
@@ -150,7 +153,9 @@ function MinhasConexoesContent(): React.JSX.Element {
 
   const handleCancelSent = (member: Member) => {
     cancelSentInvite(member.id)
-    toast.info(`Solicitação para ${member.firstName} ${member.lastName} cancelada.`)
+    toast.info(
+      `Solicitação para ${member.firstName} ${member.lastName} cancelada.`
+    )
   }
 
   const handleDisconnect = (member: Member) => {

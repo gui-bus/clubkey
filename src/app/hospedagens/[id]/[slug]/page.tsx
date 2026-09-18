@@ -1,20 +1,24 @@
 import type { Metadata } from "next"
 
-import { RoomDetailClient } from "@/src/components/rooms/RoomDetailClient"
 import { getRoomDetail } from "@/src/data/mockRoomDetails"
+
+import { RoomDetailClient } from "@/src/components/rooms/roomDetailClient"
 
 interface PageProps {
   params: Promise<{ id: string; slug: string }>
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
   const { id, slug } = await params
   const room = getRoomDetail(id, slug)
 
   if (!room) {
     return {
       title: "Hospedagem Não Encontrada",
-      description: "A hospedagem solicitada não foi localizada no catálogo do ClubKey.",
+      description:
+        "A hospedagem solicitada não foi localizada no catálogo do ClubKey.",
     }
   }
 

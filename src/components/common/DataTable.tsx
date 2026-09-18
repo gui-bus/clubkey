@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+
 import { cn } from "@/src/lib/utils"
 
 export type TableColumnAlign = "left" | "center" | "right"
@@ -64,7 +65,12 @@ export function DataTable<T>({
       )}
     >
       <div className="overflow-x-auto scrollbar-none">
-        <table className={cn("w-full text-left border-collapse text-xs", tableClassName)}>
+        <table
+          className={cn(
+            "w-full text-left border-collapse text-xs",
+            tableClassName
+          )}
+        >
           <thead>
             <tr
               className={cn(
@@ -102,8 +108,8 @@ export function DataTable<T>({
                 const rowKey = keyExtractor
                   ? keyExtractor(item, rowIndex)
                   : (item as Record<string, unknown>).id !== undefined
-                  ? String((item as Record<string, unknown>).id)
-                  : rowIndex
+                    ? String((item as Record<string, unknown>).id)
+                    : rowIndex
 
                 const customRowClass = getRowClassName
                   ? getRowClassName(item, rowIndex)
@@ -114,11 +120,14 @@ export function DataTable<T>({
                 return (
                   <tr
                     key={rowKey}
-                    onClick={isClickable ? () => onRowClick(item, rowIndex) : undefined}
+                    onClick={
+                      isClickable ? () => onRowClick(item, rowIndex) : undefined
+                    }
                     className={cn(
                       "transition-colors",
                       isClickable && "cursor-pointer",
-                      customRowClass || "hover:bg-zinc-50/60 dark:hover:bg-zinc-800/30",
+                      customRowClass ||
+                        "hover:bg-zinc-50/60 dark:hover:bg-zinc-800/30",
                       bodyRowClassName
                     )}
                   >
@@ -132,14 +141,19 @@ export function DataTable<T>({
                       } else if (column.accessor) {
                         cellContent = String(item[column.accessor] ?? "")
                       } else {
-                        const fallbackVal = (item as Record<string, unknown>)[column.key]
-                        cellContent = fallbackVal !== undefined ? String(fallbackVal) : null
+                        const fallbackVal = (item as Record<string, unknown>)[
+                          column.key
+                        ]
+                        cellContent =
+                          fallbackVal !== undefined ? String(fallbackVal) : null
                       }
 
                       return (
                         <td
                           key={column.key}
-                          style={column.width ? { width: column.width } : undefined}
+                          style={
+                            column.width ? { width: column.width } : undefined
+                          }
                           className={cn(
                             "py-4 px-4 align-middle",
                             getAlignClass(column.align),

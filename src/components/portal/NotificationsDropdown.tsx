@@ -112,9 +112,12 @@ export function NotificationsDropdown({
     e.preventDefault()
     e.stopPropagation()
     acceptInvite(member.id)
-    toast.success(`Conexão aceita com ${member.firstName} ${member.lastName}!`, {
-      description: "Você ganhou +50 XP e agora estão conectados diretamente.",
-    })
+    toast.success(
+      `Conexão aceita com ${member.firstName} ${member.lastName}!`,
+      {
+        description: "Você ganhou +50 XP e agora estão conectados diretamente.",
+      }
+    )
   }
 
   const handleDecline = (member: Member, e: React.MouseEvent) => {

@@ -8,9 +8,9 @@ import { Compass, MagnifyingGlass } from "@phosphor-icons/react"
 import { Button } from "@/src/components/ui/button/button"
 
 import { Container } from "@/src/components/common/container"
-import { ExperienceCard } from "@/src/components/portal/ExperienceCard"
-import { PortalHero } from "@/src/components/portal/PortalHero"
-import { PortalHeroFilterBar } from "@/src/components/portal/PortalHeroFilterBar"
+import { ExperienceCard } from "@/src/components/portal/experienceCard"
+import { PortalHero } from "@/src/components/portal/portalHero"
+import { PortalHeroFilterBar } from "@/src/components/portal/portalHeroFilterBar"
 
 const EXPERIENCE_TYPES = [
   { value: "todas", label: "Todas" },

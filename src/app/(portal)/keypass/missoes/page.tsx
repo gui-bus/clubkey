@@ -1,7 +1,14 @@
 "use client"
 
 import * as React from "react"
+
 import Image from "next/image"
+
+import {
+  type MissionItem,
+  WEEKLY_DROPS_CYCLE_SECONDS,
+} from "@/src/data/portalData"
+import { usePortalStore } from "@/src/store/usePortalStore"
 import {
   Check,
   Clock,
@@ -10,18 +17,17 @@ import {
   Sparkle,
   Trophy,
 } from "@phosphor-icons/react"
-
 import { parseAsStringLiteral, useQueryState } from "nuqs"
 
 import { Badge } from "@/src/components/ui/badge/badge"
 import { toast } from "@/src/components/ui/toast/toast"
+
 import { Container } from "@/src/components/common/container"
 import { CtaButton } from "@/src/components/common/ctaButton"
-import { BadgeCard } from "@/src/components/portal/BadgeCard"
-import { SectionHeader } from "@/src/components/portal/SectionHeader"
-import { WeeklyDropCard } from "@/src/components/portal/WeeklyDropCard"
-import { WEEKLY_DROPS_CYCLE_SECONDS, type MissionItem } from "@/src/data/portalData"
-import { usePortalStore } from "@/src/store/usePortalStore"
+import { BadgeCard } from "@/src/components/portal/badgeCard"
+import { SectionHeader } from "@/src/components/portal/sectionHeader"
+import { WeeklyDropCard } from "@/src/components/portal/weeklyDropCard"
+
 import { cn } from "@/src/lib/utils"
 
 const MAIN_TABS = ["drops", "carreira", "badges"] as const
@@ -55,13 +61,8 @@ function useBannerCountdown(initialSeconds = WEEKLY_DROPS_CYCLE_SECONDS) {
 }
 
 export default function KeyPassMissionsPage(): React.JSX.Element {
-  const {
-    missions,
-    claimMission,
-    weeklyDrops,
-    claimWeeklyDrop,
-    badges,
-  } = usePortalStore()
+  const { missions, claimMission, weeklyDrops, claimWeeklyDrop, badges } =
+    usePortalStore()
 
   const [activeMainTab, setActiveMainTab] = useQueryState(
     "tab",
@@ -88,7 +89,6 @@ export default function KeyPassMissionsPage(): React.JSX.Element {
     if (selectedCategory === "all") return true
     return mission.category === selectedCategory
   })
-
 
   const handleClaimMission = (mission: MissionItem) => {
     if (
@@ -147,10 +147,15 @@ export default function KeyPassMissionsPage(): React.JSX.Element {
           <div className="flex flex-wrap items-center gap-2">
             {claimableDropsCount + claimableMissionsCount > 0 && (
               <div className="px-3 py-1.5 rounded-xs bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 shadow-2xs whitespace-nowrap shrink-0">
-                <Sparkle className="w-3.5 h-3.5 text-brand-primary shrink-0" weight="fill" />
+                <Sparkle
+                  className="w-3.5 h-3.5 text-brand-primary shrink-0"
+                  weight="fill"
+                />
                 <span>
                   {claimableDropsCount + claimableMissionsCount} Recompensa
-                  {claimableDropsCount + claimableMissionsCount > 1 ? "s" : ""}{" "}
+                  {claimableDropsCount + claimableMissionsCount > 1
+                    ? "s"
+                    : ""}{" "}
                   Disponíve
                   {claimableDropsCount + claimableMissionsCount > 1
                     ? "is"
@@ -249,7 +254,10 @@ export default function KeyPassMissionsPage(): React.JSX.Element {
           <div className="p-4 sm:p-5 rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-sm bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 flex items-center justify-center text-zinc-900 dark:text-white shrink-0">
-                <Clock className="w-5 h-5 text-brand-primary shrink-0" weight="bold" />
+                <Clock
+                  className="w-5 h-5 text-brand-primary shrink-0"
+                  weight="bold"
+                />
               </div>
               <div>
                 <p className="text-xs sm:text-sm font-bold text-zinc-900 dark:text-white">
@@ -402,7 +410,10 @@ export default function KeyPassMissionsPage(): React.JSX.Element {
                       </div>
                     ) : mission.isClaimed ? (
                       <div className="flex items-center justify-center gap-1.5 py-1.5 text-xs font-bold text-zinc-700 dark:text-zinc-300 bg-zinc-50 dark:bg-zinc-800/60 rounded-xs border border-zinc-200 dark:border-zinc-700/60 whitespace-nowrap">
-                        <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" weight="bold" />
+                        <Check
+                          className="w-3.5 h-3.5 text-emerald-600 shrink-0"
+                          weight="bold"
+                        />
                         <span>Missão Concluída</span>
                       </div>
                     ) : null}

@@ -1,7 +1,10 @@
 "use client"
 
 import * as React from "react"
+
 import Image from "next/image"
+
+import { getInitials } from "@/src/data/portalData"
 import { ArrowRight, CreditCard, PencilSimple } from "@phosphor-icons/react"
 
 import {
@@ -9,9 +12,9 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "@/src/components/ui/avatar/avatar"
+
 import { Container } from "@/src/components/common/container"
 import { CtaButton } from "@/src/components/common/ctaButton"
-import { getInitials } from "@/src/data/portalData"
 
 export interface ProfileHeaderProps {
   name: string

@@ -1,12 +1,18 @@
 "use client"
 
 import * as React from "react"
+
 import { FloppyDisk } from "@phosphor-icons/react"
 
 import { Input } from "@/src/components/ui/input/input"
-import { PhoneInput, type PhoneInputValue } from "@/src/components/auth/phoneInput"
+
+import {
+  PhoneInput,
+  type PhoneInputValue,
+} from "@/src/components/auth/phoneInput"
 import { CitySelect } from "@/src/components/common/citySelect"
 import { CtaButton } from "@/src/components/common/ctaButton"
+
 import { maskCnpj, maskCpf, maskDate } from "@/src/lib/masks"
 import { cn } from "@/src/lib/utils"
 
@@ -65,8 +71,8 @@ export function ProfilePersonalForm({
             </p>
           </div>
           <p className="text-xs text-zinc-500 dark:text-zinc-400">
-            Campos marcados com <span className="text-red-500 font-bold">*</span>{" "}
-            são obrigatórios
+            Campos marcados com{" "}
+            <span className="text-red-500 font-bold">*</span> são obrigatórios
           </p>
         </div>
 
@@ -173,7 +179,8 @@ export function ProfilePersonalForm({
 
           <div className="flex flex-col gap-1.5">
             <label className="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
-              Data de nascimento <span className="text-red-500 font-bold">*</span>
+              Data de nascimento{" "}
+              <span className="text-red-500 font-bold">*</span>
             </label>
             <Input
               value={formData.birthDate}

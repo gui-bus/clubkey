@@ -25,9 +25,9 @@ import {
 
 import { Container } from "@/src/components/common/container"
 import { CtaButton } from "@/src/components/common/ctaButton"
-import { BenefitCard } from "@/src/components/portal/BenefitCard"
-import { PortalHero } from "@/src/components/portal/PortalHero"
-import { PortalHeroFilterBar } from "@/src/components/portal/PortalHeroFilterBar"
+import { BenefitCard } from "@/src/components/portal/benefitCard"
+import { PortalHero } from "@/src/components/portal/portalHero"
+import { PortalHeroFilterBar } from "@/src/components/portal/portalHeroFilterBar"
 
 const ITEMS_PER_PAGE = 6
 

@@ -38,9 +38,9 @@ import {
 import { toast } from "@/src/components/ui/toast/toast"
 
 import { Container } from "@/src/components/common/container"
-import { BackButton } from "@/src/components/portal/BackButton"
-import { GlassBadge } from "@/src/components/portal/GlassBadge"
-import { ShareButton } from "@/src/components/portal/ShareButton"
+import { BackButton } from "@/src/components/portal/backButton"
+import { GlassBadge } from "@/src/components/portal/glassBadge"
+import { ShareButton } from "@/src/components/portal/shareButton"
 
 import { cn } from "@/src/lib/utils"
 
@@ -51,7 +51,8 @@ export function MemberStayDetailClient({
 }): React.JSX.Element {
   const params = useParams()
   const router = useRouter()
-  const idParam = initialId || (Array.isArray(params?.id) ? params.id[0] : params?.id)
+  const idParam =
+    initialId || (Array.isArray(params?.id) ? params.id[0] : params?.id)
   const stayReservationId = String(idParam)
   const { memberStays, cancelStay, resetStays, userProfile } = usePortalStore()
 

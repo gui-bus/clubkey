@@ -8,9 +8,9 @@ import { CheckCircle, House, Key } from "@phosphor-icons/react"
 
 import { Container } from "@/src/components/common/container"
 import { CtaButton } from "@/src/components/common/ctaButton"
-import { FloatingCta } from "@/src/components/landing/FloatingCta"
-import { Navbar } from "@/src/components/landing/Navbar"
-import { TopBanner } from "@/src/components/landing/TopBanner"
+import { FloatingCta } from "@/src/components/landing/floatingCta"
+import { Navbar } from "@/src/components/landing/navbar"
+import { TopBanner } from "@/src/components/landing/topBanner"
 import { SubscriptionCartCard } from "@/src/components/subscription/subscriptionCartCard"
 import {
   type PaymentMethod,
@@ -62,7 +62,11 @@ export default function SubscriptionPage(): React.JSX.Element {
                   <span>Assinatura Ativada</span>
                 </div>
                 <h1 className="text-2xl sm:text-3xl font-black text-zinc-900 dark:text-white font-heading uppercase tracking-tight">
-                  Parabéns, {user ? `${user.firstName} ${user.lastName}`.trim() : "Membro"}!
+                  Parabéns,{" "}
+                  {user
+                    ? `${user.firstName} ${user.lastName}`.trim()
+                    : "Membro"}
+                  !
                 </h1>
                 <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 font-light leading-relaxed">
                   Sua Key de membro {brandConfig.name} está ativa. Você já tem

@@ -6,10 +6,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 
-import {
-  TIERS_CONFIG,
-  getInitials,
-} from "@/src/data/portalData"
+import { TIERS_CONFIG, getInitials } from "@/src/data/portalData"
 import { usePortalStore } from "@/src/store/usePortalStore"
 import {
   Calendar,
@@ -38,8 +35,8 @@ import {
 import { Container } from "@/src/components/common/container"
 import { CtaButton } from "@/src/components/common/ctaButton"
 import { ThemeToggle } from "@/src/components/common/themeToggle"
-import { NotificationsDropdown } from "@/src/components/portal/NotificationsDropdown"
-import { UserDropdownMenu } from "@/src/components/portal/UserDropdownMenu"
+import { NotificationsDropdown } from "@/src/components/portal/notificationsDropdown"
+import { UserDropdownMenu } from "@/src/components/portal/userDropdownMenu"
 
 import { cn } from "@/src/lib/utils"
 
@@ -104,23 +101,26 @@ export function Navbar({
 
   const currentTier = getUserTier ? getUserTier() : TIERS_CONFIG.titular
 
-  const userInitials = getInitials(userProfile?.firstName, userProfile?.lastName)
+  const userInitials = getInitials(
+    userProfile?.firstName,
+    userProfile?.lastName
+  )
   const homeHref = isClubKey ? "/" : "/hospedagens"
   const userEmail = userProfile?.email || "william@tabatacapital.com"
 
   const isDetailRoute = Boolean(
     (pathname?.startsWith("/rooms/") && pathname !== "/rooms") ||
-      (pathname?.startsWith("/hospedagens/") &&
-        pathname !== "/hospedagens" &&
-        pathname !== "/hospedagens/minhas-hospedagens") ||
-      (pathname?.startsWith("/eventos/") &&
-        pathname !== "/eventos" &&
-        pathname !== "/eventos/meus-eventos") ||
-      (pathname?.startsWith("/agenda/") && pathname !== "/agenda") ||
-      (pathname?.startsWith("/experiencias/") && pathname !== "/experiencias") ||
-      (pathname?.startsWith("/conexoes/") && pathname !== "/conexoes") ||
-      (pathname?.startsWith("/pessoas/") && pathname !== "/pessoas") ||
-      pathname === "/perfil"
+    (pathname?.startsWith("/hospedagens/") &&
+      pathname !== "/hospedagens" &&
+      pathname !== "/hospedagens/minhas-hospedagens") ||
+    (pathname?.startsWith("/eventos/") &&
+      pathname !== "/eventos" &&
+      pathname !== "/eventos/meus-eventos") ||
+    (pathname?.startsWith("/agenda/") && pathname !== "/agenda") ||
+    (pathname?.startsWith("/experiencias/") && pathname !== "/experiencias") ||
+    (pathname?.startsWith("/conexoes/") && pathname !== "/conexoes") ||
+    (pathname?.startsWith("/pessoas/") && pathname !== "/pessoas") ||
+    pathname === "/perfil"
   )
 
   const isAuthRoute = Boolean(

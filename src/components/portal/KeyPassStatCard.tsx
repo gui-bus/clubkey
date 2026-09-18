@@ -35,12 +35,7 @@ export function KeyPassStatCard({
       {watermarkSrc && (
         <div className="absolute -right-3 -bottom-3 pointer-events-none select-none opacity-[0.07] dark:opacity-[0.12]">
           <div className="relative w-18 h-18 sm:w-20 sm:h-20">
-            <Image
-              src={watermarkSrc}
-              alt=""
-              fill
-              className="object-contain"
-            />
+            <Image src={watermarkSrc} alt="" fill className="object-contain" />
           </div>
         </div>
       )}

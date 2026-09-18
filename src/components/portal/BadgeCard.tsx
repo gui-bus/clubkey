@@ -1,7 +1,10 @@
 "use client"
 
 import * as React from "react"
+
 import Image from "next/image"
+
+import { type BadgeDefinition } from "@/src/data/portalData"
 import {
   Buildings,
   CheckCircle,
@@ -18,7 +21,7 @@ import {
 } from "@phosphor-icons/react"
 
 import { Progress } from "@/src/components/ui/progress/progress"
-import { type BadgeDefinition } from "@/src/data/portalData"
+
 import { cn } from "@/src/lib/utils"
 
 export interface BadgeCardProps {
@@ -27,8 +30,10 @@ export interface BadgeCardProps {
   showRewards?: boolean
 }
 
-
-export function getBadgeIcon(iconName: string, className?: string): React.JSX.Element {
+export function getBadgeIcon(
+  iconName: string,
+  className?: string
+): React.JSX.Element {
   switch (iconName) {
     case "ShieldStar":
       return <ShieldStar className={className} weight="bold" />
@@ -119,7 +124,9 @@ export function BadgeCard({
                       className="object-contain"
                     />
                   </div>
-                  <span className="whitespace-nowrap">+{badge.tokensBonus} RIB</span>
+                  <span className="whitespace-nowrap">
+                    +{badge.tokensBonus} RIB
+                  </span>
                 </>
               ) : null}
             </div>

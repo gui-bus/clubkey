@@ -5,9 +5,9 @@ import * as React from "react"
 import { EmailVerification } from "@/src/components/auth/emailVerification"
 import { SignUpForm } from "@/src/components/auth/signUpForm"
 import { Container } from "@/src/components/common/container"
-import { FloatingCta } from "@/src/components/landing/FloatingCta"
-import { Navbar } from "@/src/components/landing/Navbar"
-import { TopBanner } from "@/src/components/landing/TopBanner"
+import { FloatingCta } from "@/src/components/landing/floatingCta"
+import { Navbar } from "@/src/components/landing/navbar"
+import { TopBanner } from "@/src/components/landing/topBanner"
 
 import { brandConfig } from "@/src/config/brand.config"
 

@@ -56,9 +56,12 @@ export function MemberCard({
     e.stopPropagation()
     if (status !== "none") return
     toggleConnect(member.id)
-    toast.success(`Solicitação enviada para ${member.firstName} ${member.lastName}!`, {
-      description: "Você poderá trocar mensagens antes do encontro.",
-    })
+    toast.success(
+      `Solicitação enviada para ${member.firstName} ${member.lastName}!`,
+      {
+        description: "Você poderá trocar mensagens antes do encontro.",
+      }
+    )
   }
 
   const handleRemove = (

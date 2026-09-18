@@ -15,9 +15,9 @@ import { Calendar, MagnifyingGlass } from "@phosphor-icons/react"
 import { Button } from "@/src/components/ui/button/button"
 
 import { Container } from "@/src/components/common/container"
-import { EventCard } from "@/src/components/portal/EventCard"
-import { PortalHero } from "@/src/components/portal/PortalHero"
-import { PortalHeroFilterBar } from "@/src/components/portal/PortalHeroFilterBar"
+import { EventCard } from "@/src/components/portal/eventCard"
+import { PortalHero } from "@/src/components/portal/portalHero"
+import { PortalHeroFilterBar } from "@/src/components/portal/portalHeroFilterBar"
 
 export default function EventsPage(): React.JSX.Element {
   const [activeMonth, setActiveMonth] = React.useState("todos")

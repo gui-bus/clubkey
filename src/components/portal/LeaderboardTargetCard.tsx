@@ -1,7 +1,14 @@
 "use client"
 
 import * as React from "react"
+
 import Link from "next/link"
+
+import {
+  type LeaderboardMember,
+  getInitials,
+  getMemberSlug,
+} from "@/src/data/portalData"
 import { ArrowRight, Crosshair, Trophy } from "@phosphor-icons/react"
 
 import {
@@ -9,12 +16,9 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "@/src/components/ui/avatar/avatar"
+
 import { CtaButton } from "@/src/components/common/ctaButton"
-import {
-  type LeaderboardMember,
-  getInitials,
-  getMemberSlug,
-} from "@/src/data/portalData"
+
 import { cn } from "@/src/lib/utils"
 
 export interface LeaderboardTargetCardProps {
@@ -31,7 +35,6 @@ export function LeaderboardTargetCard({
   className,
 }: LeaderboardTargetCardProps): React.JSX.Element {
   if (!targetUser) {
-
     return (
       <div
         className={cn(
@@ -41,7 +44,10 @@ export function LeaderboardTargetCard({
       >
         <div className="flex items-center gap-4">
           <div className="w-11 h-11 rounded-sm bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white border border-zinc-200 dark:border-zinc-700 flex items-center justify-center shrink-0">
-            <Trophy className="w-5 h-5 text-brand-primary shrink-0" weight="bold" />
+            <Trophy
+              className="w-5 h-5 text-brand-primary shrink-0"
+              weight="bold"
+            />
           </div>
           <div>
             <div className="flex items-center gap-2 mb-0.5">
@@ -53,7 +59,8 @@ export function LeaderboardTargetCard({
               Você é o Líder #1 do Ranking!
             </h3>
             <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
-              Continue participando dos eventos e estadias para defender sua posição no topo.
+              Continue participando dos eventos e estadias para defender sua
+              posição no topo.
             </p>
           </div>
         </div>
@@ -91,7 +98,10 @@ export function LeaderboardTargetCard({
         <div className="space-y-1">
           <div className="flex items-center gap-2">
             <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 px-2 py-0.5 rounded-xs whitespace-nowrap shrink-0">
-              <Crosshair className="w-3 h-3 text-brand-primary shrink-0" weight="bold" />
+              <Crosshair
+                className="w-3 h-3 text-brand-primary shrink-0"
+                weight="bold"
+              />
               <span>Próximo Alvo no Ranking</span>
             </span>
             <span className="text-xs text-zinc-400 dark:text-zinc-500 font-medium whitespace-nowrap">
@@ -110,7 +120,8 @@ export function LeaderboardTargetCard({
           <p className="text-xs text-zinc-500 dark:text-zinc-400 font-normal">
             Você está na{" "}
             <strong className="font-bold text-zinc-900 dark:text-white whitespace-nowrap">
-              #{currentUser.rank} posição ({currentUser.xp.toLocaleString("pt-BR")} XP)
+              #{currentUser.rank} posição (
+              {currentUser.xp.toLocaleString("pt-BR")} XP)
             </strong>
             . Ultrapasse{" "}
             <Link
@@ -129,7 +140,10 @@ export function LeaderboardTargetCard({
               {targetUser.rank < 10 ? `0${targetUser.rank}` : targetUser.rank}
             </span>
             <Avatar size="sm" radius="full" className="w-9 h-9 shrink-0">
-              <AvatarImage src={targetUser.avatar} alt={`${targetUser.firstName} ${targetUser.lastName}`} />
+              <AvatarImage
+                src={targetUser.avatar}
+                alt={`${targetUser.firstName} ${targetUser.lastName}`}
+              />
               <AvatarFallback className="text-xs font-bold bg-zinc-900 text-white">
                 {getInitials(targetUser.firstName, targetUser.lastName)}
               </AvatarFallback>

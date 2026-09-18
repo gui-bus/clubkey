@@ -32,7 +32,7 @@ import { toast } from "@/src/components/ui/toast/toast"
 
 import { Container } from "@/src/components/common/container"
 import { CtaButton } from "@/src/components/common/ctaButton"
-import { BackButton } from "@/src/components/portal/BackButton"
+import { BackButton } from "@/src/components/portal/backButton"
 
 import {
   maskCardExpiry,
@@ -66,7 +66,9 @@ export default function ExperienceCheckoutPage(): React.JSX.Element {
   const [agreeTerms, setAgreeTerms] = React.useState(true)
 
   const [cardNumber, setCardNumber] = React.useState("")
-  const [holderName, setHolderName] = React.useState(`${userProfile.firstName} ${userProfile.lastName}`.trim())
+  const [holderName, setHolderName] = React.useState(
+    `${userProfile.firstName} ${userProfile.lastName}`.trim()
+  )
   const [expirationDate, setExpirationDate] = React.useState("")
   const [cvv, setCvv] = React.useState("")
   const [holderCpf, setHolderCpf] = React.useState("123.456.789-00")

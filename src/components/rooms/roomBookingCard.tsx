@@ -15,7 +15,7 @@ import {
 import { AnimatePresence, motion } from "framer-motion"
 
 import { CtaButton } from "@/src/components/common/ctaButton"
-import { GlassBadge } from "@/src/components/portal/GlassBadge"
+import { GlassBadge } from "@/src/components/portal/glassBadge"
 
 import { cn } from "@/src/lib/utils"
 

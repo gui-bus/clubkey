@@ -1,21 +1,24 @@
 "use client"
 
 import * as React from "react"
+
 import Image from "next/image"
 import Link from "next/link"
-import { ArrowRight, Lightning, SealCheck, Trophy } from "@phosphor-icons/react"
 
-import { Container } from "@/src/components/common/container"
-import { BadgeCard } from "@/src/components/portal/BadgeCard"
-import { KeyPassHistoryWidget } from "@/src/components/portal/KeyPassHistoryWidget"
-import { KeyPassMilestoneProgress } from "@/src/components/portal/KeyPassMilestoneProgress"
-import { KeyPassMissionsWidget } from "@/src/components/portal/KeyPassMissionsWidget"
-import { KeyPassStatCard } from "@/src/components/portal/KeyPassStatCard"
-import { KeyPassTierTrack } from "@/src/components/portal/KeyPassTierTrack"
-import { WeeklyDropCard } from "@/src/components/portal/WeeklyDropCard"
 import { TIERS_CONFIG, type TierId, getNextTier } from "@/src/data/portalData"
 import { usePortalStore } from "@/src/store/usePortalStore"
+import { ArrowRight, Lightning, SealCheck, Trophy } from "@phosphor-icons/react"
+
 import { toast } from "@/src/components/ui/toast/toast"
+
+import { Container } from "@/src/components/common/container"
+import { BadgeCard } from "@/src/components/portal/badgeCard"
+import { KeyPassHistoryWidget } from "@/src/components/portal/keyPassHistoryWidget"
+import { KeyPassMilestoneProgress } from "@/src/components/portal/keyPassMilestoneProgress"
+import { KeyPassMissionsWidget } from "@/src/components/portal/keyPassMissionsWidget"
+import { KeyPassStatCard } from "@/src/components/portal/keyPassStatCard"
+import { KeyPassTierTrack } from "@/src/components/portal/keyPassTierTrack"
+import { WeeklyDropCard } from "@/src/components/portal/weeklyDropCard"
 
 export default function KeyPassOverviewPage(): React.JSX.Element {
   const {
@@ -29,7 +32,9 @@ export default function KeyPassOverviewPage(): React.JSX.Element {
   } = usePortalStore()
 
   const userTier = getUserTier ? getUserTier() : TIERS_CONFIG.titular
-  const [selectedTierId, setSelectedTierId] = React.useState<TierId | null>(null)
+  const [selectedTierId, setSelectedTierId] = React.useState<TierId | null>(
+    null
+  )
 
   const effectiveTierId: TierId = selectedTierId ?? userTier.id
   const displayedTier = TIERS_CONFIG[effectiveTierId] || userTier

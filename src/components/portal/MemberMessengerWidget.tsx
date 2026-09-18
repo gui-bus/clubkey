@@ -5,11 +5,7 @@ import * as React from "react"
 import Image from "next/image"
 import Link from "next/link"
 
-import {
-  MEMBERS,
-  getInitials,
-  getMemberSlug,
-} from "@/src/data/portalData"
+import { MEMBERS, getInitials, getMemberSlug } from "@/src/data/portalData"
 import { usePortalStore } from "@/src/store/usePortalStore"
 import {
   ArrowSquareOut,
@@ -228,7 +224,10 @@ export function MemberMessengerWidget(): React.JSX.Element | null {
                           />
                         )}
                         <AvatarFallback className="font-bold text-[10px] bg-zinc-900 text-white dark:bg-zinc-800">
-                          {getInitials(activeMember.firstName, activeMember.lastName)}
+                          {getInitials(
+                            activeMember.firstName,
+                            activeMember.lastName
+                          )}
                         </AvatarFallback>
                       </Avatar>
                     </div>
@@ -270,7 +269,10 @@ export function MemberMessengerWidget(): React.JSX.Element | null {
                       >
                         <Avatar size="xs" className="rounded-xs shrink-0">
                           {m.avatar && (
-                            <AvatarImage src={m.avatar} alt={`${m.firstName} ${m.lastName}`} />
+                            <AvatarImage
+                              src={m.avatar}
+                              alt={`${m.firstName} ${m.lastName}`}
+                            />
                           )}
                           <AvatarFallback className="text-[8px] bg-zinc-900 text-white font-bold">
                             {getInitials(m.firstName, m.lastName)}
@@ -332,7 +334,8 @@ export function MemberMessengerWidget(): React.JSX.Element | null {
                     Canal Direto do Clube
                   </span>
                   <p className="text-[11px] text-zinc-600 dark:text-zinc-400">
-                    Você e {activeMember.firstName} {activeMember.lastName} estão conectados no ClubKey.
+                    Você e {activeMember.firstName} {activeMember.lastName}{" "}
+                    estão conectados no ClubKey.
                   </p>
                 </div>
 

@@ -1,11 +1,14 @@
 "use client"
 
 import * as React from "react"
+
 import Image from "next/image"
+
 import { DeviceMobile, ShieldCheck, ShieldSlash } from "@phosphor-icons/react"
 
 import { Badge } from "@/src/components/ui/badge/badge"
 import { Button } from "@/src/components/ui/button/button"
+
 import { CtaButton } from "@/src/components/common/ctaButton"
 
 export interface ProfileSecuritySectionProps {
@@ -52,8 +55,8 @@ export function ProfileSecuritySection({
             </Badge>
           </div>
           <p className="text-xs text-zinc-500 dark:text-zinc-400">
-            Aumente a segurança da sua conta com verificação por código TOTP (Google
-            Authenticator ou 1Password).
+            Aumente a segurança da sua conta com verificação por código TOTP
+            (Google Authenticator ou 1Password).
           </p>
         </div>
 

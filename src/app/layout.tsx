@@ -9,8 +9,8 @@ import { Toast } from "@/src/components/ui/toast/toast"
 
 import { BrandStyles } from "@/src/components/common/brandStyles"
 import { ThemeProvider } from "@/src/components/common/themeProvider"
-import { Footer } from "@/src/components/landing/Footer"
-import { MemberMessengerWidget } from "@/src/components/portal/MemberMessengerWidget"
+import { Footer } from "@/src/components/landing/footer"
+import { MemberMessengerWidget } from "@/src/components/portal/memberMessengerWidget"
 
 import { cn } from "@/src/lib/utils"
 

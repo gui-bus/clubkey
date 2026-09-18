@@ -1,21 +1,25 @@
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 
-import { MemberProfileDetailClient } from "@/src/components/portal/MemberProfileDetailClient"
 import { MEMBERS } from "@/src/data/portalData"
+
+import { MemberProfileDetailClient } from "@/src/components/portal/memberProfileDetailClient"
 
 interface PageProps {
   params: Promise<{ id: string; slug: string }>
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
   const { id } = await params
   const member = MEMBERS.find((m) => m.id === Number(id))
 
   if (!member) {
     return {
       title: "Membro Não Encontrado",
-      description: "O perfil de membro solicitado não foi localizado na rede ClubKey.",
+      description:
+        "O perfil de membro solicitado não foi localizado na rede ClubKey.",
     }
   }
 

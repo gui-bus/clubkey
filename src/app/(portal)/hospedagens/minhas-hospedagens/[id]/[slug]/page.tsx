@@ -1,13 +1,16 @@
 import type { Metadata } from "next"
 
-import { MemberStayDetailClient } from "@/src/components/portal/MemberStayDetailClient"
 import { DEFAULT_MEMBER_STAYS } from "@/src/data/portalData"
+
+import { MemberStayDetailClient } from "@/src/components/portal/memberStayDetailClient"
 
 interface PageProps {
   params: Promise<{ id: string; slug: string }>
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
   const { id } = await params
   const stay = DEFAULT_MEMBER_STAYS.find((s) => s.id === id)
 

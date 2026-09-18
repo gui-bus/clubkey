@@ -1,12 +1,15 @@
 "use client"
 
 import * as React from "react"
+
 import Link from "next/link"
+
+import { type BadgeDefinition } from "@/src/data/portalData"
 import { ArrowRight, Trophy } from "@phosphor-icons/react"
 
 import { Badge } from "@/src/components/ui/badge/badge"
-import { BadgeCard } from "@/src/components/portal/BadgeCard"
-import { type BadgeDefinition } from "@/src/data/portalData"
+
+import { BadgeCard } from "@/src/components/portal/badgeCard"
 
 export interface ProfileBadgesSectionProps {
   badges: BadgeDefinition[]
@@ -37,7 +40,8 @@ export function ProfileBadgesSection({
             </Badge>
           </div>
           <p className="text-xs text-zinc-500 dark:text-zinc-400">
-            Insígnias e distinções de honra conquistadas através da sua participação e engajamento no clube.
+            Insígnias e distinções de honra conquistadas através da sua
+            participação e engajamento no clube.
           </p>
         </div>
 

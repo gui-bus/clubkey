@@ -18,9 +18,9 @@ import { Button } from "@/src/components/ui/button/button"
 
 import { Container } from "@/src/components/common/container"
 import { CtaButton } from "@/src/components/common/ctaButton"
-import { BackButton } from "@/src/components/portal/BackButton"
-import { MemberCard } from "@/src/components/portal/MemberCard"
-import { PortalHeroFilterBar } from "@/src/components/portal/PortalHeroFilterBar"
+import { BackButton } from "@/src/components/portal/backButton"
+import { MemberCard } from "@/src/components/portal/memberCard"
+import { PortalHeroFilterBar } from "@/src/components/portal/portalHeroFilterBar"
 
 const ROLE_FILTERS = [
   { value: "todos", label: "Todos" },

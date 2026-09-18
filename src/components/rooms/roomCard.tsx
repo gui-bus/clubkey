@@ -18,7 +18,7 @@ import {
 } from "@phosphor-icons/react"
 
 import { DiscountRibbon } from "@/src/components/common/discountRibbon"
-import { GlassBadge } from "@/src/components/portal/GlassBadge"
+import { GlassBadge } from "@/src/components/portal/glassBadge"
 
 import { cn } from "@/src/lib/utils"
 

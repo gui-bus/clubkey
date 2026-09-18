@@ -18,10 +18,10 @@ import { AnimatePresence, motion } from "framer-motion"
 import { toast } from "@/src/components/ui/toast/toast"
 
 import { Container } from "@/src/components/common/container"
-import { FloatingCta } from "@/src/components/landing/FloatingCta"
-import { Navbar } from "@/src/components/landing/Navbar"
-import { TopBanner } from "@/src/components/landing/TopBanner"
-import { ShareButton } from "@/src/components/portal/ShareButton"
+import { FloatingCta } from "@/src/components/landing/floatingCta"
+import { Navbar } from "@/src/components/landing/navbar"
+import { TopBanner } from "@/src/components/landing/topBanner"
+import { ShareButton } from "@/src/components/portal/shareButton"
 import { RoomAmenities } from "@/src/components/rooms/roomAmenities"
 import { RoomBookingCard } from "@/src/components/rooms/roomBookingCard"
 import { RoomGallery } from "@/src/components/rooms/roomGallery"
@@ -37,8 +37,10 @@ export function RoomDetailClient({
   roomSlug?: string
 }): React.JSX.Element {
   const params = useParams()
-  const id = (initialId || (Array.isArray(params?.id) ? params.id[0] : params?.id)) as string
-  const slug = (initialSlug || (Array.isArray(params?.slug) ? params.slug[0] : params?.slug)) as string
+  const id = (initialId ||
+    (Array.isArray(params?.id) ? params.id[0] : params?.id)) as string
+  const slug = (initialSlug ||
+    (Array.isArray(params?.slug) ? params.slug[0] : params?.slug)) as string
 
   const room = React.useMemo(() => getRoomDetail(id, slug), [id, slug])
 

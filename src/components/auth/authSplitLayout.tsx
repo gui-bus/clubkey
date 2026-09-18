@@ -6,9 +6,9 @@ import Image from "next/image"
 
 import { ShieldCheck } from "@phosphor-icons/react"
 
-import { FloatingCta } from "@/src/components/landing/FloatingCta"
-import { Navbar } from "@/src/components/landing/Navbar"
-import { TopBanner } from "@/src/components/landing/TopBanner"
+import { FloatingCta } from "@/src/components/landing/floatingCta"
+import { Navbar } from "@/src/components/landing/navbar"
+import { TopBanner } from "@/src/components/landing/topBanner"
 
 import { cn } from "@/src/lib/utils"
 

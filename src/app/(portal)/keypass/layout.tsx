@@ -1,8 +1,9 @@
-import type { Metadata } from "next"
 import * as React from "react"
 
-import { KeyPassNav } from "@/src/components/portal/KeyPassNav"
-import { PortalHero } from "@/src/components/portal/PortalHero"
+import type { Metadata } from "next"
+
+import { KeyPassNav } from "@/src/components/portal/keyPassNav"
+import { PortalHero } from "@/src/components/portal/portalHero"
 
 export const metadata: Metadata = {
   title: "KeyPass — Tiers & Recompensas",

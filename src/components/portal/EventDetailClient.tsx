@@ -36,12 +36,12 @@ import { toast } from "@/src/components/ui/toast/toast"
 
 import { Container } from "@/src/components/common/container"
 import { CtaButton } from "@/src/components/common/ctaButton"
-import { AddToCalendarButton } from "@/src/components/portal/AddToCalendarButton"
-import { BackButton } from "@/src/components/portal/BackButton"
-import { GlassBadge } from "@/src/components/portal/GlassBadge"
-import { MemberCard } from "@/src/components/portal/MemberCard"
-import { RelatedEventsCard } from "@/src/components/portal/RelatedEventsCard"
-import { ShareButton } from "@/src/components/portal/ShareButton"
+import { AddToCalendarButton } from "@/src/components/portal/addToCalendarButton"
+import { BackButton } from "@/src/components/portal/backButton"
+import { GlassBadge } from "@/src/components/portal/glassBadge"
+import { MemberCard } from "@/src/components/portal/memberCard"
+import { RelatedEventsCard } from "@/src/components/portal/relatedEventsCard"
+import { ShareButton } from "@/src/components/portal/shareButton"
 
 export function EventDetailClient({
   eventId: initialEventId,
@@ -200,7 +200,10 @@ export function EventDetailClient({
                   className="border border-white/20 group-hover/host:border-brand-primary transition-colors cursor-pointer"
                 >
                   {organizer.avatar && (
-                    <AvatarImage src={organizer.avatar} alt={`${organizer.firstName} ${organizer.lastName}`} />
+                    <AvatarImage
+                      src={organizer.avatar}
+                      alt={`${organizer.firstName} ${organizer.lastName}`}
+                    />
                   )}
                   <AvatarFallback className="font-bold text-[9px] bg-zinc-800 text-white">
                     {getInitials(organizer.firstName, organizer.lastName)}

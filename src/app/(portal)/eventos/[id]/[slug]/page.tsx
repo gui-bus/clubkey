@@ -1,21 +1,25 @@
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 
-import { EventDetailClient } from "@/src/components/portal/EventDetailClient"
 import { EVENTS } from "@/src/data/portalData"
+
+import { EventDetailClient } from "@/src/components/portal/eventDetailClient"
 
 interface PageProps {
   params: Promise<{ id: string; slug: string }>
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
   const { id } = await params
   const event = EVENTS.find((e) => e.id === Number(id))
 
   if (!event) {
     return {
       title: "Evento Não Encontrado",
-      description: "O evento solicitado não foi localizado na agenda do ClubKey.",
+      description:
+        "O evento solicitado não foi localizado na agenda do ClubKey.",
     }
   }
 

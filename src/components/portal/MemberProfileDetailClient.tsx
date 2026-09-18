@@ -14,7 +14,6 @@ import {
   TIERS_CONFIG,
   getInitials,
 } from "@/src/data/portalData"
-import { cn } from "@/src/lib/utils"
 import { usePortalStore } from "@/src/store/usePortalStore"
 import {
   ArrowRight,
@@ -50,11 +49,13 @@ import {
 
 import { Container } from "@/src/components/common/container"
 import { CtaButton } from "@/src/components/common/ctaButton"
-import { BackButton } from "@/src/components/portal/BackButton"
-import { getBadgeIcon } from "@/src/components/portal/BadgeCard"
-import { EventCard } from "@/src/components/portal/EventCard"
-import { RelatedMembersCard } from "@/src/components/portal/RelatedMembersCard"
-import { ShareButton } from "@/src/components/portal/ShareButton"
+import { BackButton } from "@/src/components/portal/backButton"
+import { getBadgeIcon } from "@/src/components/portal/badgeCard"
+import { EventCard } from "@/src/components/portal/eventCard"
+import { RelatedMembersCard } from "@/src/components/portal/relatedMembersCard"
+import { ShareButton } from "@/src/components/portal/shareButton"
+
+import { cn } from "@/src/lib/utils"
 
 export function MemberProfileDetailClient({
   memberId: initialMemberId,
@@ -85,11 +86,12 @@ export function MemberProfileDetailClient({
 
   const fullName = `${member.firstName} ${member.lastName}`.trim()
   const firstName = member.firstName
-  const [selectedBadge, setSelectedBadge] = React.useState<BadgeDefinition | null>(null)
+  const [selectedBadge, setSelectedBadge] =
+    React.useState<BadgeDefinition | null>(null)
 
   const memberTier = member.tierId ? TIERS_CONFIG[member.tierId] : null
-  const memberUnlockedBadges = DEFAULT_BADGES.filter(
-    (b) => member.unlockedBadgeIds?.includes(b.id)
+  const memberUnlockedBadges = DEFAULT_BADGES.filter((b) =>
+    member.unlockedBadgeIds?.includes(b.id)
   )
 
   const handleConnectToggle = () => {
@@ -334,10 +336,11 @@ export function MemberProfileDetailClient({
                   Visão Geral
                 </span>
                 <p className="text-lg sm:text-xl font-light text-zinc-800 dark:text-zinc-200 leading-relaxed">
-                  {member.firstName} {member.lastName} é {member.role.toLowerCase()} na{" "}
-                  {member.company}, atuando em {member.city}. Faz parte do
-                  círculo restrito de membros com foco em geração de negócios,
-                  parcerias institucionais e expansão do ecossistema.
+                  {member.firstName} {member.lastName} é{" "}
+                  {member.role.toLowerCase()} na {member.company}, atuando em{" "}
+                  {member.city}. Faz parte do círculo restrito de membros com
+                  foco em geração de negócios, parcerias institucionais e
+                  expansão do ecossistema.
                 </p>
               </div>
             </section>
@@ -518,7 +521,10 @@ export function MemberProfileDetailClient({
                                 "w-6 h-6 sm:w-7 sm:h-7 shrink-0 text-zinc-900 dark:text-white"
                               )}
                               <div className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-emerald-600 text-white flex items-center justify-center ring-2 ring-white dark:ring-zinc-900 shadow-xs">
-                                <CheckCircle className="w-3.5 h-3.5" weight="fill" />
+                                <CheckCircle
+                                  className="w-3.5 h-3.5"
+                                  weight="fill"
+                                />
                               </div>
                             </button>
                           </TooltipTrigger>
@@ -540,7 +546,10 @@ export function MemberProfileDetailClient({
                                     {badge.name}
                                   </h4>
                                   <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold inline-flex items-center gap-1">
-                                    <CheckCircle className="w-3 h-3" weight="bold" />
+                                    <CheckCircle
+                                      className="w-3 h-3"
+                                      weight="bold"
+                                    />
                                     <span>Conquistada</span>
                                   </span>
                                 </div>
@@ -606,7 +615,10 @@ export function MemberProfileDetailClient({
                         </h4>
                         {member.unlockedBadgeIds?.includes(selectedBadge.id) ? (
                           <span className="text-xs text-emerald-600 dark:text-emerald-400 font-bold inline-flex items-center gap-1 mt-0.5">
-                            <CheckCircle className="w-3.5 h-3.5" weight="bold" />
+                            <CheckCircle
+                              className="w-3.5 h-3.5"
+                              weight="bold"
+                            />
                             <span>
                               Conquistada
                               {selectedBadge.unlockedAt
@@ -657,7 +669,9 @@ export function MemberProfileDetailClient({
                         : "Disponível"}
                   </span>
                   <span className="text-xs font-bold uppercase tracking-wider text-zinc-900 dark:text-white">
-                    {member.memberSince ? `Desde ${member.memberSince}` : "Membro Ativo"}
+                    {member.memberSince
+                      ? `Desde ${member.memberSince}`
+                      : "Membro Ativo"}
                   </span>
                 </div>
                 <p className="text-xs text-zinc-900 dark:text-white pt-1 leading-relaxed font-normal">

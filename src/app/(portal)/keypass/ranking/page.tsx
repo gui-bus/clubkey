@@ -1,14 +1,10 @@
 "use client"
 
 import * as React from "react"
+
 import Image from "next/image"
 import Link from "next/link"
-import { Crown, Trophy } from "@phosphor-icons/react"
 
-import { Container } from "@/src/components/common/container"
-import { KeyPassStatCard } from "@/src/components/portal/KeyPassStatCard"
-import { LeaderboardTable } from "@/src/components/portal/LeaderboardTable"
-import { LeaderboardTargetCard } from "@/src/components/portal/LeaderboardTargetCard"
 import {
   MOCK_LEADERBOARD,
   MOCK_MONTHLY_LEADERBOARD,
@@ -17,15 +13,18 @@ import {
   getMemberSlug,
 } from "@/src/data/portalData"
 import { usePortalStore } from "@/src/store/usePortalStore"
+import { Crown, Trophy } from "@phosphor-icons/react"
+
+import { Container } from "@/src/components/common/container"
+import { KeyPassStatCard } from "@/src/components/portal/keyPassStatCard"
+import { LeaderboardTable } from "@/src/components/portal/leaderboardTable"
+import { LeaderboardTargetCard } from "@/src/components/portal/leaderboardTargetCard"
+
 import { cn } from "@/src/lib/utils"
 
 export default function KeyPassRankingPage(): React.JSX.Element {
-  const {
-    xp,
-    ribTokens,
-    leaderboardTimeframe,
-    setLeaderboardTimeframe,
-  } = usePortalStore()
+  const { xp, ribTokens, leaderboardTimeframe, setLeaderboardTimeframe } =
+    usePortalStore()
 
   const leaderboard = React.useMemo(() => {
     switch (leaderboardTimeframe) {
@@ -73,10 +72,7 @@ export default function KeyPassRankingPage(): React.JSX.Element {
             <div className="space-y-1.5">
               <div className="flex flex-wrap items-center gap-2">
                 <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xs bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 text-[10px] font-black uppercase tracking-wider whitespace-nowrap shrink-0">
-                  <Crown
-                    className="w-3.5 h-3.5 shrink-0"
-                    weight="bold"
-                  />
+                  <Crown className="w-3.5 h-3.5 shrink-0" weight="bold" />
                   <span>Posição #1 ({timeframeLabel})</span>
                 </span>
               </div>
