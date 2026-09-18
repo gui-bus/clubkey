@@ -6,6 +6,15 @@ const analyzer = withBundleAnalyzer({
 
 const nextConfig = {
   output: "standalone",
+  async redirects() {
+    return [
+      {
+        source: "/home",
+        destination: "/",
+        permanent: false,
+      },
+    ]
+  },
   async headers() {
     return [
       {

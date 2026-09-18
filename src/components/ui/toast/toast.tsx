@@ -3,12 +3,12 @@
 import type * as React from "react"
 
 import {
-  AlertCircle,
-  AlertTriangle,
   Bell,
-  CheckCircle2,
+  CheckCircle,
   Info,
-} from "lucide-react"
+  Warning,
+  WarningCircle,
+} from "@phosphor-icons/react"
 import { Toaster as SonnerToaster, toast as sonnerToast } from "sonner"
 
 import { designRadius } from "@/src/lib/design-system"
@@ -138,21 +138,21 @@ const createCustomToast = (
 
   const iconMap = {
     success: {
-      icon: CheckCircle2,
+      icon: CheckCircle,
       bg: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20",
       bar: "bg-emerald-500",
       richBg: "bg-emerald-600 text-white border-transparent",
       borderClass: "border-emerald-500",
     },
     error: {
-      icon: AlertCircle,
+      icon: WarningCircle,
       bg: "bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20",
       bar: "bg-rose-500",
       richBg: "bg-rose-600 text-white border-transparent",
       borderClass: "border-rose-500",
     },
     warning: {
-      icon: AlertTriangle,
+      icon: Warning,
       bg: "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20",
       bar: "bg-amber-500",
       richBg: "bg-amber-500 text-white border-transparent",

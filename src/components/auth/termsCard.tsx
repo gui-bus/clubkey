@@ -1,10 +1,13 @@
 "use client"
 
 import * as React from "react"
+
 import Link from "next/link"
-import { ExternalLink } from "lucide-react"
+
+import { ArrowSquareOut } from "@phosphor-icons/react"
 
 import { Checkbox } from "@/src/components/ui/checkbox/checkbox"
+
 import { cn } from "@/src/lib/utils"
 
 export interface TermsCardProps {
@@ -69,19 +72,21 @@ export function TermsCard({
             rel="noreferrer"
             className="inline-flex items-center gap-1.5 text-xs text-zinc-900 dark:text-zinc-100 hover:text-zinc-600 dark:hover:text-zinc-300 underline font-medium transition-colors"
           >
-            <ExternalLink className="w-3.5 h-3.5 shrink-0" />
+            <ArrowSquareOut className="w-3.5 h-3.5 shrink-0" />
             <span>{doc.title}</span>
           </Link>
         ))}
       </div>
 
       <p className="text-xs text-zinc-600 dark:text-zinc-400 font-light leading-relaxed pl-7">
-        Declaro para os devidos fins que as informações cadastrais fornecidas são
-        verdadeiras, e assumo total responsabilidade sobre elas, estando sujeito
-        às penalidades previstas em lei (Art. 171 e 299 CP).
+        Declaro para os devidos fins que as informações cadastrais fornecidas
+        são verdadeiras, e assumo total responsabilidade sobre elas, estando
+        sujeito às penalidades previstas em lei (Art. 171 e 299 CP).
       </p>
 
-      {error && <span className="block text-xs text-red-500 pl-7">{error}</span>}
+      {error && (
+        <span className="block text-xs text-red-500 pl-7">{error}</span>
+      )}
     </div>
   )
 }

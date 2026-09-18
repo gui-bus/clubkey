@@ -1,21 +1,23 @@
 "use client"
 
 import * as React from "react"
+
 import Link from "next/link"
-import { CheckCircle2, Home, KeyRound } from "lucide-react"
+
+import { CheckCircle, House, Key } from "@phosphor-icons/react"
 
 import { Container } from "@/src/components/common/container"
 import { CtaButton } from "@/src/components/common/ctaButton"
-import { FloatingCta } from "@/src/components/landing/FloatingCta"
-import { Footer } from "@/src/components/landing/Footer"
-import { Navbar } from "@/src/components/landing/Navbar"
-import { TopBanner } from "@/src/components/landing/TopBanner"
+import { FloatingCta } from "@/src/components/landing/floatingCta"
+import { Navbar } from "@/src/components/landing/navbar"
+import { TopBanner } from "@/src/components/landing/topBanner"
+import { SubscriptionCartCard } from "@/src/components/subscription/subscriptionCartCard"
 import {
   type PaymentMethod,
-  type SubscriptionUser,
   SubscriptionForm,
+  type SubscriptionUser,
 } from "@/src/components/subscription/subscriptionForm"
-import { SubscriptionCartCard } from "@/src/components/subscription/subscriptionCartCard"
+
 import { brandConfig } from "@/src/config/brand.config"
 
 export default function SubscriptionPage(): React.JSX.Element {
@@ -42,7 +44,7 @@ export default function SubscriptionPage(): React.JSX.Element {
   }
 
   return (
-    <main className="w-full bg-[#F1F1F1] dark:bg-[#161616] text-[#111111] dark:text-white flex flex-col font-sans selection:bg-brand-primary/20 selection:text-brand-primary">
+    <main className="flex-1 w-full bg-[#F1F1F1] dark:bg-[#161616] text-[#111111] dark:text-white flex flex-col font-sans selection:bg-brand-primary/20 selection:text-brand-primary">
       <TopBanner />
       <Navbar isTransparent={false} />
 
@@ -51,23 +53,28 @@ export default function SubscriptionPage(): React.JSX.Element {
           {isSuccess ? (
             <div className="max-w-xl mx-auto bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-sm p-6 sm:p-10 text-center flex flex-col items-center gap-6 shadow-sm animate-in fade-in-0 duration-300">
               <div className="w-16 h-16 rounded-sm bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-500">
-                <CheckCircle2 className="w-9 h-9" />
+                <CheckCircle className="w-9 h-9" />
               </div>
 
               <div className="space-y-2">
                 <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-sm bg-brand-primary/10 text-brand-primary text-xs font-bold uppercase tracking-wider">
-                  <KeyRound className="w-3.5 h-3.5" />
+                  <Key className="w-3.5 h-3.5" />
                   <span>Assinatura Ativada</span>
                 </div>
                 <h1 className="text-2xl sm:text-3xl font-black text-zinc-900 dark:text-white font-heading uppercase tracking-tight">
-                  Parabéns, {user?.name || "Membro"}!
+                  Parabéns,{" "}
+                  {user
+                    ? `${user.firstName} ${user.lastName}`.trim()
+                    : "Membro"}
+                  !
                 </h1>
                 <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 font-light leading-relaxed">
-                  Sua Key de membro {brandConfig.name} está ativa. Você já tem acesso imediato a todas as tarifas com até 60% de desconto.
+                  Sua Key de membro {brandConfig.name} está ativa. Você já tem
+                  acesso imediato a todas as tarifas com até 60% de desconto.
                 </p>
               </div>
 
-              <div className="w-full p-4 rounded-sm bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-200 dark:border-zinc-800 flex flex-col gap-2.5 text-left text-xs">
+              <div className="w-full p-4 rounded-sm bg-[#F1F1F1] dark:bg-zinc-800/60 border border-zinc-200 dark:border-zinc-800 flex flex-col gap-2.5 text-left text-xs">
                 <div className="flex justify-between items-center text-zinc-600 dark:text-zinc-400">
                   <span>Plano escolhido:</span>
                   <span className="font-bold text-zinc-900 dark:text-white">
@@ -91,11 +98,8 @@ export default function SubscriptionPage(): React.JSX.Element {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-3 w-full pt-2">
-                <CtaButton
-                  href="/rooms"
-                  className="flex-1 py-3.5"
-                >
-                  <KeyRound className="w-4 h-4 mr-2" />
+                <CtaButton href="/hospedagens" className="flex-1 py-3.5">
+                  <Key className="w-4 h-4 mr-2" />
                   <span>Explorar Hospedagens</span>
                 </CtaButton>
 
@@ -103,7 +107,7 @@ export default function SubscriptionPage(): React.JSX.Element {
                   href="/"
                   className="py-3.5 px-6 rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 hover:border-zinc-300 text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all"
                 >
-                  <Home className="w-4 h-4" />
+                  <House className="w-4 h-4" />
                   <span>Início</span>
                 </Link>
               </div>
@@ -118,7 +122,8 @@ export default function SubscriptionPage(): React.JSX.Element {
                   Seja um associado
                 </h1>
                 <p className="mt-2 text-sm sm:text-base text-zinc-600 dark:text-zinc-400 font-light leading-relaxed max-w-2xl">
-                  Garanta acesso imediato a descontos exclusivos de até 60% em mais de 4.500 hotéis e acomodações premium.
+                  Garanta acesso imediato a descontos exclusivos de até 60% em
+                  mais de 4.500 hotéis e acomodações premium.
                 </p>
               </div>
 
@@ -133,7 +138,7 @@ export default function SubscriptionPage(): React.JSX.Element {
                   />
                 </div>
 
-                <div className="lg:col-span-5 xl:col-span-5 w-full">
+                <div className="lg:col-span-5 xl:col-span-5 w-full lg:sticky lg:top-24">
                   <SubscriptionCartCard paymentMethod={paymentMethod} />
                 </div>
               </div>
@@ -142,7 +147,6 @@ export default function SubscriptionPage(): React.JSX.Element {
         </Container>
       </section>
 
-      <Footer />
       <FloatingCta />
     </main>
   )

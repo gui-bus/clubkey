@@ -1,18 +1,22 @@
 "use client"
 
 import * as React from "react"
+
 import Image from "next/image"
 import Link from "next/link"
-import { AnimatePresence, motion } from "framer-motion"
+
 import {
-  BadgePercent,
-  ChevronRight,
+  CaretRight,
   Minus,
+  Percent,
   Plus,
   ShieldCheck,
-} from "lucide-react"
+} from "@phosphor-icons/react"
+import { AnimatePresence, motion } from "framer-motion"
 
 import { CtaButton } from "@/src/components/common/ctaButton"
+import { GlassBadge } from "@/src/components/portal/glassBadge"
+
 import { cn } from "@/src/lib/utils"
 
 export interface RoomBookingCardProps {
@@ -37,7 +41,6 @@ export interface RoomBookingCardProps {
 }
 
 export function RoomBookingCard({
-  roomTitle,
   maxGuests,
   discountPrice,
   discountPercent,
@@ -90,7 +93,15 @@ export function RoomBookingCard({
         url: trivagoUrl,
       },
     ],
-    [airbnbPrice, bookingPrice, trivagoPrice, nights, airbnbUrl, bookingUrl, trivagoUrl]
+    [
+      airbnbPrice,
+      bookingPrice,
+      trivagoPrice,
+      nights,
+      airbnbUrl,
+      bookingUrl,
+      trivagoUrl,
+    ]
   )
 
   React.useEffect(() => {
@@ -143,13 +154,15 @@ export function RoomBookingCard({
                         "object-contain opacity-90 group-hover/src:opacity-100"
                       )}
                     />
-                    <span className="font-semibold">R$ {comp.pricePerNight}</span>
+                    <span className="font-semibold">
+                      R$ {comp.pricePerNight}
+                    </span>
                   </Link>
                 ))}
               </div>
             </div>
 
-            <div className="flex items-baseline justify-between">
+            <div className="flex items-center justify-between">
               <div>
                 <div className="text-[10px] uppercase font-bold text-brand-primary tracking-wider mb-0.5">
                   Preço Exclusivo ClubKey
@@ -164,8 +177,26 @@ export function RoomBookingCard({
                 </div>
               </div>
 
-              <div className="px-3 py-1 rounded-sm bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400 text-xs font-bold">
-                {discountPercent}% OFF
+              <div className="flex flex-col items-end gap-1.5 shrink-0">
+                <div className="w-[84px] h-[26px] rounded-sm bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400 text-xs font-bold flex items-center justify-center shrink-0">
+                  {discountPercent}% OFF
+                </div>
+                <GlassBadge
+                  size="sm"
+                  className="w-[84px] h-[26px] justify-center px-0 py-0 bg-zinc-100 dark:bg-white/10 text-zinc-800 dark:text-white border-zinc-200 dark:border-white/15 font-heading font-black text-[10px] shrink-0"
+                  icon={
+                    <div className="relative w-3.5 h-3.5 shrink-0">
+                      <Image
+                        src="/utils/gamification/utils/xp.webp"
+                        alt="XP"
+                        fill
+                        className="object-contain"
+                      />
+                    </div>
+                  }
+                >
+                  +300 XP
+                </GlassBadge>
               </div>
             </div>
 
@@ -199,7 +230,7 @@ export function RoomBookingCard({
                       />
                     </Link>
                     <span className="inline-flex items-center gap-1 text-[11px] font-bold text-zinc-900 dark:text-white">
-                      <BadgePercent className="w-3.5 h-3.5 text-zinc-900 dark:text-white" />
+                      <Percent className="w-3.5 h-3.5 text-zinc-900 dark:text-white" />
                       <span>Menor preço garantido</span>
                     </span>
                   </div>
@@ -218,7 +249,7 @@ export function RoomBookingCard({
 
           <div className="md:col-span-4 flex flex-col justify-center gap-3 md:border-r md:border-zinc-200 dark:md:border-zinc-800 md:pr-6">
             <div className="flex flex-col border border-zinc-200 dark:border-zinc-800 rounded-sm overflow-hidden divide-y divide-zinc-200 dark:divide-zinc-800">
-              <div className="grid grid-cols-2 p-3 bg-zinc-50/50 dark:bg-zinc-900/50">
+              <div className="grid grid-cols-2 p-3 bg-[#F1F1F1]/50 dark:bg-zinc-900/50">
                 <div className="flex flex-col">
                   <span className="text-[10px] uppercase font-bold text-zinc-400">
                     Check-in
@@ -242,24 +273,32 @@ export function RoomBookingCard({
                   Número de diárias:
                 </span>
                 <div className="flex items-center gap-3">
-                  <button
-                    type="button"
+                  <CtaButton
+                    variant="secondary"
+                    size="xs"
                     disabled={nights <= 1}
-                    onClick={() => onNightsChange((prev) => Math.max(1, prev - 1))}
-                    className="w-7 h-7 rounded-sm border border-zinc-200 dark:border-zinc-700 flex items-center justify-center text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 disabled:opacity-30 cursor-pointer"
+                    onClick={() =>
+                      onNightsChange((prev) => Math.max(1, prev - 1))
+                    }
+                    className="w-7 h-7 !p-0 shadow-none"
+                    textClassName="w-full h-full flex items-center justify-center"
+                    aria-label="Diminuir diárias"
                   >
-                    <Minus className="w-3.5 h-3.5" />
-                  </button>
+                    <Minus className="w-3.5 h-3.5" weight="bold" />
+                  </CtaButton>
                   <span className="text-xs font-bold w-4 text-center">
                     {nights}
                   </span>
-                  <button
-                    type="button"
+                  <CtaButton
+                    variant="secondary"
+                    size="xs"
                     onClick={() => onNightsChange((prev) => prev + 1)}
-                    className="w-7 h-7 rounded-sm border border-zinc-200 dark:border-zinc-700 flex items-center justify-center text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 cursor-pointer"
+                    className="w-7 h-7 !p-0 shadow-none"
+                    textClassName="w-full h-full flex items-center justify-center"
+                    aria-label="Aumentar diárias"
                   >
-                    <Plus className="w-3.5 h-3.5" />
-                  </button>
+                    <Plus className="w-3.5 h-3.5" weight="bold" />
+                  </CtaButton>
                 </div>
               </div>
 
@@ -268,25 +307,35 @@ export function RoomBookingCard({
                   Hóspedes:
                 </span>
                 <div className="flex items-center gap-3">
-                  <button
-                    type="button"
+                  <CtaButton
+                    variant="secondary"
+                    size="xs"
                     disabled={guests <= 1}
-                    onClick={() => onGuestsChange((prev) => Math.max(1, prev - 1))}
-                    className="w-7 h-7 rounded-sm border border-zinc-200 dark:border-zinc-700 flex items-center justify-center text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 disabled:opacity-30 cursor-pointer"
+                    onClick={() =>
+                      onGuestsChange((prev) => Math.max(1, prev - 1))
+                    }
+                    className="w-7 h-7 !p-0 shadow-none"
+                    textClassName="w-full h-full flex items-center justify-center"
+                    aria-label="Diminuir hóspedes"
                   >
-                    <Minus className="w-3.5 h-3.5" />
-                  </button>
+                    <Minus className="w-3.5 h-3.5" weight="bold" />
+                  </CtaButton>
                   <span className="text-xs font-bold w-4 text-center">
                     {guests}
                   </span>
-                  <button
-                    type="button"
+                  <CtaButton
+                    variant="secondary"
+                    size="xs"
                     disabled={guests >= maxGuests}
-                    onClick={() => onGuestsChange((prev) => Math.min(maxGuests, prev + 1))}
-                    className="w-7 h-7 rounded-sm border border-zinc-200 dark:border-zinc-700 flex items-center justify-center text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 disabled:opacity-30 cursor-pointer"
+                    onClick={() =>
+                      onGuestsChange((prev) => Math.min(maxGuests, prev + 1))
+                    }
+                    className="w-7 h-7 !p-0 shadow-none"
+                    textClassName="w-full h-full flex items-center justify-center"
+                    aria-label="Aumentar hóspedes"
                   >
-                    <Plus className="w-3.5 h-3.5" />
-                  </button>
+                    <Plus className="w-3.5 h-3.5" weight="bold" />
+                  </CtaButton>
                 </div>
               </div>
             </div>
@@ -331,7 +380,7 @@ export function RoomBookingCard({
                 textClassName="gap-2"
               >
                 <span>Reservar com ClubKey</span>
-                <ChevronRight className="w-4 h-4 stroke-[2.5]" />
+                <CaretRight className="w-4 h-4 stroke-[2.5]" />
               </CtaButton>
 
               <div className="flex items-center justify-center gap-1 text-[11px] text-zinc-500 dark:text-zinc-400 text-center">
@@ -382,7 +431,7 @@ export function RoomBookingCard({
         </div>
       </div>
 
-      <div className="flex items-baseline justify-between">
+      <div className="flex items-center justify-between">
         <div>
           <div className="text-[10px] uppercase font-bold text-brand-primary tracking-wider mb-0.5">
             Preço Exclusivo ClubKey
@@ -397,13 +446,31 @@ export function RoomBookingCard({
           </div>
         </div>
 
-        <div className="px-3 py-1 rounded-sm bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400 text-xs font-bold">
-          {discountPercent}% OFF
+        <div className="flex flex-col items-end gap-1.5 shrink-0">
+          <div className="w-[84px] h-[26px] rounded-sm bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400 text-xs font-bold flex items-center justify-center shrink-0">
+            {discountPercent}% OFF
+          </div>
+          <GlassBadge
+            size="sm"
+            className="w-[84px] h-[26px] justify-center px-0 py-0 bg-zinc-100 dark:bg-white/10 text-zinc-800 dark:text-white border-zinc-200 dark:border-white/15 font-heading font-black text-[10px] shrink-0"
+            icon={
+              <div className="relative w-3.5 h-3.5 shrink-0">
+                <Image
+                  src="/utils/gamification/utils/xp.webp"
+                  alt="XP"
+                  fill
+                  className="object-contain"
+                />
+              </div>
+            }
+          >
+            +300 XP
+          </GlassBadge>
         </div>
       </div>
 
       <div className="flex flex-col border border-zinc-200 dark:border-zinc-800 rounded-sm overflow-hidden divide-y divide-zinc-200 dark:divide-zinc-800">
-        <div className="grid grid-cols-2 p-3 bg-zinc-50/50 dark:bg-zinc-900/50">
+        <div className="grid grid-cols-2 p-3 bg-[#F1F1F1]/50 dark:bg-zinc-900/50">
           <div className="flex flex-col">
             <span className="text-[10px] uppercase font-bold text-zinc-400">
               Check-in
@@ -427,24 +494,28 @@ export function RoomBookingCard({
             Número de diárias:
           </span>
           <div className="flex items-center gap-3">
-            <button
-              type="button"
+            <CtaButton
+              variant="secondary"
+              size="xs"
               disabled={nights <= 1}
               onClick={() => onNightsChange((prev) => Math.max(1, prev - 1))}
-              className="w-7 h-7 rounded-sm border border-zinc-200 dark:border-zinc-700 flex items-center justify-center text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 disabled:opacity-30 cursor-pointer"
+              className="w-7 h-7 !p-0 shadow-none"
+              textClassName="w-full h-full flex items-center justify-center"
+              aria-label="Diminuir diárias"
             >
-              <Minus className="w-3.5 h-3.5" />
-            </button>
-            <span className="text-xs font-bold w-4 text-center">
-              {nights}
-            </span>
-            <button
-              type="button"
+              <Minus className="w-3.5 h-3.5" weight="bold" />
+            </CtaButton>
+            <span className="text-xs font-bold w-4 text-center">{nights}</span>
+            <CtaButton
+              variant="secondary"
+              size="xs"
               onClick={() => onNightsChange((prev) => prev + 1)}
-              className="w-7 h-7 rounded-sm border border-zinc-200 dark:border-zinc-700 flex items-center justify-center text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 cursor-pointer"
+              className="w-7 h-7 !p-0 shadow-none"
+              textClassName="w-full h-full flex items-center justify-center"
+              aria-label="Aumentar diárias"
             >
-              <Plus className="w-3.5 h-3.5" />
-            </button>
+              <Plus className="w-3.5 h-3.5" weight="bold" />
+            </CtaButton>
           </div>
         </div>
 
@@ -453,25 +524,31 @@ export function RoomBookingCard({
             Hóspedes:
           </span>
           <div className="flex items-center gap-3">
-            <button
-              type="button"
+            <CtaButton
+              variant="secondary"
+              size="xs"
               disabled={guests <= 1}
               onClick={() => onGuestsChange((prev) => Math.max(1, prev - 1))}
-              className="w-7 h-7 rounded-sm border border-zinc-200 dark:border-zinc-700 flex items-center justify-center text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 disabled:opacity-30 cursor-pointer"
+              className="w-7 h-7 !p-0 shadow-none"
+              textClassName="w-full h-full flex items-center justify-center"
+              aria-label="Diminuir hóspedes"
             >
-              <Minus className="w-3.5 h-3.5" />
-            </button>
-            <span className="text-xs font-bold w-4 text-center">
-              {guests}
-            </span>
-            <button
-              type="button"
+              <Minus className="w-3.5 h-3.5" weight="bold" />
+            </CtaButton>
+            <span className="text-xs font-bold w-4 text-center">{guests}</span>
+            <CtaButton
+              variant="secondary"
+              size="xs"
               disabled={guests >= maxGuests}
-              onClick={() => onGuestsChange((prev) => Math.min(maxGuests, prev + 1))}
-              className="w-7 h-7 rounded-sm border border-zinc-200 dark:border-zinc-700 flex items-center justify-center text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 disabled:opacity-30 cursor-pointer"
+              onClick={() =>
+                onGuestsChange((prev) => Math.min(maxGuests, prev + 1))
+              }
+              className="w-7 h-7 !p-0 shadow-none"
+              textClassName="w-full h-full flex items-center justify-center"
+              aria-label="Aumentar hóspedes"
             >
-              <Plus className="w-3.5 h-3.5" />
-            </button>
+              <Plus className="w-3.5 h-3.5" weight="bold" />
+            </CtaButton>
           </div>
         </div>
       </div>
@@ -487,9 +564,7 @@ export function RoomBookingCard({
         </div>
         <div className="flex items-center justify-between text-emerald-600 dark:text-emerald-400">
           <span>Desconto Exclusivo ClubKey</span>
-          <span className="font-bold">
-            -R$ {savingsPerNight * nights}
-          </span>
+          <span className="font-bold">-R$ {savingsPerNight * nights}</span>
         </div>
         <div className="flex items-center justify-between">
           <span>Taxa de limpeza</span>
@@ -542,7 +617,7 @@ export function RoomBookingCard({
                 />
               </Link>
               <span className="inline-flex items-center gap-1 text-[11px] font-bold text-zinc-900 dark:text-white">
-                <BadgePercent className="w-3.5 h-3.5 text-zinc-900 dark:text-white" />
+                <Percent className="w-3.5 h-3.5 text-zinc-900 dark:text-white" />
                 <span>Menor preço garantido</span>
               </span>
             </div>
@@ -558,14 +633,9 @@ export function RoomBookingCard({
         </AnimatePresence>
       </div>
 
-      <CtaButton
-        isFullWidth
-        size="lg"
-        onClick={onBook}
-        textClassName="gap-2"
-      >
+      <CtaButton isFullWidth size="lg" onClick={onBook} textClassName="gap-2">
         <span>Reservar com ClubKey</span>
-        <ChevronRight className="w-4 h-4 stroke-[2.5]" />
+        <CaretRight className="w-4 h-4 stroke-[2.5]" />
       </CtaButton>
 
       <div className="flex flex-col items-center gap-2 text-center text-[11px] text-zinc-400">

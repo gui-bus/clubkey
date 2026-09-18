@@ -1,17 +1,22 @@
+import { Suspense } from "react"
+
 import { Metadata, Viewport } from "next"
 
 import { GoogleAnalytics } from "@next/third-parties/google"
+import { NuqsAdapter } from "nuqs/adapters/next/app"
+
+import { Toast } from "@/src/components/ui/toast/toast"
 
 import { BrandStyles } from "@/src/components/common/brandStyles"
 import { ThemeProvider } from "@/src/components/common/themeProvider"
+import { Footer } from "@/src/components/landing/footer"
+import { MemberMessengerWidget } from "@/src/components/portal/memberMessengerWidget"
 
 import { cn } from "@/src/lib/utils"
 
 import { fontVariables } from "@/src/config/fonts"
 import { siteConfig } from "@/src/config/site"
 
-import { NuqsAdapter } from "nuqs/adapters/next/app"
-import { Toast } from "@/src/components/ui/toast/toast"
 import "@/src/app/globals.css"
 
 export const viewport: Viewport = {
@@ -91,10 +96,18 @@ export default async function RootLayout({
         <BrandStyles />
         <link rel="icon" href={siteConfig.favicon || "/favicon.ico"} />
       </head>
-      <body className="mx-auto w-full max-w-440 bg-background text-foreground selection:bg-brand-primary/20 selection:text-brand-primary">
+      <body className="mx-auto w-full max-w-440 bg-background text-foreground selection:bg-brand-primary/20 selection:text-brand-primary flex flex-col min-h-screen">
         <ThemeProvider>
-          <NuqsAdapter>{children}</NuqsAdapter>
-          <Toast position="top-right" />
+          <NuqsAdapter>
+            <Suspense fallback={<div className="min-h-screen w-full" />}>
+              <div className="flex-1 flex flex-col w-full">{children}</div>
+            </Suspense>
+            <Footer />
+            <Toast position="bottom-right" />
+            <Suspense fallback={null}>
+              <MemberMessengerWidget />
+            </Suspense>
+          </NuqsAdapter>
         </ThemeProvider>
         {siteConfig.analytics.google && (
           <GoogleAnalytics gaId={siteConfig.analytics.google} />

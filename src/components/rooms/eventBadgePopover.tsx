@@ -1,8 +1,10 @@
 "use client"
 
 import * as React from "react"
-import { Calendar, ChevronDown, MapPin, Ticket } from "lucide-react"
+
 import { type UpcomingEventInfo } from "@/src/data/mockRooms"
+import { Calendar, CaretDown, MapPin, Ticket } from "@phosphor-icons/react"
+
 import { cn } from "@/src/lib/utils"
 
 export interface EventBadgePopoverProps {
@@ -50,7 +52,7 @@ export function EventBadgePopover({
       >
         <Ticket className="w-3.5 h-3.5 text-zinc-500 dark:text-zinc-400" />
         <span>{badge}</span>
-        <ChevronDown
+        <CaretDown
           className={cn(
             "w-3 h-3 text-zinc-400 transition-transform duration-200",
             isOpen && "rotate-180"
@@ -80,7 +82,7 @@ export function EventBadgePopover({
             {events.map((ev) => (
               <div
                 key={ev.id}
-                className="flex items-start gap-3 p-2.5 rounded-sm bg-zinc-50 dark:bg-zinc-800/40 border border-zinc-100 dark:border-zinc-800/70"
+                className="flex items-start gap-3 p-2.5 rounded-sm bg-[#F1F1F1] dark:bg-zinc-800/40 border border-zinc-100 dark:border-zinc-800/70"
               >
                 <div className="w-8 h-8 rounded-sm bg-brand-primary/10 text-brand-primary flex items-center justify-center shrink-0 mt-0.5">
                   <Ticket className="w-4 h-4" />

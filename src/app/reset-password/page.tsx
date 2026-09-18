@@ -1,20 +1,23 @@
 "use client"
 
 import * as React from "react"
+
 import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
-import { ArrowLeft } from "lucide-react"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
 
-import { AuthSplitLayout } from "@/src/components/auth/authSplitLayout"
-import { CtaButton } from "@/src/components/common/ctaButton"
-import { PasswordInput } from "@/src/components/ui/passwordInput/passwordInput"
-import { toast } from "@/src/components/ui/toast/toast"
 import {
   type ResetPasswordFormData,
   resetPasswordSchema,
 } from "@/src/schemas/auth.schema"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { ArrowLeft } from "@phosphor-icons/react"
+import { useForm } from "react-hook-form"
+
+import { PasswordInput } from "@/src/components/ui/passwordInput/passwordInput"
+import { toast } from "@/src/components/ui/toast/toast"
+
+import { AuthSplitLayout } from "@/src/components/auth/authSplitLayout"
+import { CtaButton } from "@/src/components/common/ctaButton"
 
 function ResetPasswordForm(): React.JSX.Element {
   const router = useRouter()
@@ -39,7 +42,9 @@ function ResetPasswordForm(): React.JSX.Element {
     setIsLoading(true)
     setTimeout(() => {
       setIsLoading(false)
-      toast.success("Senha redefinida com sucesso! Faça login com sua nova senha.")
+      toast.success(
+        "Senha redefinida com sucesso! Faça login com sua nova senha."
+      )
       router.push("/sign-in")
     }, 700)
   }
@@ -49,7 +54,8 @@ function ResetPasswordForm(): React.JSX.Element {
       bannerImage="/utils/banners/img_02.png"
       bannerTitle={
         <>
-          Crie sua nova senha <span className="text-brand-primary">com segurança</span>
+          Crie sua nova senha{" "}
+          <span className="text-brand-primary">com segurança</span>
         </>
       }
       bannerDescription="Defina suas novas credenciais de acesso para continuar aproveitando os benefícios exclusivos da sua assinatura."
@@ -60,7 +66,11 @@ function ResetPasswordForm(): React.JSX.Element {
           : "Defina sua nova senha para acessar sua conta."
       }
     >
-      <form noValidate onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
+      <form
+        noValidate
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex flex-col gap-5"
+      >
         <div className="flex flex-col gap-1.5">
           <label
             htmlFor="new-password"
@@ -84,7 +94,9 @@ function ResetPasswordForm(): React.JSX.Element {
             {...register("password")}
           />
           {errors.password && (
-            <span className="text-xs text-red-500">{errors.password.message}</span>
+            <span className="text-xs text-red-500">
+              {errors.password.message}
+            </span>
           )}
         </div>
 
@@ -105,7 +117,9 @@ function ResetPasswordForm(): React.JSX.Element {
             {...register("confirmPassword")}
           />
           {errors.confirmPassword && (
-            <span className="text-xs text-red-500">{errors.confirmPassword.message}</span>
+            <span className="text-xs text-red-500">
+              {errors.confirmPassword.message}
+            </span>
           )}
         </div>
 

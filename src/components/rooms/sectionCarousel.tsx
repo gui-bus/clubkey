@@ -1,11 +1,13 @@
 "use client"
 
 import * as React from "react"
-import { ChevronLeft, ChevronRight } from "lucide-react"
+
+import { type RoomSection } from "@/src/data/mockRooms"
+import { CaretLeft, CaretRight } from "@phosphor-icons/react"
 
 import { EventBadgePopover } from "@/src/components/rooms/eventBadgePopover"
 import { RoomCard } from "@/src/components/rooms/roomCard"
-import { type RoomSection } from "@/src/data/mockRooms"
+
 import { cn } from "@/src/lib/utils"
 
 export interface SectionCarouselProps {
@@ -88,7 +90,7 @@ export function SectionCarousel({
         <div className="flex items-center gap-3 flex-wrap">
           <h2 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-zinc-900 dark:text-white font-heading hover:text-brand-primary transition-colors cursor-pointer inline-flex items-center gap-1.5">
             <span>{section.title}</span>
-            <ChevronRight className="w-4 h-4 text-zinc-400 dark:text-zinc-500 stroke-[2.5]" />
+            <CaretRight className="w-4 h-4 text-zinc-400 dark:text-zinc-500 stroke-[2.5]" />
           </h2>
 
           {section.eventBadge && (
@@ -113,7 +115,7 @@ export function SectionCarousel({
             className="w-8 h-8 rounded-sm border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 flex items-center justify-center text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-700 disabled:opacity-25 disabled:cursor-not-allowed transition-all cursor-pointer active:scale-95"
             aria-label="Rolar para a esquerda"
           >
-            <ChevronLeft className="w-4 h-4" />
+            <CaretLeft className="w-4 h-4" />
           </button>
           <button
             type="button"
@@ -122,7 +124,7 @@ export function SectionCarousel({
             className="w-8 h-8 rounded-sm border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 flex items-center justify-center text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-700 disabled:opacity-25 disabled:cursor-not-allowed transition-all cursor-pointer active:scale-95"
             aria-label="Rolar para a direita"
           >
-            <ChevronRight className="w-4 h-4" />
+            <CaretRight className="w-4 h-4" />
           </button>
         </div>
       </div>

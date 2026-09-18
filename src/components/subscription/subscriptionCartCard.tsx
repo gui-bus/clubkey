@@ -1,8 +1,10 @@
 "use client"
 
 import * as React from "react"
+
 import Image from "next/image"
-import { ShoppingCart } from "lucide-react"
+
+import { ShoppingCart } from "@phosphor-icons/react"
 
 import { brandConfig } from "@/src/config/brand.config"
 
@@ -25,7 +27,7 @@ export function SubscriptionCartCard({
   const isAnnual = paymentMethod === "pix"
 
   return (
-    <aside className="w-full flex flex-col gap-6 sticky top-24">
+    <aside className="w-full flex flex-col gap-6">
       <div className="flex items-center justify-between pb-3 border-b border-zinc-200 dark:border-zinc-800">
         <div className="flex items-center gap-2">
           <ShoppingCart className="w-5 h-5 text-brand-primary" />
@@ -124,7 +126,9 @@ export function SubscriptionCartCard({
               Total do pedido
             </span>
             <span className="text-[11px] text-zinc-500 dark:text-zinc-400 font-light">
-              {isAnnual ? "Pagamento único à vista" : "Cobrança mensal no cartão"}
+              {isAnnual
+                ? "Pagamento único à vista"
+                : "Cobrança mensal no cartão"}
             </span>
           </div>
           <div className="text-right">

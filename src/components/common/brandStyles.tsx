@@ -1,6 +1,9 @@
 import * as React from "react"
 
-import { brandConfig, generateBrandCssVariables } from "@/src/config/brand.config"
+import {
+  brandConfig,
+  generateBrandCssVariables,
+} from "@/src/config/brand.config"
 
 export function BrandStyles(): React.JSX.Element {
   const css = generateBrandCssVariables(brandConfig)

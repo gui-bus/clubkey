@@ -2,79 +2,94 @@
 
 import * as React from "react"
 
-import { MoonIcon, SunIcon } from "@phosphor-icons/react"
-import { motion } from "framer-motion"
+import { useTheme } from "next-themes"
 
-import { useThemeTransition } from "@/src/lib/hooks/useThemeTransition"
+import { Moon, Sun } from "@phosphor-icons/react"
+import { AnimatePresence, motion } from "framer-motion"
+
+import {
+  AnimatedThemeToggler,
+  type TransitionVariant,
+} from "@/src/components/ui/animatedThemeToggler"
+
 import { cn } from "@/src/lib/utils"
 
-export function ThemeToggle(): React.JSX.Element {
-  const { resolvedTheme, toggleTheme } = useThemeTransition()
-  const [mounted, setMounted] = React.useState(false)
+export interface ThemeToggleProps {
+  className?: string
+  variant?: TransitionVariant
+  duration?: number
+}
 
-  React.useEffect(() => {
-    const timer = requestAnimationFrame(() => {
-      setMounted(true)
-    })
-    return () => cancelAnimationFrame(timer)
-  }, [])
+const emptySubscribe = () => () => {}
+
+export function ThemeToggle({
+  className,
+  variant = "circle",
+  duration = 500,
+}: ThemeToggleProps): React.JSX.Element {
+  const { resolvedTheme, setTheme } = useTheme()
+  const mounted = React.useSyncExternalStore(
+    emptySubscribe,
+    () => true,
+    () => false
+  )
 
   if (!mounted) {
     return (
-      <div className="h-9 w-18 animate-pulse rounded-full border border-border/50 bg-muted/20" />
+      <div
+        className={cn(
+          "h-9 w-9 rounded-sm border border-transparent bg-transparent",
+          className
+        )}
+      />
     )
   }
 
-  const isLight = resolvedTheme === "light"
+  const isDark = resolvedTheme === "dark"
 
   return (
-    <div className="group relative flex h-9 w-18 items-center rounded-full border border-border/60 bg-background/50 p-1 backdrop-blur-sm transition-all hover:border-border hover:bg-muted/50">
-      <motion.div
-        className="absolute z-0 h-7 w-7 rounded-full bg-muted shadow-sm"
-        initial={false}
-        animate={{
-          x: isLight ? 0 : 34,
-        }}
-        transition={{
-          type: "spring",
-          stiffness: 400,
-          damping: 30,
-        }}
-      />
-
-      <button
-        onClick={() => (isLight ? null : toggleTheme())}
-        className={cn(
-          "relative z-10 flex h-7 w-7 cursor-pointer items-center justify-center rounded-full transition-colors duration-200",
-          isLight
-            ? "text-foreground"
-            : "text-muted-foreground/50 hover:text-muted-foreground"
-        )}
-        title="Claro"
-      >
-        <SunIcon
-          weight={isLight ? "fill" : "regular"}
-          size={14}
-          className="transition-transform duration-300"
-        />
-      </button>
-
-      <button
-        onClick={() => (!isLight ? null : toggleTheme())}
-        className={cn(
-          "relative z-10 ml-auto flex h-7 w-7 cursor-pointer items-center justify-center rounded-full transition-colors duration-200",
-          !isLight
-            ? "text-foreground"
-            : "text-white"
-        )}
-        title="Escuro"
-      >
-        <MoonIcon
-          weight={!isLight ? "fill" : "regular"}
-          size={14}
-          className="transition-transform duration-300"
-        />
-      </button>
-    </div>
+    <AnimatedThemeToggler
+      theme={isDark ? "dark" : "light"}
+      onThemeChange={(nextTheme) => setTheme(nextTheme)}
+      variant={variant}
+      duration={duration}
+      title={isDark ? "Mudar para modo claro" : "Mudar para modo escuro"}
+      className={cn(
+        "group relative flex h-9 w-9 cursor-pointer items-center justify-center p-0",
+        "bg-transparent border-0 outline-none",
+        "text-zinc-400 hover:text-white dark:text-zinc-400 dark:hover:text-white",
+        "transition-colors duration-200",
+        className
+      )}
+    >
+      <div className="relative flex items-center justify-center w-full h-full overflow-hidden pointer-events-none">
+        <AnimatePresence mode="wait" initial={false}>
+          {isDark ? (
+            <motion.div
+              key="dark-sun"
+              initial={{ rotate: -90, scale: 0, opacity: 0 }}
+              animate={{ rotate: 0, scale: 1, opacity: 1 }}
+              exit={{ rotate: 90, scale: 0, opacity: 0 }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
+              className="flex items-center justify-center"
+            >
+              <Sun className="w-4 h-4 transition-transform duration-200 group-hover:rotate-45 stroke-[2]" />
+            </motion.div>
+          ) : (
+            <motion.div
+              key="light-moon"
+              initial={{ rotate: 90, scale: 0, opacity: 0 }}
+              animate={{ rotate: 0, scale: 1, opacity: 1 }}
+              exit={{ rotate: -90, scale: 0, opacity: 0 }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
+              className="flex items-center justify-center"
+            >
+              <Moon className="w-4 h-4 transition-transform duration-200 group-hover:-rotate-12 stroke-[2]" />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+      <span className="sr-only">Alternar tema</span>
+    </AnimatedThemeToggler>
   )
 }

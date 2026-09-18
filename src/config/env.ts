@@ -1,7 +1,11 @@
 import { z } from "zod"
 
 const envSchema = z.object({
-  NEXT_PUBLIC_SITE_URL: z.string().url().optional().default("https://clubkey.io"),
+  NEXT_PUBLIC_SITE_URL: z
+    .string()
+    .url()
+    .optional()
+    .default("https://clubkey.io"),
   NEXT_PUBLIC_GA_ID: z.string().optional(),
   NEXT_PUBLIC_TENANT: z.string().optional().default("clubkey"),
   NODE_ENV: z

@@ -39,7 +39,10 @@ export function InputOtp({
     }
   }, [autoFocus])
 
-  const handleKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = (
+    index: number,
+    e: React.KeyboardEvent<HTMLInputElement>
+  ) => {
     if (e.key === "Backspace") {
       e.preventDefault()
       if (digits[index]) {
@@ -63,7 +66,10 @@ export function InputOtp({
     }
   }
 
-  const handleChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    index: number,
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const rawVal = e.target.value
     const char = rawVal.replace(/[^0-9]/g, "").slice(-1)
 
@@ -85,7 +91,10 @@ export function InputOtp({
 
   const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
     e.preventDefault()
-    const pastedData = e.clipboardData.getData("text/plain").replace(/[^0-9]/g, "").slice(0, length)
+    const pastedData = e.clipboardData
+      .getData("text/plain")
+      .replace(/[^0-9]/g, "")
+      .slice(0, length)
     if (pastedData) {
       onChange(pastedData)
       if (pastedData.length === length) {
@@ -97,7 +106,12 @@ export function InputOtp({
   }
 
   return (
-    <div className={cn("flex items-center justify-center gap-2 sm:gap-3", className)}>
+    <div
+      className={cn(
+        "flex items-center justify-center gap-2 sm:gap-3",
+        className
+      )}
+    >
       {Array.from({ length }).map((_, index) => {
         const isFilled = Boolean(digits[index])
         return (

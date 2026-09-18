@@ -434,7 +434,7 @@ export const defaultRoomDetail: RoomDetailData = {
     {
       id: "iron",
       name: "Ferro e Tábua de Passar",
-      icon: "Sparkles",
+      icon: "Check",
       category: "Conveniência",
     },
     {

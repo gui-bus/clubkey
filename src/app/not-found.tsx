@@ -14,9 +14,7 @@ export default function NotFound(): React.JSX.Element {
         A página que você está procurando não existe.
       </p>
       <div className="mt-8">
-        <CtaButton href="/">
-          Voltar ao início
-        </CtaButton>
+        <CtaButton href="/">Voltar ao início</CtaButton>
       </div>
     </div>
   )

@@ -84,7 +84,7 @@ export const brandPresets: Record<string, BrandConfig> = {
     },
     links: {
       subscription: "/subscription",
-      rooms: "/rooms",
+      rooms: "/hospedagens",
       login: "/sign-in",
       instagram: "https://instagram.com/clubkey.io",
       contactEmail: "contato@clubkey.io",
@@ -130,7 +130,7 @@ export const brandPresets: Record<string, BrandConfig> = {
     },
     links: {
       subscription: "/subscription",
-      rooms: "/rooms",
+      rooms: "/hospedagens",
       login: "/sign-in",
       instagram: "https://oceanclub.io",
       contactEmail: "contato@oceanclub.io",
@@ -145,7 +145,9 @@ const activeTenantKey = rawTenant.toLowerCase().trim() || "clubkey"
 export const brandConfig: BrandConfig =
   brandPresets[activeTenantKey] || brandPresets.clubkey
 
-export function generateBrandCssVariables(config: BrandConfig = brandConfig): string {
+export function generateBrandCssVariables(
+  config: BrandConfig = brandConfig
+): string {
   const light = config.colors.light
   const dark = config.colors.dark
 

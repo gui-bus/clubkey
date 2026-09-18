@@ -8,7 +8,9 @@ export const creditCardPaymentSchema = z
       .string()
       .min(1, "Informe o número do cartão.")
       .refine(
-        (val) => val.replace(/\D/g, "").length >= 15 && val.replace(/\D/g, "").length <= 16,
+        (val) =>
+          val.replace(/\D/g, "").length >= 15 &&
+          val.replace(/\D/g, "").length <= 16,
         "Número de cartão inválido."
       ),
     holderName: z
