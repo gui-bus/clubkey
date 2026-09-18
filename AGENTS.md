@@ -1,25 +1,95 @@
-# Bloom UI — AI Instructions & Rules
+# Bloom UI & Codebase Architecture — AI Instructions & Rules
 
-You are an expert developer assistant specialized in using and composing interfaces with **Bloom UI**.
+You are an expert developer assistant specialized in using and composing interfaces with **Bloom UI** and maintaining clean, SOLID, and scalable Next.js / TypeScript architectures.
 Bloom UI is a next-generation utility-first React design system built on top of Tailwind CSS, CVA (class-variance-authority), and Radix UI primitives.
+
+---
+
+## 📁 File Naming Conventions & Project Structure
+
+### 1. Strict `camelCase` & English for Source Code Files
+All source code files across the codebase **MUST strictly follow `camelCase` and English naming conventions**.
+- **React Components**: `camelCase.tsx` (e.g. `memberProfileDetailClient.tsx`, `roomsSearchFilterBar.tsx`, `destinationPopover.tsx`, `userNavActions.tsx`)
+- **Custom Hooks**: `camelCase.ts` prefixed with `use` (e.g. `useItemPagination.ts`, `useScrollSpy.ts`)
+- **Store & Slices**: `camelCase.ts` (e.g. `usePortalStore.ts`, `authSlice.ts`, `networkingSlice.ts`)
+- **Domain Types**: `camelCase.types.ts` in `src/types/` (e.g. `member.types.ts`, `event.types.ts`, `stay.types.ts`)
+- **Zod Schemas**: `camelCase.schema.ts` in `src/schemas/` (e.g. `auth.schema.ts`, `subscription.schema.ts`)
+- **Utility & Data Files**: `camelCase.ts` in `src/lib/` or `src/data/` (e.g. `designSystem.ts`, `portalData.ts`, `masks.ts`)
+- **Scripts**: `camelCase.js` in `scripts/` (e.g. `stripComments.js`, `generateIcons.js`)
+
+### 2. Exceptions to Naming Conventions
+- **App Router Route Directories**: Folders inside `src/app/(portal)/*` (such as `hospedagens/`, `eventos/`, `experiencias/`, `beneficios/`, `conexoes/`, `perfil/`) **MUST remain in Portuguese**, as they define user-facing URL routes in Brazil.
+- **Project Documentation**: Documentation pages inside `docs/pages/*` remain in Portuguese to correspond directly with Portuguese UI features and user journeys.
+- **Next.js Conventions**: Next.js special files remain standard (`page.tsx`, `layout.tsx`, `loading.tsx`, `error.tsx`, `not-found.tsx`, `route.ts`, `globals.css`).
+- **Standard Configs**: Config files remain standard (`tailwind.config.ts`, `next.config.ts`, `bloom.json`, `tsconfig.json`, `vitest.config.ts`, `package.json`).
+
+---
+
+## 📝 Git Commit Standards (Conventional Commits & English Only)
+
+All commits in this repository are strictly enforced by **Husky** (`commit-msg` hook) and **Commitlint**.
+- **Format**: `<type>(<optional scope>): <description in English>`
+- **Allowed Types**: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `chore`, `revert`.
+- **Language**: **MUST be in ENGLISH ONLY** (lowercase imperative description, no Portuguese words, no accents like `á, é, ã, ç`).
+- **Examples**:
+  - ✅ `feat(auth): add email verification step`
+  - ✅ `fix(portal): resolve navbar alignment on mobile`
+  - ✅ `refactor(store): split usePortalStore into domain slices`
+  - ❌ `feat: adiciona nova tela` (rejected: Portuguese words)
+  - ❌ `fix: correção de bugs` (rejected: Portuguese words & accents)
+  - ❌ `update navbar` (rejected: missing conventional commit type)
+
+---
+
+## 🏛️ SOLID Principles & Code Quality Standards
+
+### 1. Single Responsibility Principle (SRP)
+- **Component Complexity Threshold**: Components should not exceed **250–300 lines**. When a component grows beyond this limit, decompose it into focused subcomponents located in the same directory or feature folder.
+- **Separation of Concerns**: Keep JSX views, data transforms, and UI states distinct. Extract repetitive state machines and pagination logic into custom hooks (`src/hooks/`).
+
+### 2. Don't Repeat Yourself (DRY)
+- **Reusable Domain Components**: When similar layout structures appear across views (e.g., detail hero banners with background overlays, back/share buttons, status badges), create dedicated reusable components (e.g. `detailHeroBanner.tsx`).
+- **Pagination & Navigation**: Always reuse pagination hooks (`useItemPagination.ts`) and scroll observers (`useScrollSpy.ts`) instead of duplicating state and slice handlers.
+
+### 3. Centralized Types & Interface Segregation (ISP)
+- All shared interfaces and types must be placed in `src/types/` organized by domain (`member.types.ts`, `event.types.ts`, `experience.types.ts`, `benefit.types.ts`, `stay.types.ts`, `gamification.types.ts`, `chat.types.ts`).
+- Avoid bloated monolithic type files. Export all types through `src/types/index.ts`.
+- Component props should accept only what is necessary for rendering.
+
+### 4. Zustand Store Modularization (Slice Pattern & DIP)
+- The global store (`src/store/usePortalStore.ts`) must compose small, domain-specific slices located in `src/store/slices/` (e.g. `authSlice.ts`, `profileSlice.ts`, `chatSlice.ts`, `networkingSlice.ts`, `eventsSlice.ts`, `staysSlice.ts`, `gamificationSlice.ts`).
+- UI components should consume specific store selectors to prevent unnecessary re-renders.
+
+### 5. Strict Zero Visual & Style Modifications Policy
+- **Preserve 100% of Original Styling**: When refactoring, renaming files, extracting subcomponents, or organizing code, **NEVER alter or tweak the visual appearance, Tailwind CSS classes, layouts, padding/margins, typography, colors, animations, or DOM structure**.
+- The extracted subcomponents must copy the original JSX and class names verbatim without redesigning buttons, cards, popovers, or interactive elements.
+
+---
 
 ## 🎨 Neutral Theme Color Guidelines
 - **Card & Container Backgrounds**: Must ALWAYS be pure white (`bg-white`) in light mode and neutral dark grays (`bg-zinc-900`, `dark:bg-zinc-900`, border: `border-zinc-200`, `dark:border-zinc-800`) in dark mode.
 - **NO Blue-ish / Tinted Containers**: Avoid using blue or tinted colors for card/container backgrounds. Keep them strictly white/zinc.
 - **Status Colors**: Colors like `info`, `success`, `warning`, `danger`, or `primary` must ONLY be applied to typography/titles, icons, badges, indicators, or small accent lines. Keep the container surfaces clean and neutral.
 
+---
+
 ## 📐 Design Tokens (CVA Scale)
 - **Sizes**: `"xs"` | `"sm"` | `"md"` | `"lg"` | `"xl"` | `"2xl"` | `"3xl"`
 - **Radius**: `"none"` | `"xs"` | `"sm"` | `"md"` | `"lg"` | `"xl"` | `"2xl"` | `"3xl"` | `"full"`
 - **Colors**: `"default"` | `"primary"` | `"secondary"` | `"accent"` | `"success"` | `"warning"` | `"danger"` | `"custom"`
 - **Variants**: `"default"` | `"bordered"` | `"light"` | `"flat"` | `"ghost"` | `"shadow"` | `"link"`
+- **CTA Button Variants**: `"primary"` (solid brand primary) | `"secondary"` (neutral bordered)
+
+---
 
 ## 🛠️ Path Configurations
 Bloom UI files are configured dynamically during initialization (refer to `bloom.json` in the workspace):
 - **Utility CSS/class Merger**: Import `cn` from `@/src/lib/utils` (or config path).
-- **Design Tokens Config**: Import design tokens from `@/src/lib/design-system`.
-- **Ripples support**: Import hooks/helpers from `@/lib/ripple/ripple` and `@/lib/ripple/useRipple`.
+- **Design Tokens Config**: Import design tokens from `@/src/lib/designSystem` (aliased with `@/src/lib/design-system` for CLI compatibility).
+- **Ripples support**: Import hooks/helpers from `@/src/lib/ripple/ripple` and `@/src/lib/ripple/useRipple`.
 - **Components location**: Saved in `@/src/components/ui/[componentName]/[componentName]`.
+
+---
 
 ## 💡 Installed Components API & Examples
 Detailed API references, available props, and code examples for each installed component are saved inside the workspace at:
@@ -27,6 +97,7 @@ Detailed API references, available props, and code examples for each installed c
 
 Whenever you are working with an installed component, you MUST read its specific markdown file (e.g. `src/lib/docs/button.md` or `src/lib/docs/carousel.md`) to check the exact props, types, defaults, and code examples before writing or refactoring code.
 
+---
 
 ## 📦 Component Registry & Installation Index
 Bloom UI components are installed on-demand. If a component is missing in the workspace, recommend running the CLI:
