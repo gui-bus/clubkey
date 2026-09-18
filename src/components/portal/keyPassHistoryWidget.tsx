@@ -19,6 +19,7 @@ import {
 
 import { ScrollArea } from "@/src/components/ui/scrollArea/scrollArea"
 
+import { formatNumber } from "@/src/lib/formatters"
 import { cn } from "@/src/lib/utils"
 
 interface KeyPassHistoryWidgetProps {
@@ -122,7 +123,7 @@ export function KeyPassHistoryWidget({
                           className="object-contain"
                         />
                       </div>
-                      <span>+{activity.xp.toLocaleString("pt-BR")} XP</span>
+                      <span>+{formatNumber(activity.xp)} XP</span>
                     </div>
                   ) : (
                     <span className="text-xs text-zinc-500 dark:text-zinc-400 font-normal">

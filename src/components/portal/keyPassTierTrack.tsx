@@ -20,6 +20,7 @@ import {
 } from "@phosphor-icons/react"
 import { AnimatePresence, motion } from "framer-motion"
 
+import { formatNumber } from "@/src/lib/formatters"
 import { cn } from "@/src/lib/utils"
 
 interface KeyPassTierTrackProps {
@@ -156,7 +157,7 @@ export function KeyPassTierTrack({
                     {tier.minXp === 0
                       ? "0 - 499 XP"
                       : tier.maxXp
-                        ? `${tier.minXp.toLocaleString("pt-BR")} - ${tier.maxXp.toLocaleString("pt-BR")} XP`
+                        ? `${formatNumber(tier.minXp)} - ${formatNumber(tier.maxXp)} XP`
                         : tier.isSpecialPinnacle
                           ? "Top #1 Global"
                           : "10.000+ XP"}

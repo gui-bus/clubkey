@@ -12,6 +12,7 @@ import { BookOpen, ChartLineUp, Target, Trophy } from "@phosphor-icons/react"
 
 import { Container } from "@/src/components/common/container"
 
+import { formatNumber } from "@/src/lib/formatters"
 import { cn } from "@/src/lib/utils"
 
 const NAV_TABS = [
@@ -104,7 +105,7 @@ export function KeyPassNav(): React.JSX.Element {
                   />
                 </div>
                 <span className="text-xs font-bold text-zinc-700 dark:text-zinc-300">
-                  {xp.toLocaleString("pt-BR")} XP
+                  {formatNumber(xp)} XP
                 </span>
               </div>
             </div>

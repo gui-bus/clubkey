@@ -20,6 +20,7 @@ import { KeyPassStatCard } from "@/src/components/portal/keyPassStatCard"
 import { LeaderboardTable } from "@/src/components/portal/leaderboardTable"
 import { LeaderboardTargetCard } from "@/src/components/portal/leaderboardTargetCard"
 
+import { formatNumber } from "@/src/lib/formatters"
 import { cn } from "@/src/lib/utils"
 
 export default function KeyPassRankingPage(): React.JSX.Element {
@@ -105,7 +106,7 @@ export default function KeyPassRankingPage(): React.JSX.Element {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full lg:w-auto shrink-0">
             <KeyPassStatCard
               label="XP do Líder"
-              value={leader.xp.toLocaleString("pt-BR")}
+              value={formatNumber(leader.xp)}
               subtitle="Pontuação acumulada"
               iconSrc="/utils/gamification/utils/xp.webp"
               iconAlt="XP"

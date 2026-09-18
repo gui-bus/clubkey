@@ -19,6 +19,7 @@ import {
 
 import { CtaButton } from "@/src/components/common/ctaButton"
 
+import { formatNumber } from "@/src/lib/formatters"
 import { cn } from "@/src/lib/utils"
 
 export interface LeaderboardTargetCardProps {
@@ -112,7 +113,7 @@ export function LeaderboardTargetCard({
           <h3 className="text-base sm:text-lg font-heading font-black uppercase tracking-tight text-zinc-900 dark:text-white">
             Faltam apenas{" "}
             <span className="text-brand-primary font-black">
-              {xpDifference.toLocaleString("pt-BR")} XP
+              {formatNumber(xpDifference)} XP
             </span>{" "}
             para alcançar a #{targetUser.rank} posição
           </h3>
@@ -120,8 +121,7 @@ export function LeaderboardTargetCard({
           <p className="text-xs text-zinc-500 dark:text-zinc-400 font-normal">
             Você está na{" "}
             <strong className="font-bold text-zinc-900 dark:text-white whitespace-nowrap">
-              #{currentUser.rank} posição (
-              {currentUser.xp.toLocaleString("pt-BR")} XP)
+              #{currentUser.rank} posição ({formatNumber(currentUser.xp)} XP)
             </strong>
             . Ultrapasse{" "}
             <Link
@@ -153,7 +153,7 @@ export function LeaderboardTargetCard({
                 {targetUser.firstName} {targetUser.lastName}
               </p>
               <p className="text-[10px] text-zinc-500 dark:text-zinc-400 tabular-nums whitespace-nowrap">
-                {targetUser.xp.toLocaleString("pt-BR")} XP
+                {formatNumber(targetUser.xp)} XP
               </p>
             </div>
           </div>

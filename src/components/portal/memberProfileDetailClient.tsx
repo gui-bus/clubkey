@@ -55,6 +55,7 @@ import { EventCard } from "@/src/components/portal/eventCard"
 import { RelatedMembersCard } from "@/src/components/portal/relatedMembersCard"
 import { ShareButton } from "@/src/components/portal/shareButton"
 
+import { formatNumber } from "@/src/lib/formatters"
 import { cn } from "@/src/lib/utils"
 
 export function MemberProfileDetailClient({
@@ -296,7 +297,7 @@ export function MemberProfileDetailClient({
                   </div>
                   <div className="flex items-baseline gap-1 shrink-0 whitespace-nowrap">
                     <span className="text-sm font-heading font-black text-zinc-900 dark:text-white tabular-nums">
-                      {(member.xp ?? 0).toLocaleString("pt-BR")}
+                      {formatNumber(member.xp ?? 0)}
                     </span>
                     <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
                       XP

@@ -14,6 +14,7 @@ import { motion } from "framer-motion"
 
 import { CtaButton } from "@/src/components/common/ctaButton"
 
+import { formatNumber } from "@/src/lib/formatters"
 import { cn } from "@/src/lib/utils"
 
 export interface MilestoneItem {
@@ -180,8 +181,8 @@ export function KeyPassMilestoneProgress({
               Progresso para {nextTier.name}
             </h3>
             <span className="text-xs font-bold text-zinc-500">
-              • {xp.toLocaleString("pt-BR")} /{" "}
-              {targetXp.toLocaleString("pt-BR")} XP ({progressPercentage}%)
+              • {formatNumber(xp)} / {formatNumber(targetXp)} XP (
+              {progressPercentage}%)
             </span>
           </div>
         </div>
@@ -190,7 +191,7 @@ export function KeyPassMilestoneProgress({
           <span>
             Faltam{" "}
             <strong className="text-zinc-900 dark:text-white font-black">
-              {totalXpNeeded.toLocaleString("pt-BR")} XP
+              {formatNumber(totalXpNeeded)} XP
             </strong>
           </span>
           <span className="inline-flex items-center gap-1 font-bold text-zinc-900 dark:text-white">
@@ -278,7 +279,7 @@ export function KeyPassMilestoneProgress({
                     Marco {milestone.index} ({milestone.percent}%)
                   </span>
                   <span className="text-[10px] font-bold text-zinc-500 dark:text-zinc-400">
-                    {milestone.xpTarget.toLocaleString("pt-BR")} XP
+                    {formatNumber(milestone.xpTarget)} XP
                   </span>
                 </div>
 
@@ -322,8 +323,7 @@ export function KeyPassMilestoneProgress({
                   <div className="text-[10px] font-medium text-zinc-600 dark:text-zinc-400">
                     Faltam{" "}
                     <strong className="text-zinc-900 dark:text-white font-black">
-                      {milestone.xpRemainingToMilestone.toLocaleString("pt-BR")}{" "}
-                      XP
+                      {formatNumber(milestone.xpRemainingToMilestone)} XP
                     </strong>
                   </div>
                 ) : (

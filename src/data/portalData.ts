@@ -5,7 +5,6 @@ import type {
   EventItem,
   ExperienceItem,
   LeaderboardMember,
-  LeaderboardTimeframe,
   Member,
   MemberStayReservation,
   MemberSubscription,
@@ -19,6 +18,7 @@ import type {
 } from "@/src/types"
 
 export * from "@/src/types"
+export { formatBRL } from "@/src/lib/formatters"
 
 export const MEMBERS: Member[] = [
   {
@@ -1185,14 +1185,6 @@ export function getInitials(nameOrFirst?: string, lastName?: string): string {
   if (parts.length === 0 || !parts[0]) return "CK"
   if (parts.length === 1) return parts[0].substring(0, 2).toUpperCase()
   return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
-}
-
-export function formatBRL(amount: number): string {
-  return new Intl.NumberFormat("pt-BR", {
-    style: "currency",
-    currency: "BRL",
-    maximumFractionDigits: 0,
-  }).format(amount)
 }
 
 export const DEFAULT_MEMBER_STAYS: MemberStayReservation[] = [

@@ -20,6 +20,8 @@ import { KeyPassStatCard } from "@/src/components/portal/keyPassStatCard"
 import { KeyPassTierTrack } from "@/src/components/portal/keyPassTierTrack"
 import { WeeklyDropCard } from "@/src/components/portal/weeklyDropCard"
 
+import { formatNumber } from "@/src/lib/formatters"
+
 export default function KeyPassOverviewPage(): React.JSX.Element {
   const {
     xp,
@@ -114,7 +116,7 @@ export default function KeyPassOverviewPage(): React.JSX.Element {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 w-full lg:w-auto shrink-0">
             <KeyPassStatCard
               label="Pontos XP"
-              value={xp.toLocaleString("pt-BR")}
+              value={formatNumber(xp)}
               subtitle="Acumulado total"
               iconSrc="/utils/gamification/utils/xp.webp"
               iconAlt="XP"

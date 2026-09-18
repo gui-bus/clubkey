@@ -21,6 +21,8 @@ import {
 
 import { DataTable, type TableColumn } from "@/src/components/common/dataTable"
 
+import { formatNumber } from "@/src/lib/formatters"
+
 export interface LeaderboardTableProps {
   leaderboard: LeaderboardMember[]
   timeframeLabel: string
@@ -147,7 +149,7 @@ export function LeaderboardTable({
                   className="object-contain"
                 />
               </div>
-              <span>{currentDisplayXp.toLocaleString("pt-BR")} XP</span>
+              <span>{formatNumber(currentDisplayXp)} XP</span>
             </div>
           )
         },

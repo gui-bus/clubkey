@@ -17,6 +17,7 @@ import {
 
 import { Container } from "@/src/components/common/container"
 
+import { formatNumber } from "@/src/lib/formatters"
 import { cn } from "@/src/lib/utils"
 
 export default function KeyPassRulesPage(): React.JSX.Element {
@@ -98,7 +99,7 @@ export default function KeyPassRulesPage(): React.JSX.Element {
                     {tier.minXp === 0
                       ? "Faixa de Entrada: 0 - 499 XP"
                       : tier.maxXp
-                        ? `Requisito: ${tier.minXp.toLocaleString("pt-BR")} a ${tier.maxXp.toLocaleString("pt-BR")} XP`
+                        ? `Requisito: ${formatNumber(tier.minXp)} a ${formatNumber(tier.maxXp)} XP`
                         : tier.isSpecialPinnacle
                           ? "Exclusivo: #1 do Ranking Global de XP"
                           : "Requisito: 10.000+ XP Acumulados"}
