@@ -373,13 +373,16 @@ export function EventDetailClient({
                 {highlights.map((item, index) => (
                   <div
                     key={index}
-                    className="py-5 first:pt-0 last:pb-0 flex items-start gap-5 sm:gap-8 group"
+                    className="relative py-6 first:pt-4 last:pb-0 group overflow-hidden"
                   >
-                    <span className="text-2xl sm:text-3xl font-black font-heading text-brand-primary/40 group-hover:text-brand-primary transition-colors shrink-0 select-none">
+                    <span
+                      aria-hidden="true"
+                      className="font-heading font-black tabular-nums text-7xl sm:text-8xl text-zinc-900/[0.06] dark:text-white/[0.06] absolute -top-1 -left-1 select-none pointer-events-none leading-none tracking-tighter"
+                    >
                       0{index + 1}
                     </span>
 
-                    <div className="space-y-1.5 min-w-0">
+                    <div className="relative z-10 space-y-1.5 min-w-0">
                       <h3 className="text-base font-bold uppercase tracking-tight text-zinc-900 dark:text-white">
                         {item.title}
                       </h3>
@@ -489,7 +492,7 @@ export function EventDetailClient({
 
                 <CtaButton
                   href={`/eventos/${event.id}/${eventSlug}/quem-vai`}
-                  variant="secondary"
+                  variant="outline"
                   size="md"
                   isFullWidth
                   className="h-12 text-xs shadow-none hover:shadow-none"

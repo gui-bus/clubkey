@@ -415,7 +415,7 @@ export function ExperienceDetailClient({
 
                 <CtaButton
                   href={`/experiencias/${experience.id}/${expSlug}/quem-vai`}
-                  variant="secondary"
+                  variant="outline"
                   size="md"
                   isFullWidth
                   className="h-12 text-xs shadow-none hover:shadow-none"

@@ -43,6 +43,7 @@ import { Button } from "@/src/components/ui/button/button"
 import { toast } from "@/src/components/ui/toast/toast"
 
 import { Container } from "@/src/components/common/container"
+import { CtaButton } from "@/src/components/common/ctaButton"
 import { BackButton } from "@/src/components/portal/backButton"
 import { MemberCard } from "@/src/components/portal/memberCard"
 
@@ -246,13 +247,16 @@ export function MemberEventDetailClient({
               Baixar Ingresso PDF
             </Button>
 
-            <Link
+            <CtaButton
               href={`/eventos/${event.id}/${eventSlug}/quem-vai`}
-              className="w-full py-3 px-4 rounded-sm border border-zinc-200 dark:border-zinc-700 bg-[#F1F1F1] dark:bg-zinc-900 text-xs font-bold uppercase tracking-wider text-zinc-800 dark:text-zinc-200 hover:border-brand-primary/60 transition-colors flex items-center justify-center gap-1.5"
+              variant="outline"
+              size="md"
+              isFullWidth
+              className="h-12 text-xs shadow-none hover:shadow-none"
             >
-              <Users className="w-3.5 h-3.5 text-brand-primary" />
+              <Users className="w-3.5 h-3.5 text-brand-primary mr-2 shrink-0" />
               <span>Ver todos os participantes ({attendees.length})</span>
-            </Link>
+            </CtaButton>
 
             <AlertDialog>
               <AlertDialogTrigger asChild>
