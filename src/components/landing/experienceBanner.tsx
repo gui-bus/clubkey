@@ -2,8 +2,6 @@
 
 import * as React from "react"
 
-import Link from "next/link"
-
 import { motion } from "framer-motion"
 
 import { Container } from "@/src/components/common/container"
@@ -46,17 +44,24 @@ export function ExperienceBanner(): React.JSX.Element {
             todo.
           </p>
 
-          <div className="flex flex-wrap items-center gap-4">
-            <CtaButton href={brandConfig.links.subscription} size="lg">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full sm:w-auto">
+            <CtaButton
+              href={brandConfig.links.subscription}
+              variant="primary"
+              size="lg"
+              className="w-full sm:w-auto"
+            >
               Solicite agora
             </CtaButton>
 
-            <Link
+            <CtaButton
               href="/hospedagens"
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-sm bg-zinc-900/80 hover:bg-zinc-800 border border-white/20 text-white font-bold text-sm uppercase tracking-wider transition-all duration-200 shadow-xs cursor-pointer text-center backdrop-blur-xs"
+              variant="dark-outline"
+              size="lg"
+              className="w-full sm:w-auto"
             >
               <span>Explorar Acomodações (+4.500)</span>
-            </Link>
+            </CtaButton>
           </div>
         </motion.div>
       </Container>

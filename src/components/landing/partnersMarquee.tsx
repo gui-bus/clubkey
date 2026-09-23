@@ -4,6 +4,7 @@ import * as React from "react"
 
 import Image from "next/image"
 
+import { ArrowUpRight } from "@phosphor-icons/react"
 import { motion } from "framer-motion"
 
 import { Container } from "@/src/components/common/container"
@@ -75,22 +76,26 @@ const partners: PartnerLogo[] = [
 
 const partnerHighlights = [
   {
+    number: "01",
     title: "Diversos Segmentos",
     description:
       "Gastronomia, mobilidade urbana, moda, bem-estar, farmácias, educação e serviços essenciais reunidos em um único clube.",
   },
   {
+    number: "02",
     title: "+35.000 Marcas Parceiras",
     description:
       "As maiores redes do país e do mundo homologadas com vantagens reais e descontos diretos para associados ativos.",
   },
   {
+    number: "03",
     title: "Descontos em 150 Países",
     description:
       "Comodidades e benefícios internacionais que acompanham você pelo mundo com cobertura e tranquilidade garantidas.",
   },
   {
-    title: "Economia Inteligente & Amplo Acesso",
+    number: "04",
+    title: "Economia Inteligente",
     description:
       "Descontos contínuos no seu dia a dia que amortizam o valor da sua assinatura já nas primeiras utilizações.",
   },
@@ -112,46 +117,72 @@ export function PartnersMarquee(): React.JSX.Element {
           transition={{ duration: 0.7 }}
           className="w-full"
         >
-          <div className="flex items-center gap-2 mb-4">
-            <span className="w-2 h-2 rounded-full bg-brand-primary" />
-            <span className="text-xs font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400 font-heading">
-              REDE DE BENEFÍCIOS GLOBAIS
-            </span>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
+            <div className="lg:col-span-7 flex items-start gap-4 sm:gap-6">
+              <div className="shrink-0 pt-2">
+                <span className="text-zinc-400 dark:text-zinc-500 text-xs uppercase tracking-[0.25em] font-semibold [writing-mode:vertical-rl] rotate-180 select-none block font-heading">
+                  Benefícios
+                </span>
+              </div>
+              <div>
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="w-2 h-2 rounded-full bg-brand-primary" />
+                  <span className="text-xs font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400 font-heading">
+                    REDE DE BENEFÍCIOS GLOBAIS
+                  </span>
+                </div>
+                <h2 className="font-heading text-3xl sm:text-5xl md:text-6xl font-black uppercase tracking-tight text-zinc-900 dark:text-white leading-[1.02]">
+                  Grandes marcas,
+                  <br />
+                  diversos{" "}
+                  <span className="text-brand-primary">descontos.</span>
+                </h2>
+              </div>
+            </div>
+
+            <div className="lg:col-span-5 lg:pt-3">
+              <p className="text-base sm:text-lg text-zinc-600 dark:text-zinc-400 leading-relaxed font-light">
+                A sua assinatura{" "}
+                <strong className="font-semibold text-zinc-900 dark:text-white">
+                  {brandConfig.name}
+                </strong>{" "}
+                expande seu poder de compra para muito além das hospedagens.
+                Conectamos você às maiores marcas do país e do mundo para
+                garantir economia real no seu cotidiano e em suas viagens.
+              </p>
+              <div className="mt-6 flex flex-wrap items-center gap-4 w-full sm:w-auto">
+                <CtaButton
+                  href={brandConfig.links.subscription}
+                  variant="outline"
+                  size="lg"
+                  className="w-full sm:w-auto"
+                >
+                  <span>Solicite agora</span>
+                  <ArrowUpRight className="w-4 h-4" />
+                </CtaButton>
+              </div>
+            </div>
           </div>
 
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight text-zinc-900 dark:text-white leading-[1.08] mb-6 font-heading">
-            Grandes marcas, diversos descontos!
-          </h2>
-
-          <p className="text-base sm:text-lg text-zinc-600 dark:text-zinc-400 font-light leading-relaxed mb-10 max-w-4xl">
-            A sua assinatura{" "}
-            <strong className="font-semibold text-zinc-900 dark:text-white">
-              {brandConfig.name}
-            </strong>{" "}
-            expande seu poder de compra para muito além das hospedagens.
-            Conectamos você às maiores marcas do país e do mundo para garantir
-            economia real no seu cotidiano e em suas viagens.
-          </p>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-10 w-full">
-            {partnerHighlights.map((item, idx) => (
-              <div key={idx} className="flex items-start gap-4">
-                <div>
-                  <h4 className="text-base sm:text-lg font-bold text-zinc-900 dark:text-white mb-1.5">
-                    {item.title}
-                  </h4>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 pt-16 mt-16 border-t border-zinc-200 dark:border-zinc-800 w-full">
+            {partnerHighlights.map((pillar) => (
+              <div key={pillar.number} className="relative pt-6">
+                <span
+                  aria-hidden="true"
+                  className="font-heading font-black tabular-nums text-7xl sm:text-8xl lg:text-9xl text-zinc-900/[0.06] dark:text-white/[0.06] absolute -top-5 -left-1 select-none pointer-events-none leading-none tracking-tighter"
+                >
+                  {pillar.number}
+                </span>
+                <div className="relative z-10 space-y-2">
+                  <h3 className="font-heading text-lg sm:text-xl font-bold text-zinc-900 dark:text-white leading-snug">
+                    {pillar.title}
+                  </h3>
                   <p className="text-sm text-zinc-600 dark:text-zinc-400 font-light leading-relaxed">
-                    {item.description}
+                    {pillar.description}
                   </p>
                 </div>
               </div>
             ))}
-          </div>
-
-          <div>
-            <CtaButton href={brandConfig.links.subscription} size="lg">
-              Solicite agora
-            </CtaButton>
           </div>
         </motion.div>
       </Container>

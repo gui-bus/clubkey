@@ -69,7 +69,7 @@ export function TopBanner(): React.JSX.Element | null {
     <aside
       aria-label="Aviso Promocional"
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 w-full bg-[#F1F1F1] dark:bg-[#161616] border-b border-zinc-300 dark:border-zinc-800 text-zinc-900 dark:text-white py-1.5 sm:py-2 px-4 sm:px-6 md:px-12 transition-all duration-300 ease-in-out shadow-xs",
+        "fixed top-0 left-0 right-0 z-50 w-full max-w-440 mx-auto bg-[#F1F1F1] dark:bg-[#161616] border-b border-zinc-300 dark:border-zinc-800 text-zinc-900 dark:text-white py-1.5 sm:py-2 px-4 sm:px-6 md:px-12 transition-all duration-300 ease-in-out shadow-xs",
         isVisible ? "translate-y-0" : "-translate-y-full pointer-events-none"
       )}
     >
@@ -83,11 +83,11 @@ export function TopBanner(): React.JSX.Element | null {
           <span className="text-brand-primary font-bold">60% OFF</span>
         </p>
 
-        <div className="flex items-center gap-2.5 shrink-0">
+        <div className="flex items-center gap-2.5 shrink-0 w-full sm:w-auto justify-center">
           <CtaButton
             href={brandConfig.links.subscription}
             size="xs"
-            className="shadow-xs whitespace-nowrap"
+            className="shadow-xs whitespace-nowrap w-full sm:w-auto"
           >
             Quero ser associado
           </CtaButton>
@@ -97,7 +97,7 @@ export function TopBanner(): React.JSX.Element | null {
             width={20}
             height={10}
             alt=""
-            className="w-8 sm:w-12 dark:invert dark:brightness-0 shrink-0 select-none pointer-events-none rotate-180"
+            className="w-8 sm:w-12 dark:invert dark:brightness-0 shrink-0 select-none pointer-events-none rotate-180 hidden sm:block"
           />
         </div>
       </div>

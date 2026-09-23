@@ -6,6 +6,8 @@ import { AnimatePresence, motion } from "framer-motion"
 
 import { Container } from "@/src/components/common/container"
 
+import { brandConfig } from "@/src/config/brand.config"
+
 interface FaqItem {
   id: string
   category: string
@@ -14,19 +16,18 @@ interface FaqItem {
   highlight: string
 }
 
-const faqList: FaqItem[] = [
+const getFaqList = (brandName: string): FaqItem[] => [
   {
     id: "01",
     category: "BENEFÍCIOS & ACESSO",
-    question: "O que é a Club Key?",
-    answer:
-      "A Club Key é um benefício para associados da ClubKey, com acesso a hospedagens selecionadas com condições especiais e até 60% off nas reservas last minute.",
+    question: `O que é a ${brandName}?`,
+    answer: `A ${brandName} é um benefício exclusivo para associados, com acesso a hospedagens selecionadas com condições especiais e até 60% off nas reservas last minute.`,
     highlight: "Tarifas preferenciais e até 60% off nas reservas last minute.",
   },
   {
     id: "02",
     category: "COMO RESERVAR",
-    question: "Como eu utilizo minha Club Key para viajar?",
+    question: "Como eu utilizo minha associação para viajar?",
     answer:
       "É bem simples. Você acessa nossa collection, seleciona a acomodação que você deseja, com desconto de até 60% na modalidade de reserva last minute, paga o valor com desconto e sua reserva é confirmada na hora.",
     highlight: "Confirmação instantânea diretamente na plataforma.",
@@ -34,16 +35,15 @@ const faqList: FaqItem[] = [
   {
     id: "03",
     category: "VIGÊNCIA DO ACESSO",
-    question: "A Club Key tem validade?",
-    answer: "Sim, enquanto você for associado da Club Key.",
+    question: "O acesso tem validade?",
+    answer: `Sim, enquanto você for associado ativo da ${brandName}.`,
     highlight: "Acesso ininterrupto garantido durante toda a associação.",
   },
   {
     id: "04",
     category: "SOBRE A PLATAFORMA",
-    question: "Quem é a Clubkey?",
-    answer:
-      "A Clubkey é a plataforma de tecnologia por onde você faz sua reserva para as acomodações do catálogo Club Key.",
+    question: `Quem é a ${brandName}?`,
+    answer: `A ${brandName} é a plataforma de tecnologia e hospitalidade por onde você faz sua reserva para as acomodações do catálogo exclusivo.`,
     highlight: "Tecnologia própria desenvolvida para simplificar sua viagem.",
   },
   {
@@ -57,6 +57,7 @@ const faqList: FaqItem[] = [
 ]
 
 export function FaqSection(): React.JSX.Element {
+  const faqList = React.useMemo(() => getFaqList(brandConfig.name), [])
   const [openIndex, setOpenIndex] = React.useState<number | null>(0)
 
   const toggleFaq = (index: number) => {
@@ -88,7 +89,8 @@ export function FaqSection(): React.JSX.Element {
               DÚVIDAS FREQUENTES
             </span>
             <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tight text-zinc-900 dark:text-white leading-[1.05] font-heading">
-              TUDO O QUE VOCÊ PRECISA SABER SOBRE A CLUBKEY
+              TUDO O QUE VOCÊ PRECISA SABER SOBRE A{" "}
+              {brandConfig.name.toUpperCase()}
             </h2>
           </div>
           <p className="text-base sm:text-lg text-zinc-600 dark:text-zinc-400 font-light max-w-md leading-relaxed">

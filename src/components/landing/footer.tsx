@@ -6,14 +6,16 @@ import Image from "next/image"
 import Link from "next/link"
 
 import { usePortalStore } from "@/src/store/usePortalStore"
-import { ArrowUp, EnvelopeSimple, ShieldCheck } from "@phosphor-icons/react"
+import { ArrowUp, InstagramLogo, WhatsappLogo } from "@phosphor-icons/react"
 
 import { Container } from "@/src/components/common/container"
 
+import { cn } from "@/src/lib/utils"
+
 import { brandConfig } from "@/src/config/brand.config"
 
-const clubKeyNavLinks = [
-  { href: "/#sobre-a-club-key", label: `Sobre a ${brandConfig.name}` },
+const publicNavLinks = [
+  { href: "/#sobre", label: `Sobre a ${brandConfig.name}` },
   { href: "/#parceiros", label: "Parceiros" },
   { href: "/#experiencia", label: "Experiência" },
   { href: "/#como-funciona", label: "Como Funciona" },
@@ -21,20 +23,10 @@ const clubKeyNavLinks = [
   { href: "/#faq", label: "Perguntas Frequentes" },
 ] as const
 
-const genericNavLinks = [
-  { href: "/hospedagens", label: "Hospedagens" },
-  { href: brandConfig.links.subscription, label: "Assinatura" },
-  { href: brandConfig.links.login, label: "Área do Membro" },
-] as const
-
 const publicMemberLinks = [
   { href: brandConfig.links.login, label: "Já sou associado (Login)" },
   { href: brandConfig.links.subscription, label: "Quero ser associado" },
   { href: "/hospedagens", label: "Explorar Hospedagens" },
-  {
-    href: `mailto:${brandConfig.links.contactEmail}`,
-    label: "Suporte & Concierge",
-  },
 ] as const
 
 const portalNavLinks = [
@@ -67,8 +59,7 @@ export function Footer(): React.JSX.Element | null {
     () => false
   )
   const isAuthenticated = usePortalStore((state) => state.isAuthenticated)
-  const isClubKey = brandConfig.id === "clubkey"
-  const homeHref = isClubKey ? "/" : "/hospedagens"
+  const homeHref = "/"
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" })
@@ -78,33 +69,80 @@ export function Footer(): React.JSX.Element | null {
     return null
   }
 
-  const activeNavLinks = isAuthenticated
-    ? portalNavLinks
-    : isClubKey
-      ? clubKeyNavLinks
-      : genericNavLinks
+  const activeNavLinks = isAuthenticated ? portalNavLinks : publicNavLinks
 
   const activeMemberLinks = isAuthenticated
     ? portalMemberLinks
     : publicMemberLinks
 
   return (
-    <footer className="bg-[#161616] text-zinc-400 pt-16 pb-12 border-t border-zinc-800 w-full relative overflow-hidden mt-auto">
+    <footer className="bg-[#161616] text-zinc-400 pt-16 sm:pt-20 pb-24 sm:pb-32 border-t border-zinc-800 w-full relative overflow-hidden mt-auto">
+      {brandConfig.id === "viverde" ? (
+        <div
+          aria-hidden="true"
+          className="absolute -right-16 sm:-right-24 md:-right-32 -bottom-16 sm:-bottom-24 md:-bottom-32 w-[clamp(500px,80vw,1250px)] pointer-events-none select-none z-0 opacity-[0.035] flex justify-end items-end"
+        >
+          <Image
+            src={
+              brandConfig.assets.iconWhite || "/logos/viverde/icon_white.svg"
+            }
+            alt=""
+            width={1842}
+            height={622}
+            className="w-full h-auto object-contain object-right-bottom"
+          />
+        </div>
+      ) : (
+        <div
+          aria-hidden="true"
+          className="absolute -right-12 sm:-right-20 md:-right-28 -bottom-10 sm:-bottom-16 md:-bottom-20 w-[clamp(400px,60vw,850px)] pointer-events-none select-none z-0 opacity-[0.035] flex justify-end items-end"
+        >
+          <div className="w-full aspect-[758/389] relative flex items-center justify-center">
+            <Image
+              src={
+                brandConfig.assets.iconWhite ||
+                brandConfig.assets.iconDark ||
+                "/logos/icon_white.svg"
+              }
+              alt=""
+              width={389}
+              height={758}
+              className="w-auto h-full max-w-none object-contain rotate-90"
+            />
+          </div>
+        </div>
+      )}
+
       <Container className="relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-16">
           <div className="lg:col-span-2 space-y-4">
             <Link
               href={homeHref}
-              className="inline-block transition-opacity hover:opacity-90"
+              className="inline-flex items-center transition-opacity hover:opacity-90"
               aria-label={`${brandConfig.name} - Início`}
             >
-              {brandConfig.assets.logoMain ? (
-                <div className="relative h-10 w-40">
+              {brandConfig.assets.logoMain || brandConfig.assets.logoDark ? (
+                <div
+                  className={cn(
+                    "relative w-auto flex items-center",
+                    brandConfig.id === "viverde"
+                      ? "h-11 sm:h-13 md:h-14"
+                      : "h-9 sm:h-10"
+                  )}
+                >
                   <Image
-                    src={brandConfig.assets.logoMain}
+                    src={
+                      brandConfig.assets.logoDark || brandConfig.assets.logoMain
+                    }
                     alt={brandConfig.name}
-                    fill
-                    className="object-contain object-left"
+                    width={200}
+                    height={48}
+                    className={cn(
+                      "w-auto object-contain object-left",
+                      brandConfig.id === "viverde"
+                        ? "h-11 sm:h-13 md:h-14 max-h-14"
+                        : "h-8 sm:h-9 max-h-9"
+                    )}
                   />
                 </div>
               ) : (
@@ -118,20 +156,10 @@ export function Footer(): React.JSX.Element | null {
                 ? `Portal exclusivo para associados ${brandConfig.name}. Acesso privilegiado a tarifas com até 60% OFF em acomodações de alto padrão, eventos e experiências únicas.`
                 : brandConfig.description}
             </p>
-            <div className="pt-2">
-              <div className="inline-flex items-center gap-2 text-xs font-mono font-bold text-brand-primary">
-                <ShieldCheck className="w-4 h-4" />
-                <span>
-                  {isAuthenticated
-                    ? "PORTAL EXCLUSIVO DO ASSOCIADO"
-                    : "CLUBE PRIVADO DE HOSPITALIDADE"}
-                </span>
-              </div>
-            </div>
           </div>
 
           <div className="space-y-4">
-            <h4 className="text-xs font-mono font-bold uppercase tracking-widest text-white">
+            <h4 className="text-xs font-mono font-bold uppercase tracking-widest text-brand-primary">
               {isAuthenticated ? "Explorar Portal" : "Navegação"}
             </h4>
             <ul className="space-y-2.5 text-xs text-zinc-400">
@@ -149,7 +177,7 @@ export function Footer(): React.JSX.Element | null {
           </div>
 
           <div className="space-y-4">
-            <h4 className="text-xs font-mono font-bold uppercase tracking-widest text-white">
+            <h4 className="text-xs font-mono font-bold uppercase tracking-widest text-brand-primary">
               {isAuthenticated ? "Área do Membro" : "Associados"}
             </h4>
             <ul className="space-y-2.5 text-xs text-zinc-400">
@@ -167,25 +195,40 @@ export function Footer(): React.JSX.Element | null {
           </div>
 
           <div className="space-y-4">
-            <h4 className="text-xs font-mono font-bold uppercase tracking-widest text-white">
-              {isAuthenticated ? "Concierge & Contato" : "Contato"}
+            <h4 className="text-xs font-mono font-bold uppercase tracking-widest text-brand-primary">
+              {isAuthenticated ? "Suporte & Contato" : "Contato"}
             </h4>
             <ul className="space-y-2.5 text-xs text-zinc-400">
-              <li>
+              {brandConfig.links.whatsapp ? (
+                <li className="flex items-center gap-2.5">
+                  <WhatsappLogo className="w-4 h-4 text-brand-primary shrink-0" />
+                  <Link
+                    href={
+                      brandConfig.links.whatsappUrl ||
+                      `https://wa.me/${brandConfig.links.whatsapp.replace(/\D/g, "")}`
+                    }
+                    target="_blank"
+                    rel="noreferrer"
+                    className="hover:text-white transition-colors"
+                  >
+                    {brandConfig.links.whatsapp}
+                  </Link>
+                </li>
+              ) : null}
+              <li className="flex items-center gap-2.5">
+                <InstagramLogo className="w-4 h-4 text-brand-primary shrink-0" />
                 <Link
-                  href={`mailto:${brandConfig.links.contactEmail}`}
-                  className="hover:text-brand-primary transition-colors flex items-center gap-2"
+                  href={brandConfig.links.instagram}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="hover:text-white transition-colors"
                 >
-                  <EnvelopeSimple className="w-3.5 h-3.5 text-brand-primary" />
-                  <span>{brandConfig.links.contactEmail}</span>
+                  {brandConfig.links.instagramUser ||
+                    brandConfig.links.instagram.replace(
+                      "https://instagram.com/",
+                      ""
+                    )}
                 </Link>
-              </li>
-              <li className="pt-2">
-                <span className="text-zinc-500 text-[11px] leading-relaxed block font-light">
-                  {isAuthenticated
-                    ? "Atendimento prioritário de concierge de segunda a sexta, das 9h às 18h."
-                    : "Atendimento de concierge de segunda a sexta, das 9h às 18h."}
-                </span>
               </li>
               {isAuthenticated && (
                 <li className="pt-1">
@@ -254,17 +297,11 @@ export function Footer(): React.JSX.Element | null {
             <button
               type="button"
               onClick={scrollToTop}
-              className="hover:text-white transition-colors inline-flex items-center gap-1 text-xs cursor-pointer ml-4"
+              className="w-10 h-10 rounded-full border border-white/20 text-white flex items-center justify-center hover:bg-white hover:text-black transition-all cursor-pointer group shrink-0 ml-4"
+              aria-label="Voltar ao topo"
             >
-              <span>Voltar ao topo</span>
-              <ArrowUp className="w-3.5 h-3.5 text-brand-primary" />
+              <ArrowUp className="w-4 h-4 group-hover:-translate-y-0.5 transition-transform" />
             </button>
-          </div>
-        </div>
-
-        <div className="mt-16 pt-8 border-t border-zinc-900/60 select-none pointer-events-none text-center">
-          <div className="text-3xl sm:text-6xl md:text-8xl lg:text-9xl font-black uppercase tracking-tighter text-zinc-800/20 whitespace-nowrap">
-            {brandConfig.assets.logoText || brandConfig.name}
           </div>
         </div>
       </Container>

@@ -10,6 +10,8 @@ import { motion } from "framer-motion"
 import { Container } from "@/src/components/common/container"
 import { CtaButton } from "@/src/components/common/ctaButton"
 
+import { cn } from "@/src/lib/utils"
+
 import { brandConfig } from "@/src/config/brand.config"
 
 const emptySubscribe = () => () => {}
@@ -21,6 +23,60 @@ export function FloatingCta(): React.JSX.Element | null {
     () => false
   )
   const isAuthenticated = usePortalStore((state) => state.isAuthenticated)
+  const [isDarkBg, setIsDarkBg] = React.useState(false)
+
+  React.useEffect(() => {
+    if (!mounted) return
+
+    const checkOverlap = () => {
+      const ctaTop = window.innerHeight - 80
+      const ctaBottom = window.innerHeight - 20
+
+      const darkTargets = [
+        document.querySelector("footer"),
+        document.getElementById("experiencia"),
+      ].filter(Boolean) as HTMLElement[]
+
+      const isOverDark = darkTargets.some((el) => {
+        const rect = el.getBoundingClientRect()
+        return rect.top <= ctaBottom && rect.bottom >= ctaTop
+      })
+
+      setIsDarkBg(isOverDark)
+    }
+
+    checkOverlap()
+
+    window.addEventListener("scroll", checkOverlap, { passive: true })
+    window.addEventListener("resize", checkOverlap, { passive: true })
+
+    const darkTargets = [
+      document.querySelector("footer"),
+      document.getElementById("experiencia"),
+    ].filter(Boolean) as HTMLElement[]
+
+    let observer: IntersectionObserver | null = null
+    if (darkTargets.length > 0 && typeof IntersectionObserver !== "undefined") {
+      observer = new IntersectionObserver(
+        () => {
+          checkOverlap()
+        },
+        {
+          rootMargin: "0px 0px -30px 0px",
+          threshold: [0, 0.1, 0.5, 1],
+        }
+      )
+      darkTargets.forEach((target) => observer?.observe(target))
+    }
+
+    return () => {
+      window.removeEventListener("scroll", checkOverlap)
+      window.removeEventListener("resize", checkOverlap)
+      if (observer) {
+        observer.disconnect()
+      }
+    }
+  }, [mounted])
 
   if (!mounted || isAuthenticated) {
     return null
@@ -43,7 +99,10 @@ export function FloatingCta(): React.JSX.Element | null {
           width={20}
           height={10}
           alt=""
-          className="w-8 sm:w-12 dark:invert dark:brightness-0 shrink-0 select-none pointer-events-none"
+          className={cn(
+            "w-8 sm:w-12 shrink-0 select-none pointer-events-none transition-all duration-300",
+            isDarkBg ? "brightness-0 invert" : "dark:brightness-0 dark:invert"
+          )}
         />
         <CtaButton
           href={brandConfig.links.subscription}

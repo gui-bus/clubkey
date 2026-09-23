@@ -2,22 +2,23 @@
 
 import * as React from "react"
 
-import { Check } from "@phosphor-icons/react"
+import { ArrowUpRight, Check } from "@phosphor-icons/react"
 import { motion } from "framer-motion"
 
 import { Container } from "@/src/components/common/container"
 import { CtaButton } from "@/src/components/common/ctaButton"
 
-const steps = [
+import { brandConfig } from "@/src/config/brand.config"
+
+const getSteps = (brandName: string) => [
   {
     number: "01",
-    title: "Ative sua Club Key",
-    description:
-      "Ativação 100% digital, ágil e exclusiva para associados da Club Key.",
+    title: `Ative sua assinatura ${brandName}`,
+    description: `Ativação 100% digital, ágil e exclusiva para associados da ${brandName}.`,
   },
   {
     number: "02",
-    title: "Acesse o Catálogo Club Key",
+    title: `Acesse o Catálogo ${brandName}`,
     description:
       "Descubra hospedagens com curadoria rigorosa nos destinos mais celebrados do mundo.",
   },
@@ -36,6 +37,7 @@ const catalogFeatures = [
 ] as const
 
 export function HowItWorksCatalog(): React.JSX.Element {
+  const steps = React.useMemo(() => getSteps(brandConfig.name), [])
   return (
     <section
       id="como-funciona"
@@ -125,9 +127,15 @@ export function HowItWorksCatalog(): React.JSX.Element {
               para que você tenha experiências incríveis e com economia real.
             </p>
 
-            <div>
-              <CtaButton href="/hospedagens" size="lg">
-                Explorar catálogo
+            <div className="w-full sm:w-auto">
+              <CtaButton
+                href="/hospedagens"
+                variant="outline"
+                size="lg"
+                className="w-full sm:w-auto"
+              >
+                <span>Explorar catálogo</span>
+                <ArrowUpRight className="w-4 h-4" />
               </CtaButton>
             </div>
           </div>
