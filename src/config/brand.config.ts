@@ -15,6 +15,11 @@ export interface BrandAssets {
   logoMain: string
   logoDark?: string
   logoLight?: string
+  iconDark?: string
+  iconLight?: string
+  iconCream?: string
+  iconWhite?: string
+  productCard?: string
   favicon: string
   ogImage: string
 }
@@ -24,6 +29,9 @@ export interface BrandLinks {
   rooms: string
   login: string
   instagram: string
+  instagramUser?: string
+  whatsapp?: string
+  whatsappUrl?: string
   contactEmail: string
   website: string
 }
@@ -79,6 +87,10 @@ export const brandPresets: Record<string, BrandConfig> = {
       logoMain: "/logos/logo_white.svg",
       logoDark: "/logos/logo_white.svg",
       logoLight: "/logos/logo_black.svg",
+      iconDark: "/logos/icon_white.svg",
+      iconLight: "/logos/icon_black.svg",
+      iconWhite: "/logos/icon_white.svg",
+      productCard: "/utils/subscription/clubkey/product_card.webp",
       favicon: "/favicon.ico",
       ogImage: "/og.png",
     },
@@ -87,54 +99,66 @@ export const brandPresets: Record<string, BrandConfig> = {
       rooms: "/hospedagens",
       login: "/sign-in",
       instagram: "https://instagram.com/clubkey.io",
+      instagramUser: "clubkey.io",
       contactEmail: "contato@clubkey.io",
       website: "https://clubkey.io",
     },
   },
-  ocean: {
-    id: "ocean",
-    name: "OceanClub",
-    shortName: "OceanClub",
-    tagline: "Sua chave para viagens marítimas e resorts exclusivos",
+  viverde: {
+    id: "viverde",
+    name: "Viverde",
+    shortName: "Viverde",
+    tagline: "Um jeito mais leve de viver",
     description:
-      "Descubra as melhores estadias litorâneas e resorts com tarifas exclusivas para membros.",
+      "Acesso exclusivo a acomodações selecionadas, refúgios de alto padrão na serra e condições exclusivas de hospitalidade para membros Viverde.",
     colors: {
       light: {
-        primary: "#0284C7",
-        primaryHover: "#0369A1",
-        primaryLight: "#F0F9FF",
-        primaryDark: "#075985",
-        primaryMuted: "rgba(2, 132, 199, 0.15)",
-        primaryGlow: "rgba(2, 132, 199, 0.4)",
-        secondary: "#0F172A",
-        selectionBg: "rgba(2, 132, 199, 0.2)",
-        selectionText: "#0284C7",
+        primary: "#B88A2D",
+        primaryHover: "#9E7421",
+        primaryLight: "#FDFBF7",
+        primaryDark: "#9E7421",
+        primaryMuted: "rgba(184, 138, 45, 0.15)",
+        primaryGlow: "rgba(184, 138, 45, 0.4)",
+        secondary: "#24271D",
+        selectionBg: "rgba(184, 138, 45, 0.2)",
+        selectionText: "#B88A2D",
       },
       dark: {
-        primary: "#38BDF8",
-        primaryHover: "#0EA5E9",
-        primaryLight: "#082F49",
-        primaryDark: "#0284C7",
-        primaryMuted: "rgba(56, 189, 248, 0.15)",
-        primaryGlow: "rgba(56, 189, 248, 0.4)",
-        secondary: "#0B1120",
-        selectionBg: "rgba(56, 189, 248, 0.2)",
-        selectionText: "#38BDF8",
+        primary: "#B88A2D",
+        primaryHover: "#D8CCA8",
+        primaryLight: "#261E10",
+        primaryDark: "#9E7421",
+        primaryMuted: "rgba(184, 138, 45, 0.15)",
+        primaryGlow: "rgba(184, 138, 45, 0.4)",
+        secondary: "#161616",
+        selectionBg: "rgba(184, 138, 45, 0.2)",
+        selectionText: "#B88A2D",
       },
     },
     assets: {
-      logoText: "OCEANCLUB",
-      logoMain: "",
-      favicon: "/favicon.ico",
+      logoText: "VIVERDE",
+      logoMain: "/logos/viverde/logo_white.svg",
+      logoDark: "/logos/viverde/logo_white.svg",
+      logoLight: "/logos/viverde/logo_black.svg",
+      iconDark: "/logos/viverde/icon_white.svg",
+      iconLight: "/logos/viverde/icon_black.svg",
+      iconCream: "/logos/viverde/icon_cream.svg",
+      iconWhite: "/logos/viverde/icon_white.svg",
+      productCard: "/utils/subscription/viverde/product_card.webp",
+      favicon: "/logos/viverde/favicon.ico",
       ogImage: "/og.png",
     },
     links: {
       subscription: "/subscription",
       rooms: "/hospedagens",
       login: "/sign-in",
-      instagram: "https://oceanclub.io",
-      contactEmail: "contato@oceanclub.io",
-      website: "https://oceanclub.io",
+      instagram: "https://instagram.com/viverdeitaipava",
+      instagramUser: "@viverdeitaipava",
+      whatsapp: "(21) 99786-2692",
+      whatsappUrl:
+        "https://wa.me/5521997862692?text=Ol%C3%A1%2C%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es%20sobre%20o%20Viverde%20Itaipava.",
+      contactEmail: "contato@viverdeitaipava.com.br",
+      website: "https://viverdeitaipava.com.br",
     },
   },
 }

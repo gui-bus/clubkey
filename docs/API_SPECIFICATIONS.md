@@ -488,7 +488,7 @@ Retorna a lista oficial dos 6 Tiers Executivos para a página de Regras (`/keypa
       "Tarifas exclusivas com até 25% OFF em estadias",
       "Prioridade na lista de espera de experiências",
       "Acesso a jantares fechados e rodadas setoriais",
-      "Concierge standard para reservas prioritárias",
+      "Atendimento exclusivo para reservas prioritárias",
       "2 Tokens RIB ao subir de tier"
     ]
   },
@@ -506,7 +506,7 @@ Retorna a lista oficial dos 6 Tiers Executivos para a página de Regras (`/keypa
     "perks": [
       "Tarifas exclusivas com até 30% OFF em estadias",
       "Acesso a reuniões de deal flow e co-investimento",
-      "Concierge VIP dedicado 24/7",
+      "Suporte VIP dedicado 24/7",
       "Convites para experiências internacionais",
       "2 Tokens RIB ao subir de tier"
     ]

@@ -8,7 +8,7 @@ Este documento descreve detalhadamente o funcionamento dos motores de cálculo d
 
 O KeyPass é estruturado em 3 moedas/patrimônios do membro:
 1. **XP (Experience Points)**: Pontos de experiência acumulativos que determinam a posição no ranking e a qualificação para os Tiers. **O saldo total de XP nunca é zerado**.
-2. **Tiers (Patamares)**: Níveis hierárquicos institucionais (do Tier 01 Membro ao Tier 06 Patrono) que destravam descontos progressivos em estadias (até 35% OFF), prioridade em concierge, deal flow e acessos VIP.
+2. **Tiers (Patamares)**: Níveis hierárquicos institucionais (do Tier 01 Membro ao Tier 06 Patrono) que destravam descontos progressivos em estadias (até 35% OFF), atendimento prioritário, deal flow e acessos VIP.
 3. **Tokens RIB**: Moeda premium de recompensa recebida ao subir de tier (+2 RIB), ao completar marcos (+0.5 RIB) ou via drops especiais. Pode ser utilizada para abater valores na compra de experiências ou estadias.
 
 ---
@@ -57,11 +57,11 @@ flowchart LR
 3. **Tier 03 — Titular (`titular`)**:
    - **Faixa de XP**: 2.000 a 4.999 XP
    - **Status**: Ciclo de atividade de 180 dias.
-   - **Benefícios**: Tarifas com até 25% OFF, prioridade em listas de espera, jantares fechados, concierge standard e +2 Tokens RIB na promoção.
+   - **Benefícios**: Tarifas com até 25% OFF, prioridade em listas de espera, jantares fechados, atendimento exclusivo e +2 Tokens RIB na promoção.
 4. **Tier 04 — Investidor (`investidor`)**:
    - **Faixa de XP**: 5.000 a 9.999 XP
    - **Status**: Ciclo de atividade de 180 dias.
-   - **Benefícios**: Tarifas com até 30% OFF, reuniões de deal flow e co-investimento, concierge VIP dedicado 24/7 e +2 Tokens RIB na promoção.
+   - **Benefícios**: Tarifas com até 30% OFF, reuniões de deal flow e co-investimento, suporte VIP dedicado 24/7 e +2 Tokens RIB na promoção.
 5. **Tier 05 — Incorporador (`incorporador`)**:
    - **Faixa de XP**: 10.000 a 15.999 XP
    - **Status**: Patamar máximo por pontuação. Ciclo de atividade de 180 dias.

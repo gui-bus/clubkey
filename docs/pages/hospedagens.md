@@ -31,7 +31,7 @@ O módulo de **Hospedagens** disponibiliza a coleção privada de vilas, chalés
 - **Galeria de Imagens**: Carrossel em alta definição com suporte a visualização em tela cheia.
 - **Ficha Técnica & Comodidades**:
   - Localização precisa, tipo de acomodação (`roomType`: `"master_suite"`, `"executive_room"`, `"villa"`).
-  - Tags de comodidades (`amenities`): Wi-Fi de alta velocidade, Jacuzzi privativa, Café da manhã artesanal, Concierge 24h, Heliponto, Adega climatizada.
+  - Tags de comodidades (`amenities`): Wi-Fi de alta velocidade, Jacuzzi privativa, Café da manhã artesanal, Atendimento 24h, Heliponto, Adega climatizada.
 - **Card Lateral de Reserva**:
   - Seletor de datas e cálculo automático da quantidade de noites (`nights`).
   - Preço por diária e cálculo do valor total (`totalPrice`) já aplicando o percentual de desconto do tier do membro logado.
@@ -54,7 +54,7 @@ O módulo de **Hospedagens** disponibiliza a coleção privada de vilas, chalés
   - Cartão de confirmação de luxo com código localizador (ex: `"CK-STAY-8821"`).
   - QR Code dinâmico para leitura rápida na recepção da propriedade.
   - Horários oficiais de Check-in (a partir das 15:00) e Check-out (até as 12:00).
-  - Informações de contato do concierge da propriedade e instruções de acesso.
+  - Informações de contato do anfitrião/suporte da propriedade e instruções de acesso.
   - Botão perigoso *"Cancelar Reserva"* com diálogo de confirmação (`confirmActionDialog.tsx`).
 
 ---
@@ -128,7 +128,7 @@ Lista todas as propriedades e suítes disponíveis.
       "/utils/banners/img_01.png",
       "/utils/banners/img_02.png"
     ],
-    "amenities": ["Wi-Fi 1Gbps", "Jacuzzi", "Café da Manhã Incluso", "Concierge 24/7"],
+    "amenities": ["Wi-Fi 1Gbps", "Jacuzzi", "Café da Manhã Incluso", "Atendimento 24/7"],
     "city": {
       "name": "São Paulo",
       "state": "SP"

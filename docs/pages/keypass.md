@@ -23,8 +23,8 @@ O **KeyPass** é o ecossistema de progressão executiva, reconhecimento de engaj
 | :--- | :--- | :--- | :--- | :--- |
 | **I** | **Membro** | 0 XP | 499 XP | Tier de entrada vitalício. Acesso básico ao catálogo e eventos abertos |
 | **II** | **Associado** | 500 XP | 1.999 XP | Tier vitalício e verificado. Até 20% OFF em estadias e conexões diretas |
-| **III** | **Titular** | 2.000 XP | 4.999 XP | Até 25% OFF em estadias, jantares fechados e concierge standard |
-| **IV** | **Investidor** | 5.000 XP | 9.999 XP | Até 30% OFF em estadias, deal flow, concierge VIP 24/7 e experiências internacionais |
+| **III** | **Titular** | 2.000 XP | 4.999 XP | Até 25% OFF em estadias, jantares fechados e atendimento exclusivo |
+| **IV** | **Investidor** | 5.000 XP | 9.999 XP | Até 30% OFF em estadias, deal flow, suporte VIP 24/7 e experiências internacionais |
 | **V** | **Incorporador**| 10.000 XP | 15.999 XP | Até 35% OFF em estadias, canal direto com fundadores e mesa cativa |
 | **VI** | **Patrono** | 16.000+ XP | $\infty$ | Título supremo (#1 no Ranking Geral Global), insígnia dourada e cotas VIP irrestritas |
 
@@ -383,7 +383,7 @@ Retorna a lista oficial completa dos 6 Tiers Executivos do ClubKey, utilizada na
       "Tarifas exclusivas com até 25% OFF em estadias",
       "Prioridade na lista de espera de experiências",
       "Acesso a jantares fechados e rodadas setoriais",
-      "Concierge standard para reservas prioritárias",
+      "Atendimento exclusivo para reservas prioritárias",
       "2 Tokens RIB ao subir de tier"
     ]
   },
@@ -401,7 +401,7 @@ Retorna a lista oficial completa dos 6 Tiers Executivos do ClubKey, utilizada na
     "perks": [
       "Tarifas exclusivas com até 30% OFF em estadias",
       "Acesso a reuniões de deal flow e co-investimento",
-      "Concierge VIP dedicado 24/7",
+      "Suporte VIP dedicado 24/7",
       "Convites para experiências internacionais",
       "2 Tokens RIB ao subir de tier"
     ]

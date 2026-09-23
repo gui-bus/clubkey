@@ -88,7 +88,7 @@ Status do ciclo de vida de uma reserva de hospedagem:
 ```typescript
 type StayReservationStatus = 
   | "confirmed"     // Reserva confirmada e voucher ativo
-  | "pending"       // Aguardando confirmação do concierge / parceiro
+  | "pending"       // Aguardando confirmação da equipe / parceiro
   | "completed"     // Estadia concluída com sucesso
   | "cancelled"     // Reserva cancelada
 ```

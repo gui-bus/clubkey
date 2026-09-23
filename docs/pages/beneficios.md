@@ -1,6 +1,6 @@
 # Especificação de Módulo: Benefícios & Parcerias (`/beneficios`)
 
-O módulo de **Benefícios & Parcerias** concentra as vantagens exclusivas negociadas pela diretoria do ClubKey com marcas de luxo, restaurantes com estrelas Michelin, empresas de aviação executiva, spas de alto padrão e serviços de concierge internacional.
+O módulo de **Benefícios & Parcerias** concentra as vantagens exclusivas negociadas pela diretoria do ClubKey com marcas de luxo, restaurantes com estrelas Michelin, empresas de aviação executiva, spas de alto padrão e serviços de atendimento internacional.
 
 ---
 
@@ -39,7 +39,7 @@ O módulo de **Benefícios & Parcerias** concentra as vantagens exclusivas negoc
 - **Instruções de Utilização**:
   - Passo 1: Informar o código no checkout ou apresentar a carteira digital KeyPass.
   - Passo 2: Condições de reserva prévia (se aplicável).
-- **Botão de Ação Externa**: Link seguro para abrir o portal do parceiro ou chamar o concierge no WhatsApp.
+- **Botão de Ação Externa**: Link seguro para abrir o portal do parceiro ou chamar o suporte no WhatsApp.
 
 ---
 
