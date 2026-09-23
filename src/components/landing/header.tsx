@@ -47,18 +47,14 @@ import { cn } from "@/src/lib/utils"
 
 import { brandConfig } from "@/src/config/brand.config"
 
-const isClubKey = brandConfig.id === "clubkey"
-
-const PUBLIC_NAV_LINKS = isClubKey
-  ? [
-      { name: `Sobre a ${brandConfig.name}`, href: "/#sobre-a-club-key" },
-      { name: "Parceiros", href: "/#parceiros" },
-      { name: "Experiência", href: "/#experiencia" },
-      { name: "Como Funciona", href: "/#como-funciona" },
-      { name: "Hospedagens", href: "/hospedagens" },
-      { name: "FAQ", href: "/#faq" },
-    ]
-  : []
+const PUBLIC_NAV_LINKS = [
+  { name: `Sobre a ${brandConfig.name}`, href: "/#sobre" },
+  { name: "Parceiros", href: "/#parceiros" },
+  { name: "Experiência", href: "/#experiencia" },
+  { name: "Como Funciona", href: "/#como-funciona" },
+  { name: "Hospedagens", href: "/hospedagens" },
+  { name: "FAQ", href: "/#faq" },
+]
 
 const PORTAL_NAV_LINKS = [
   { name: "Home", href: "/" },
@@ -79,11 +75,11 @@ const MOBILE_PORTAL_NAV_LINKS = [
   { name: "KeyPass", href: "/keypass" },
 ]
 
-export function Navbar({
-  isTransparent,
-}: {
+export interface HeaderProps {
   isTransparent?: boolean
-} = {}): React.JSX.Element {
+}
+
+export function Header({ isTransparent }: HeaderProps = {}): React.JSX.Element {
   const pathname = usePathname()
   const router = useRouter()
   const {
@@ -112,7 +108,7 @@ export function Navbar({
     getFullName(userProfile) ||
     `${DEFAULT_USER.firstName} ${DEFAULT_USER.lastName}`
   const userInitials = getInitials(userFirstName, userLastName)
-  const homeHref = isClubKey ? "/" : "/hospedagens"
+  const homeHref = "/"
   const userEmail = userProfile?.email || DEFAULT_USER.email
   const userAvatar = userProfile?.avatar || DEFAULT_USER.avatar
 
@@ -150,10 +146,10 @@ export function Navbar({
   }
 
   React.useEffect(() => {
-    if (!isClubKey || pathname !== "/") return
+    if (pathname !== "/") return
 
     const sectionIds = [
-      "sobre-a-club-key",
+      "sobre",
       "parceiros",
       "experiencia",
       "como-funciona",
@@ -232,31 +228,49 @@ export function Navbar({
     >
       <header className="w-full bg-transparent py-3 sm:py-4">
         <Container className="flex items-center justify-between gap-4">
-          <div className="flex items-center gap-2.5 sm:gap-3.5 flex-shrink-0">
+          <div className="flex items-center gap-2.5 sm:gap-3 flex-shrink-0">
             <Link
               href={homeHref}
-              className="flex items-center transition-opacity hover:opacity-90"
+              className="flex items-center transition-opacity hover:opacity-90 shrink-0"
               aria-label={`${brandConfig.name} - Início`}
             >
               {brandConfig.assets.logoMain ? (
-                <div className="relative h-8 sm:h-9 w-28 sm:w-32">
+                <div
+                  className={cn(
+                    "relative w-auto flex items-center",
+                    brandConfig.id === "viverde"
+                      ? "h-11 sm:h-12 md:h-14"
+                      : "h-8 sm:h-9"
+                  )}
+                >
                   <Image
-                    src="/logos/logo_black.svg"
+                    src={
+                      brandConfig.assets.logoLight ||
+                      brandConfig.assets.logoMain
+                    }
                     alt={brandConfig.name}
-                    fill
+                    width={200}
+                    height={44}
                     priority
                     className={cn(
-                      "object-contain object-left",
+                      brandConfig.id === "viverde"
+                        ? "h-11 sm:h-12 md:h-14 w-auto max-h-14 object-contain object-left"
+                        : "h-7 sm:h-8 md:h-9 w-auto max-h-9 object-contain object-left",
                       isDarkBar ? "hidden" : "block dark:hidden"
                     )}
                   />
                   <Image
-                    src="/logos/logo_white.svg"
+                    src={
+                      brandConfig.assets.logoDark || brandConfig.assets.logoMain
+                    }
                     alt={brandConfig.name}
-                    fill
+                    width={200}
+                    height={44}
                     priority
                     className={cn(
-                      "object-contain object-left",
+                      brandConfig.id === "viverde"
+                        ? "h-11 sm:h-12 md:h-14 w-auto max-h-14 object-contain object-left"
+                        : "h-7 sm:h-8 md:h-9 w-auto max-h-9 object-contain object-left",
                       isDarkBar ? "block" : "hidden dark:block"
                     )}
                   />
@@ -277,35 +291,37 @@ export function Navbar({
               <>
                 <div
                   className={cn(
-                    "h-4 sm:h-4.5 w-px",
+                    "h-4 sm:h-4.5 w-px shrink-0",
                     isDarkBar ? "bg-white/20" : "bg-zinc-300 dark:bg-zinc-700"
                   )}
                 />
 
                 <Link
                   href="/keypass"
-                  className="flex items-center transition-opacity hover:opacity-90"
+                  className="flex items-center transition-opacity hover:opacity-90 shrink-0"
                   title="KeyPass"
                   aria-label="KeyPass"
                 >
-                  <div className="relative h-6 sm:h-7 w-20 sm:w-24">
+                  <div className="relative h-6 sm:h-7 w-auto flex items-center">
                     <Image
                       src="/logos/gamification/keypass_logo_black.svg"
                       alt="KeyPass"
-                      fill
+                      width={100}
+                      height={28}
                       priority
                       className={cn(
-                        "object-contain object-left",
+                        "h-5 sm:h-6 w-auto object-contain object-left",
                         isDarkBar ? "hidden" : "block dark:hidden"
                       )}
                     />
                     <Image
                       src="/logos/gamification/keypass_logo_white.svg"
                       alt="KeyPass"
-                      fill
+                      width={100}
+                      height={28}
                       priority
                       className={cn(
-                        "object-contain object-left",
+                        "h-5 sm:h-6 w-auto object-contain object-left",
                         isDarkBar ? "block" : "hidden dark:block"
                       )}
                     />
@@ -317,7 +333,7 @@ export function Navbar({
 
           {!isAuthenticated ? (
             PUBLIC_NAV_LINKS.length > 0 && (
-              <nav className="hidden 2xl:flex items-center gap-1.5">
+              <nav className="hidden 2xl:flex items-center gap-6 xl:gap-8">
                 {PUBLIC_NAV_LINKS.map((link) => {
                   const linkHash = link.href.startsWith("/#")
                     ? link.href.replace("/", "")
@@ -333,68 +349,66 @@ export function Navbar({
                       key={link.name}
                       href={link.href}
                       className={cn(
-                        "relative px-3 py-1.5 text-xs uppercase tracking-wider transition-colors duration-200 group whitespace-nowrap",
-                        isActive
-                          ? "text-brand-primary font-bold"
-                          : "text-white font-normal hover:text-white/80"
+                        "text-xs font-bold uppercase tracking-widest transition-all relative py-1.5",
+                        isDarkBar
+                          ? isActive
+                            ? "text-brand-primary"
+                            : "text-zinc-200 hover:text-white"
+                          : isActive
+                            ? "text-brand-primary"
+                            : "text-zinc-600 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white"
                       )}
                     >
-                      <span>{link.name}</span>
-                      <span
-                        className={cn(
-                          "absolute bottom-0 left-3 right-3 h-0.5 transition-transform duration-300 origin-center bg-brand-primary",
-                          isActive
-                            ? "scale-x-100"
-                            : "scale-x-0 group-hover:scale-x-100"
-                        )}
-                      />
+                      {link.name}
+                      {isActive && (
+                        <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-brand-primary rounded-full" />
+                      )}
                     </Link>
                   )
                 })}
               </nav>
             )
           ) : (
-            <nav className="hidden 2xl:flex items-center gap-1.5">
-              {PORTAL_NAV_LINKS.map((item) => {
+            <nav className="hidden 2xl:flex items-center gap-6 xl:gap-8">
+              {PORTAL_NAV_LINKS.map((link) => {
                 const isCatalogPath =
-                  item.href === "/hospedagens" &&
+                  link.href === "/hospedagens" &&
                   (pathname === "/hospedagens" || pathname === "/rooms")
 
                 const isActive =
-                  item.href === "/"
+                  link.href === "/"
                     ? pathname === "/"
                     : isCatalogPath ||
-                      pathname === item.href ||
-                      (item.href !== "/hospedagens" &&
-                        pathname.startsWith(item.href))
+                      pathname === link.href ||
+                      (link.href !== "/hospedagens" &&
+                        pathname.startsWith(link.href))
 
                 return (
                   <Link
-                    key={item.name}
-                    href={item.href}
+                    key={link.name}
+                    href={link.href}
                     className={cn(
-                      "relative px-3 py-1.5 text-xs uppercase tracking-wider transition-colors duration-200 group whitespace-nowrap",
-                      isActive
-                        ? "text-brand-primary font-bold"
-                        : "text-white font-normal hover:text-white/80"
+                      "text-xs font-bold uppercase tracking-widest transition-all relative py-1.5",
+                      isDarkBar
+                        ? isActive
+                          ? "text-brand-primary"
+                          : "text-zinc-200 hover:text-white"
+                        : isActive
+                          ? "text-brand-primary"
+                          : "text-zinc-600 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white"
                     )}
                   >
-                    <span>{item.name}</span>
-                    <span
-                      className={cn(
-                        "absolute bottom-0 left-3 right-3 h-0.5 transition-transform duration-300 origin-center bg-brand-primary",
-                        isActive
-                          ? "scale-x-100"
-                          : "scale-x-0 group-hover:scale-x-100"
-                      )}
-                    />
+                    {link.name}
+                    {isActive && (
+                      <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-brand-primary rounded-full" />
+                    )}
                   </Link>
                 )
               })}
             </nav>
           )}
 
-          <div className="flex items-center gap-4 sm:gap-5 flex-shrink-0">
+          <div className="flex items-center gap-3 sm:gap-4">
             {isAuthenticated && (
               <Link
                 href="/keypass"
@@ -490,39 +504,66 @@ export function Navbar({
                   className="w-full max-w-xs sm:max-w-sm bg-white dark:bg-[#101012] backdrop-blur-2xl border-l border-zinc-200 dark:border-zinc-800 p-0 flex flex-col h-full text-zinc-900 dark:text-white"
                 >
                   <SheetHeader className="px-6 pt-6 pb-4 border-b border-zinc-200 dark:border-zinc-800/80 shrink-0">
-                    <div className="flex items-center justify-between gap-4">
+                    <div className="flex items-center justify-between gap-4 pr-9">
                       <SheetTitle className="text-left font-heading font-black text-xl uppercase tracking-wider">
                         {brandConfig.assets.logoMain ? (
                           <div className="flex items-center gap-2.5">
-                            <div className="relative h-7 w-24">
+                            <div
+                              className={cn(
+                                "relative w-auto flex items-center",
+                                brandConfig.id === "viverde"
+                                  ? "h-10 sm:h-11"
+                                  : "h-7"
+                              )}
+                            >
                               <Image
-                                src="/logos/logo_black.svg"
+                                src={
+                                  brandConfig.assets.logoLight ||
+                                  brandConfig.assets.logoMain
+                                }
                                 alt={brandConfig.name}
-                                fill
-                                className="object-contain object-left block dark:hidden"
+                                width={140}
+                                height={32}
+                                className={cn(
+                                  brandConfig.id === "viverde"
+                                    ? "h-10 sm:h-11 w-auto max-h-11 object-contain object-left"
+                                    : "h-6 sm:h-7 w-auto max-h-7 object-contain object-left",
+                                  "block dark:hidden"
+                                )}
                               />
                               <Image
-                                src="/logos/logo_white.svg"
+                                src={
+                                  brandConfig.assets.logoDark ||
+                                  brandConfig.assets.logoMain
+                                }
                                 alt={brandConfig.name}
-                                fill
-                                className="object-contain object-left hidden dark:block"
+                                width={140}
+                                height={32}
+                                className={cn(
+                                  brandConfig.id === "viverde"
+                                    ? "h-10 sm:h-11 w-auto max-h-11 object-contain object-left"
+                                    : "h-6 sm:h-7 w-auto max-h-7 object-contain object-left",
+                                  "hidden dark:block"
+                                )}
                               />
                             </div>
                             {isAuthenticated && (
                               <>
-                                <div className="h-3.5 w-px bg-zinc-300 dark:bg-zinc-700" />
-                                <div className="relative h-5 w-16">
+                                <div className="h-3.5 w-px bg-zinc-300 dark:bg-zinc-700 shrink-0" />
+                                <div className="relative h-5 w-auto flex items-center shrink-0">
                                   <Image
                                     src="/logos/gamification/keypass_logo_black.svg"
                                     alt="KeyPass"
-                                    fill
-                                    className="object-contain object-left block dark:hidden"
+                                    width={80}
+                                    height={24}
+                                    className="h-4.5 sm:h-5 w-auto object-contain object-left block dark:hidden"
                                   />
                                   <Image
                                     src="/logos/gamification/keypass_logo_white.svg"
                                     alt="KeyPass"
-                                    fill
-                                    className="object-contain object-left hidden dark:block"
+                                    width={80}
+                                    height={24}
+                                    className="h-4.5 sm:h-5 w-auto object-contain object-left hidden dark:block"
                                   />
                                 </div>
                               </>
@@ -789,3 +830,5 @@ export function Navbar({
     </div>
   )
 }
+
+export const Navbar = Header

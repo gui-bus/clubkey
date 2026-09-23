@@ -4,7 +4,7 @@ import * as React from "react"
 
 import Image from "next/image"
 
-import { Key } from "@phosphor-icons/react"
+import { ArrowUpRight, Key } from "@phosphor-icons/react"
 import { motion } from "framer-motion"
 
 import { Container } from "@/src/components/common/container"
@@ -14,7 +14,7 @@ import { cn } from "@/src/lib/utils"
 
 import { brandConfig } from "@/src/config/brand.config"
 
-const clubKeyHighlights = [
+const brandHighlights = [
   {
     title: "Nossas Hospedagens de Alto Padrão",
     description:
@@ -24,15 +24,15 @@ const clubKeyHighlights = [
   {
     title: "Uma Comunidade Exclusiva de Membros",
     description:
-      "Vantagens ativas em mais de 35.000 marcas parceiras em 150 países, suporte concierge dedicado e ausência de tarifas abusivas.",
+      "Vantagens ativas em mais de 35.000 marcas parceiras em 150 países, suporte dedicado e ausência de tarifas abusivas.",
     className: "mb-8",
   },
 ] as const
 
-export function WhatIsClubKey(): React.JSX.Element {
+export function WhatIsBrand(): React.JSX.Element {
   return (
     <section
-      id="sobre-a-club-key"
+      id="sobre"
       className="w-full py-16 md:py-24 bg-transparent text-zinc-900 dark:text-zinc-100 transition-colors overflow-hidden relative"
     >
       <span id="o-que-e" className="sr-only" />
@@ -49,7 +49,7 @@ export function WhatIsClubKey(): React.JSX.Element {
               <div className="group absolute top-3 left-3 sm:top-5 sm:left-5 w-[65%] h-[80%] rounded-sm overflow-hidden shadow-2xl -rotate-6 bg-zinc-200 dark:bg-zinc-800">
                 <Image
                   src="/utils/banners/img_02.png"
-                  alt="Hospedagens e resorts exclusivos da Club Key"
+                  alt={`Hospedagens e resorts exclusivos da ${brandConfig.name}`}
                   fill
                   sizes="(max-width: 768px) 65vw, 420px"
                   className="object-cover"
@@ -60,7 +60,7 @@ export function WhatIsClubKey(): React.JSX.Element {
               <div className="group absolute bottom-3 right-3 sm:bottom-5 sm:right-5 w-[67%] h-[84%] rounded-sm overflow-hidden shadow-2xl rotate-3 bg-zinc-200 dark:bg-zinc-800 z-10">
                 <Image
                   src="/utils/banners/img_03.png"
-                  alt="Experiência de hospitalidade premium Club Key"
+                  alt={`Experiência de hospitalidade premium ${brandConfig.name}`}
                   fill
                   sizes="(max-width: 768px) 70vw, 440px"
                   className="object-cover"
@@ -114,18 +114,18 @@ export function WhatIsClubKey(): React.JSX.Element {
             <div className="flex items-center gap-2 mb-4">
               <span className="w-2 h-2 rounded-full bg-brand-primary" />
               <span className="text-xs font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400 font-heading">
-                SOBRE A CLUB KEY
+                SOBRE A {brandConfig.name.toUpperCase()}
               </span>
             </div>
 
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-zinc-900 dark:text-white leading-[1.08] mb-6 font-heading uppercase">
-              Viva a excelência em hospitalidade com a Club Key
+              Viva a excelência em hospitalidade com a {brandConfig.name}
             </h2>
 
             <p className="text-base sm:text-lg text-zinc-600 dark:text-zinc-400 font-light leading-relaxed mb-8">
               A{" "}
               <strong className="font-semibold text-zinc-900 dark:text-white">
-                Club Key
+                {brandConfig.name}
               </strong>{" "}
               é o passaporte definitivo para quem busca hospedagens
               extraordinárias com tarifas preferenciais, reservas flexíveis e
@@ -133,7 +133,7 @@ export function WhatIsClubKey(): React.JSX.Element {
               associados que valorizam privacidade, sofisticação e conforto.
             </p>
 
-            {clubKeyHighlights.map((highlight) => (
+            {brandHighlights.map((highlight) => (
               <div
                 key={highlight.title}
                 className={cn("flex items-start gap-4", highlight.className)}
@@ -158,9 +158,15 @@ export function WhatIsClubKey(): React.JSX.Element {
               </div>
             ))}
 
-            <div>
-              <CtaButton href={brandConfig.links.subscription} size="lg">
-                Conheça a {brandConfig.name}
+            <div className="w-full sm:w-auto">
+              <CtaButton
+                href={brandConfig.links.subscription}
+                variant="outline"
+                size="lg"
+                className="w-full sm:w-auto"
+              >
+                <span>Conheça a {brandConfig.name}</span>
+                <ArrowUpRight className="w-4 h-4" />
               </CtaButton>
             </div>
           </motion.div>
