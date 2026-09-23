@@ -101,7 +101,7 @@ export function RoomGallery({
         </div>
 
         <CtaButton
-          variant="secondary"
+          variant="dark-outline"
           size="sm"
           onClick={() => openLightbox(0)}
           className="absolute bottom-4 right-4 z-20 shadow-lg"

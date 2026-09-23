@@ -68,7 +68,7 @@ export function ProfileHeader({
             <div className="flex items-center gap-2 self-start sm:self-auto">
               <CtaButton
                 type="button"
-                variant="secondary"
+                variant="dark-outline"
                 size="xs"
                 onClick={onOpenCoverDialog}
                 className="bg-black/60 hover:bg-black/80 text-white backdrop-blur-md border border-white/20 text-xs font-bold uppercase tracking-wider shadow-md"

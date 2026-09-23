@@ -207,7 +207,7 @@ export function ProfileCoverDialog({
           <DialogClose asChild>
             <CtaButton
               type="button"
-              variant="secondary"
+              variant="dark-outline"
               size="xs"
               className="text-xs"
             >

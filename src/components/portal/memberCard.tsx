@@ -183,7 +183,7 @@ export function MemberCard({
               </CtaButton>
               <CtaButton
                 type="button"
-                variant="secondary"
+                variant="dark-outline"
                 size="xs"
                 onClick={(e) => {
                   e.preventDefault()
@@ -212,7 +212,7 @@ export function MemberCard({
               {onCancel ? (
                 <CtaButton
                   type="button"
-                  variant="secondary"
+                  variant="dark-outline"
                   size="xs"
                   onClick={handleCancel}
                   className="w-8 h-8 px-0 rounded-sm shrink-0 z-10 shadow-none hover:shadow-none flex items-center justify-center border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-white"
@@ -225,7 +225,7 @@ export function MemberCard({
               ) : onRemove ? (
                 <CtaButton
                   type="button"
-                  variant="secondary"
+                  variant="dark-outline"
                   size="xs"
                   onClick={handleRemove}
                   className="w-8 h-8 px-0 rounded-sm shrink-0 z-10 shadow-none hover:shadow-none flex items-center justify-center border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-white"

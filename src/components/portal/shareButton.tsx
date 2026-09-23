@@ -49,7 +49,7 @@ export function ShareButton({
   return (
     <CtaButton
       type="button"
-      variant="secondary"
+      variant="dark-outline"
       size={size}
       onClick={handleCopy}
       className={cn(

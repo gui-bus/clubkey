@@ -185,7 +185,7 @@ export function SubscriptionForm({
                 </CtaButton>
                 <CtaButton
                   href="/sign-up"
-                  variant="secondary"
+                  variant="dark-outline"
                   size="sm"
                   isFullWidth
                   className="flex-1"

@@ -68,7 +68,7 @@ export function LeaderboardTargetCard({
 
         <CtaButton
           href="/keypass/missoes"
-          variant="secondary"
+          variant="dark-outline"
           size="sm"
           className="text-xs font-bold whitespace-nowrap shrink-0"
         >

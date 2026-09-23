@@ -50,7 +50,7 @@ export function AddToCalendarButton({
   return (
     <CtaButton
       type="button"
-      variant="secondary"
+      variant="dark-outline"
       size={size}
       onClick={handleAddToCalendar}
       className={cn(

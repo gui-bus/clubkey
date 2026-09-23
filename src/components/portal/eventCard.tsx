@@ -225,7 +225,7 @@ export function EventCard({ event }: EventCardProps): React.JSX.Element {
               {isConfirmed ? (
                 <CtaButton
                   type="button"
-                  variant="secondary"
+                  variant="dark-outline"
                   size="xs"
                   onClick={handleRSVP}
                   className="w-full sm:w-auto px-4 h-9 text-[11px] font-bold uppercase tracking-wider whitespace-nowrap shadow-none hover:shadow-none border-emerald-500/40 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 hover:border-rose-500/40 hover:bg-rose-500/10 hover:text-rose-600 dark:hover:text-rose-400 shrink-0"

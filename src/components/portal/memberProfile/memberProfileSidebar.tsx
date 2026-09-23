@@ -66,7 +66,7 @@ export function MemberProfileSidebar({
           {status === "connected" ? (
             <CtaButton
               type="button"
-              variant="secondary"
+              variant="dark-outline"
               size="md"
               isFullWidth
               onClick={onConnectToggle}
@@ -80,7 +80,7 @@ export function MemberProfileSidebar({
           ) : status === "pending" ? (
             <CtaButton
               type="button"
-              variant="secondary"
+              variant="dark-outline"
               size="md"
               isFullWidth
               onClick={onConnectToggle}

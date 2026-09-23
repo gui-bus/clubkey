@@ -204,7 +204,7 @@ export default function ExperienceCheckoutPage(): React.JSX.Element {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
           <CtaButton
             href={`/experiencias/${experience.id}/${expSlug}`}
-            variant="secondary"
+            variant="dark-outline"
             size="sm"
             className="w-full sm:w-auto px-6 h-11 text-xs shadow-none hover:shadow-none"
           >
@@ -447,7 +447,7 @@ export default function ExperienceCheckoutPage(): React.JSX.Element {
 
                   <CtaButton
                     type="button"
-                    variant="secondary"
+                    variant="dark-outline"
                     size="sm"
                     isFullWidth
                     onClick={handleCopyPix}

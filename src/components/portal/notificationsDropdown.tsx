@@ -331,7 +331,7 @@ export function NotificationsDropdown({
 
                         <CtaButton
                           type="button"
-                          variant="secondary"
+                          variant="dark-outline"
                           size="xs"
                           onClick={(e) => handleDecline(member, e)}
                           className="h-7 px-3 text-[11px] font-medium shadow-none hover:shadow-none border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-white"
