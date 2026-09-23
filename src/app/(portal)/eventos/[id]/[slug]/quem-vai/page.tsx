@@ -158,7 +158,7 @@ export default function EventParticipantsPage(): React.JSX.Element {
 
         <CtaButton
           href={`/eventos/${event.id}/${getEventSlug(event)}`}
-          variant="secondary"
+          variant="outline"
           size="sm"
           className="h-9 px-3.5 text-xs shadow-none hover:shadow-none self-start sm:self-auto"
         >

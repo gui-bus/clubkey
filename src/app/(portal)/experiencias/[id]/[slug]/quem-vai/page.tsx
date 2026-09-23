@@ -159,7 +159,7 @@ export default function ExperienceParticipantsPage(): React.JSX.Element {
 
         <CtaButton
           href={`/experiencias/${experience.id}/${expSlug}`}
-          variant="secondary"
+          variant="outline"
           size="sm"
           className="h-9 px-3.5 text-xs shadow-none hover:shadow-none self-start sm:self-auto"
         >
