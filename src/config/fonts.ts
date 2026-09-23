@@ -15,7 +15,13 @@ const fontOutfit = Outfit({
   display: "swap",
 })
 
-const fontMontserrat = Montserrat({
+const fontMontserratHeading = Montserrat({
+  subsets: ["latin"],
+  variable: "--font-heading",
+  display: "swap",
+})
+
+const fontMontserratSans = Montserrat({
   subsets: ["latin"],
   variable: "--font-sans",
   display: "swap",
@@ -34,15 +40,8 @@ const fontMono = Geist_Mono({
   display: "swap",
 })
 
-const fontHeading = isViverde
-  ? {
-      className: "font-heading",
-      variable: "",
-      style: { fontFamily: "'Gotham', sans-serif" },
-    }
-  : fontOutfit
-
-const fontSans = isViverde ? fontPlusJakartaSans : fontMontserrat
+const fontHeading = isViverde ? fontMontserratHeading : fontOutfit
+const fontSans = isViverde ? fontPlusJakartaSans : fontMontserratSans
 
 export const fonts = {
   heading: fontHeading,
@@ -50,6 +49,4 @@ export const fonts = {
   mono: fontMono,
 }
 
-export const fontVariables = isViverde
-  ? `${fontPlusJakartaSans.variable} ${fontMono.variable}`
-  : `${fontOutfit.variable} ${fontMontserrat.variable} ${fontMono.variable}`
+export const fontVariables = `${fontHeading.variable} ${fontSans.variable} ${fontMono.variable}`

@@ -174,12 +174,9 @@ export function generateBrandCssVariables(
 ): string {
   const light = config.colors.light
   const dark = config.colors.dark
-  const fontHeadingOverride =
-    config.id === "viverde" ? "--font-heading: 'Gotham', sans-serif;" : ""
 
   return `
     :root {
-      ${fontHeadingOverride}
       --primary: ${light.primary};
       --ring: ${light.primary};
       --chart-1: ${light.primary};
@@ -196,7 +193,6 @@ export function generateBrandCssVariables(
       --selection-text: ${light.selectionText};
     }
     .dark {
-      ${fontHeadingOverride}
       --primary: ${dark.primary};
       --ring: ${dark.primary};
       --chart-1: ${dark.primary};
