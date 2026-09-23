@@ -7,8 +7,7 @@ import { useRipples } from "@/src/lib/ripple/useRipple"
 import { cn } from "@/src/lib/utils"
 
 export type CtaButtonSize = "xs" | "sm" | "md" | "lg"
-export type CtaButtonVariant =
-  "primary" | "secondary" | "outline" | "dark-outline"
+export type CtaButtonVariant = "primary" | "outline" | "dark-outline"
 
 export interface CtaButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   href?: string
@@ -33,8 +32,6 @@ const sizeClasses: Record<CtaButtonSize, string> = {
 
 const variantClasses: Record<CtaButtonVariant, string> = {
   primary: "bg-brand-primary text-white border-0 shadow-md hover:shadow-lg",
-  secondary:
-    "bg-[#161616] text-white dark:bg-zinc-100 dark:text-[#161616] border border-white/10 dark:border-zinc-800 shadow-sm hover:shadow-md",
   outline:
     "bg-transparent text-zinc-900 dark:text-zinc-100 border border-zinc-900/15 dark:border-white/20 shadow-xs hover:border-zinc-900/35 dark:hover:border-white/40",
   "dark-outline":
@@ -43,14 +40,12 @@ const variantClasses: Record<CtaButtonVariant, string> = {
 
 const defaultSliderClasses: Record<CtaButtonVariant, string> = {
   primary: "bg-brand-primary-dark",
-  secondary: "bg-zinc-800 dark:bg-zinc-200",
   outline: "bg-zinc-900/5 dark:bg-white/10",
   "dark-outline": "bg-white/15",
 }
 
 const defaultTextClasses: Record<CtaButtonVariant, string> = {
   primary: "text-white",
-  secondary: "text-white dark:text-[#161616]",
   outline: "text-zinc-900 dark:text-zinc-100",
   "dark-outline": "text-white",
 }
