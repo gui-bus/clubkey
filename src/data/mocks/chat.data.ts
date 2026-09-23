@@ -1,11 +1,13 @@
 import type { ChatMessage } from "@/src/types"
 
+import { brandConfig } from "@/src/config/brand.config"
+
 export const DEFAULT_CHAT_MESSAGES: Record<number, ChatMessage[]> = {
   2: [
     {
       id: "msg-2-1",
       senderId: 2,
-      text: "Olá William! Vi seu perfil aqui no ClubKey e notei sua experiência com estruturação e venture capital. Achei excelente a tese da sua empresa!",
+      text: `Olá William! Vi seu perfil aqui no ${brandConfig.name} e notei sua experiência com estruturação e venture capital. Achei excelente a tese da sua empresa!`,
       timestamp: "10:42",
       read: false,
     },

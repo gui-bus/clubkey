@@ -2,6 +2,8 @@ import type { Metadata } from "next"
 
 import { EXPERIENCES } from "@/src/data/portalData"
 
+import { brandConfig } from "@/src/config/brand.config"
+
 interface LayoutProps {
   children: React.ReactNode
   params: Promise<{ id: string; slug: string }>
@@ -19,7 +21,7 @@ export async function generateMetadata({
       ? `Checkout & Reserva: ${experience.title}`
       : "Checkout de Experiência",
     description: experience
-      ? `Finalize sua reserva exclusiva para ${experience.title} no ClubKey.`
+      ? `Finalize sua reserva exclusiva para ${experience.title} no ${brandConfig.name}.`
       : "Finalização e pagamento da experiência.",
   }
 }

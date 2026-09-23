@@ -4,6 +4,8 @@ import type {
   StayItem,
 } from "@/src/types"
 
+import { brandConfig } from "@/src/config/brand.config"
+
 export const STAYS: StayItem[] = [
   {
     id: 0,
@@ -102,7 +104,7 @@ export const DEFAULT_MEMBER_STAYS: MemberStayReservation[] = [
     roomType: "Villa Master com Piscina Privativa",
     totalPrice: 5760,
     status: "confirmed",
-    confirmationCode: "CK-BV-8821",
+    confirmationCode: `${brandConfig.id.toUpperCase().slice(0, 2)}-BV-8821`,
   },
   {
     id: "res-02",
@@ -118,12 +120,12 @@ export const DEFAULT_MEMBER_STAYS: MemberStayReservation[] = [
     roomType: "Casa da Praça (Suíte Presidencial)",
     totalPrice: 9280,
     status: "confirmed",
-    confirmationCode: "CK-UX-4490",
+    confirmationCode: `${brandConfig.id.toUpperCase().slice(0, 2)}-UX-4490`,
   },
 ]
 
 export const DEFAULT_MEMBER_SUBSCRIPTION: MemberSubscription = {
-  planName: "ClubKey Founder Black",
+  planName: `${brandConfig.name} Founder Black`,
   tierBadge: "Membro Fundador VIP",
   status: "active",
   renewalDate: "15 de Outubro de 2026",
@@ -152,7 +154,7 @@ export const DEFAULT_MEMBER_SUBSCRIPTION: MemberSubscription = {
   features: [
     "Acesso total a todos os encontros mensais e eventos fechados",
     "Tarifas com até 35% de desconto no catálogo de hospedagens parceiras",
-    "Canal direto com concierge VIP 24/7 para reservas e experiências",
+    "Canal direto de suporte VIP 24/7 para reservas e experiências",
     "Diretório completo de membros com introduções e conexões bilaterais",
     "Prioridade máxima na lista de espera para viagens e regatas exclusivas",
     "Clube de benefícios e parcerias com hospitais, aviação executiva e gastronomia",

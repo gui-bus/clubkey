@@ -1,3 +1,5 @@
+import { brandConfig } from "@/src/config/brand.config"
+
 export interface ApiImageMeta {
   _id: string
   url: string
@@ -1802,7 +1804,7 @@ export const catalogSections: RoomSection[] = [
   {
     id: "all",
     title: "Todas as acomodações",
-    subtitle: "Explore todo o catálogo exclusivo da ClubKey no Brasil",
+    subtitle: `Explore todo o catálogo exclusivo da ${brandConfig.name} no Brasil`,
     rooms: rawApiRooms,
   },
 ]

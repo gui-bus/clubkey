@@ -1,5 +1,7 @@
 import type { EventItem } from "@/src/types"
 
+import { brandConfig } from "@/src/config/brand.config"
+
 export const EVENTS: EventItem[] = [
   {
     id: 0,
@@ -41,7 +43,7 @@ export const EVENTS: EventItem[] = [
       "Acesso ao salão privativo Casa Alpha",
       "Menu autoral em 4 tempos & carta de vinhos",
       "Resumo executivo de oportunidades pós-evento",
-      "Suporte e atendimento do concierge ClubKey",
+      `Suporte e atendimento dedicado ${brandConfig.name}`,
     ],
   },
   {
@@ -94,7 +96,7 @@ export const EVENTS: EventItem[] = [
     month: "SET",
     weekday: "Quinta",
     time: "19h00",
-    place: "Sede ClubKey, Faria Lima (São Paulo)",
+    place: `Sede ${brandConfig.name}, Faria Lima (São Paulo)`,
     organizerId: 7,
     capacity: 12,
     initialConfirmed: 4,
@@ -124,7 +126,7 @@ export const EVENTS: EventItem[] = [
       },
     ],
     inclusions: [
-      "Acesso ao lounge executivo ClubKey Faria Lima",
+      `Acesso ao lounge executivo ${brandConfig.name} Faria Lima`,
       "Coquetel volante e coquetelaria autoral",
       "Guia prático de governança para empresas familiares",
       "Lista de contatos dos participantes",

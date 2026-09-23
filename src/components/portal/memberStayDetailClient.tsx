@@ -44,6 +44,8 @@ import { ShareButton } from "@/src/components/portal/shareButton"
 
 import { cn } from "@/src/lib/utils"
 
+import { brandConfig } from "@/src/config/brand.config"
+
 export function MemberStayDetailClient({
   stayId: initialId,
 }: {
@@ -211,9 +213,10 @@ export function MemberStayDetailClient({
             </h2>
             <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed">
               Sua estadia na propriedade {stay.stayName} foi garantida através
-              do benefício exclusivo de membro ClubKey. O empreendimento oferece
-              curadoria premium de hospitalidade, privacidade absoluta e
-              infraestrutura de alta gastronomia, bem-estar e lazer.
+              do benefício exclusivo de membro {brandConfig.name}. O
+              empreendimento oferece curadoria premium de hospitalidade,
+              privacidade absoluta e infraestrutura de alta gastronomia,
+              bem-estar e lazer.
             </p>
             <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed">
               No momento do check-in, apresente o voucher oficial impresso ou em
@@ -293,7 +296,7 @@ export function MemberStayDetailClient({
               </div>
 
               <span className="px-2.5 py-1 rounded-sm bg-brand-primary/10 text-brand-primary text-[10px] font-bold uppercase tracking-wider">
-                Benefício ClubKey
+                Benefício {brandConfig.name}
               </span>
             </div>
 

@@ -8,6 +8,8 @@ import type {
   XpActivity,
 } from "@/src/types"
 
+import { brandConfig } from "@/src/config/brand.config"
+
 export const TIERS_CONFIG: Record<TierId, TierDefinition> = {
   membro: {
     id: "membro",
@@ -64,7 +66,7 @@ export const TIERS_CONFIG: Record<TierId, TierDefinition> = {
       "Tarifas exclusivas com até 25% OFF em estadias",
       "Prioridade na lista de espera de experiências",
       "Acesso a jantares fechados e rodadas setoriais",
-      "Concierge standard para reservas prioritárias",
+      "Atendimento exclusivo para reservas prioritárias",
       "2 Tokens RIB ao subir de tier",
     ],
   },
@@ -83,7 +85,7 @@ export const TIERS_CONFIG: Record<TierId, TierDefinition> = {
     perks: [
       "Tarifas exclusivas com até 30% OFF em estadias",
       "Acesso a reuniões de deal flow e co-investimento",
-      "Concierge VIP dedicado 24/7",
+      "Suporte VIP dedicado 24/7",
       "Convites para experiências internacionais",
       "2 Tokens RIB ao subir de tier",
     ],
@@ -103,7 +105,7 @@ export const TIERS_CONFIG: Record<TierId, TierDefinition> = {
     perks: [
       "Tarifas com desconto máximo de até 35% OFF",
       "Acesso total a todas as experiências e regatas",
-      "Canal direto com fundadores do ClubKey",
+      `Canal direto com fundadores do ${brandConfig.name}`,
       "Mesa cativa nos encontros institucionais anuais",
       "2 Tokens RIB ao subir de tier",
     ],
@@ -942,8 +944,7 @@ export const DEFAULT_BADGES: BadgeDefinition[] = [
   {
     id: "badge_pioneiro_estadias",
     name: "Pioneiro das Estadias",
-    description:
-      "Realizou e concluiu as primeiras reservas de acomodações no catálogo ClubKey.",
+    description: `Realizou e concluiu as primeiras reservas de acomodações no catálogo ${brandConfig.name}.`,
     iconName: "Buildings",
     category: "estadias",
     unlockedAt: "14 de Outubro, 2026",

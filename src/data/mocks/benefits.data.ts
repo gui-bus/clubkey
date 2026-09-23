@@ -89,7 +89,7 @@ export const BENEFITS: BenefitItem[] = [
     discount: "12% OFF",
     image:
       "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=800&auto=format&fit=crop&q=80",
-    desc: "Horas de voo compartilhadas em jatos leves com atendimento conciergerie 24/7.",
+    desc: "Horas de voo compartilhadas em jatos leves com atendimento VIP 24/7.",
   },
   {
     id: 10,

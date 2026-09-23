@@ -7,7 +7,7 @@ import Image from "next/image"
 import { ShieldCheck } from "@phosphor-icons/react"
 
 import { FloatingCta } from "@/src/components/landing/floatingCta"
-import { Navbar } from "@/src/components/landing/navbar"
+import { Header } from "@/src/components/landing/header"
 import { TopBanner } from "@/src/components/landing/topBanner"
 
 import { cn } from "@/src/lib/utils"
@@ -57,7 +57,7 @@ export function AuthSplitLayout({
   return (
     <main className="flex-1 w-full bg-[#F1F1F1] dark:bg-[#161616] text-[#111111] dark:text-white flex flex-col font-sans selection:bg-brand-primary/20 selection:text-brand-primary">
       <TopBanner />
-      <Navbar isTransparent={false} />
+      <Header isTransparent={false} />
 
       <section className="flex-1 w-full flex items-stretch">
         <div className="w-full grid grid-cols-1 lg:grid-cols-12">

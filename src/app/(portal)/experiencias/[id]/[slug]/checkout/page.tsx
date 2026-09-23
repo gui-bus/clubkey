@@ -44,6 +44,8 @@ import {
 } from "@/src/lib/masks"
 import { cn } from "@/src/lib/utils"
 
+import { brandConfig } from "@/src/config/brand.config"
+
 export type PaymentMethod = "credit_card" | "pix"
 
 export default function ExperienceCheckoutPage(): React.JSX.Element {
@@ -96,8 +98,7 @@ export default function ExperienceCheckoutPage(): React.JSX.Element {
     },
   ]
 
-  const pixMockCode =
-    "00020126580014br.gov.bcb.pix0136123e4567-e89b-12d3-a456-4266141740005204000053039865406214.925802BR5913CLUBKEY EXPERIENCIAS6009SAO PAULO62070503***6304E8A2"
+  const pixMockCode = `00020126580014br.gov.bcb.pix0136123e4567-e89b-12d3-a456-4266141740005204000053039865406214.925802BR5913${brandConfig.name.toUpperCase().replace(/[^A-Z0-9]/g, "")} EXPERIENCIAS6009SAO PAULO62070503***6304E8A2`
 
   const handleCopyPix = () => {
     if (typeof window !== "undefined") {
@@ -248,7 +249,7 @@ export default function ExperienceCheckoutPage(): React.JSX.Element {
           Revisar e Pagar
         </h1>
         <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 max-w-2xl leading-relaxed">
-          Garanta sua vaga exclusiva com curadoria de alto padrão, concierge
+          Garanta sua vaga exclusiva com curadoria de alto padrão, suporte
           dedicado e confirmação instantânea.
         </p>
       </div>
@@ -597,7 +598,7 @@ export default function ExperienceCheckoutPage(): React.JSX.Element {
               </div>
 
               <div className="flex items-center justify-between text-xs text-zinc-600 dark:text-zinc-400">
-                <span>Taxa de curadoria & concierge</span>
+                <span>Taxa de curadoria & serviço</span>
                 <span className="font-semibold text-emerald-600 dark:text-emerald-400">
                   Isenta (Membro)
                 </span>

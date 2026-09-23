@@ -19,7 +19,7 @@ import { toast } from "@/src/components/ui/toast/toast"
 
 import { Container } from "@/src/components/common/container"
 import { FloatingCta } from "@/src/components/landing/floatingCta"
-import { Navbar } from "@/src/components/landing/navbar"
+import { Header } from "@/src/components/landing/header"
 import { TopBanner } from "@/src/components/landing/topBanner"
 import { ShareButton } from "@/src/components/portal/shareButton"
 import { RoomAmenities } from "@/src/components/rooms/roomAmenities"
@@ -28,6 +28,8 @@ import { RoomGallery } from "@/src/components/rooms/roomGallery"
 import { RoomLocationCard } from "@/src/components/rooms/roomLocationCard"
 
 import { cn } from "@/src/lib/utils"
+
+import { brandConfig } from "@/src/config/brand.config"
 
 export function RoomDetailClient({
   roomId: initialId,
@@ -104,7 +106,7 @@ export function RoomDetailClient({
   return (
     <main className="flex-1 w-full bg-[#F1F1F1] dark:bg-[#161616] text-[#111111] dark:text-white flex flex-col font-sans selection:bg-brand-primary/20 selection:text-brand-primary">
       <TopBanner />
-      <Navbar isTransparent={false} />
+      <Header isTransparent={false} />
 
       <Container className="pt-6 pb-24">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 mb-4">
@@ -225,8 +227,8 @@ export function RoomDetailClient({
                       ))
                   ) : (
                     <p>
-                      Acomodação premium selecionada com exclusividade pela
-                      ClubKey.
+                      Acomodação premium selecionada com exclusividade pela{" "}
+                      {brandConfig.name}.
                     </p>
                   )}
                 </div>

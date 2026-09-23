@@ -2,6 +2,8 @@ import type { Metadata } from "next"
 
 import { EVENTS } from "@/src/data/portalData"
 
+import { brandConfig } from "@/src/config/brand.config"
+
 interface LayoutProps {
   children: React.ReactNode
   params: Promise<{ id: string; slug: string }>
@@ -17,7 +19,7 @@ export async function generateMetadata({
   return {
     title: event ? `Quem vai: ${event.title}` : "Participantes do Evento",
     description: event
-      ? `Veja a lista de membros e convidados confirmados para o encontro ${event.title} no ClubKey.`
+      ? `Veja a lista de membros e convidados confirmados para o encontro ${event.title} no ${brandConfig.name}.`
       : "Participantes confirmados no encontro.",
   }
 }

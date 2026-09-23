@@ -1,6 +1,6 @@
 import * as React from "react"
 
-import { Navbar } from "@/src/components/landing/navbar"
+import { Header } from "@/src/components/landing/header"
 
 export default function PortalLayout({
   children,
@@ -9,7 +9,7 @@ export default function PortalLayout({
 }): React.JSX.Element {
   return (
     <div className="flex-1 w-full bg-[#F1F1F1] dark:bg-[#161616] text-zinc-900 dark:text-white flex flex-col font-sans selection:bg-brand-primary/20 selection:text-brand-primary">
-      <Navbar />
+      <Header />
       <main className="flex-1 w-full flex flex-col">
         <React.Suspense fallback={<div className="min-h-screen w-full" />}>
           {children}

@@ -12,6 +12,8 @@ import type { MemberConnectionStatus } from "@/src/types"
 import { create } from "zustand"
 import { persist } from "zustand/middleware"
 
+import { brandConfig } from "@/src/config/brand.config"
+
 import { type AuthSlice, createAuthSlice } from "./slices/authSlice"
 import { type ChatSlice, createChatSlice } from "./slices/chatSlice"
 import { type EventsSlice, createEventsSlice } from "./slices/eventsSlice"
@@ -48,7 +50,7 @@ export const usePortalStore = create<PortalState>()(
       ...createGamificationSlice(...a),
     }),
     {
-      name: "clubkey-portal-storage-v9",
+      name: `${brandConfig.id}-portal-storage-v9`,
       version: 9,
       migrate: (persistedState: unknown) => {
         const state = persistedState as PortalState

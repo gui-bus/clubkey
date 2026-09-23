@@ -34,6 +34,8 @@ import { Container } from "@/src/components/common/container"
 import { EventCard } from "@/src/components/portal/eventCard"
 import { GlassBadge } from "@/src/components/portal/glassBadge"
 
+import { brandConfig } from "@/src/config/brand.config"
+
 export function PortalHome(): React.JSX.Element {
   const {
     userProfile,
@@ -68,7 +70,7 @@ export function PortalHome(): React.JSX.Element {
         <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none select-none">
           <Image
             src="/utils/banners/img_02.png"
-            alt="ClubKey Hub Background"
+            alt={`${brandConfig.name} Hub Background`}
             fill
             priority
             className="object-cover object-top"

@@ -5,6 +5,8 @@ import { EVENTS } from "@/src/data/portalData"
 
 import { EventDetailClient } from "@/src/components/portal/eventDetailClient"
 
+import { brandConfig } from "@/src/config/brand.config"
+
 interface PageProps {
   params: Promise<{ id: string; slug: string }>
 }
@@ -18,8 +20,7 @@ export async function generateMetadata({
   if (!event) {
     return {
       title: "Evento Não Encontrado",
-      description:
-        "O evento solicitado não foi localizado na agenda do ClubKey.",
+      description: `O evento solicitado não foi localizado na agenda do ${brandConfig.name}.`,
     }
   }
 
@@ -31,13 +32,13 @@ export async function generateMetadata({
     title,
     description,
     openGraph: {
-      title: `${title} | ClubKey`,
+      title: `${title} | ${brandConfig.name}`,
       description,
       images: [{ url: image, alt: event.title }],
     },
     twitter: {
       card: "summary_large_image",
-      title: `${title} | ClubKey`,
+      title: `${title} | ${brandConfig.name}`,
       description,
       images: [image],
     },

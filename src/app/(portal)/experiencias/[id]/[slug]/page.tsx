@@ -5,6 +5,8 @@ import { EXPERIENCES, formatBRL } from "@/src/data/portalData"
 
 import { ExperienceDetailClient } from "@/src/components/portal/experienceDetailClient"
 
+import { brandConfig } from "@/src/config/brand.config"
+
 interface PageProps {
   params: Promise<{ id: string; slug: string }>
 }
@@ -18,8 +20,7 @@ export async function generateMetadata({
   if (!experience) {
     return {
       title: "Experiência Não Encontrada",
-      description:
-        "A experiência solicitada não foi localizada no catálogo do ClubKey.",
+      description: `A experiência solicitada não foi localizada no catálogo do ${brandConfig.name}.`,
     }
   }
 
@@ -35,13 +36,13 @@ export async function generateMetadata({
     title,
     description,
     openGraph: {
-      title: `${title} | ClubKey`,
+      title: `${title} | ${brandConfig.name}`,
       description,
       images: [{ url: image, alt: experience.title }],
     },
     twitter: {
       card: "summary_large_image",
-      title: `${title} | ClubKey`,
+      title: `${title} | ${brandConfig.name}`,
       description,
       images: [image],
     },

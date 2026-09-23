@@ -6,6 +6,9 @@ const analyzer = withBundleAnalyzer({
 
 const nextConfig = {
   output: "standalone",
+  experimental: {
+    turbopackUseSystemTlsCerts: true,
+  },
   async redirects() {
     return [
       {

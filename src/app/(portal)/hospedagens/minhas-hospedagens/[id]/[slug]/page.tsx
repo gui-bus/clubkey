@@ -4,6 +4,8 @@ import { DEFAULT_MEMBER_STAYS } from "@/src/data/portalData"
 
 import { MemberStayDetailClient } from "@/src/components/portal/memberStayDetailClient"
 
+import { brandConfig } from "@/src/config/brand.config"
+
 interface PageProps {
   params: Promise<{ id: string; slug: string }>
 }
@@ -29,13 +31,13 @@ export async function generateMetadata({
     title,
     description,
     openGraph: {
-      title: `${title} | ClubKey`,
+      title: `${title} | ${brandConfig.name}`,
       description,
       images: [{ url: image, alt: stay.stayName }],
     },
     twitter: {
       card: "summary_large_image",
-      title: `${title} | ClubKey`,
+      title: `${title} | ${brandConfig.name}`,
       description,
       images: [image],
     },

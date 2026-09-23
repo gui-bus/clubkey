@@ -31,6 +31,8 @@ import {
 } from "@/src/lib/masks"
 import { cn } from "@/src/lib/utils"
 
+import { brandConfig } from "@/src/config/brand.config"
+
 export type PaymentMethod = "credit_card" | "pix"
 
 export interface SubscriptionUser {
@@ -110,8 +112,7 @@ export function SubscriptionForm({
     }, 600)
   }
 
-  const pixMockCode =
-    "00020126580014br.gov.bcb.pix0136123e4567-e89b-12d3-a456-4266141740005204000053039865406214.925802BR5913CLUBKEY VIAGENS6009SAO PAULO62070503***6304E8A2"
+  const pixMockCode = `00020126580014br.gov.bcb.pix0136123e4567-e89b-12d3-a456-4266141740005204000053039865406214.925802BR5913${brandConfig.name.toUpperCase().replace(/[^A-Z0-9]/g, "")} VIAGENS6009SAO PAULO62070503***6304E8A2`
 
   const handleCopyPix = () => {
     navigator.clipboard.writeText(pixMockCode)
@@ -427,7 +428,7 @@ export function SubscriptionForm({
                 </div>
                 <p className="text-xs text-zinc-600 dark:text-zinc-300 font-light leading-relaxed">
                   Pagando via PIX à vista, você garante 1 ano inteiro de acesso
-                  à ClubKey por apenas{" "}
+                  à {brandConfig.name} por apenas{" "}
                   <strong className="font-bold text-zinc-900 dark:text-white">
                     R$ 214,92
                   </strong>{" "}

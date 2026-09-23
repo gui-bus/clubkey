@@ -23,6 +23,8 @@ import { LeaderboardTargetCard } from "@/src/components/portal/leaderboardTarget
 import { formatNumber } from "@/src/lib/formatters"
 import { cn } from "@/src/lib/utils"
 
+import { brandConfig } from "@/src/config/brand.config"
+
 export default function KeyPassRankingPage(): React.JSX.Element {
   const { xp, ribTokens, leaderboardTimeframe, setLeaderboardTimeframe } =
     usePortalStore()
@@ -95,9 +97,9 @@ export default function KeyPassRankingPage(): React.JSX.Element {
                   {leader.role} na {leader.company} • {leader.city}
                 </p>
                 <p className="text-xs text-zinc-500 dark:text-zinc-400 max-w-xl font-medium leading-relaxed mt-1">
-                  Distinção máxima de prestígio no ecossistema ClubKey com
-                  acesso prioritário a cotas VIP e bonificação trimestral de
-                  Tokens RIB.
+                  Distinção máxima de prestígio no ecossistema{" "}
+                  {brandConfig.name} com acesso prioritário a cotas VIP e
+                  bonificação trimestral de Tokens RIB.
                 </p>
               </div>
             </div>

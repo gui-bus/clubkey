@@ -10,11 +10,13 @@ import { toast } from "@/src/components/ui/toast/toast"
 
 import { Container } from "@/src/components/common/container"
 import { FloatingCta } from "@/src/components/landing/floatingCta"
-import { Navbar } from "@/src/components/landing/navbar"
+import { Header } from "@/src/components/landing/header"
 import { TopBanner } from "@/src/components/landing/topBanner"
 import { PortalHero } from "@/src/components/portal/portalHero"
 import { RoomsSearchFilterBar } from "@/src/components/rooms/roomsSearchFilterBar"
 import { SectionCarousel } from "@/src/components/rooms/sectionCarousel"
+
+import { brandConfig } from "@/src/config/brand.config"
 
 export default function HospedagensPage(): React.JSX.Element {
   const [searchDestination, setSearchDestination] = React.useState("")
@@ -133,7 +135,7 @@ export default function HospedagensPage(): React.JSX.Element {
   return (
     <main className="flex-1 w-full bg-[#F1F1F1] dark:bg-[#161616] text-zinc-900 dark:text-white flex flex-col font-sans selection:bg-brand-primary/20 selection:text-brand-primary">
       <TopBanner />
-      <Navbar />
+      <Header />
 
       <PortalHero
         badge="Catálogo de Hospedagens • Travel Club"
@@ -145,14 +147,14 @@ export default function HospedagensPage(): React.JSX.Element {
         }
         description={
           <>
-            Com o benefício Club Key, viaje o ano todo pagando tarifas
-            exclusivas de membro e até{" "}
+            Com o benefício exclusivo da {brandConfig.name}, viaje o ano todo
+            pagando tarifas exclusivas de membro e até{" "}
             <strong className="font-bold text-white">60% OFF</strong> em
             reservas last minute.
           </>
         }
         imageSrc="/utils/banners/img_01.png"
-        imageAlt="ClubKey Hospedagens"
+        imageAlt={`${brandConfig.name} Hospedagens`}
       >
         <RoomsSearchFilterBar
           searchDestination={searchDestination}

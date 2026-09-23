@@ -37,6 +37,8 @@ import { MemberCard } from "@/src/components/portal/memberCard"
 import { RelatedExperiencesCard } from "@/src/components/portal/relatedExperiencesCard"
 import { ShareButton } from "@/src/components/portal/shareButton"
 
+import { brandConfig } from "@/src/config/brand.config"
+
 export function ExperienceDetailClient({
   expId: initialExpId,
 }: {
@@ -230,7 +232,7 @@ export function ExperienceDetailClient({
                       {experience.place}
                     </p>
                     <p className="text-xs text-zinc-900 dark:text-white font-medium mt-0.5">
-                      Acesso reservado e suporte do concierge
+                      Acesso reservado e suporte dedicado
                     </p>
                   </div>
                 </div>
@@ -270,7 +272,7 @@ export function ExperienceDetailClient({
                         : formatBRL(experience.price)}
                     </p>
                     <p className="text-xs text-zinc-900 dark:text-white font-medium mt-0.5">
-                      Curadoria e garantia oficial ClubKey
+                      Curadoria e garantia oficial {brandConfig.name}
                     </p>
                   </div>
                 </div>
@@ -435,7 +437,7 @@ export function ExperienceDetailClient({
                 <div className="flex items-start gap-2">
                   <CheckCircle className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
                   <span>
-                    Concierge e suporte dedicado durante a experiência
+                    Atendimento e suporte dedicado durante a experiência
                   </span>
                 </div>
               </div>

@@ -1,3 +1,5 @@
+import { brandConfig } from "@/src/config/brand.config"
+
 import { rawApiRooms } from "./mockRooms"
 
 export interface RoomDetailPhoto {
@@ -344,8 +346,7 @@ export const defaultRoomDetail: RoomDetailData = {
   ],
   keys_hosts: {
     name: "Luga",
-    description:
-      "Anfitrião Profissional parceiro oficial ClubKey com suporte concierge 24h.",
+    description: `Anfitrião Profissional parceiro oficial ${brandConfig.name} com suporte e atendimento 24h.`,
     url_image: null,
   },
   city: {

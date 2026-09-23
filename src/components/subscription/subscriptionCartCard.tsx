@@ -18,7 +18,7 @@ const membershipBenefits = [
   "+4.500 acomodações",
   "Até 60% de desconto",
   "Tarifas Last Minute",
-  "Concierge prioritário",
+  "Atendimento prioritário",
 ] as const
 
 export function SubscriptionCartCard({
@@ -43,7 +43,10 @@ export function SubscriptionCartCard({
       <div className="flex gap-4 items-center pb-4 border-b border-zinc-200 dark:border-zinc-800">
         <div className="relative w-20 h-20 rounded-sm overflow-hidden border border-zinc-200 dark:border-zinc-800 shrink-0 bg-zinc-100 dark:bg-zinc-800">
           <Image
-            src="/utils/subscription/product_card.webp"
+            src={
+              brandConfig.assets.productCard ||
+              `/utils/subscription/${brandConfig.id}/product_card.webp`
+            }
             alt={`${brandConfig.name} Pass`}
             fill
             className="object-cover object-center"

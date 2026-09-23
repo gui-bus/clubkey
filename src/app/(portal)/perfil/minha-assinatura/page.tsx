@@ -29,7 +29,7 @@ export default function MinhaAssinaturaPage(): React.JSX.Element {
   const handleUpdatePayment = () => {
     toast.info("Alteração de método de pagamento", {
       description:
-        "Nosso concierge enviará o link seguro para atualização do seu cartão.",
+        "Nossa equipe enviará o link seguro para atualização do seu cartão.",
     })
   }
 
@@ -39,8 +39,8 @@ export default function MinhaAssinaturaPage(): React.JSX.Element {
     })
   }
 
-  const handleContactConcierge = () => {
-    toast.success("Concierge VIP acionado!", {
+  const handleContactSupport = () => {
+    toast.success("Suporte VIP acionado!", {
       description:
         "Em instantes você receberá um contato direto no WhatsApp sobre sua assinatura.",
     })
@@ -232,8 +232,8 @@ export default function MinhaAssinaturaPage(): React.JSX.Element {
               </h3>
               <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
                 Precisa alterar titularidade, dados de faturamento corporativo
-                ou solicitar nota fiscal especial? Fale com seu concierge
-                dedicado.
+                ou solicitar nota fiscal especial? Fale com nossa equipe
+                dedicada.
               </p>
             </div>
 
@@ -243,11 +243,11 @@ export default function MinhaAssinaturaPage(): React.JSX.Element {
                 color="primary"
                 variant="default"
                 radius="sm"
-                onClick={handleContactConcierge}
+                onClick={handleContactSupport}
                 startContent={<Phone className="w-4 h-4" />}
                 className="w-full h-11 text-xs font-black uppercase tracking-wider"
               >
-                Falar com Concierge
+                Falar com o Suporte
               </Button>
 
               <Button

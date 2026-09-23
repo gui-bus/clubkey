@@ -4,6 +4,8 @@ import { getRoomDetail } from "@/src/data/mockRoomDetails"
 
 import { RoomDetailClient } from "@/src/components/rooms/roomDetailClient"
 
+import { brandConfig } from "@/src/config/brand.config"
+
 interface PageProps {
   params: Promise<{ id: string; slug: string }>
 }
@@ -17,26 +19,25 @@ export async function generateMetadata({
   if (!room) {
     return {
       title: "Hospedagem Não Encontrada",
-      description:
-        "A hospedagem solicitada não foi localizada no catálogo do ClubKey.",
+      description: `A hospedagem solicitada não foi localizada no catálogo do ${brandConfig.name}.`,
     }
   }
 
   const title = `${room.title} — ${room.city?.name || "Hospedagem"}, ${room.city?.keys_coverage_states?.name || "Brasil"}`
-  const description = `${room.property_type} para até ${room.max_guest} hóspedes em ${room.city?.name}. Tarifa exclusiva de membro ClubKey.`
+  const description = `${room.property_type} para até ${room.max_guest} hóspedes em ${room.city?.name}. Tarifa exclusiva de membro ${brandConfig.name}.`
   const image = room.main_img?.url || "/utils/banners/img_01.png"
 
   return {
     title,
     description,
     openGraph: {
-      title: `${title} | ClubKey`,
+      title: `${title} | ${brandConfig.name}`,
       description,
       images: [{ url: image, alt: room.title }],
     },
     twitter: {
       card: "summary_large_image",
-      title: `${title} | ClubKey`,
+      title: `${title} | ${brandConfig.name}`,
       description,
       images: [image],
     },

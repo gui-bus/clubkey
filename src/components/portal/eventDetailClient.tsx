@@ -43,6 +43,8 @@ import { MemberCard } from "@/src/components/portal/memberCard"
 import { RelatedEventsCard } from "@/src/components/portal/relatedEventsCard"
 import { ShareButton } from "@/src/components/portal/shareButton"
 
+import { brandConfig } from "@/src/config/brand.config"
+
 export function EventDetailClient({
   eventId: initialEventId,
 }: {
@@ -114,7 +116,7 @@ export function EventDetailClient({
     "Acesso exclusivo ao salão privativo reservado",
     "Gastronomia autoral & carta de vinhos harmonizada",
     "Síntese executiva de conexões pós-evento",
-    "Apoio e suporte dedicado do concierge ClubKey",
+    `Apoio e suporte dedicado ${brandConfig.name}`,
   ]
 
   return (

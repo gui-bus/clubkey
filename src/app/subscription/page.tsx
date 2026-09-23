@@ -9,7 +9,7 @@ import { CheckCircle, House, Key } from "@phosphor-icons/react"
 import { Container } from "@/src/components/common/container"
 import { CtaButton } from "@/src/components/common/ctaButton"
 import { FloatingCta } from "@/src/components/landing/floatingCta"
-import { Navbar } from "@/src/components/landing/navbar"
+import { Header } from "@/src/components/landing/header"
 import { TopBanner } from "@/src/components/landing/topBanner"
 import { SubscriptionCartCard } from "@/src/components/subscription/subscriptionCartCard"
 import {
@@ -46,7 +46,7 @@ export default function SubscriptionPage(): React.JSX.Element {
   return (
     <main className="flex-1 w-full bg-[#F1F1F1] dark:bg-[#161616] text-[#111111] dark:text-white flex flex-col font-sans selection:bg-brand-primary/20 selection:text-brand-primary">
       <TopBanner />
-      <Navbar isTransparent={false} />
+      <Header isTransparent={false} />
 
       <section className="flex-1 w-full py-10 sm:py-16 md:py-20">
         <Container>
@@ -69,8 +69,9 @@ export default function SubscriptionPage(): React.JSX.Element {
                   !
                 </h1>
                 <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 font-light leading-relaxed">
-                  Sua Key de membro {brandConfig.name} está ativa. Você já tem
-                  acesso imediato a todas as tarifas com até 60% de desconto.
+                  Sua assinatura de membro {brandConfig.name} está ativa. Você
+                  já tem acesso imediato a todas as tarifas com até 60% de
+                  desconto.
                 </p>
               </div>
 

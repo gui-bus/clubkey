@@ -5,6 +5,8 @@ import { MEMBERS } from "@/src/data/portalData"
 
 import { MemberProfileDetailClient } from "@/src/components/portal/memberProfileDetailClient"
 
+import { brandConfig } from "@/src/config/brand.config"
+
 interface PageProps {
   params: Promise<{ id: string; slug: string }>
 }
@@ -18,8 +20,7 @@ export async function generateMetadata({
   if (!member) {
     return {
       title: "Membro Não Encontrado",
-      description:
-        "O perfil de membro solicitado não foi localizado na rede ClubKey.",
+      description: `O perfil de membro solicitado não foi localizado na rede ${brandConfig.name}.`,
     }
   }
 
@@ -29,20 +30,20 @@ export async function generateMetadata({
       : member.role || "Membro Executivo"
   const fullName = `${member.firstName} ${member.lastName}`
   const title = `${fullName} — ${roleText}`
-  const description = `Conecte-se com ${fullName} (${roleText}) em ${member.city} através do círculo restrito de membros do ClubKey.`
+  const description = `Conecte-se com ${fullName} (${roleText}) em ${member.city} através do círculo restrito de membros do ${brandConfig.name}.`
   const image = member.avatar || member.image || "/utils/banners/pessoas.webp"
 
   return {
     title,
     description,
     openGraph: {
-      title: `${title} | ClubKey`,
+      title: `${title} | ${brandConfig.name}`,
       description,
       images: [{ url: image, alt: fullName }],
     },
     twitter: {
       card: "summary_large_image",
-      title: `${title} | ClubKey`,
+      title: `${title} | ${brandConfig.name}`,
       description,
       images: [image],
     },

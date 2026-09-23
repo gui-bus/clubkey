@@ -37,6 +37,8 @@ import { cn } from "@/src/lib/utils"
 
 import { useMounted } from "@/src/hooks/useMounted"
 
+import { brandConfig } from "@/src/config/brand.config"
+
 export function MemberMessengerWidget(): React.JSX.Element | null {
   const {
     isAuthenticated,
@@ -335,7 +337,7 @@ export function MemberMessengerWidget(): React.JSX.Element | null {
                   </span>
                   <p className="text-[11px] text-zinc-600 dark:text-zinc-400">
                     Você e {activeMember.firstName} {activeMember.lastName}{" "}
-                    estão conectados no ClubKey.
+                    estão conectados no {brandConfig.name}.
                   </p>
                 </div>
 

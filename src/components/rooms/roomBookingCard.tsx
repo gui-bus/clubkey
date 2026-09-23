@@ -19,6 +19,8 @@ import { GlassBadge } from "@/src/components/portal/glassBadge"
 
 import { cn } from "@/src/lib/utils"
 
+import { brandConfig } from "@/src/config/brand.config"
+
 export interface RoomBookingCardProps {
   roomTitle: string
   maxGuests: number
@@ -165,7 +167,7 @@ export function RoomBookingCard({
             <div className="flex items-center justify-between">
               <div>
                 <div className="text-[10px] uppercase font-bold text-brand-primary tracking-wider mb-0.5">
-                  Preço Exclusivo ClubKey
+                  Preço Exclusivo {brandConfig.name}
                 </div>
                 <div className="flex items-baseline gap-1.5">
                   <span className="text-2xl sm:text-3xl font-black text-brand-primary">
@@ -352,7 +354,7 @@ export function RoomBookingCard({
                 </span>
               </div>
               <div className="flex items-center justify-between text-emerald-600 dark:text-emerald-400">
-                <span>Desconto Exclusivo ClubKey</span>
+                <span>Desconto Exclusivo {brandConfig.name}</span>
                 <span className="font-bold">
                   -R$ {savingsPerNight * nights}
                 </span>
@@ -379,13 +381,13 @@ export function RoomBookingCard({
                 onClick={onBook}
                 textClassName="gap-2"
               >
-                <span>Reservar com ClubKey</span>
+                <span>Reservar com {brandConfig.name}</span>
                 <CaretRight className="w-4 h-4 stroke-[2.5]" />
               </CtaButton>
 
               <div className="flex items-center justify-center gap-1 text-[11px] text-zinc-500 dark:text-zinc-400 text-center">
                 <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-                <span>Garantia do menor preço ClubKey</span>
+                <span>Garantia do menor preço {brandConfig.name}</span>
               </div>
             </div>
           </div>
@@ -434,7 +436,7 @@ export function RoomBookingCard({
       <div className="flex items-center justify-between">
         <div>
           <div className="text-[10px] uppercase font-bold text-brand-primary tracking-wider mb-0.5">
-            Preço Exclusivo ClubKey
+            Preço Exclusivo {brandConfig.name}
           </div>
           <div className="flex items-baseline gap-1.5">
             <span className="text-2xl sm:text-3xl font-black text-brand-primary">
@@ -563,7 +565,7 @@ export function RoomBookingCard({
           </span>
         </div>
         <div className="flex items-center justify-between text-emerald-600 dark:text-emerald-400">
-          <span>Desconto Exclusivo ClubKey</span>
+          <span>Desconto Exclusivo {brandConfig.name}</span>
           <span className="font-bold">-R$ {savingsPerNight * nights}</span>
         </div>
         <div className="flex items-center justify-between">
@@ -634,14 +636,14 @@ export function RoomBookingCard({
       </div>
 
       <CtaButton isFullWidth size="lg" onClick={onBook} textClassName="gap-2">
-        <span>Reservar com ClubKey</span>
+        <span>Reservar com {brandConfig.name}</span>
         <CaretRight className="w-4 h-4 stroke-[2.5]" />
       </CtaButton>
 
       <div className="flex flex-col items-center gap-2 text-center text-[11px] text-zinc-400">
         <span className="flex items-center gap-1 text-zinc-500 dark:text-zinc-400">
           <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-          Garantia do menor preço ClubKey
+          Garantia do menor preço {brandConfig.name}
         </span>
       </div>
     </div>

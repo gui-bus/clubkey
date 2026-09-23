@@ -5,10 +5,11 @@ import type { Metadata } from "next"
 import { KeyPassNav } from "@/src/components/portal/keyPassNav"
 import { PortalHero } from "@/src/components/portal/portalHero"
 
+import { brandConfig } from "@/src/config/brand.config"
+
 export const metadata: Metadata = {
   title: "KeyPass — Tiers & Recompensas",
-  description:
-    "Evolua seu passe de associado, acumule pontos XP e desbloqueie tokens RIB e privilégios exclusivos no ClubKey.",
+  description: `Evolua seu passe de associado, acumule pontos XP e desbloqueie tokens RIB e privilégios exclusivos no ${brandConfig.name}.`,
 }
 
 export default function KeyPassLayout({

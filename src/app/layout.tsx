@@ -14,6 +14,7 @@ import { MemberMessengerWidget } from "@/src/components/portal/memberMessengerWi
 
 import { cn } from "@/src/lib/utils"
 
+import { brandConfig } from "@/src/config/brand.config"
 import { fontVariables } from "@/src/config/fonts"
 import { siteConfig } from "@/src/config/site"
 
@@ -33,25 +34,25 @@ export async function generateMetadata(): Promise<Metadata> {
 
   return {
     title: {
-      default: `${siteConfig.name} | Ative sua Key e pague menos para viajar`,
+      default: `${siteConfig.name} | ${brandConfig.tagline}`,
       template: `%s | ${siteConfig.name}`,
     },
     description: siteConfig.description,
     keywords: [
-      "ClubKey",
+      siteConfig.name,
+      siteConfig.shortName,
       "Viagens de Luxo",
       "Hospedagem Premium",
       "Clube de Viagens",
       "Descontos Last Minute",
       "Hoteis Boutique",
-      "NFT Access",
     ],
     authors: siteConfig.authors,
     creator: siteConfig.creator,
     openGraph: {
       type: "website",
       url: siteConfig.url,
-      title: `${siteConfig.name} - Ative sua Key e pague menos para viajar`,
+      title: `${siteConfig.name} - ${brandConfig.tagline}`,
       description: siteConfig.description,
       siteName: siteConfig.name,
       images: [
@@ -65,7 +66,7 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     twitter: {
       card: "summary_large_image",
-      title: `${siteConfig.name} - Ative sua Key e pague menos para viajar`,
+      title: `${siteConfig.name} - ${brandConfig.tagline}`,
       description: siteConfig.description,
       images: [ogUrl.toString()],
     },

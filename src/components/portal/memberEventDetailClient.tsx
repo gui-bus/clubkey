@@ -46,6 +46,8 @@ import { Container } from "@/src/components/common/container"
 import { BackButton } from "@/src/components/portal/backButton"
 import { MemberCard } from "@/src/components/portal/memberCard"
 
+import { brandConfig } from "@/src/config/brand.config"
+
 export function MemberEventDetailClient({
   eventId: initialEventId,
 }: {
@@ -223,7 +225,7 @@ export function MemberEventDetailClient({
             <div className="w-36 h-36 mx-auto rounded-sm border-2 border-dashed border-zinc-300 dark:border-zinc-700 flex flex-col items-center justify-center p-3 bg-[#F1F1F1] dark:bg-zinc-900/80">
               <QrCode className="w-24 h-24 text-zinc-900 dark:text-white" />
               <span className="font-mono text-[9px] font-bold text-zinc-500 dark:text-zinc-400 mt-1">
-                CK-EV-{event.id}88
+                {brandConfig.id.toUpperCase().slice(0, 2)}-EV-{event.id}88
               </span>
             </div>
             <p className="text-[11px] text-zinc-500 dark:text-zinc-400">

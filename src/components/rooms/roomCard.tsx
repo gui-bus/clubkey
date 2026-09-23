@@ -22,6 +22,8 @@ import { GlassBadge } from "@/src/components/portal/glassBadge"
 
 import { cn } from "@/src/lib/utils"
 
+import { brandConfig } from "@/src/config/brand.config"
+
 export interface RoomCardProps {
   room: RoomProperty
   isFav: boolean
@@ -371,7 +373,7 @@ export function RoomCard({
         <div className="flex items-end justify-between gap-3 pt-0.5">
           <div className="flex flex-col">
             <span className="text-[10px] font-bold uppercase tracking-wider text-brand-primary">
-              Preço Exclusivo ClubKey
+              Preço Exclusivo {brandConfig.name}
             </span>
             <div className="flex items-baseline gap-1 mt-0.5">
               <span className="text-2xl sm:text-3xl font-black text-brand-primary font-heading tracking-tight leading-none">
