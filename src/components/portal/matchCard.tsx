@@ -141,9 +141,9 @@ export function MatchCard({
             type="button"
             variant={
               status === "connected"
-                ? "secondary"
+                ? "dark-outline"
                 : status === "pending"
-                  ? "secondary"
+                  ? "dark-outline"
                   : "primary"
             }
             size="md"

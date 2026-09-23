@@ -240,9 +240,9 @@ export function MemberCard({
                   type="button"
                   variant={
                     status === "connected"
-                      ? "secondary"
+                      ? "dark-outline"
                       : status === "pending"
-                        ? "secondary"
+                        ? "dark-outline"
                         : "primary"
                   }
                   size="xs"
