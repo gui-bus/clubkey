@@ -173,7 +173,7 @@ export function WeeklyDropCard({
           ) : (
             <CtaButton
               href={drop.actionUrl}
-              variant="secondary"
+              variant="primary"
               size="sm"
               className="w-full text-xs font-bold justify-center whitespace-nowrap"
             >

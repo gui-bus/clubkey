@@ -96,7 +96,7 @@ export function Hero(): React.JSX.Element {
           </motion.div>
 
           <div className="flex-1 flex flex-col items-start">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-black uppercase tracking-tight text-white leading-[1.04] mb-6 font-heading drop-shadow-md">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-black uppercase tracking-tight text-white leading-[1.04] mb-6 font-heading drop-shadow-md">
               Ative sua Key e pague menos para viajar
             </h1>
 

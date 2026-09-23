@@ -235,14 +235,7 @@ export function Header({ isTransparent }: HeaderProps = {}): React.JSX.Element {
               aria-label={`${brandConfig.name} - Início`}
             >
               {brandConfig.assets.logoMain ? (
-                <div
-                  className={cn(
-                    "relative w-auto flex items-center",
-                    brandConfig.id === "viverde"
-                      ? "h-11 sm:h-12 md:h-14"
-                      : "h-8 sm:h-9"
-                  )}
-                >
+                <div className="relative h-8 sm:h-9 w-auto flex items-center">
                   <Image
                     src={
                       brandConfig.assets.logoLight ||
@@ -253,9 +246,7 @@ export function Header({ isTransparent }: HeaderProps = {}): React.JSX.Element {
                     height={44}
                     priority
                     className={cn(
-                      brandConfig.id === "viverde"
-                        ? "h-11 sm:h-12 md:h-14 w-auto max-h-14 object-contain object-left"
-                        : "h-7 sm:h-8 md:h-9 w-auto max-h-9 object-contain object-left",
+                      "h-7 sm:h-8 md:h-9 w-auto max-h-9 object-contain object-left",
                       isDarkBar ? "hidden" : "block dark:hidden"
                     )}
                   />
@@ -268,9 +259,7 @@ export function Header({ isTransparent }: HeaderProps = {}): React.JSX.Element {
                     height={44}
                     priority
                     className={cn(
-                      brandConfig.id === "viverde"
-                        ? "h-11 sm:h-12 md:h-14 w-auto max-h-14 object-contain object-left"
-                        : "h-7 sm:h-8 md:h-9 w-auto max-h-9 object-contain object-left",
+                      "h-7 sm:h-8 md:h-9 w-auto max-h-9 object-contain object-left",
                       isDarkBar ? "block" : "hidden dark:block"
                     )}
                   />
@@ -508,14 +497,7 @@ export function Header({ isTransparent }: HeaderProps = {}): React.JSX.Element {
                       <SheetTitle className="text-left font-heading font-black text-xl uppercase tracking-wider">
                         {brandConfig.assets.logoMain ? (
                           <div className="flex items-center gap-2.5">
-                            <div
-                              className={cn(
-                                "relative w-auto flex items-center",
-                                brandConfig.id === "viverde"
-                                  ? "h-10 sm:h-11"
-                                  : "h-7"
-                              )}
-                            >
+                            <div className="relative h-7 w-auto flex items-center">
                               <Image
                                 src={
                                   brandConfig.assets.logoLight ||
@@ -524,12 +506,7 @@ export function Header({ isTransparent }: HeaderProps = {}): React.JSX.Element {
                                 alt={brandConfig.name}
                                 width={140}
                                 height={32}
-                                className={cn(
-                                  brandConfig.id === "viverde"
-                                    ? "h-10 sm:h-11 w-auto max-h-11 object-contain object-left"
-                                    : "h-6 sm:h-7 w-auto max-h-7 object-contain object-left",
-                                  "block dark:hidden"
-                                )}
+                                className="h-6 sm:h-7 w-auto max-h-7 object-contain object-left block dark:hidden"
                               />
                               <Image
                                 src={
@@ -539,12 +516,7 @@ export function Header({ isTransparent }: HeaderProps = {}): React.JSX.Element {
                                 alt={brandConfig.name}
                                 width={140}
                                 height={32}
-                                className={cn(
-                                  brandConfig.id === "viverde"
-                                    ? "h-10 sm:h-11 w-auto max-h-11 object-contain object-left"
-                                    : "h-6 sm:h-7 w-auto max-h-7 object-contain object-left",
-                                  "hidden dark:block"
-                                )}
+                                className="h-6 sm:h-7 w-auto max-h-7 object-contain object-left hidden dark:block"
                               />
                             </div>
                             {isAuthenticated && (

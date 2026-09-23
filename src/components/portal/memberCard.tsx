@@ -200,7 +200,7 @@ export function MemberCard({
             <>
               <CtaButton
                 type="button"
-                variant="secondary"
+                variant="outline"
                 size="xs"
                 className="flex-1 h-8 text-[11px] font-bold uppercase tracking-wider shadow-none hover:shadow-none"
                 textClassName="flex items-center justify-between w-full"
