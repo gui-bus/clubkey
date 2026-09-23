@@ -131,7 +131,7 @@ export function ProfileHeader({
           <div className="flex items-center gap-2 self-start sm:self-auto">
             <CtaButton
               href="/perfil/minha-assinatura"
-              variant="secondary"
+              variant="outline"
               size="sm"
               className="text-xs"
             >

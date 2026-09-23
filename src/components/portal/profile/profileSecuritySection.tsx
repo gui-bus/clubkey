@@ -64,7 +64,7 @@ export function ProfileSecuritySection({
           {is2FAEnabled ? (
             <CtaButton
               type="button"
-              variant="secondary"
+              variant="outline"
               size="sm"
               onClick={onDisable2FA}
               className="text-xs text-zinc-600 dark:text-zinc-300 hover:text-red-500"
