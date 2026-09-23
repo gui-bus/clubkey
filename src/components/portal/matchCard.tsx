@@ -129,7 +129,7 @@ export function MatchCard({
         <div className="shrink-0 w-full lg:w-auto flex items-center gap-2">
           <CtaButton
             href={`/conexoes/${member.id}/${memberSlug}`}
-            variant="secondary"
+            variant="outline"
             size="md"
             className="flex-1 lg:flex-none px-6 h-11 text-xs shadow-none hover:shadow-none"
           >

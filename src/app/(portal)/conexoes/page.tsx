@@ -253,7 +253,7 @@ export default function ConexoesPage(): React.JSX.Element {
 
             <CtaButton
               href="/conexoes/minhas-conexoes"
-              variant="secondary"
+              variant="outline"
               size="sm"
               className="text-xs font-bold"
             >

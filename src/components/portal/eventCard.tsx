@@ -257,7 +257,7 @@ export function EventCard({ event }: EventCardProps): React.JSX.Element {
 
               <CtaButton
                 href={`/eventos/${event.id}/${getEventSlug(event)}`}
-                variant="secondary"
+                variant="outline"
                 size="xs"
                 className="hidden sm:flex w-9 h-9 px-0 items-center justify-center shadow-none hover:shadow-none shrink-0"
               >
