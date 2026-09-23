@@ -276,7 +276,7 @@ export function RoomBookingCard({
                 </span>
                 <div className="flex items-center gap-3">
                   <CtaButton
-                    variant="secondary"
+                    variant="outline"
                     size="xs"
                     disabled={nights <= 1}
                     onClick={() =>
@@ -292,7 +292,7 @@ export function RoomBookingCard({
                     {nights}
                   </span>
                   <CtaButton
-                    variant="secondary"
+                    variant="outline"
                     size="xs"
                     onClick={() => onNightsChange((prev) => prev + 1)}
                     className="w-7 h-7 !p-0 shadow-none"
@@ -310,7 +310,7 @@ export function RoomBookingCard({
                 </span>
                 <div className="flex items-center gap-3">
                   <CtaButton
-                    variant="secondary"
+                    variant="outline"
                     size="xs"
                     disabled={guests <= 1}
                     onClick={() =>
@@ -326,7 +326,7 @@ export function RoomBookingCard({
                     {guests}
                   </span>
                   <CtaButton
-                    variant="secondary"
+                    variant="outline"
                     size="xs"
                     disabled={guests >= maxGuests}
                     onClick={() =>
@@ -497,7 +497,7 @@ export function RoomBookingCard({
           </span>
           <div className="flex items-center gap-3">
             <CtaButton
-              variant="secondary"
+              variant="outline"
               size="xs"
               disabled={nights <= 1}
               onClick={() => onNightsChange((prev) => Math.max(1, prev - 1))}
@@ -509,7 +509,7 @@ export function RoomBookingCard({
             </CtaButton>
             <span className="text-xs font-bold w-4 text-center">{nights}</span>
             <CtaButton
-              variant="secondary"
+              variant="outline"
               size="xs"
               onClick={() => onNightsChange((prev) => prev + 1)}
               className="w-7 h-7 !p-0 shadow-none"
@@ -527,7 +527,7 @@ export function RoomBookingCard({
           </span>
           <div className="flex items-center gap-3">
             <CtaButton
-              variant="secondary"
+              variant="outline"
               size="xs"
               disabled={guests <= 1}
               onClick={() => onGuestsChange((prev) => Math.max(1, prev - 1))}
@@ -539,7 +539,7 @@ export function RoomBookingCard({
             </CtaButton>
             <span className="text-xs font-bold w-4 text-center">{guests}</span>
             <CtaButton
-              variant="secondary"
+              variant="outline"
               size="xs"
               disabled={guests >= maxGuests}
               onClick={() =>

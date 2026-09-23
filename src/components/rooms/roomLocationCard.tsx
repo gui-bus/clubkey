@@ -64,7 +64,7 @@ export function RoomLocationCard({
           className="relative shrink-0 self-start sm:self-auto"
         >
           <CtaButton
-            variant="secondary"
+            variant="outline"
             size="sm"
             onClick={() => setDirectionsOpen((prev) => !prev)}
             textClassName="gap-2"
