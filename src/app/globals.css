@@ -3,6 +3,54 @@
 @source "../node_modules/@bloomui-react/components";
 @custom-variant dark (&:is(.dark *));
 
+@font-face {
+  font-family: 'Gotham';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: local('Gotham-Light'), local('Gotham Light'), url('https://fonts.cdnfonts.com/s/62851/GothamLight.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Gotham';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Gotham-Book'), local('Gotham Book'), local('Gotham'), url('https://fonts.cdnfonts.com/s/62851/GothamBook.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Gotham';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Gotham-BookItalic'), local('Gotham Book Italic'), url('https://fonts.cdnfonts.com/s/62851/GothamBookItalic.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Gotham';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: local('Gotham-Medium'), local('Gotham Medium'), url('https://fonts.cdnfonts.com/s/62851/GothamMedium.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Gotham';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Gotham-Bold'), local('Gotham Bold'), url('https://fonts.cdnfonts.com/s/62851/GothamBold.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Gotham';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: local('Gotham-Black'), local('Gotham Black'), url('https://fonts.cdnfonts.com/s/62851/GothamBlack.woff') format('woff');
+}
+
 :root {
     --background: #F1F1F1;
     --foreground: #111111;
