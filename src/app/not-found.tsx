@@ -2,20 +2,16 @@
 
 import * as React from "react"
 
-import { CtaButton } from "@/src/components/common/ctaButton"
+import { NotFoundView } from "@/src/components/common/notFoundView"
+import { Header } from "@/src/components/landing/header"
 
 export default function NotFound(): React.JSX.Element {
   return (
-    <div className="flex min-h-svh flex-col items-center justify-center p-6 text-center">
-      <h1 className="text-4xl font-bold tracking-tight sm:text-6xl">
-        404 - Página não encontrada
-      </h1>
-      <p className="mt-4 text-lg text-muted-foreground">
-        A página que você está procurando não existe.
-      </p>
-      <div className="mt-8">
-        <CtaButton href="/">Voltar ao início</CtaButton>
-      </div>
+    <div className="flex-1 w-full bg-[#F1F1F1] dark:bg-[#161616] text-zinc-900 dark:text-white flex flex-col font-sans">
+      <Header isTransparent={false} />
+      <main className="flex-1 w-full flex flex-col">
+        <NotFoundView />
+      </main>
     </div>
   )
 }

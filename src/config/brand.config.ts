@@ -1,3 +1,13 @@
+import {
+  type BrandModulesConfig,
+  SYSTEM_MODULE_REGISTRY,
+  type SystemModule,
+  assertModuleEnabled as assertModuleWithConfig,
+  getEnabledModulesList,
+  getModuleByPath,
+  isPathAllowed,
+} from "./modules.config"
+
 export interface BrandColors {
   primary: string
   primaryHover: string
@@ -36,6 +46,14 @@ export interface BrandLinks {
   website: string
 }
 
+export type { BrandModulesConfig, SystemModule }
+export {
+  SYSTEM_MODULE_REGISTRY,
+  getModuleByPath,
+  isPathAllowed,
+  getEnabledModulesList,
+}
+
 export interface BrandConfig {
   id: string
   name: string
@@ -48,6 +66,7 @@ export interface BrandConfig {
   }
   assets: BrandAssets
   links: BrandLinks
+  modules: BrandModulesConfig
 }
 
 export const brandPresets: Record<string, BrandConfig> = {
@@ -58,6 +77,15 @@ export const brandPresets: Record<string, BrandConfig> = {
     tagline: "Ative sua Key e pague menos para viajar",
     description:
       "Acesso exclusivo a milhares de hospedagens premium com descontos de até 60% e curadoria de especialistas.",
+    modules: {
+      home: true,
+      stays: true,
+      networking: true,
+      events: true,
+      experiences: true,
+      benefits: true,
+      keypass: true,
+    },
     colors: {
       light: {
         primary: "#FF6847",
@@ -111,6 +139,15 @@ export const brandPresets: Record<string, BrandConfig> = {
     tagline: "Um jeito mais leve de viver",
     description:
       "Acesso exclusivo a acomodações selecionadas, refúgios de alto padrão na serra e condições exclusivas de hospitalidade para membros Viverde.",
+    modules: {
+      home: true,
+      stays: true,
+      networking: true,
+      events: false,
+      experiences: false,
+      benefits: false,
+      keypass: false,
+    },
     colors: {
       light: {
         primary: "#B88A2D",
@@ -168,6 +205,22 @@ const activeTenantKey = rawTenant.toLowerCase().trim() || "clubkey"
 
 export const brandConfig: BrandConfig =
   brandPresets[activeTenantKey] || brandPresets.clubkey
+
+export function isModuleEnabled(module: SystemModule): boolean {
+  return Boolean(brandConfig.modules?.[module])
+}
+
+export function assertModule(module: SystemModule): void {
+  assertModuleWithConfig(module, brandConfig.modules)
+}
+
+export function isRouteAllowed(pathname: string): boolean {
+  return isPathAllowed(pathname, brandConfig.modules)
+}
+
+export function getActiveEnabledModules(): SystemModule[] {
+  return getEnabledModulesList(brandConfig.modules)
+}
 
 export function generateBrandCssVariables(
   config: BrandConfig = brandConfig
