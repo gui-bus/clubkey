@@ -20,10 +20,12 @@ function getFiles(dir, files = []) {
 }
 
 function stripComments(content) {
-  let cleaned = content.replace(/\/\*[\s\S]*?\*\//g, '');
-  cleaned = cleaned.replace(/\{\/\*[\s\S]*?\*\/\}/g, '');
+  let cleaned = content.replace(/\{\s*\/\*[\s\S]*?\*\/\s*\}/g, '');
+  cleaned = cleaned.replace(/\/\*[\s\S]*?\*\//g, '');
   cleaned = cleaned.replace(/^\s*\/\/.*$/gm, '');
   cleaned = cleaned.replace(/(?<!https?:)\s*\/\/[^\r\n]*/g, '');
+  cleaned = cleaned.replace(/^\s*\{\s*\}\s*[\r\n]+/gm, '');
+  cleaned = cleaned.replace(/\n{3,}/g, '\n\n');
   return cleaned;
 }
 
@@ -35,6 +37,7 @@ function run() {
       const stripped = stripComments(content);
       if (content !== stripped) {
         writeFileSync(file, stripped, 'utf8');
+        console.log(`Cleaned: ${file}`);
       }
     }
   }
