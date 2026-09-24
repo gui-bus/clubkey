@@ -8,7 +8,7 @@ import { motion } from "framer-motion"
 import { Container } from "@/src/components/common/container"
 import { CtaButton } from "@/src/components/common/ctaButton"
 
-import { brandConfig } from "@/src/config/brand.config"
+import { brandConfig, isModuleEnabled } from "@/src/config/brand.config"
 
 const getSteps = (brandName: string) => [
   {
@@ -127,17 +127,19 @@ export function HowItWorksCatalog(): React.JSX.Element {
               para que você tenha experiências incríveis e com economia real.
             </p>
 
-            <div className="w-full sm:w-auto">
-              <CtaButton
-                href="/hospedagens"
-                variant="outline"
-                size="lg"
-                className="w-full sm:w-auto"
-              >
-                <span>Explorar catálogo</span>
-                <ArrowUpRight className="w-4 h-4" />
-              </CtaButton>
-            </div>
+            {isModuleEnabled("stays") && (
+              <div className="w-full sm:w-auto">
+                <CtaButton
+                  href="/hospedagens"
+                  variant="outline"
+                  size="lg"
+                  className="w-full sm:w-auto"
+                >
+                  <span>Explorar catálogo</span>
+                  <ArrowUpRight className="w-4 h-4" />
+                </CtaButton>
+              </div>
+            )}
           </div>
 
           <div className="lg:col-span-5 flex flex-col justify-start pt-2 lg:pt-8">

@@ -11,6 +11,8 @@ import { Button } from "@/src/components/ui/button/button"
 
 import { CtaButton } from "@/src/components/common/ctaButton"
 
+import { isModuleEnabled } from "@/src/config/brand.config"
+
 export interface ProfileSecuritySectionProps {
   is2FAEnabled: boolean
   onOpen2FAModal: () => void
@@ -39,7 +41,7 @@ export function ProfileSecuritySection({
             >
               {is2FAEnabled ? (
                 "Ativo & Protegido"
-              ) : (
+              ) : isModuleEnabled("keypass") ? (
                 <>
                   <div className="relative w-3 h-3 shrink-0">
                     <Image
@@ -51,6 +53,8 @@ export function ProfileSecuritySection({
                   </div>
                   <span>Pendente (+250 XP)</span>
                 </>
+              ) : (
+                <span>Pendente</span>
               )}
             </Badge>
           </div>
@@ -80,15 +84,21 @@ export function ProfileSecuritySection({
               className="text-xs font-black uppercase tracking-wider shadow-xs inline-flex items-center gap-1.5 whitespace-nowrap shrink-0"
             >
               <ShieldCheck className="w-4 h-4 shrink-0" />
-              <div className="relative w-3.5 h-3.5 shrink-0">
-                <Image
-                  src="/utils/gamification/utils/xp.webp"
-                  alt="XP"
-                  fill
-                  className="object-contain"
-                />
-              </div>
-              <span>Configurar 2FA (+250 XP)</span>
+              {isModuleEnabled("keypass") && (
+                <div className="relative w-3.5 h-3.5 shrink-0">
+                  <Image
+                    src="/utils/gamification/utils/xp.webp"
+                    alt="XP"
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+              )}
+              <span>
+                {isModuleEnabled("keypass")
+                  ? "Configurar 2FA (+250 XP)"
+                  : "Configurar 2FA"}
+              </span>
             </Button>
           )}
         </div>
@@ -113,7 +123,9 @@ export function ProfileSecuritySection({
 
         <div className="flex items-center gap-2">
           <span className="text-[11px] font-bold text-zinc-600 dark:text-zinc-300">
-            Requisito de Onboarding:
+            {isModuleEnabled("keypass")
+              ? "Requisito de Onboarding:"
+              : "Status:"}
           </span>
           <Badge
             color={is2FAEnabled ? "success" : "default"}
@@ -123,7 +135,7 @@ export function ProfileSecuritySection({
           >
             {is2FAEnabled ? (
               "Concluído"
-            ) : (
+            ) : isModuleEnabled("keypass") ? (
               <>
                 <div className="relative w-3 h-3 shrink-0">
                   <Image
@@ -135,6 +147,8 @@ export function ProfileSecuritySection({
                 </div>
                 <span>Faltam 250 XP</span>
               </>
+            ) : (
+              <span>Pendente</span>
             )}
           </Badge>
         </div>

@@ -203,8 +203,6 @@ export function ProfilePersonalForm({
           </div>
         </div>
       </div>
-
-      {}
       <div className="space-y-6 w-full">
         <div className="border-b border-zinc-200 dark:border-zinc-800 pb-3">
           <h2 className="text-base font-bold uppercase tracking-wider text-zinc-900 dark:text-white font-heading">
@@ -264,8 +262,6 @@ export function ProfilePersonalForm({
           </div>
         </div>
       </div>
-
-      {}
       <div className="space-y-6 w-full">
         <div className="border-b border-zinc-200 dark:border-zinc-800 pb-3">
           <h2 className="text-base font-bold uppercase tracking-wider text-zinc-900 dark:text-white font-heading">

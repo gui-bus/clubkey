@@ -63,7 +63,6 @@ export function KeyPassHistoryWidget({
         className
       )}
     >
-      {}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-zinc-100 dark:border-zinc-800 pb-3 shrink-0">
         <div className="space-y-0.5 min-w-0">
           <div className="flex items-center gap-2">
@@ -84,8 +83,6 @@ export function KeyPassHistoryWidget({
           {xpHistory.length} registros
         </span>
       </div>
-
-      {}
       <ScrollArea className="h-[365px] pr-2">
         {xpHistory.length === 0 ? (
           <div className="p-8 text-center text-zinc-500 text-xs">
@@ -110,8 +107,6 @@ export function KeyPassHistoryWidget({
                     <p className="text-[10px] text-zinc-400">{activity.date}</p>
                   </div>
                 </div>
-
-                {}
                 <div className="shrink-0 text-right whitespace-nowrap">
                   {activity.xp > 0 ? (
                     <div className="inline-flex items-center gap-1.5 text-xs text-zinc-700 dark:text-zinc-300 font-normal">

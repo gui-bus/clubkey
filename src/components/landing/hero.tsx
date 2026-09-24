@@ -9,7 +9,7 @@ import { motion } from "framer-motion"
 import { Container } from "@/src/components/common/container"
 import { CtaButton } from "@/src/components/common/ctaButton"
 
-import { brandConfig } from "@/src/config/brand.config"
+import { brandConfig, isModuleEnabled } from "@/src/config/brand.config"
 
 export function Hero(): React.JSX.Element {
   return (
@@ -120,14 +120,16 @@ export function Hero(): React.JSX.Element {
                 Solicite agora
               </CtaButton>
 
-              <CtaButton
-                href="/hospedagens"
-                variant="dark-outline"
-                size="lg"
-                className="w-full sm:w-auto"
-              >
-                <span>Explorar Catálogo (+4.500)</span>
-              </CtaButton>
+              {isModuleEnabled("stays") && (
+                <CtaButton
+                  href="/hospedagens"
+                  variant="dark-outline"
+                  size="lg"
+                  className="w-full sm:w-auto"
+                >
+                  <span>Explorar Catálogo (+4.500)</span>
+                </CtaButton>
+              )}
             </motion.div>
           </div>
         </div>

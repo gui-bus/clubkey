@@ -22,7 +22,7 @@ import { GlassBadge } from "@/src/components/portal/glassBadge"
 
 import { cn } from "@/src/lib/utils"
 
-import { brandConfig } from "@/src/config/brand.config"
+import { brandConfig, isModuleEnabled } from "@/src/config/brand.config"
 
 export interface RoomCardProps {
   room: RoomProperty
@@ -260,24 +260,26 @@ export function RoomCard({
           <DiscountRibbon>{discountPercent}% OFF</DiscountRibbon>
         )}
 
-        <div className="absolute bottom-3 right-3 z-20 pointer-events-none">
-          <GlassBadge
-            size="sm"
-            className="flex items-center gap-1.5 px-2 py-1 font-heading font-black text-[10px]"
-            icon={
-              <div className="relative w-3.5 h-3.5 shrink-0">
-                <Image
-                  src="/utils/gamification/utils/xp.webp"
-                  alt="XP"
-                  fill
-                  className="object-contain"
-                />
-              </div>
-            }
-          >
-            +300 XP
-          </GlassBadge>
-        </div>
+        {isModuleEnabled("keypass") && (
+          <div className="absolute bottom-3 right-3 z-20 pointer-events-none">
+            <GlassBadge
+              size="sm"
+              className="flex items-center gap-1.5 px-2 py-1 font-heading font-black text-[10px]"
+              icon={
+                <div className="relative w-3.5 h-3.5 shrink-0">
+                  <Image
+                    src="/utils/gamification/utils/xp.webp"
+                    alt="XP"
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+              }
+            >
+              +300 XP
+            </GlassBadge>
+          </div>
+        )}
       </div>
 
       <div className="p-4 sm:p-5 flex flex-col gap-3.5 flex-1 justify-between bg-white dark:bg-zinc-900">

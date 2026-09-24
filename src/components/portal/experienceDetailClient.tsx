@@ -37,7 +37,7 @@ import { MemberCard } from "@/src/components/portal/memberCard"
 import { RelatedExperiencesCard } from "@/src/components/portal/relatedExperiencesCard"
 import { ShareButton } from "@/src/components/portal/shareButton"
 
-import { brandConfig } from "@/src/config/brand.config"
+import { brandConfig, isModuleEnabled } from "@/src/config/brand.config"
 
 export function ExperienceDetailClient({
   expId: initialExpId,
@@ -161,18 +161,22 @@ export function ExperienceDetailClient({
               <span className="font-semibold text-white">
                 {isFree ? "Gratuita para membros" : formatBRL(experience.price)}
               </span>
-              <span className="text-zinc-500 hidden sm:inline">•</span>
-              <div className="inline-flex items-center gap-1.5 text-white/90 text-xs font-medium">
-                <div className="relative w-3.5 h-3.5 shrink-0">
-                  <Image
-                    src="/utils/gamification/utils/xp.webp"
-                    alt="XP"
-                    fill
-                    className="object-contain"
-                  />
-                </div>
-                <span>+{experience.xp || 300} XP</span>
-              </div>
+              {isModuleEnabled("keypass") && (
+                <>
+                  <span className="text-zinc-500 hidden sm:inline">•</span>
+                  <div className="inline-flex items-center gap-1.5 text-white/90 text-xs font-medium">
+                    <div className="relative w-3.5 h-3.5 shrink-0">
+                      <Image
+                        src="/utils/gamification/utils/xp.webp"
+                        alt="XP"
+                        fill
+                        className="object-contain"
+                      />
+                    </div>
+                    <span>+{experience.xp || 300} XP</span>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </Container>

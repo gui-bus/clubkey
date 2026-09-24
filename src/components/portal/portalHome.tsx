@@ -34,7 +34,45 @@ import { Container } from "@/src/components/common/container"
 import { EventCard } from "@/src/components/portal/eventCard"
 import { GlassBadge } from "@/src/components/portal/glassBadge"
 
-import { brandConfig } from "@/src/config/brand.config"
+import { brandConfig, isModuleEnabled } from "@/src/config/brand.config"
+
+const QUICK_CENTRAL_LINKS = [
+  {
+    href: "/hospedagens",
+    title: "Hospedagens",
+    description: "Vilas e boutique hotels com tarifas exclusivas de membro.",
+    icon: BuildingApartment,
+    module: "stays" as const,
+  },
+  {
+    href: "/eventos",
+    title: "Eventos",
+    description: "Jantares, painéis estratégicos e reuniões privadas.",
+    icon: Calendar,
+    module: "events" as const,
+  },
+  {
+    href: "/experiencias",
+    title: "Experiências",
+    description: "Viagens sob medida, regatas e vivências exclusivas.",
+    icon: Compass,
+    module: "experiences" as const,
+  },
+  {
+    href: "/beneficios",
+    title: "Benefícios",
+    description: "Parcerias em aviação, gastronomia, saúde e negócios.",
+    icon: Gift,
+    module: "benefits" as const,
+  },
+  {
+    href: "/conexoes",
+    title: "Conexões",
+    description: "Diretório qualificado de membros do Clube.",
+    icon: Users,
+    module: "networking" as const,
+  },
+]
 
 export function PortalHome(): React.JSX.Element {
   const {
@@ -60,6 +98,10 @@ export function PortalHome(): React.JSX.Element {
   const pendingCount = React.useMemo(() => {
     return Object.values(connectedMembers).filter((s) => s === "pending").length
   }, [connectedMembers])
+
+  const activeCentralLinks = QUICK_CENTRAL_LINKS.filter((item) =>
+    isModuleEnabled(item.module)
+  )
 
   return (
     <div className="w-full flex flex-col pb-16">
@@ -121,80 +163,88 @@ export function PortalHome(): React.JSX.Element {
           })()}
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 pt-2">
-            <Link
-              href="/eventos/meus-eventos"
-              className="group relative overflow-hidden p-4 rounded-sm bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:border-brand-primary/50 dark:hover:border-brand-primary/50 transition-all shadow-xs flex flex-col justify-between min-h-[115px]"
-            >
-              <div className="absolute -right-2 -bottom-2 pointer-events-none select-none transition-all duration-300 group-hover:scale-110 group-hover:-rotate-6">
-                <Calendar className="w-20 h-20 text-zinc-900/[0.05] dark:text-white/[0.05] group-hover:text-brand-primary/[0.1] dark:group-hover:text-brand-primary/[0.1] transition-colors" />
-              </div>
+            {isModuleEnabled("events") && (
+              <Link
+                href="/eventos/meus-eventos"
+                className="group relative overflow-hidden p-4 rounded-sm bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:border-brand-primary/50 dark:hover:border-brand-primary/50 transition-all shadow-xs flex flex-col justify-between min-h-[115px]"
+              >
+                <div className="absolute -right-2 -bottom-2 pointer-events-none select-none transition-all duration-300 group-hover:scale-110 group-hover:-rotate-6">
+                  <Calendar className="w-20 h-20 text-zinc-900/[0.05] dark:text-white/[0.05] group-hover:text-brand-primary/[0.1] dark:group-hover:text-brand-primary/[0.1] transition-colors" />
+                </div>
 
-              <div className="mb-3 relative z-10">
-                <span className="text-[10px] font-black uppercase tracking-widest text-zinc-500 dark:text-zinc-400">
-                  Próximo Evento
-                </span>
-              </div>
-              <div className="relative z-10">
-                <p className="text-sm font-bold text-zinc-900 dark:text-white line-clamp-1 group-hover:text-brand-primary transition-colors">
-                  {nextEvent
-                    ? `${nextEvent.day} ${nextEvent.month} • ${nextEvent.title}`
-                    : "Nenhum confirmado"}
-                </p>
-                <span className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5 block">
-                  {confirmedEventsList.length} evento(s) na agenda
-                </span>
-              </div>
-            </Link>
+                <div className="mb-3 relative z-10">
+                  <span className="text-[10px] font-black uppercase tracking-widest text-zinc-500 dark:text-zinc-400">
+                    Próximo Evento
+                  </span>
+                </div>
+                <div className="relative z-10">
+                  <p className="text-sm font-bold text-zinc-900 dark:text-white line-clamp-1 group-hover:text-brand-primary transition-colors">
+                    {nextEvent
+                      ? `${nextEvent.day} ${nextEvent.month} • ${nextEvent.title}`
+                      : "Nenhum confirmado"}
+                  </p>
+                  <span className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5 block">
+                    {confirmedEventsList.length} evento(s) na agenda
+                  </span>
+                </div>
+              </Link>
+            )}
 
-            <Link
-              href="/hospedagens/minhas-hospedagens"
-              className="group relative overflow-hidden p-4 rounded-sm bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:border-brand-primary/50 dark:hover:border-brand-primary/50 transition-all shadow-xs flex flex-col justify-between min-h-[115px]"
-            >
-              <div className="absolute -right-2 -bottom-2 pointer-events-none select-none transition-all duration-300 group-hover:scale-110 group-hover:-rotate-6">
-                <Buildings className="w-20 h-20 text-zinc-900/[0.05] dark:text-white/[0.05] group-hover:text-brand-primary/[0.1] dark:group-hover:text-brand-primary/[0.1] transition-colors" />
-              </div>
+            {isModuleEnabled("stays") && (
+              <Link
+                href="/hospedagens/minhas-hospedagens"
+                className="group relative overflow-hidden p-4 rounded-sm bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:border-brand-primary/50 dark:hover:border-brand-primary/50 transition-all shadow-xs flex flex-col justify-between min-h-[115px]"
+              >
+                <div className="absolute -right-2 -bottom-2 pointer-events-none select-none transition-all duration-300 group-hover:scale-110 group-hover:-rotate-6">
+                  <Buildings className="w-20 h-20 text-zinc-900/[0.05] dark:text-white/[0.05] group-hover:text-brand-primary/[0.1] dark:group-hover:text-brand-primary/[0.1] transition-colors" />
+                </div>
 
-              <div className="mb-3 relative z-10">
-                <span className="text-[10px] font-black uppercase tracking-widest text-zinc-500 dark:text-zinc-400">
-                  Hospedagem Ativa
-                </span>
-              </div>
-              <div className="relative z-10">
-                <p className="text-sm font-bold text-zinc-900 dark:text-white line-clamp-1 group-hover:text-brand-primary transition-colors">
-                  {nextStay ? `${nextStay.stayName}` : "Nenhuma reserva ativa"}
-                </p>
-                <span className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5 block">
-                  {nextStay
-                    ? `${nextStay.checkIn.split(",")[0]}`
-                    : "Reservar com tarifa VIP"}
-                </span>
-              </div>
-            </Link>
+                <div className="mb-3 relative z-10">
+                  <span className="text-[10px] font-black uppercase tracking-widest text-zinc-500 dark:text-zinc-400">
+                    Hospedagem Ativa
+                  </span>
+                </div>
+                <div className="relative z-10">
+                  <p className="text-sm font-bold text-zinc-900 dark:text-white line-clamp-1 group-hover:text-brand-primary transition-colors">
+                    {nextStay
+                      ? `${nextStay.stayName}`
+                      : "Nenhuma reserva ativa"}
+                  </p>
+                  <span className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5 block">
+                    {nextStay
+                      ? `${nextStay.checkIn.split(",")[0]}`
+                      : "Reservar com tarifa VIP"}
+                  </span>
+                </div>
+              </Link>
+            )}
 
-            <Link
-              href="/conexoes"
-              className="group relative overflow-hidden p-4 rounded-sm bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:border-brand-primary/50 dark:hover:border-brand-primary/50 transition-all shadow-xs flex flex-col justify-between min-h-[115px]"
-            >
-              <div className="absolute -right-2 -bottom-2 pointer-events-none select-none transition-all duration-300 group-hover:scale-110 group-hover:-rotate-6">
-                <Users className="w-20 h-20 text-zinc-900/[0.05] dark:text-white/[0.05] group-hover:text-brand-primary/[0.1] dark:group-hover:text-brand-primary/[0.1] transition-colors" />
-              </div>
+            {isModuleEnabled("networking") && (
+              <Link
+                href="/conexoes"
+                className="group relative overflow-hidden p-4 rounded-sm bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:border-brand-primary/50 dark:hover:border-brand-primary/50 transition-all shadow-xs flex flex-col justify-between min-h-[115px]"
+              >
+                <div className="absolute -right-2 -bottom-2 pointer-events-none select-none transition-all duration-300 group-hover:scale-110 group-hover:-rotate-6">
+                  <Users className="w-20 h-20 text-zinc-900/[0.05] dark:text-white/[0.05] group-hover:text-brand-primary/[0.1] dark:group-hover:text-brand-primary/[0.1] transition-colors" />
+                </div>
 
-              <div className="mb-3 relative z-10">
-                <span className="text-[10px] font-black uppercase tracking-widest text-zinc-500 dark:text-zinc-400">
-                  Rede do Clube
-                </span>
-              </div>
-              <div className="relative z-10">
-                <p className="text-sm font-bold text-zinc-900 dark:text-white line-clamp-1 group-hover:text-brand-primary transition-colors">
-                  {connectedCount} conexões ativas
-                </p>
-                <span className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5 block">
-                  {pendingCount > 0
-                    ? `${pendingCount} pedido(s) pendente(s)`
-                    : "Diretório de 16 membros"}
-                </span>
-              </div>
-            </Link>
+                <div className="mb-3 relative z-10">
+                  <span className="text-[10px] font-black uppercase tracking-widest text-zinc-500 dark:text-zinc-400">
+                    Rede do Clube
+                  </span>
+                </div>
+                <div className="relative z-10">
+                  <p className="text-sm font-bold text-zinc-900 dark:text-white line-clamp-1 group-hover:text-brand-primary transition-colors">
+                    {connectedCount} conexões ativas
+                  </p>
+                  <span className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5 block">
+                    {pendingCount > 0
+                      ? `${pendingCount} pedido(s) pendente(s)`
+                      : "Diretório de 16 membros"}
+                  </span>
+                </div>
+              </Link>
+            )}
 
             <Link
               href="/perfil/minha-assinatura"
@@ -224,185 +274,118 @@ export function PortalHome(): React.JSX.Element {
       </section>
 
       <Container className="relative z-10 pt-10 space-y-12 bg-[#F1F1F1] dark:bg-[#161616]">
-        <section className="space-y-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <span className="text-[10px] font-bold uppercase tracking-widest text-brand-primary block mb-0.5">
-                Navegação Rápida
-              </span>
-              <h2 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-zinc-900 dark:text-white font-heading">
-                Centrais do Associado
-              </h2>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3.5">
-            <Link
-              href="/hospedagens"
-              className="group relative overflow-hidden p-4 rounded-sm bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:border-brand-primary/50 dark:hover:border-brand-primary/50 hover:shadow-md transition-all flex flex-col justify-between min-h-[125px]"
-            >
-              <div className="absolute -right-2 -bottom-2 pointer-events-none select-none transition-all duration-300 group-hover:scale-110 group-hover:-rotate-6">
-                <BuildingApartment className="w-20 h-20 text-zinc-900/[0.05] dark:text-white/[0.05] group-hover:text-brand-primary/[0.1] dark:group-hover:text-brand-primary/[0.1] transition-colors" />
+        {activeCentralLinks.length > 0 && (
+          <section className="space-y-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <span className="text-[10px] font-bold uppercase tracking-widest text-brand-primary block mb-0.5">
+                  Navegação Rápida
+                </span>
+                <h2 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-zinc-900 dark:text-white font-heading">
+                  Centrais do Associado
+                </h2>
               </div>
-              <div className="relative z-10">
-                <div className="flex items-center justify-between gap-1.5 mb-1.5">
-                  <h3 className="text-sm font-bold text-zinc-900 dark:text-white group-hover:text-brand-primary transition-colors">
-                    Hospedagens
-                  </h3>
-                  <ArrowRight className="w-3.5 h-3.5 text-zinc-400 group-hover:text-brand-primary group-hover:translate-x-0.5 transition-all" />
-                </div>
-                <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-snug">
-                  Vilas e boutique hotels com tarifas exclusivas de membro.
-                </p>
-              </div>
-            </Link>
-
-            <Link
-              href="/eventos"
-              className="group relative overflow-hidden p-4 rounded-sm bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:border-brand-primary/50 dark:hover:border-brand-primary/50 hover:shadow-md transition-all flex flex-col justify-between min-h-[125px]"
-            >
-              <div className="absolute -right-2 -bottom-2 pointer-events-none select-none transition-all duration-300 group-hover:scale-110 group-hover:-rotate-6">
-                <Calendar className="w-20 h-20 text-zinc-900/[0.05] dark:text-white/[0.05] group-hover:text-brand-primary/[0.1] dark:group-hover:text-brand-primary/[0.1] transition-colors" />
-              </div>
-              <div className="relative z-10">
-                <div className="flex items-center justify-between gap-1.5 mb-1.5">
-                  <h3 className="text-sm font-bold text-zinc-900 dark:text-white group-hover:text-brand-primary transition-colors">
-                    Eventos
-                  </h3>
-                  <ArrowRight className="w-3.5 h-3.5 text-zinc-400 group-hover:text-brand-primary group-hover:translate-x-0.5 transition-all" />
-                </div>
-                <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-snug">
-                  Jantares, painéis estratégicos e reuniões privadas.
-                </p>
-              </div>
-            </Link>
-
-            <Link
-              href="/experiencias"
-              className="group relative overflow-hidden p-4 rounded-sm bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:border-brand-primary/50 dark:hover:border-brand-primary/50 hover:shadow-md transition-all flex flex-col justify-between min-h-[125px]"
-            >
-              <div className="absolute -right-2 -bottom-2 pointer-events-none select-none transition-all duration-300 group-hover:scale-110 group-hover:-rotate-6">
-                <Compass className="w-20 h-20 text-zinc-900/[0.05] dark:text-white/[0.05] group-hover:text-brand-primary/[0.1] dark:group-hover:text-brand-primary/[0.1] transition-colors" />
-              </div>
-              <div className="relative z-10">
-                <div className="flex items-center justify-between gap-1.5 mb-1.5">
-                  <h3 className="text-sm font-bold text-zinc-900 dark:text-white group-hover:text-brand-primary transition-colors">
-                    Experiências
-                  </h3>
-                  <ArrowRight className="w-3.5 h-3.5 text-zinc-400 group-hover:text-brand-primary group-hover:translate-x-0.5 transition-all" />
-                </div>
-                <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-snug">
-                  Viagens sob medida, regatas e vivências exclusivas.
-                </p>
-              </div>
-            </Link>
-
-            <Link
-              href="/beneficios"
-              className="group relative overflow-hidden p-4 rounded-sm bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:border-brand-primary/50 dark:hover:border-brand-primary/50 hover:shadow-md transition-all flex flex-col justify-between min-h-[125px]"
-            >
-              <div className="absolute -right-2 -bottom-2 pointer-events-none select-none transition-all duration-300 group-hover:scale-110 group-hover:-rotate-6">
-                <Gift className="w-20 h-20 text-zinc-900/[0.05] dark:text-white/[0.05] group-hover:text-brand-primary/[0.1] dark:group-hover:text-brand-primary/[0.1] transition-colors" />
-              </div>
-              <div className="relative z-10">
-                <div className="flex items-center justify-between gap-1.5 mb-1.5">
-                  <h3 className="text-sm font-bold text-zinc-900 dark:text-white group-hover:text-brand-primary transition-colors">
-                    Benefícios
-                  </h3>
-                  <ArrowRight className="w-3.5 h-3.5 text-zinc-400 group-hover:text-brand-primary group-hover:translate-x-0.5 transition-all" />
-                </div>
-                <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-snug">
-                  Parcerias em aviação, gastronomia, saúde e negócios.
-                </p>
-              </div>
-            </Link>
-
-            <Link
-              href="/conexoes"
-              className="group relative overflow-hidden p-4 rounded-sm bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:border-brand-primary/50 dark:hover:border-brand-primary/50 hover:shadow-md transition-all flex flex-col justify-between min-h-[125px]"
-            >
-              <div className="absolute -right-2 -bottom-2 pointer-events-none select-none transition-all duration-300 group-hover:scale-110 group-hover:-rotate-6">
-                <Users className="w-20 h-20 text-zinc-900/[0.05] dark:text-white/[0.05] group-hover:text-brand-primary/[0.1] dark:group-hover:text-brand-primary/[0.1] transition-colors" />
-              </div>
-              <div className="relative z-10">
-                <div className="flex items-center justify-between gap-1.5 mb-1.5">
-                  <h3 className="text-sm font-bold text-zinc-900 dark:text-white group-hover:text-brand-primary transition-colors">
-                    Conexões
-                  </h3>
-                  <ArrowRight className="w-3.5 h-3.5 text-zinc-400 group-hover:text-brand-primary group-hover:translate-x-0.5 transition-all" />
-                </div>
-                <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-snug">
-                  Diretório qualificado de membros do Clube.
-                </p>
-              </div>
-            </Link>
-          </div>
-        </section>
-
-        <section className="space-y-4">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div>
-              <span className="text-[10px] font-bold uppercase tracking-widest text-brand-primary block mb-0.5">
-                Seus Compromissos
-              </span>
-              <h2 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-zinc-900 dark:text-white font-heading">
-                Próximo Encontro Confirmado
-              </h2>
             </div>
 
-            {confirmedEventsList.length > 0 && (
-              <Link
-                href="/eventos/meus-eventos"
-                className="text-xs font-bold text-brand-primary hover:underline flex items-center gap-1"
-              >
-                <span>Ver todos na agenda ({confirmedEventsList.length})</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
-            )}
-          </div>
-
-          {nextEvent ? (
-            <div className="w-full">
-              <EventCard event={nextEvent} />
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3.5">
+              {activeCentralLinks.map((item) => {
+                const IconComponent = item.icon
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className="group relative overflow-hidden p-4 rounded-sm bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:border-brand-primary/50 dark:hover:border-brand-primary/50 hover:shadow-md transition-all flex flex-col justify-between min-h-[125px]"
+                  >
+                    <div className="absolute -right-2 -bottom-2 pointer-events-none select-none transition-all duration-300 group-hover:scale-110 group-hover:-rotate-6">
+                      <IconComponent className="w-20 h-20 text-zinc-900/[0.05] dark:text-white/[0.05] group-hover:text-brand-primary/[0.1] dark:group-hover:text-brand-primary/[0.1] transition-colors" />
+                    </div>
+                    <div className="relative z-10">
+                      <div className="flex items-center justify-between gap-1.5 mb-1.5">
+                        <h3 className="text-sm font-bold text-zinc-900 dark:text-white group-hover:text-brand-primary transition-colors">
+                          {item.title}
+                        </h3>
+                        <ArrowRight className="w-3.5 h-3.5 text-zinc-400 group-hover:text-brand-primary group-hover:translate-x-0.5 transition-all" />
+                      </div>
+                      <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-snug">
+                        {item.description}
+                      </p>
+                    </div>
+                  </Link>
+                )
+              })}
             </div>
-          ) : (
-            <div className="p-8 rounded-sm bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-center flex flex-col items-center">
-              <Calendar className="w-8 h-8 text-zinc-400 mb-2" />
-              <p className="text-sm font-bold text-zinc-900 dark:text-white mb-1">
-                Você ainda não confirmou presença nos próximos eventos
-              </p>
-              <p className="text-xs text-zinc-500 dark:text-zinc-400 mb-4 max-w-sm">
-                Confira o calendário completo de jantares, talks e fóruns do
-                clube e garanta seu lugar.
-              </p>
-              <Link href="/eventos">
-                <Button
-                  color="primary"
-                  size="sm"
-                  className="text-xs font-bold uppercase tracking-wider"
+          </section>
+        )}
+
+        {isModuleEnabled("events") && (
+          <section className="space-y-4">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <span className="text-[10px] font-bold uppercase tracking-widest text-brand-primary block mb-0.5">
+                  Seus Compromissos
+                </span>
+                <h2 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-zinc-900 dark:text-white font-heading">
+                  Próximo Encontro Confirmado
+                </h2>
+              </div>
+
+              {confirmedEventsList.length > 0 && (
+                <Link
+                  href="/eventos/meus-eventos"
+                  className="text-xs font-bold text-brand-primary hover:underline flex items-center gap-1"
                 >
-                  Explorar Eventos
-                </Button>
-              </Link>
+                  <span>
+                    Ver todos na agenda ({confirmedEventsList.length})
+                  </span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+              )}
             </div>
-          )}
 
-          {confirmedEventsList.length > 1 && (
-            <div className="pt-1 flex items-center justify-between text-xs text-zinc-600 dark:text-zinc-400">
-              <span>
-                Você tem mais <strong>{confirmedEventsList.length - 1}</strong>{" "}
-                encontro(s) confirmado(s) na sua agenda.
-              </span>
-              <Link
-                href="/eventos/meus-eventos"
-                className="text-brand-primary font-bold hover:underline flex items-center gap-1"
-              >
-                <span>Ver todos os meus eventos</span>
-                <ArrowRight className="w-3 h-3" />
-              </Link>
-            </div>
-          )}
-        </section>
+            {nextEvent ? (
+              <div className="w-full">
+                <EventCard event={nextEvent} />
+              </div>
+            ) : (
+              <div className="p-8 rounded-sm bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-center flex flex-col items-center">
+                <Calendar className="w-8 h-8 text-zinc-400 mb-2" />
+                <p className="text-sm font-bold text-zinc-900 dark:text-white mb-1">
+                  Você ainda não confirmou presença nos próximos eventos
+                </p>
+                <p className="text-xs text-zinc-500 dark:text-zinc-400 mb-4 max-w-sm">
+                  Confira o calendário completo de jantares, talks e fóruns do
+                  clube e garanta seu lugar.
+                </p>
+                <Link href="/eventos">
+                  <Button
+                    color="primary"
+                    size="sm"
+                    className="text-xs font-bold uppercase tracking-wider"
+                  >
+                    Explorar Eventos
+                  </Button>
+                </Link>
+              </div>
+            )}
+
+            {confirmedEventsList.length > 1 && (
+              <div className="pt-1 flex items-center justify-between text-xs text-zinc-600 dark:text-zinc-400">
+                <span>
+                  Você tem mais{" "}
+                  <strong>{confirmedEventsList.length - 1}</strong> encontro(s)
+                  confirmado(s) na sua agenda.
+                </span>
+                <Link
+                  href="/eventos/meus-eventos"
+                  className="text-brand-primary font-bold hover:underline flex items-center gap-1"
+                >
+                  <span>Ver todos os meus eventos</span>
+                  <ArrowRight className="w-3 h-3" />
+                </Link>
+              </div>
+            )}
+          </section>
+        )}
       </Container>
     </div>
   )

@@ -43,7 +43,7 @@ import { MemberCard } from "@/src/components/portal/memberCard"
 import { RelatedEventsCard } from "@/src/components/portal/relatedEventsCard"
 import { ShareButton } from "@/src/components/portal/shareButton"
 
-import { brandConfig } from "@/src/config/brand.config"
+import { brandConfig, isModuleEnabled } from "@/src/config/brand.config"
 
 export function EventDetailClient({
   eventId: initialEventId,
@@ -191,45 +191,76 @@ export function EventDetailClient({
                 {event.place}
               </span>
               <span className="text-zinc-500 hidden sm:inline">•</span>
-              <Link
-                href={`/conexoes/${organizer.id}/${getMemberSlug(organizer)}`}
-                className="group/host inline-flex items-center gap-2 text-zinc-300 hover:text-white transition-colors"
-              >
-                <span className="text-zinc-400 font-medium">Host:</span>
-                <Avatar
-                  size="xs"
-                  radius="full"
-                  className="border border-white/20 group-hover/host:border-brand-primary transition-colors cursor-pointer"
+              {isModuleEnabled("networking") ? (
+                <Link
+                  href={`/conexoes/${organizer.id}/${getMemberSlug(organizer)}`}
+                  className="group/host inline-flex items-center gap-2 text-zinc-300 hover:text-white transition-colors"
                 >
-                  {organizer.avatar && (
-                    <AvatarImage
-                      src={organizer.avatar}
-                      alt={`${organizer.firstName} ${organizer.lastName}`}
-                    />
-                  )}
-                  <AvatarFallback className="font-bold text-[9px] bg-zinc-800 text-white">
-                    {getInitials(organizer.firstName, organizer.lastName)}
-                  </AvatarFallback>
-                </Avatar>
-                <span className="font-semibold text-white group-hover/host:text-brand-primary group-hover/host:underline transition-colors">
-                  {organizer.firstName} {organizer.lastName}
-                </span>
-                <span className="text-zinc-400 text-xs">
-                  ({organizer.company})
-                </span>
-              </Link>
-              <span className="text-zinc-500 hidden sm:inline">•</span>
-              <div className="inline-flex items-center gap-1.5 text-white/90 text-xs font-medium">
-                <div className="relative w-3.5 h-3.5 shrink-0">
-                  <Image
-                    src="/utils/gamification/utils/xp.webp"
-                    alt="XP"
-                    fill
-                    className="object-contain"
-                  />
+                  <span className="text-zinc-400 font-medium">Host:</span>
+                  <Avatar
+                    size="xs"
+                    radius="full"
+                    className="border border-white/20 group-hover/host:border-brand-primary transition-colors cursor-pointer"
+                  >
+                    {organizer.avatar && (
+                      <AvatarImage
+                        src={organizer.avatar}
+                        alt={`${organizer.firstName} ${organizer.lastName}`}
+                      />
+                    )}
+                    <AvatarFallback className="font-bold text-[9px] bg-zinc-800 text-white">
+                      {getInitials(organizer.firstName, organizer.lastName)}
+                    </AvatarFallback>
+                  </Avatar>
+                  <span className="font-semibold text-white group-hover/host:text-brand-primary group-hover/host:underline transition-colors">
+                    {organizer.firstName} {organizer.lastName}
+                  </span>
+                  <span className="text-zinc-400 text-xs">
+                    ({organizer.company})
+                  </span>
+                </Link>
+              ) : (
+                <div className="inline-flex items-center gap-2 text-zinc-300">
+                  <span className="text-zinc-400 font-medium">Host:</span>
+                  <Avatar
+                    size="xs"
+                    radius="full"
+                    className="border border-white/20"
+                  >
+                    {organizer.avatar && (
+                      <AvatarImage
+                        src={organizer.avatar}
+                        alt={`${organizer.firstName} ${organizer.lastName}`}
+                      />
+                    )}
+                    <AvatarFallback className="font-bold text-[9px] bg-zinc-800 text-white">
+                      {getInitials(organizer.firstName, organizer.lastName)}
+                    </AvatarFallback>
+                  </Avatar>
+                  <span className="font-semibold text-white">
+                    {organizer.firstName} {organizer.lastName}
+                  </span>
+                  <span className="text-zinc-400 text-xs">
+                    ({organizer.company})
+                  </span>
                 </div>
-                <span>+{event.xp || 200} XP</span>
-              </div>
+              )}
+              {isModuleEnabled("keypass") && (
+                <>
+                  <span className="text-zinc-500 hidden sm:inline">•</span>
+                  <div className="inline-flex items-center gap-1.5 text-white/90 text-xs font-medium">
+                    <div className="relative w-3.5 h-3.5 shrink-0">
+                      <Image
+                        src="/utils/gamification/utils/xp.webp"
+                        alt="XP"
+                        fill
+                        className="object-contain"
+                      />
+                    </div>
+                    <span>+{event.xp || 200} XP</span>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </Container>

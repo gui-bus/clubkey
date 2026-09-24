@@ -22,6 +22,8 @@ import { CtaButton } from "@/src/components/common/ctaButton"
 import { formatNumber } from "@/src/lib/formatters"
 import { cn } from "@/src/lib/utils"
 
+import { isModuleEnabled } from "@/src/config/brand.config"
+
 export interface LeaderboardTargetCardProps {
   currentUser: LeaderboardMember
   targetUser: LeaderboardMember | null
@@ -88,7 +90,6 @@ export function LeaderboardTargetCard({
         className
       )}
     >
-      {}
       <Crosshair
         className="absolute -right-6 -bottom-8 w-40 h-40 text-zinc-100 dark:text-zinc-800 pointer-events-none select-none"
         weight="thin"
@@ -124,13 +125,19 @@ export function LeaderboardTargetCard({
               #{currentUser.rank} posição ({formatNumber(currentUser.xp)} XP)
             </strong>
             . Ultrapasse{" "}
-            <Link
-              href={`/conexoes/${targetUser.id}/${getMemberSlug(targetUser)}`}
-              className="font-bold text-zinc-900 dark:text-white hover:text-brand-primary underline whitespace-nowrap"
-            >
-              {targetUser.firstName} {targetUser.lastName}
-            </Link>{" "}
-            completando missões ou reservando novas experiências.
+            {isModuleEnabled("networking") ? (
+              <Link
+                href={`/conexoes/${targetUser.id}/${getMemberSlug(targetUser)}`}
+                className="font-bold text-zinc-900 dark:text-white hover:text-brand-primary underline whitespace-nowrap"
+              >
+                {targetUser.firstName} {targetUser.lastName}
+              </Link>
+            ) : (
+              <span className="font-bold text-zinc-900 dark:text-white whitespace-nowrap">
+                {targetUser.firstName} {targetUser.lastName}
+              </span>
+            )}{" "}
+            completando missões e participando das atividades do clube.
           </p>
         </div>
 

@@ -37,7 +37,7 @@ import { cn } from "@/src/lib/utils"
 
 import { useMounted } from "@/src/hooks/useMounted"
 
-import { brandConfig } from "@/src/config/brand.config"
+import { brandConfig, isModuleEnabled } from "@/src/config/brand.config"
 
 export function MemberMessengerWidget(): React.JSX.Element | null {
   const {
@@ -138,6 +138,7 @@ export function MemberMessengerWidget(): React.JSX.Element | null {
   if (
     !mounted ||
     !isAuthenticated ||
+    !isModuleEnabled("networking") ||
     (conversationsList.length === 0 && chatParam === null)
   ) {
     return null

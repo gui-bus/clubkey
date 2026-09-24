@@ -25,6 +25,8 @@ import { cn } from "@/src/lib/utils"
 
 import { useMounted } from "@/src/hooks/useMounted"
 
+import { isModuleEnabled } from "@/src/config/brand.config"
+
 interface MemberCardProps {
   member: Member
   isHost?: boolean
@@ -86,14 +88,10 @@ export function MemberCard({
 
   const fullName = `${member.firstName} ${member.lastName}`.trim()
 
-  return (
-    <Link
-      href={`/conexoes/${member.id}/${getMemberSlug(member)}`}
-      className={cn(
-        "group/card flex flex-row rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors duration-200 overflow-hidden cursor-pointer",
-        className
-      )}
-    >
+  const isNetworking = isModuleEnabled("networking")
+
+  const innerContent = (
+    <>
       <div className="relative w-28 sm:w-32 md:w-36 shrink-0 bg-zinc-100 dark:bg-zinc-900 overflow-hidden">
         {member.avatar ? (
           <Image
@@ -101,7 +99,10 @@ export function MemberCard({
             alt={fullName}
             fill
             sizes="(max-width: 640px) 112px, 144px"
-            className="object-cover group-hover/card:scale-105 transition-transform duration-500"
+            className={cn(
+              "object-cover transition-transform duration-500",
+              isNetworking && "group-hover/card:scale-105"
+            )}
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center font-black text-xl bg-zinc-900 text-white dark:bg-zinc-800">
@@ -122,7 +123,12 @@ export function MemberCard({
       <div className="flex-1 p-3.5 sm:p-4 flex flex-col justify-between min-w-0 space-y-3">
         <div className="space-y-2.5">
           <div className="min-w-0">
-            <h3 className="text-xs sm:text-sm font-bold uppercase tracking-tight text-zinc-900 dark:text-white truncate group-hover/card:text-brand-primary transition-colors">
+            <h3
+              className={cn(
+                "text-xs sm:text-sm font-bold uppercase tracking-tight text-zinc-900 dark:text-white truncate transition-colors",
+                isNetworking && "group-hover/card:text-brand-primary"
+              )}
+            >
               {fullName}
             </h3>
             <p className="text-[11px] truncate">
@@ -164,132 +170,163 @@ export function MemberCard({
           </div>
         </div>
 
-        <div className="pt-1 flex items-center gap-2">
-          {onAccept && onDecline ? (
-            <div className="flex items-center gap-2 w-full">
-              <CtaButton
-                type="button"
-                variant="primary"
-                size="xs"
-                onClick={(e) => {
-                  e.preventDefault()
-                  e.stopPropagation()
-                  onAccept(member)
-                }}
-                className="flex-1 h-8 text-[11px] font-bold shadow-none hover:shadow-none"
-              >
-                <Check className="w-3.5 h-3.5 mr-1" />
-                <span>Aceitar (+50 XP)</span>
-              </CtaButton>
-              <CtaButton
-                type="button"
-                variant="dark-outline"
-                size="xs"
-                onClick={(e) => {
-                  e.preventDefault()
-                  e.stopPropagation()
-                  onDecline(member)
-                }}
-                className="h-8 px-2.5 text-[11px] font-medium shadow-none hover:shadow-none text-zinc-900 dark:text-white"
-                title="Recusar convite"
-              >
-                <X className="w-3.5 h-3.5" />
-              </CtaButton>
-            </div>
-          ) : (
-            <>
-              <CtaButton
-                type="button"
-                variant="outline"
-                size="xs"
-                className="flex-1 h-8 text-[11px] font-bold uppercase tracking-wider shadow-none hover:shadow-none"
-                textClassName="flex items-center justify-between w-full"
-              >
-                <span>Ver perfil</span>
-                <ArrowRight className="w-3.5 h-3.5 shrink-0" />
-              </CtaButton>
-
-              {onCancel ? (
+        {isNetworking && (
+          <div className="pt-1 flex items-center gap-2">
+            {onAccept && onDecline ? (
+              <div className="flex items-center gap-2 w-full">
+                <CtaButton
+                  type="button"
+                  variant="primary"
+                  size="xs"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    onAccept(member)
+                  }}
+                  className="flex-1 h-8 text-[11px] font-bold shadow-none hover:shadow-none"
+                >
+                  <Check className="w-3.5 h-3.5 mr-1" />
+                  <span>
+                    {isModuleEnabled("keypass")
+                      ? "Aceitar (+50 XP)"
+                      : "Aceitar"}
+                  </span>
+                </CtaButton>
                 <CtaButton
                   type="button"
                   variant="dark-outline"
                   size="xs"
-                  onClick={handleCancel}
-                  className="w-8 h-8 px-0 rounded-sm shrink-0 z-10 shadow-none hover:shadow-none flex items-center justify-center border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-white"
-                  sliderClassName="bg-red-500/15"
-                  textClassName="text-zinc-900 dark:text-white group-hover:text-red-500 transition-colors"
-                  title="Cancelar convite"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    onDecline(member)
+                  }}
+                  className="h-8 px-2.5 text-[11px] font-medium shadow-none hover:shadow-none text-zinc-900 dark:text-white"
+                  title="Recusar convite"
                 >
                   <X className="w-3.5 h-3.5" />
                 </CtaButton>
-              ) : onRemove ? (
+              </div>
+            ) : (
+              <>
                 <CtaButton
                   type="button"
-                  variant="dark-outline"
+                  variant="outline"
                   size="xs"
-                  onClick={handleRemove}
-                  className="w-8 h-8 px-0 rounded-sm shrink-0 z-10 shadow-none hover:shadow-none flex items-center justify-center border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-white"
-                  sliderClassName="bg-red-500/15"
-                  textClassName="text-zinc-900 dark:text-white group-hover:text-red-500 transition-colors"
-                  title="Desfazer conexão"
+                  className="flex-1 h-8 text-[11px] font-bold uppercase tracking-wider shadow-none hover:shadow-none"
+                  textClassName="flex items-center justify-between w-full"
                 >
-                  <UserMinus className="w-3.5 h-3.5" />
+                  <span>Ver perfil</span>
+                  <ArrowRight className="w-3.5 h-3.5 shrink-0" />
                 </CtaButton>
-              ) : (
-                <CtaButton
-                  type="button"
-                  variant={
-                    status === "connected"
-                      ? "dark-outline"
-                      : status === "pending"
+
+                {onCancel ? (
+                  <CtaButton
+                    type="button"
+                    variant="dark-outline"
+                    size="xs"
+                    onClick={handleCancel}
+                    className="w-8 h-8 px-0 rounded-sm shrink-0 z-10 shadow-none hover:shadow-none flex items-center justify-center border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-white"
+                    sliderClassName="bg-red-500/15"
+                    textClassName="text-zinc-900 dark:text-white group-hover:text-red-500 transition-colors"
+                    title="Cancelar convite"
+                  >
+                    <X className="w-3.5 h-3.5" />
+                  </CtaButton>
+                ) : onRemove ? (
+                  <CtaButton
+                    type="button"
+                    variant="dark-outline"
+                    size="xs"
+                    onClick={handleRemove}
+                    className="w-8 h-8 px-0 rounded-sm shrink-0 z-10 shadow-none hover:shadow-none flex items-center justify-center border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-white"
+                    sliderClassName="bg-red-500/15"
+                    textClassName="text-zinc-900 dark:text-white group-hover:text-red-500 transition-colors"
+                    title="Desfazer conexão"
+                  >
+                    <UserMinus className="w-3.5 h-3.5" />
+                  </CtaButton>
+                ) : (
+                  <CtaButton
+                    type="button"
+                    variant={
+                      status === "connected"
                         ? "dark-outline"
-                        : "primary"
-                  }
-                  size="xs"
-                  onClick={handleConnect}
-                  disabled={status !== "none"}
-                  className={cn(
-                    "w-8 h-8 px-0 rounded-sm shrink-0 z-10 shadow-none hover:shadow-none flex items-center justify-center border",
-                    status === "connected" &&
-                      "bg-emerald-500/15 border-emerald-500/30 text-emerald-600 dark:text-emerald-400 opacity-100 cursor-default",
-                    status === "pending" &&
-                      "bg-sky-500/15 border-sky-500/30 text-sky-600 dark:text-sky-400 opacity-100 cursor-default",
-                    status === "none" && "border-transparent"
-                  )}
-                  sliderClassName={
-                    status === "connected"
-                      ? "bg-emerald-500/20"
-                      : status === "pending"
-                        ? "bg-sky-500/20"
-                        : undefined
-                  }
-                  textClassName={cn(
-                    status === "connected" &&
-                      "text-emerald-600 dark:text-emerald-400",
-                    status === "pending" && "text-sky-600 dark:text-sky-400",
-                    status === "none" && "text-white"
-                  )}
-                  title={
-                    status === "connected"
-                      ? "Conectado"
-                      : status === "pending"
-                        ? "Aguardando resposta"
-                        : "Conectar"
-                  }
-                >
-                  {status === "connected" ? (
-                    <Check className="w-3.5 h-3.5" />
-                  ) : status === "pending" ? (
-                    <Hourglass className="w-3.5 h-3.5" />
-                  ) : (
-                    <UserPlus className="w-3.5 h-3.5" />
-                  )}
-                </CtaButton>
-              )}
-            </>
-          )}
-        </div>
+                        : status === "pending"
+                          ? "dark-outline"
+                          : "primary"
+                    }
+                    size="xs"
+                    onClick={handleConnect}
+                    disabled={status !== "none"}
+                    className={cn(
+                      "w-8 h-8 px-0 rounded-sm shrink-0 z-10 shadow-none hover:shadow-none flex items-center justify-center border",
+                      status === "connected" &&
+                        "bg-emerald-500/15 border-emerald-500/30 text-emerald-600 dark:text-emerald-400 opacity-100 cursor-default",
+                      status === "pending" &&
+                        "bg-sky-500/15 border-sky-500/30 text-sky-600 dark:text-sky-400 opacity-100 cursor-default",
+                      status === "none" && "border-transparent"
+                    )}
+                    sliderClassName={
+                      status === "connected"
+                        ? "bg-emerald-500/20"
+                        : status === "pending"
+                          ? "bg-sky-500/20"
+                          : undefined
+                    }
+                    textClassName={cn(
+                      status === "connected" &&
+                        "text-emerald-600 dark:text-emerald-400",
+                      status === "pending" && "text-sky-600 dark:text-sky-400",
+                      status === "none" && "text-white"
+                    )}
+                    title={
+                      status === "connected"
+                        ? "Conectado"
+                        : status === "pending"
+                          ? "Aguardando resposta"
+                          : "Conectar"
+                    }
+                  >
+                    {status === "connected" ? (
+                      <Check className="w-3.5 h-3.5" />
+                    ) : status === "pending" ? (
+                      <Hourglass className="w-3.5 h-3.5" />
+                    ) : (
+                      <UserPlus className="w-3.5 h-3.5" />
+                    )}
+                  </CtaButton>
+                )}
+              </>
+            )}
+          </div>
+        )}
       </div>
-    </Link>
+    </>
+  )
+
+  if (isNetworking) {
+    return (
+      <Link
+        href={`/conexoes/${member.id}/${getMemberSlug(member)}`}
+        className={cn(
+          "group/card flex flex-row rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors duration-200 overflow-hidden cursor-pointer",
+          className
+        )}
+      >
+        {innerContent}
+      </Link>
+    )
+  }
+
+  return (
+    <div
+      className={cn(
+        "group/card flex flex-row rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] transition-colors duration-200 overflow-hidden",
+        className
+      )}
+    >
+      {innerContent}
+    </div>
   )
 }

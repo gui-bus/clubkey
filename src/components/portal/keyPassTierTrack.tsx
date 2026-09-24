@@ -64,7 +64,6 @@ export function KeyPassTierTrack({
 
   return (
     <div className={cn("space-y-4", className)}>
-      {}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div className="space-y-0.5 min-w-0">
           <h2 className="text-lg sm:text-xl font-heading font-black uppercase tracking-tight text-zinc-900 dark:text-white">
@@ -84,8 +83,6 @@ export function KeyPassTierTrack({
           <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
         </Link>
       </div>
-
-      {}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
         {displayTiers.map((tier, index) => {
           const isUserCurrent = tier.id === userTier.id
@@ -114,12 +111,9 @@ export function KeyPassTierTrack({
                   : "bg-white dark:bg-zinc-900 hover:bg-zinc-50/60 dark:hover:bg-zinc-800/40"
               )}
             >
-              {}
               <span className="absolute -bottom-2 -right-1 text-5xl sm:text-6xl font-heading font-black text-zinc-900/[0.04] dark:text-white/[0.04] pointer-events-none select-none leading-none z-0">
                 0{index + 1}
               </span>
-
-              {}
               {isUserCurrent ? (
                 <div className="absolute top-2 right-2 z-10">
                   <span className="text-[9px] font-black uppercase px-1.5 py-0.5 rounded-xs bg-zinc-900 dark:bg-white text-white dark:text-zinc-900">
@@ -137,8 +131,6 @@ export function KeyPassTierTrack({
                   <LockSimple className="w-3.5 h-3.5 text-zinc-400" />
                 </div>
               ) : null}
-
-              {}
               <div className="my-auto py-3 space-y-2 w-full relative z-10">
                 <div className="relative w-12 h-12 sm:w-14 sm:h-14 mx-auto transition-transform duration-200 group-hover:scale-105">
                   <Image
@@ -164,8 +156,6 @@ export function KeyPassTierTrack({
                   </p>
                 </div>
               </div>
-
-              {}
               <div className="w-full pt-2 border-t border-zinc-100 dark:border-zinc-800 space-y-1 relative z-10">
                 <p className="text-[9px] font-medium text-zinc-500 dark:text-zinc-400 truncate">
                   {getTierShortPerk(tier.id)}
@@ -191,8 +181,6 @@ export function KeyPassTierTrack({
           )
         })}
       </div>
-
-      {}
       <AnimatePresence mode="wait">
         <motion.div
           key={selectedTier.id}
@@ -237,8 +225,6 @@ export function KeyPassTierTrack({
                 </p>
               </div>
             </div>
-
-            {}
             <div className="w-full lg:w-auto shrink-0 flex flex-col gap-2">
               <span className="text-[10px] font-black uppercase tracking-wider text-zinc-500 block">
                 Privilégios do Tier:

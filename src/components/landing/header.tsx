@@ -45,34 +45,44 @@ import { UserDropdownMenu } from "@/src/components/portal/userDropdownMenu"
 
 import { cn } from "@/src/lib/utils"
 
-import { brandConfig } from "@/src/config/brand.config"
+import {
+  type BrandModulesConfig,
+  brandConfig,
+  isModuleEnabled,
+} from "@/src/config/brand.config"
 
-const PUBLIC_NAV_LINKS = [
+interface NavLinkItem {
+  name: string
+  href: string
+  module?: keyof BrandModulesConfig
+}
+
+const PUBLIC_NAV_LINKS: NavLinkItem[] = [
   { name: `Sobre a ${brandConfig.name}`, href: "/#sobre" },
   { name: "Parceiros", href: "/#parceiros" },
-  { name: "Experiência", href: "/#experiencia" },
+  { name: "Experiência", href: "/#experiencia", module: "experiences" },
   { name: "Como Funciona", href: "/#como-funciona" },
-  { name: "Hospedagens", href: "/hospedagens" },
+  { name: "Hospedagens", href: "/hospedagens", module: "stays" },
   { name: "FAQ", href: "/#faq" },
 ]
 
-const PORTAL_NAV_LINKS = [
-  { name: "Home", href: "/" },
-  { name: "Conexões", href: "/conexoes" },
-  { name: "Hospedagens", href: "/hospedagens" },
-  { name: "Eventos", href: "/eventos" },
-  { name: "Experiências", href: "/experiencias" },
-  { name: "Benefícios", href: "/beneficios" },
+const PORTAL_NAV_LINKS: NavLinkItem[] = [
+  { name: "Home", href: "/", module: "home" },
+  { name: "Conexões", href: "/conexoes", module: "networking" },
+  { name: "Hospedagens", href: "/hospedagens", module: "stays" },
+  { name: "Eventos", href: "/eventos", module: "events" },
+  { name: "Experiências", href: "/experiencias", module: "experiences" },
+  { name: "Benefícios", href: "/beneficios", module: "benefits" },
 ]
 
-const MOBILE_PORTAL_NAV_LINKS = [
-  { name: "Home", href: "/" },
-  { name: "Conexões", href: "/conexoes" },
-  { name: "Hospedagens", href: "/hospedagens" },
-  { name: "Eventos", href: "/eventos" },
-  { name: "Experiências", href: "/experiencias" },
-  { name: "Benefícios", href: "/beneficios" },
-  { name: "KeyPass", href: "/keypass" },
+const MOBILE_PORTAL_NAV_LINKS: NavLinkItem[] = [
+  { name: "Home", href: "/", module: "home" },
+  { name: "Conexões", href: "/conexoes", module: "networking" },
+  { name: "Hospedagens", href: "/hospedagens", module: "stays" },
+  { name: "Eventos", href: "/eventos", module: "events" },
+  { name: "Experiências", href: "/experiencias", module: "experiences" },
+  { name: "Benefícios", href: "/beneficios", module: "benefits" },
+  { name: "KeyPass", href: "/keypass", module: "keypass" },
 ]
 
 export interface HeaderProps {
@@ -108,34 +118,43 @@ export function Header({ isTransparent }: HeaderProps = {}): React.JSX.Element {
     getFullName(userProfile) ||
     `${DEFAULT_USER.firstName} ${DEFAULT_USER.lastName}`
   const userInitials = getInitials(userFirstName, userLastName)
-  const homeHref = "/"
+  const homeHref = !isAuthenticated
+    ? "/"
+    : isModuleEnabled("home")
+      ? "/"
+      : isModuleEnabled("stays")
+        ? "/hospedagens"
+        : isModuleEnabled("events")
+          ? "/eventos"
+          : isModuleEnabled("experiences")
+            ? "/experiencias"
+            : isModuleEnabled("benefits")
+              ? "/beneficios"
+              : isModuleEnabled("networking")
+                ? "/conexoes"
+                : isModuleEnabled("keypass")
+                  ? "/keypass"
+                  : "/perfil"
   const userEmail = userProfile?.email || DEFAULT_USER.email
   const userAvatar = userProfile?.avatar || DEFAULT_USER.avatar
 
-  const isDetailRoute = Boolean(
-    (pathname?.startsWith("/hospedagens/") &&
-      pathname !== "/hospedagens" &&
-      pathname !== "/hospedagens/minhas-hospedagens") ||
-    (pathname?.startsWith("/eventos/") &&
-      pathname !== "/eventos" &&
-      pathname !== "/eventos/meus-eventos") ||
-    (pathname?.startsWith("/agenda/") && pathname !== "/agenda") ||
-    (pathname?.startsWith("/experiencias/") && pathname !== "/experiencias") ||
-    (pathname?.startsWith("/conexoes/") && pathname !== "/conexoes") ||
-    (pathname?.startsWith("/pessoas/") && pathname !== "/pessoas") ||
-    pathname === "/perfil"
-  )
-
-  const isAuthRoute = Boolean(
-    pathname === "/entrar" ||
-    pathname === "/cadastro" ||
-    pathname === "/login" ||
-    pathname === "/esqueci-minha-senha" ||
-    pathname === "/redefinir-senha"
+  const isHeroBannerRoute = Boolean(
+    pathname === "/" ||
+    pathname === "/assinatura" ||
+    (pathname === "/hospedagens" && isModuleEnabled("stays")) ||
+    (pathname === "/hospedagens/minhas-hospedagens" &&
+      isModuleEnabled("stays")) ||
+    (pathname === "/eventos" && isModuleEnabled("events")) ||
+    (pathname === "/eventos/meus-eventos" && isModuleEnabled("events")) ||
+    (pathname === "/experiencias" && isModuleEnabled("experiences")) ||
+    (pathname === "/beneficios" && isModuleEnabled("benefits")) ||
+    ((pathname === "/conexoes" || pathname === "/conexoes/minhas-conexoes") &&
+      isModuleEnabled("networking")) ||
+    (pathname?.startsWith("/keypass") && isModuleEnabled("keypass"))
   )
 
   const transparent =
-    isTransparent !== undefined ? isTransparent : !isAuthRoute && !isDetailRoute
+    isTransparent !== undefined ? isTransparent : isHeroBannerRoute
 
   const isDarkBar = true
 
@@ -208,6 +227,16 @@ export function Header({ isTransparent }: HeaderProps = {}): React.JSX.Element {
     return () => window.removeEventListener("scroll", handleScrollSpy)
   }, [pathname])
 
+  const filteredPublicNavLinks = PUBLIC_NAV_LINKS.filter(
+    (link) => !link.module || isModuleEnabled(link.module)
+  )
+  const filteredPortalNavLinks = PORTAL_NAV_LINKS.filter(
+    (link) => !link.module || isModuleEnabled(link.module)
+  )
+  const filteredMobilePortalNavLinks = MOBILE_PORTAL_NAV_LINKS.filter(
+    (link) => !link.module || isModuleEnabled(link.module)
+  )
+
   return (
     <div
       className={cn(
@@ -219,7 +248,7 @@ export function Header({ isTransparent }: HeaderProps = {}): React.JSX.Element {
             )
           : isDarkBar
             ? cn(
-                "relative bg-[#0c0c0c] border-b border-white/10 max-w-440 mx-auto",
+                "relative bg-[#161616] border-b border-zinc-800 max-w-440 mx-auto",
                 isAuthenticated ? "pt-0" : "pt-20 sm:pt-14 md:pt-12"
               )
             : "sticky top-0 bg-white/95 dark:bg-[#141416]/95 backdrop-blur-md border-b border-zinc-200/80 dark:border-zinc-800/80 text-zinc-900 dark:text-white"
@@ -275,7 +304,7 @@ export function Header({ isTransparent }: HeaderProps = {}): React.JSX.Element {
               )}
             </Link>
 
-            {isAuthenticated && (
+            {isAuthenticated && isModuleEnabled("keypass") && (
               <>
                 <div
                   className={cn(
@@ -320,9 +349,9 @@ export function Header({ isTransparent }: HeaderProps = {}): React.JSX.Element {
           </div>
 
           {!isAuthenticated ? (
-            PUBLIC_NAV_LINKS.length > 0 && (
+            filteredPublicNavLinks.length > 0 && (
               <nav className="hidden 2xl:flex items-center gap-6 xl:gap-8">
-                {PUBLIC_NAV_LINKS.map((link) => {
+                {filteredPublicNavLinks.map((link) => {
                   const linkHash = link.href.startsWith("/#")
                     ? link.href.replace("/", "")
                     : link.href
@@ -357,7 +386,7 @@ export function Header({ isTransparent }: HeaderProps = {}): React.JSX.Element {
             )
           ) : (
             <nav className="hidden 2xl:flex items-center gap-6 xl:gap-8">
-              {PORTAL_NAV_LINKS.map((link) => {
+              {filteredPortalNavLinks.map((link) => {
                 const isCatalogPath =
                   link.href === "/hospedagens" && pathname === "/hospedagens"
 
@@ -395,7 +424,7 @@ export function Header({ isTransparent }: HeaderProps = {}): React.JSX.Element {
           )}
 
           <div className="flex items-center gap-3 sm:gap-4">
-            {isAuthenticated && (
+            {isAuthenticated && isModuleEnabled("keypass") && (
               <Link
                 href="/keypass"
                 className={cn(
@@ -443,7 +472,9 @@ export function Header({ isTransparent }: HeaderProps = {}): React.JSX.Element {
               </Link>
             )}
 
-            {isAuthenticated && <NotificationsDropdown isDarkBar={isDarkBar} />}
+            {isAuthenticated && isModuleEnabled("networking") && (
+              <NotificationsDropdown isDarkBar={isDarkBar} />
+            )}
 
             <ThemeToggle className="hidden sm:flex" />
 
@@ -455,7 +486,7 @@ export function Header({ isTransparent }: HeaderProps = {}): React.JSX.Element {
                   isDarkBar
                     ? "text-zinc-200 hover:text-brand-primary"
                     : "text-zinc-700 dark:text-zinc-200 hover:text-brand-primary",
-                  PUBLIC_NAV_LINKS.length > 0
+                  filteredPublicNavLinks.length > 0
                     ? "hidden sm:inline-flex"
                     : "inline-flex"
                 )}
@@ -516,7 +547,7 @@ export function Header({ isTransparent }: HeaderProps = {}): React.JSX.Element {
                                 className="h-6 sm:h-7 w-auto max-h-7 object-contain object-left hidden dark:block"
                               />
                             </div>
-                            {isAuthenticated && (
+                            {isAuthenticated && isModuleEnabled("keypass") && (
                               <>
                                 <div className="h-3.5 w-px bg-zinc-300 dark:bg-zinc-700 shrink-0" />
                                 <div className="relative h-5 w-auto flex items-center shrink-0">
@@ -576,7 +607,7 @@ export function Header({ isTransparent }: HeaderProps = {}): React.JSX.Element {
                           </div>
                         )}
 
-                        {isAuthenticated && (
+                        {isAuthenticated && isModuleEnabled("keypass") && (
                           <Link
                             href="/keypass"
                             onClick={() => setMobileMenuOpen(false)}
@@ -618,7 +649,7 @@ export function Header({ isTransparent }: HeaderProps = {}): React.JSX.Element {
                               <div className="text-[10px] font-black uppercase tracking-widest text-brand-primary px-3 pt-1 pb-1">
                                 Menu do Membro
                               </div>
-                              {MOBILE_PORTAL_NAV_LINKS.map((link) => {
+                              {filteredMobilePortalNavLinks.map((link) => {
                                 const isCatalogPath =
                                   link.href === "/hospedagens" &&
                                   pathname === "/hospedagens"
@@ -652,7 +683,7 @@ export function Header({ isTransparent }: HeaderProps = {}): React.JSX.Element {
                               })}
                             </>
                           ) : (
-                            PUBLIC_NAV_LINKS.map((link) => {
+                            filteredPublicNavLinks.map((link) => {
                               const linkHash = link.href.startsWith("/#")
                                 ? link.href.replace("/", "")
                                 : link.href
@@ -708,47 +739,54 @@ export function Header({ isTransparent }: HeaderProps = {}): React.JSX.Element {
                           </>
                         ) : (
                           <>
-                            <div className="grid grid-cols-1 gap-2 mb-1">
-                              <Link
-                                href="/hospedagens/minhas-hospedagens"
-                                onClick={() => setMobileMenuOpen(false)}
-                                className="flex items-center justify-between p-2.5 rounded-lg border border-zinc-200 dark:border-zinc-800 text-[11px] font-bold uppercase tracking-tight text-zinc-800 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-white/5 transition-all"
-                              >
-                                <span className="flex items-center gap-1.5 truncate">
-                                  <MapPin className="w-3.5 h-3.5 text-brand-primary shrink-0" />
-                                  Hospedagens
-                                </span>
-                                <Badge
-                                  color="primary"
-                                  variant="flat"
-                                  size="sm"
-                                  radius="sm"
-                                  className="text-[9px] px-1.5 h-4 leading-none"
-                                >
-                                  {staysCount}
-                                </Badge>
-                              </Link>
+                            {(isModuleEnabled("stays") ||
+                              isModuleEnabled("events")) && (
+                              <div className="grid grid-cols-1 gap-2 mb-1">
+                                {isModuleEnabled("stays") && (
+                                  <Link
+                                    href="/hospedagens/minhas-hospedagens"
+                                    onClick={() => setMobileMenuOpen(false)}
+                                    className="flex items-center justify-between p-2.5 rounded-lg border border-zinc-200 dark:border-zinc-800 text-[11px] font-bold uppercase tracking-tight text-zinc-800 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-white/5 transition-all"
+                                  >
+                                    <span className="flex items-center gap-1.5 truncate">
+                                      <MapPin className="w-3.5 h-3.5 text-brand-primary shrink-0" />
+                                      Hospedagens
+                                    </span>
+                                    <Badge
+                                      color="primary"
+                                      variant="flat"
+                                      size="sm"
+                                      radius="sm"
+                                      className="text-[9px] px-1.5 h-4 leading-none"
+                                    >
+                                      {staysCount}
+                                    </Badge>
+                                  </Link>
+                                )}
 
-                              <Link
-                                href="/eventos/meus-eventos"
-                                onClick={() => setMobileMenuOpen(false)}
-                                className="flex items-center justify-between p-2.5 rounded-lg border border-zinc-200 dark:border-zinc-800 text-[11px] font-bold uppercase tracking-tight text-zinc-800 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-white/5 transition-all"
-                              >
-                                <span className="flex items-center gap-1.5 truncate">
-                                  <Calendar className="w-3.5 h-3.5 text-brand-primary shrink-0" />
-                                  Eventos
-                                </span>
-                                <Badge
-                                  color="primary"
-                                  variant="flat"
-                                  size="sm"
-                                  radius="sm"
-                                  className="text-[9px] px-1.5 h-4 leading-none"
-                                >
-                                  {eventsCount}
-                                </Badge>
-                              </Link>
-                            </div>
+                                {isModuleEnabled("events") && (
+                                  <Link
+                                    href="/eventos/meus-eventos"
+                                    onClick={() => setMobileMenuOpen(false)}
+                                    className="flex items-center justify-between p-2.5 rounded-lg border border-zinc-200 dark:border-zinc-800 text-[11px] font-bold uppercase tracking-tight text-zinc-800 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-white/5 transition-all"
+                                  >
+                                    <span className="flex items-center gap-1.5 truncate">
+                                      <Calendar className="w-3.5 h-3.5 text-brand-primary shrink-0" />
+                                      Eventos
+                                    </span>
+                                    <Badge
+                                      color="primary"
+                                      variant="flat"
+                                      size="sm"
+                                      radius="sm"
+                                      className="text-[9px] px-1.5 h-4 leading-none"
+                                    >
+                                      {eventsCount}
+                                    </Badge>
+                                  </Link>
+                                )}
+                              </div>
+                            )}
 
                             <div className="grid grid-cols-2 gap-2">
                               <Link

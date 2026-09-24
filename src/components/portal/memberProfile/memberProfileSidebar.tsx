@@ -1,4 +1,4 @@
-﻿"use client"
+"use client"
 
 import * as React from "react"
 
@@ -13,6 +13,10 @@ import {
 import { Textarea } from "@/src/components/ui/textarea/textarea"
 
 import { CtaButton } from "@/src/components/common/ctaButton"
+
+import { cn } from "@/src/lib/utils"
+
+import { isModuleEnabled } from "@/src/config/brand.config"
 
 interface MemberProfileSidebarProps {
   member: Member
@@ -132,15 +136,22 @@ export function MemberProfileSidebar({
           </CtaButton>
         </div>
 
-        <div className="grid grid-cols-2 gap-3 pt-4 border-t border-zinc-100 dark:border-zinc-800 text-center">
-          <div className="p-2 space-y-0.5">
-            <span className="text-xl font-heading font-black text-zinc-900 dark:text-white block">
-              {memberEventsCount}
-            </span>
-            <span className="text-[10px] font-black uppercase tracking-widest text-zinc-900 dark:text-white">
-              Eventos
-            </span>
-          </div>
+        <div
+          className={cn(
+            "grid gap-3 pt-4 border-t border-zinc-100 dark:border-zinc-800 text-center",
+            isModuleEnabled("events") ? "grid-cols-2" : "grid-cols-1"
+          )}
+        >
+          {isModuleEnabled("events") && (
+            <div className="p-2 space-y-0.5">
+              <span className="text-xl font-heading font-black text-zinc-900 dark:text-white block">
+                {memberEventsCount}
+              </span>
+              <span className="text-[10px] font-black uppercase tracking-widest text-zinc-900 dark:text-white">
+                Eventos
+              </span>
+            </div>
+          )}
 
           <div className="p-2 space-y-0.5">
             <span className="text-xl font-heading font-black text-brand-primary block">

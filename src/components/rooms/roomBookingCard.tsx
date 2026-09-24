@@ -19,7 +19,7 @@ import { GlassBadge } from "@/src/components/portal/glassBadge"
 
 import { cn } from "@/src/lib/utils"
 
-import { brandConfig } from "@/src/config/brand.config"
+import { brandConfig, isModuleEnabled } from "@/src/config/brand.config"
 
 export interface RoomBookingCardProps {
   roomTitle: string
@@ -183,22 +183,24 @@ export function RoomBookingCard({
                 <div className="w-[84px] h-[26px] rounded-sm bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400 text-xs font-bold flex items-center justify-center shrink-0">
                   {discountPercent}% OFF
                 </div>
-                <GlassBadge
-                  size="sm"
-                  className="w-[84px] h-[26px] justify-center px-0 py-0 bg-zinc-100 dark:bg-white/10 text-zinc-800 dark:text-white border-zinc-200 dark:border-white/15 font-heading font-black text-[10px] shrink-0"
-                  icon={
-                    <div className="relative w-3.5 h-3.5 shrink-0">
-                      <Image
-                        src="/utils/gamification/utils/xp.webp"
-                        alt="XP"
-                        fill
-                        className="object-contain"
-                      />
-                    </div>
-                  }
-                >
-                  +300 XP
-                </GlassBadge>
+                {isModuleEnabled("keypass") && (
+                  <GlassBadge
+                    size="sm"
+                    className="w-[84px] h-[26px] justify-center px-0 py-0 bg-zinc-100 dark:bg-white/10 text-zinc-800 dark:text-white border-zinc-200 dark:border-white/15 font-heading font-black text-[10px] shrink-0"
+                    icon={
+                      <div className="relative w-3.5 h-3.5 shrink-0">
+                        <Image
+                          src="/utils/gamification/utils/xp.webp"
+                          alt="XP"
+                          fill
+                          className="object-contain"
+                        />
+                      </div>
+                    }
+                  >
+                    +300 XP
+                  </GlassBadge>
+                )}
               </div>
             </div>
 
@@ -452,22 +454,24 @@ export function RoomBookingCard({
           <div className="w-[84px] h-[26px] rounded-sm bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400 text-xs font-bold flex items-center justify-center shrink-0">
             {discountPercent}% OFF
           </div>
-          <GlassBadge
-            size="sm"
-            className="w-[84px] h-[26px] justify-center px-0 py-0 bg-zinc-100 dark:bg-white/10 text-zinc-800 dark:text-white border-zinc-200 dark:border-white/15 font-heading font-black text-[10px] shrink-0"
-            icon={
-              <div className="relative w-3.5 h-3.5 shrink-0">
-                <Image
-                  src="/utils/gamification/utils/xp.webp"
-                  alt="XP"
-                  fill
-                  className="object-contain"
-                />
-              </div>
-            }
-          >
-            +300 XP
-          </GlassBadge>
+          {isModuleEnabled("keypass") && (
+            <GlassBadge
+              size="sm"
+              className="w-[84px] h-[26px] justify-center px-0 py-0 bg-zinc-100 dark:bg-white/10 text-zinc-800 dark:text-white border-zinc-200 dark:border-white/15 font-heading font-black text-[10px] shrink-0"
+              icon={
+                <div className="relative w-3.5 h-3.5 shrink-0">
+                  <Image
+                    src="/utils/gamification/utils/xp.webp"
+                    alt="XP"
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+              }
+            >
+              +300 XP
+            </GlassBadge>
+          )}
         </div>
       </div>
 

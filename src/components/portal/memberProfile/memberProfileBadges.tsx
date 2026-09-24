@@ -1,4 +1,4 @@
-﻿"use client"
+"use client"
 
 import * as React from "react"
 
@@ -17,6 +17,8 @@ import { getBadgeIcon } from "@/src/components/portal/badgeCard"
 
 import { cn } from "@/src/lib/utils"
 
+import { isModuleEnabled } from "@/src/config/brand.config"
+
 interface MemberProfileBadgesProps {
   member: Member
   selectedBadge: BadgeDefinition | null
@@ -28,7 +30,19 @@ export function MemberProfileBadges({
   selectedBadge,
   onSelectBadge,
 }: MemberProfileBadgesProps): React.JSX.Element {
-  const memberUnlockedBadges = DEFAULT_BADGES.filter((b) =>
+  const availableBadges = React.useMemo(() => {
+    return DEFAULT_BADGES.filter((b) => {
+      if (b.category === "estadias" && !isModuleEnabled("stays")) return false
+      if (b.category === "eventos" && !isModuleEnabled("events")) return false
+      if (b.category === "experiencias" && !isModuleEnabled("experiences"))
+        return false
+      if (b.category === "networking" && !isModuleEnabled("networking"))
+        return false
+      return true
+    })
+  }, [])
+
+  const memberUnlockedBadges = availableBadges.filter((b) =>
     member.unlockedBadgeIds?.includes(b.id)
   )
 
@@ -43,7 +57,7 @@ export function MemberProfileBadges({
             Insígnias Desbloqueadas
           </h2>
           <span className="text-xs sm:text-sm font-bold text-zinc-500 dark:text-zinc-400">
-            ({memberUnlockedBadges.length} de {DEFAULT_BADGES.length})
+            ({memberUnlockedBadges.length} de {availableBadges.length})
           </span>
         </div>
         <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1 sm:hidden">
@@ -53,7 +67,7 @@ export function MemberProfileBadges({
 
       <TooltipProvider delayDuration={100}>
         <div className="grid grid-cols-4 sm:flex sm:flex-wrap gap-2.5 sm:gap-3">
-          {DEFAULT_BADGES.map((badge) => {
+          {availableBadges.map((badge) => {
             const isUnlocked =
               member.unlockedBadgeIds?.includes(badge.id) ?? false
             const isSelected = selectedBadge?.id === badge.id

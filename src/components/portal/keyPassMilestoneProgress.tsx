@@ -168,7 +168,6 @@ export function KeyPassMilestoneProgress({
         className
       )}
     >
-      {}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div className="space-y-0.5 min-w-0">
           <div className="flex items-center gap-2">
@@ -207,10 +206,7 @@ export function KeyPassMilestoneProgress({
           </span>
         </div>
       </div>
-
-      {}
       <div className="relative pt-6 pb-2">
-        {}
         <div className="relative w-full h-3 bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden border border-zinc-200/80 dark:border-zinc-700/60 z-0">
           <motion.div
             className="h-full bg-brand-primary rounded-full relative overflow-hidden"
@@ -218,7 +214,6 @@ export function KeyPassMilestoneProgress({
             animate={{ width: `${progressPercentage}%` }}
             transition={{ duration: 0.6, ease: "easeOut" }}
           >
-            {}
             <div
               className="absolute inset-0 opacity-30"
               style={{
@@ -229,8 +224,6 @@ export function KeyPassMilestoneProgress({
             />
           </motion.div>
         </div>
-
-        {}
         <div className="absolute inset-x-0 top-0 bottom-0 pointer-events-none">
           {milestones.map((m) => {
             const isDone = m.isAchieved
@@ -241,7 +234,6 @@ export function KeyPassMilestoneProgress({
                 className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 flex flex-col items-center pointer-events-auto"
                 style={{ left: `${m.percent}%` }}
               >
-                {}
                 <div
                   className={cn(
                     "w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 flex items-center justify-center transition-all shadow-xs shrink-0 mt-3.5",
@@ -261,8 +253,6 @@ export function KeyPassMilestoneProgress({
           })}
         </div>
       </div>
-
-      {}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-1">
         {milestones.map((milestone) => {
           const isClaimable = milestone.isAchieved && !milestone.isClaimed

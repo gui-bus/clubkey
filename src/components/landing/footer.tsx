@@ -12,43 +12,61 @@ import { Container } from "@/src/components/common/container"
 
 import { cn } from "@/src/lib/utils"
 
-import { brandConfig } from "@/src/config/brand.config"
+import {
+  type BrandModulesConfig,
+  brandConfig,
+  isModuleEnabled,
+} from "@/src/config/brand.config"
 
-const publicNavLinks = [
+interface FooterLinkItem {
+  href: string
+  label: string
+  module?: keyof BrandModulesConfig
+}
+
+const publicNavLinks: FooterLinkItem[] = [
   { href: "/#sobre", label: `Sobre a ${brandConfig.name}` },
   { href: "/#parceiros", label: "Parceiros" },
-  { href: "/#experiencia", label: "Experiência" },
+  { href: "/#experiencia", label: "Experiência", module: "experiences" },
   { href: "/#como-funciona", label: "Como Funciona" },
-  { href: "/hospedagens", label: "Hospedagens" },
+  { href: "/hospedagens", label: "Hospedagens", module: "stays" },
   { href: "/#faq", label: "Perguntas Frequentes" },
-] as const
+]
 
-const publicMemberLinks = [
+const publicMemberLinks: FooterLinkItem[] = [
   { href: brandConfig.links.login, label: "Já sou associado (Login)" },
   { href: brandConfig.links.subscription, label: "Quero ser associado" },
-  { href: "/hospedagens", label: "Explorar Hospedagens" },
-] as const
+  { href: "/hospedagens", label: "Explorar Hospedagens", module: "stays" },
+]
 
-const portalNavLinks = [
-  { href: "/", label: "Início" },
-  { href: "/hospedagens", label: "Hospedagens" },
-  { href: "/eventos", label: "Eventos" },
-  { href: "/experiencias", label: "Experiências" },
-  { href: "/beneficios", label: "Benefícios" },
-  { href: "/conexoes", label: "Conexões" },
-  { href: "/keypass", label: "KeyPass & Tiers" },
-] as const
+const portalNavLinks: FooterLinkItem[] = [
+  { href: "/", label: "Início", module: "home" },
+  { href: "/hospedagens", label: "Hospedagens", module: "stays" },
+  { href: "/eventos", label: "Eventos", module: "events" },
+  { href: "/experiencias", label: "Experiências", module: "experiences" },
+  { href: "/beneficios", label: "Benefícios", module: "benefits" },
+  { href: "/conexoes", label: "Conexões", module: "networking" },
+  { href: "/keypass", label: "KeyPass & Tiers", module: "keypass" },
+]
 
-const portalMemberLinks = [
+const portalMemberLinks: FooterLinkItem[] = [
   { href: "/perfil", label: "Meu Perfil" },
   { href: "/perfil/minha-assinatura", label: "Minha Assinatura" },
-  { href: "/hospedagens/minhas-hospedagens", label: "Minhas Hospedagens" },
-  { href: "/eventos/meus-eventos", label: "Meus Eventos" },
-  { href: "/conexoes/minhas-conexoes", label: "Minhas Conexões" },
-  { href: "/keypass/missoes", label: "Missões KeyPass" },
-  { href: "/keypass/ranking", label: "Ranking Geral" },
-  { href: "/keypass/regras", label: "Tiers & Regulamento" },
-] as const
+  {
+    href: "/hospedagens/minhas-hospedagens",
+    label: "Minhas Hospedagens",
+    module: "stays",
+  },
+  { href: "/eventos/meus-eventos", label: "Meus Eventos", module: "events" },
+  {
+    href: "/conexoes/minhas-conexoes",
+    label: "Minhas Conexões",
+    module: "networking",
+  },
+  { href: "/keypass/missoes", label: "Missões KeyPass", module: "keypass" },
+  { href: "/keypass/ranking", label: "Ranking Geral", module: "keypass" },
+  { href: "/keypass/regras", label: "Tiers & Regulamento", module: "keypass" },
+]
 
 const emptySubscribe = () => () => {}
 
@@ -69,11 +87,15 @@ export function Footer(): React.JSX.Element | null {
     return null
   }
 
-  const activeNavLinks = isAuthenticated ? portalNavLinks : publicNavLinks
+  const rawNavLinks = isAuthenticated ? portalNavLinks : publicNavLinks
+  const rawMemberLinks = isAuthenticated ? portalMemberLinks : publicMemberLinks
 
-  const activeMemberLinks = isAuthenticated
-    ? portalMemberLinks
-    : publicMemberLinks
+  const activeNavLinks = rawNavLinks.filter(
+    (item) => !item.module || isModuleEnabled(item.module)
+  )
+  const activeMemberLinks = rawMemberLinks.filter(
+    (item) => !item.module || isModuleEnabled(item.module)
+  )
 
   return (
     <footer className="bg-[#161616] text-zinc-400 pt-16 sm:pt-20 pb-24 sm:pb-32 border-t border-zinc-800 w-full relative overflow-hidden mt-auto">
@@ -230,7 +252,7 @@ export function Footer(): React.JSX.Element | null {
                     )}
                 </Link>
               </li>
-              {isAuthenticated && (
+              {isAuthenticated && isModuleEnabled("keypass") && (
                 <li className="pt-1">
                   <Link
                     href="/keypass/regras"
@@ -253,24 +275,30 @@ export function Footer(): React.JSX.Element | null {
           <div className="flex items-center gap-6">
             {isAuthenticated ? (
               <>
-                <Link
-                  href="/hospedagens"
-                  className="hover:text-white transition-colors"
-                >
-                  Hospedagens
-                </Link>
-                <Link
-                  href="/eventos"
-                  className="hover:text-white transition-colors"
-                >
-                  Eventos
-                </Link>
-                <Link
-                  href="/keypass"
-                  className="hover:text-white transition-colors"
-                >
-                  KeyPass
-                </Link>
+                {isModuleEnabled("stays") && (
+                  <Link
+                    href="/hospedagens"
+                    className="hover:text-white transition-colors"
+                  >
+                    Hospedagens
+                  </Link>
+                )}
+                {isModuleEnabled("events") && (
+                  <Link
+                    href="/eventos"
+                    className="hover:text-white transition-colors"
+                  >
+                    Eventos
+                  </Link>
+                )}
+                {isModuleEnabled("keypass") && (
+                  <Link
+                    href="/keypass"
+                    className="hover:text-white transition-colors"
+                  >
+                    KeyPass
+                  </Link>
+                )}
                 <Link
                   href="/perfil"
                   className="hover:text-white transition-colors"
@@ -280,12 +308,14 @@ export function Footer(): React.JSX.Element | null {
               </>
             ) : (
               <>
-                <Link
-                  href="/hospedagens"
-                  className="hover:text-white transition-colors"
-                >
-                  Hospedagens
-                </Link>
+                {isModuleEnabled("stays") && (
+                  <Link
+                    href="/hospedagens"
+                    className="hover:text-white transition-colors"
+                  >
+                    Hospedagens
+                  </Link>
+                )}
                 <Link
                   href={brandConfig.links.subscription}
                   className="hover:text-white transition-colors"

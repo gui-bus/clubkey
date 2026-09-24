@@ -26,13 +26,35 @@ import { CtaButton } from "@/src/components/common/ctaButton"
 
 import { cn } from "@/src/lib/utils"
 
-export const PRESET_COVERS = [
-  { label: "Membros & Networking", src: "/utils/banners/pessoas.webp" },
-  { label: "Agenda & Eventos", src: "/utils/banners/agenda.webp" },
-  { label: "Benefícios Exclusivos", src: "/utils/banners/beneficios.webp" },
+import {
+  type BrandModulesConfig,
+  isModuleEnabled,
+} from "@/src/config/brand.config"
+
+export const PRESET_COVERS: {
+  label: string
+  src: string
+  module?: keyof BrandModulesConfig
+}[] = [
+  {
+    label: "Membros & Networking",
+    src: "/utils/banners/pessoas.webp",
+    module: "networking",
+  },
+  {
+    label: "Agenda & Eventos",
+    src: "/utils/banners/agenda.webp",
+    module: "events",
+  },
+  {
+    label: "Benefícios Exclusivos",
+    src: "/utils/banners/beneficios.webp",
+    module: "benefits",
+  },
   {
     label: "Experiências & Lifestyle",
     src: "/utils/banners/experiencias.webp",
+    module: "experiences",
   },
 ]
 
@@ -61,6 +83,12 @@ export function ProfileCoverDialog({
   userCompany,
   userInitials,
 }: ProfileCoverDialogProps): React.JSX.Element {
+  const availablePresets = React.useMemo(() => {
+    return PRESET_COVERS.filter(
+      (preset) => !preset.module || isModuleEnabled(preset.module)
+    )
+  }, [])
+
   const handleCoverFilesSelected = (files: File[]) => {
     if (files.length > 0) {
       const file = files[0]
@@ -116,54 +144,70 @@ export function ProfileCoverDialog({
             />
           </div>
 
-          <div className="space-y-2.5">
-            <label className="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
-              Ou escolha uma capa oficial do clube
-            </label>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              {PRESET_COVERS.map((preset) => {
-                const isSelected = pendingCover === preset.src
-                return (
-                  <button
-                    key={preset.src}
-                    type="button"
-                    onClick={() => onSelectCover(preset.src)}
-                    className={cn(
-                      "relative group rounded-sm overflow-hidden border text-left transition-all cursor-pointer",
-                      isSelected
-                        ? "border-brand-primary ring-2 ring-brand-primary/40 shadow-xs"
-                        : "border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700"
-                    )}
-                  >
-                    <div className="relative h-20 w-full bg-zinc-950 overflow-hidden">
-                      <Image
-                        src={preset.src}
-                        alt={preset.label}
-                        fill
-                        className={cn(
-                          "object-cover transition-transform duration-300 group-hover:scale-105",
-                          isSelected
-                            ? "opacity-80"
-                            : "opacity-55 group-hover:opacity-75"
-                        )}
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                      {isSelected && (
-                        <div className="absolute top-2 right-2 w-5 h-5 rounded-full bg-brand-primary text-white flex items-center justify-center shadow-md">
-                          <Check className="w-3 h-3 text-white" weight="bold" />
-                        </div>
+          {availablePresets.length > 0 && (
+            <div className="space-y-2.5">
+              <label className="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
+                Ou escolha uma capa oficial do clube
+              </label>
+              <div
+                className={cn(
+                  "grid gap-3",
+                  availablePresets.length === 1
+                    ? "grid-cols-1"
+                    : availablePresets.length === 2
+                      ? "grid-cols-2"
+                      : availablePresets.length === 3
+                        ? "grid-cols-3"
+                        : "grid-cols-2 sm:grid-cols-4"
+                )}
+              >
+                {availablePresets.map((preset) => {
+                  const isSelected = pendingCover === preset.src
+                  return (
+                    <button
+                      key={preset.src}
+                      type="button"
+                      onClick={() => onSelectCover(preset.src)}
+                      className={cn(
+                        "relative group rounded-sm overflow-hidden border text-left transition-all cursor-pointer",
+                        isSelected
+                          ? "border-brand-primary ring-2 ring-brand-primary/40 shadow-xs"
+                          : "border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700"
                       )}
-                    </div>
-                    <div className="p-2 bg-white dark:bg-zinc-900 border-t border-zinc-100 dark:border-zinc-800">
-                      <p className="text-[11px] font-bold text-zinc-800 dark:text-zinc-200 truncate">
-                        {preset.label}
-                      </p>
-                    </div>
-                  </button>
-                )
-              })}
+                    >
+                      <div className="relative h-20 w-full bg-zinc-950 overflow-hidden">
+                        <Image
+                          src={preset.src}
+                          alt={preset.label}
+                          fill
+                          className={cn(
+                            "object-cover transition-transform duration-300 group-hover:scale-105",
+                            isSelected
+                              ? "opacity-80"
+                              : "opacity-55 group-hover:opacity-75"
+                          )}
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                        {isSelected && (
+                          <div className="absolute top-2 right-2 w-5 h-5 rounded-full bg-brand-primary text-white flex items-center justify-center shadow-md">
+                            <Check
+                              className="w-3 h-3 text-white"
+                              weight="bold"
+                            />
+                          </div>
+                        )}
+                      </div>
+                      <div className="p-2 bg-white dark:bg-zinc-900 border-t border-zinc-100 dark:border-zinc-800">
+                        <p className="text-[11px] font-bold text-zinc-800 dark:text-zinc-200 truncate">
+                          {preset.label}
+                        </p>
+                      </div>
+                    </button>
+                  )
+                })}
+              </div>
             </div>
-          </div>
+          )}
 
           <div className="space-y-2">
             <label className="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">

@@ -10,6 +10,8 @@ import { ArrowRight, MapPin } from "@phosphor-icons/react"
 
 import { cn } from "@/src/lib/utils"
 
+import { isModuleEnabled } from "@/src/config/brand.config"
+
 export interface RelatedMembersCardProps {
   member: Member
   className?: string
@@ -20,22 +22,20 @@ export function RelatedMembersCard({
   className,
 }: RelatedMembersCardProps): React.JSX.Element {
   const fullName = `${member.firstName} ${member.lastName}`.trim()
+  const isNetworking = isModuleEnabled("networking")
 
-  return (
-    <Link
-      href={`/conexoes/${member.id}/${getMemberSlug(member)}`}
-      className={cn(
-        "group relative flex flex-col sm:flex-row items-stretch overflow-hidden rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] hover:border-zinc-300 dark:hover:border-zinc-700 transition-all duration-200 shadow-xs cursor-pointer",
-        className
-      )}
-    >
+  const innerContent = (
+    <>
       <div className="relative w-full sm:w-44 h-36 sm:h-auto shrink-0 bg-zinc-950 overflow-hidden">
         {member.image || member.avatar ? (
           <Image
             src={member.image || member.avatar || ""}
             alt={fullName}
             fill
-            className="object-cover group-hover:scale-105 transition-transform duration-300 opacity-80 object-top"
+            className={cn(
+              "object-cover transition-transform duration-300 opacity-80 object-top",
+              isNetworking && "group-hover:scale-105"
+            )}
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center font-black text-2xl bg-zinc-900 text-white dark:bg-zinc-800">
@@ -56,7 +56,12 @@ export function RelatedMembersCard({
               {member.city}
             </span>
           </div>
-          <h3 className="text-sm sm:text-base font-heading font-black uppercase tracking-tight text-zinc-900 dark:text-white group-hover:text-brand-primary transition-colors line-clamp-1">
+          <h3
+            className={cn(
+              "text-sm sm:text-base font-heading font-black uppercase tracking-tight text-zinc-900 dark:text-white line-clamp-1 transition-colors",
+              isNetworking && "group-hover:text-brand-primary"
+            )}
+          >
             {fullName}
           </h3>
           <p className="text-xs text-zinc-900 dark:text-white truncate">
@@ -64,12 +69,39 @@ export function RelatedMembersCard({
           </p>
         </div>
 
-        <div className="flex items-center justify-between gap-3 text-xs text-brand-primary font-bold uppercase tracking-wider pt-2 border-t border-zinc-100 dark:border-zinc-800/60">
-          <span>Ver perfil do membro</span>
-          <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-        </div>
+        {isNetworking && (
+          <div className="flex items-center justify-between gap-3 text-xs text-brand-primary font-bold uppercase tracking-wider pt-2 border-t border-zinc-100 dark:border-zinc-800/60">
+            <span>Ver perfil do membro</span>
+            <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+          </div>
+        )}
       </div>
-    </Link>
+    </>
+  )
+
+  if (isNetworking) {
+    return (
+      <Link
+        href={`/conexoes/${member.id}/${getMemberSlug(member)}`}
+        className={cn(
+          "group relative flex flex-col sm:flex-row items-stretch overflow-hidden rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] hover:border-zinc-300 dark:hover:border-zinc-700 transition-all duration-200 shadow-xs cursor-pointer",
+          className
+        )}
+      >
+        {innerContent}
+      </Link>
+    )
+  }
+
+  return (
+    <div
+      className={cn(
+        "group relative flex flex-col sm:flex-row items-stretch overflow-hidden rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] transition-all duration-200 shadow-xs",
+        className
+      )}
+    >
+      {innerContent}
+    </div>
   )
 }
 

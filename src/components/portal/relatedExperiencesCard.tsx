@@ -14,6 +14,8 @@ import { MapPin } from "@phosphor-icons/react"
 
 import { cn } from "@/src/lib/utils"
 
+import { isModuleEnabled } from "@/src/config/brand.config"
+
 export interface RelatedExperiencesCardProps {
   experience: ExperienceItem
   className?: string
@@ -67,18 +69,22 @@ export function RelatedExperiencesCard({
           </span>
           <span>•</span>
           <span className="shrink-0">{experience.sub}</span>
-          <span>•</span>
-          <div className="flex items-center gap-1.5 font-medium shrink-0">
-            <div className="relative w-3.5 h-3.5 shrink-0">
-              <Image
-                src="/utils/gamification/utils/xp.webp"
-                alt="XP"
-                fill
-                className="object-contain"
-              />
-            </div>
-            <span>+{experience.xp || 300} XP</span>
-          </div>
+          {isModuleEnabled("keypass") && (
+            <>
+              <span>•</span>
+              <div className="flex items-center gap-1.5 font-medium shrink-0">
+                <div className="relative w-3.5 h-3.5 shrink-0">
+                  <Image
+                    src="/utils/gamification/utils/xp.webp"
+                    alt="XP"
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+                <span>+{experience.xp || 300} XP</span>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </Link>

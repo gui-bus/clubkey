@@ -33,6 +33,8 @@ import {
 
 import { cn } from "@/src/lib/utils"
 
+import { isModuleEnabled } from "@/src/config/brand.config"
+
 export interface UserDropdownMenuProps {
   isDarkBar?: boolean
   className?: string
@@ -145,57 +147,63 @@ export function UserDropdownMenu({
               </Link>
             </DropdownMenuItem>
 
-            <DropdownMenuItem asChild>
-              <Link
-                href="/keypass"
-                className="flex items-center gap-2.5 px-3 py-2 rounded-sm text-xs font-semibold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800/80 hover:text-brand-primary dark:hover:text-brand-primary cursor-pointer transition-colors"
-              >
-                <Trophy className="w-3.5 h-3.5 text-zinc-400" />
-                <span>KeyPass</span>
-              </Link>
-            </DropdownMenuItem>
-
-            <DropdownMenuItem asChild>
-              <Link
-                href="/hospedagens/minhas-hospedagens"
-                className="flex items-center justify-between px-3 py-2 rounded-sm text-xs font-semibold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800/80 hover:text-brand-primary dark:hover:text-brand-primary cursor-pointer transition-colors group"
-              >
-                <div className="flex items-center gap-2.5">
-                  <MapPin className="w-3.5 h-3.5 text-zinc-400" />
-                  <span>Minhas Hospedagens</span>
-                </div>
-                <Badge
-                  color="primary"
-                  variant="flat"
-                  size="sm"
-                  radius="sm"
-                  className="font-black text-[10px] px-1.5 py-0 min-w-4 h-4 flex items-center justify-center leading-none"
+            {isModuleEnabled("keypass") && (
+              <DropdownMenuItem asChild>
+                <Link
+                  href="/keypass"
+                  className="flex items-center gap-2.5 px-3 py-2 rounded-sm text-xs font-semibold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800/80 hover:text-brand-primary dark:hover:text-brand-primary cursor-pointer transition-colors"
                 >
-                  {staysCount}
-                </Badge>
-              </Link>
-            </DropdownMenuItem>
+                  <Trophy className="w-3.5 h-3.5 text-zinc-400" />
+                  <span>KeyPass</span>
+                </Link>
+              </DropdownMenuItem>
+            )}
 
-            <DropdownMenuItem asChild>
-              <Link
-                href="/eventos/meus-eventos"
-                className="flex items-center justify-between px-3 py-2 rounded-sm text-xs font-semibold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800/80 hover:text-brand-primary dark:hover:text-brand-primary cursor-pointer transition-colors group"
-              >
-                <div className="flex items-center gap-2.5">
-                  <Calendar className="w-3.5 h-3.5 text-zinc-400" />
-                  <span>Meus Eventos</span>
-                </div>
-                <Badge
-                  color="primary"
-                  variant="flat"
-                  size="sm"
-                  radius="sm"
-                  className="font-black text-[10px] px-1.5 py-0 min-w-4 h-4 flex items-center justify-center leading-none"
+            {isModuleEnabled("stays") && (
+              <DropdownMenuItem asChild>
+                <Link
+                  href="/hospedagens/minhas-hospedagens"
+                  className="flex items-center justify-between px-3 py-2 rounded-sm text-xs font-semibold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800/80 hover:text-brand-primary dark:hover:text-brand-primary cursor-pointer transition-colors group"
                 >
-                  {eventsCount}
-                </Badge>
-              </Link>
-            </DropdownMenuItem>
+                  <div className="flex items-center gap-2.5">
+                    <MapPin className="w-3.5 h-3.5 text-zinc-400" />
+                    <span>Minhas Hospedagens</span>
+                  </div>
+                  <Badge
+                    color="primary"
+                    variant="flat"
+                    size="sm"
+                    radius="sm"
+                    className="font-black text-[10px] px-1.5 py-0 min-w-4 h-4 flex items-center justify-center leading-none"
+                  >
+                    {staysCount}
+                  </Badge>
+                </Link>
+              </DropdownMenuItem>
+            )}
+
+            {isModuleEnabled("events") && (
+              <DropdownMenuItem asChild>
+                <Link
+                  href="/eventos/meus-eventos"
+                  className="flex items-center justify-between px-3 py-2 rounded-sm text-xs font-semibold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800/80 hover:text-brand-primary dark:hover:text-brand-primary cursor-pointer transition-colors group"
+                >
+                  <div className="flex items-center gap-2.5">
+                    <Calendar className="w-3.5 h-3.5 text-zinc-400" />
+                    <span>Meus Eventos</span>
+                  </div>
+                  <Badge
+                    color="primary"
+                    variant="flat"
+                    size="sm"
+                    radius="sm"
+                    className="font-black text-[10px] px-1.5 py-0 min-w-4 h-4 flex items-center justify-center leading-none"
+                  >
+                    {eventsCount}
+                  </Badge>
+                </Link>
+              </DropdownMenuItem>
+            )}
 
             <DropdownMenuItem asChild>
               <Link

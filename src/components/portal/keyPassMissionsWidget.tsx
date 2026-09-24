@@ -15,6 +15,8 @@ import { CtaButton } from "@/src/components/common/ctaButton"
 
 import { cn } from "@/src/lib/utils"
 
+import { isModuleEnabled } from "@/src/config/brand.config"
+
 interface KeyPassMissionsWidgetProps {
   className?: string
 }
@@ -24,17 +26,29 @@ export function KeyPassMissionsWidget({
 }: KeyPassMissionsWidgetProps): React.JSX.Element {
   const { missions, claimMission } = usePortalStore()
 
+  const availableMissions = React.useMemo(() => {
+    return missions.filter((m) => {
+      if (m.category === "estadias" && !isModuleEnabled("stays")) return false
+      if (m.category === "eventos" && !isModuleEnabled("events")) return false
+      if (m.category === "experiencias" && !isModuleEnabled("experiences"))
+        return false
+      if (m.category === "networking" && !isModuleEnabled("networking"))
+        return false
+      return true
+    })
+  }, [missions])
+
   const displayMissions = React.useMemo(() => {
-    const claimable = missions.filter(
+    const claimable = availableMissions.filter(
       (m) =>
         m.isCompleted && !m.isClaimed && m.currentProgress >= m.totalRequired
     )
-    const pending = missions.filter(
+    const pending = availableMissions.filter(
       (m) =>
         !m.isClaimed && (!m.isCompleted || m.currentProgress < m.totalRequired)
     )
     return [...claimable, ...pending].slice(0, 3)
-  }, [missions])
+  }, [availableMissions])
 
   const handleClaim = (mission: MissionItem) => {
     if (
@@ -78,7 +92,6 @@ export function KeyPassMissionsWidget({
         className
       )}
     >
-      {}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-zinc-100 dark:border-zinc-800 pb-3">
         <div className="space-y-0.5 min-w-0">
           <div className="flex items-center gap-2">
@@ -99,12 +112,10 @@ export function KeyPassMissionsWidget({
           href="/keypass/missoes?tab=carreira"
           className="text-xs font-bold uppercase tracking-wider text-zinc-900 dark:text-white hover:text-brand-primary dark:hover:text-brand-primary inline-flex items-center gap-1 shrink-0 whitespace-nowrap self-start sm:self-auto group"
         >
-          <span>Ver todas ({missions.length})</span>
+          <span>Ver todas ({availableMissions.length})</span>
           <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
         </Link>
       </div>
-
-      {}
       <div className="space-y-2.5">
         {displayMissions.length === 0 ? (
           <div className="p-8 text-center rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/40 space-y-1.5">
@@ -131,7 +142,6 @@ export function KeyPassMissionsWidget({
                 key={mission.id}
                 className="p-3.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-2.5"
               >
-                {}
                 <div className="flex items-start justify-between gap-3">
                   <div className="space-y-0.5 min-w-0">
                     <span className="text-[9px] font-black uppercase tracking-wider text-zinc-400 block">
@@ -144,8 +154,6 @@ export function KeyPassMissionsWidget({
                       {mission.description}
                     </p>
                   </div>
-
-                  {}
                   <div className="flex items-center gap-2 shrink-0 whitespace-nowrap">
                     <div className="flex items-center gap-1 text-xs text-zinc-700 dark:text-zinc-300 font-normal">
                       <div className="relative w-3.5 h-3.5 shrink-0">
@@ -166,8 +174,6 @@ export function KeyPassMissionsWidget({
                     ) : null}
                   </div>
                 </div>
-
-                {}
                 <div className="space-y-1">
                   <div className="flex justify-between text-[10px] text-zinc-500 font-medium">
                     <span>
@@ -183,8 +189,6 @@ export function KeyPassMissionsWidget({
                     />
                   </div>
                 </div>
-
-                {}
                 {isReadyToClaim && (
                   <div className="flex justify-end pt-0.5">
                     <CtaButton

@@ -1,4 +1,4 @@
-﻿"use client"
+"use client"
 
 import * as React from "react"
 
@@ -32,6 +32,8 @@ import {
   MemberProfileSidebar,
 } from "@/src/components/portal/memberProfile"
 import { RelatedMembersCard } from "@/src/components/portal/relatedMembersCard"
+
+import { isModuleEnabled } from "@/src/config/brand.config"
 
 export function MemberProfileDetailClient({
   memberId: initialMemberId,
@@ -210,47 +212,51 @@ export function MemberProfileDetailClient({
               </div>
             </section>
 
-            <section className="space-y-6 pt-8 border-t border-zinc-200 dark:border-zinc-800">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                <div>
-                  <span className="text-xs font-black uppercase tracking-widest text-brand-primary block mb-1">
-                    Agenda de Encontros
-                  </span>
-                  <h2 className="text-2xl font-heading font-black uppercase tracking-tight text-zinc-900 dark:text-white">
-                    Onde Encontrar ({memberEvents.length})
-                  </h2>
+            {isModuleEnabled("events") && (
+              <section className="space-y-6 pt-8 border-t border-zinc-200 dark:border-zinc-800">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div>
+                    <span className="text-xs font-black uppercase tracking-widest text-brand-primary block mb-1">
+                      Agenda de Encontros
+                    </span>
+                    <h2 className="text-2xl font-heading font-black uppercase tracking-tight text-zinc-900 dark:text-white">
+                      Onde Encontrar ({memberEvents.length})
+                    </h2>
+                  </div>
+
+                  <Link
+                    href="/eventos"
+                    className="text-xs font-bold uppercase tracking-wider text-brand-primary hover:underline flex items-center gap-1.5 self-start sm:self-auto"
+                  >
+                    <span>Ver todos os eventos</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </Link>
                 </div>
 
-                <Link
-                  href="/eventos"
-                  className="text-xs font-bold uppercase tracking-wider text-brand-primary hover:underline flex items-center gap-1.5 self-start sm:self-auto"
-                >
-                  <span>Ver todos os eventos</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </Link>
-              </div>
+                {memberEvents.length === 0 ? (
+                  <div className="p-8 text-center rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416]">
+                    <p className="text-xs text-zinc-900 dark:text-white font-medium">
+                      {firstName} ainda não possui encontros confirmados neste
+                      trimestre.
+                    </p>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 gap-6">
+                    {memberEvents.map((evt) => (
+                      <EventCard key={evt.id} event={evt} />
+                    ))}
+                  </div>
+                )}
+              </section>
+            )}
 
-              {memberEvents.length === 0 ? (
-                <div className="p-8 text-center rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416]">
-                  <p className="text-xs text-zinc-900 dark:text-white font-medium">
-                    {firstName} ainda não possui encontros confirmados neste
-                    trimestre.
-                  </p>
-                </div>
-              ) : (
-                <div className="grid grid-cols-1 gap-6">
-                  {memberEvents.map((evt) => (
-                    <EventCard key={evt.id} event={evt} />
-                  ))}
-                </div>
-              )}
-            </section>
-
-            <MemberProfileBadges
-              member={member}
-              selectedBadge={selectedBadge}
-              onSelectBadge={setSelectedBadge}
-            />
+            {isModuleEnabled("keypass") && (
+              <MemberProfileBadges
+                member={member}
+                selectedBadge={selectedBadge}
+                onSelectBadge={setSelectedBadge}
+              />
+            )}
           </div>
 
           <MemberProfileSidebar

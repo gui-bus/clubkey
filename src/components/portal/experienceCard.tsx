@@ -15,6 +15,8 @@ import { ArrowRight, Check, Clock, Gift, MapPin } from "@phosphor-icons/react"
 
 import { CtaButton } from "@/src/components/common/ctaButton"
 
+import { isModuleEnabled } from "@/src/config/brand.config"
+
 interface ExperienceCardProps {
   experience: ExperienceItem
 }
@@ -94,20 +96,24 @@ export function ExperienceCard({
               <MapPin className="w-3.5 h-3.5 text-brand-primary shrink-0" />
               <span className="truncate">{experience.place}</span>
             </div>
-            <span className="text-zinc-300 dark:text-zinc-700 hidden sm:inline">
-              •
-            </span>
-            <div className="flex items-center gap-1.5 shrink-0">
-              <div className="relative w-3.5 h-3.5 shrink-0">
-                <Image
-                  src="/utils/gamification/utils/xp.webp"
-                  alt="XP"
-                  fill
-                  className="object-contain"
-                />
-              </div>
-              <span>+{experience.xp || 300} XP</span>
-            </div>
+            {isModuleEnabled("keypass") && (
+              <>
+                <span className="text-zinc-300 dark:text-zinc-700 hidden sm:inline">
+                  •
+                </span>
+                <div className="flex items-center gap-1.5 shrink-0">
+                  <div className="relative w-3.5 h-3.5 shrink-0">
+                    <Image
+                      src="/utils/gamification/utils/xp.webp"
+                      alt="XP"
+                      fill
+                      className="object-contain"
+                    />
+                  </div>
+                  <span>+{experience.xp || 300} XP</span>
+                </div>
+              </>
+            )}
           </div>
 
           <p className="text-xs text-zinc-600 dark:text-zinc-400 line-clamp-2 pt-1 leading-relaxed">

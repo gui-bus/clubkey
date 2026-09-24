@@ -33,6 +33,8 @@ import { cn } from "@/src/lib/utils"
 
 import { useMounted } from "@/src/hooks/useMounted"
 
+import { isModuleEnabled } from "@/src/config/brand.config"
+
 export interface NotificationsDropdownProps {
   isDarkBar?: boolean
   className?: string
@@ -115,7 +117,9 @@ export function NotificationsDropdown({
     toast.success(
       `Conexão aceita com ${member.firstName} ${member.lastName}!`,
       {
-        description: "Você ganhou +50 XP e agora estão conectados diretamente.",
+        description: isModuleEnabled("keypass")
+          ? "Você ganhou +50 XP e agora estão conectados diretamente."
+          : "Agora vocês estão conectados diretamente.",
       }
     )
   }

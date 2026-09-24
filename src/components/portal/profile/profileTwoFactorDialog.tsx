@@ -20,6 +20,8 @@ import {
 import { InputOtp } from "@/src/components/ui/inputOtp/inputOtp"
 import { toast } from "@/src/components/ui/toast/toast"
 
+import { isModuleEnabled } from "@/src/config/brand.config"
+
 export interface ProfileTwoFactorDialogProps {
   open: boolean
   onOpenChange: (open: boolean) => void
@@ -51,7 +53,9 @@ export function ProfileTwoFactorDialog({
       setOtpCode("")
       setOtpError(false)
       toast.success("Autenticação 2FA ativada com sucesso!", {
-        description: "Sua conta agora está protegida e você ganhou +250 XP!",
+        description: isModuleEnabled("keypass")
+          ? "Sua conta agora está protegida e você ganhou +250 XP!"
+          : "Sua conta agora está protegida com autenticação em duas etapas.",
       })
     } else {
       setOtpError(true)
@@ -78,22 +82,24 @@ export function ProfileTwoFactorDialog({
             <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-xs bg-brand-primary/10 text-brand-primary text-[10px] font-bold uppercase tracking-wider">
               Segurança da Conta
             </span>
-            <Badge
-              color="success"
-              variant="flat"
-              radius="sm"
-              className="text-[10px] font-bold inline-flex items-center gap-1"
-            >
-              <div className="relative w-3 h-3 shrink-0">
-                <Image
-                  src="/utils/gamification/utils/xp.webp"
-                  alt="XP"
-                  fill
-                  className="object-contain"
-                />
-              </div>
-              <span>+250 XP</span>
-            </Badge>
+            {isModuleEnabled("keypass") && (
+              <Badge
+                color="success"
+                variant="flat"
+                radius="sm"
+                className="text-[10px] font-bold inline-flex items-center gap-1"
+              >
+                <div className="relative w-3 h-3 shrink-0">
+                  <Image
+                    src="/utils/gamification/utils/xp.webp"
+                    alt="XP"
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+                <span>+250 XP</span>
+              </Badge>
+            )}
           </div>
           <DialogTitle className="text-xl font-heading font-black uppercase tracking-tight text-zinc-900 dark:text-white flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-sm bg-brand-primary/10 flex items-center justify-center text-brand-primary shrink-0">
@@ -176,15 +182,21 @@ export function ProfileTwoFactorDialog({
             onClick={handleVerifyOtp}
             className="font-bold text-xs uppercase tracking-wider inline-flex items-center gap-1.5 whitespace-nowrap shrink-0"
           >
-            <div className="relative w-3.5 h-3.5 shrink-0">
-              <Image
-                src="/utils/gamification/utils/xp.webp"
-                alt="XP"
-                fill
-                className="object-contain"
-              />
-            </div>
-            <span>Confirmar & Ativar (+250 XP)</span>
+            {isModuleEnabled("keypass") && (
+              <div className="relative w-3.5 h-3.5 shrink-0">
+                <Image
+                  src="/utils/gamification/utils/xp.webp"
+                  alt="XP"
+                  fill
+                  className="object-contain"
+                />
+              </div>
+            )}
+            <span>
+              {isModuleEnabled("keypass")
+                ? "Confirmar & Ativar (+250 XP)"
+                : "Confirmar & Ativar"}
+            </span>
           </Button>
         </DialogFooter>
       </DialogContent>

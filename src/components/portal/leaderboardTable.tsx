@@ -22,6 +22,9 @@ import {
 import { DataTable, type TableColumn } from "@/src/components/common/dataTable"
 
 import { formatNumber } from "@/src/lib/formatters"
+import { cn } from "@/src/lib/utils"
+
+import { isModuleEnabled } from "@/src/config/brand.config"
 
 export interface LeaderboardTableProps {
   leaderboard: LeaderboardMember[]
@@ -63,15 +66,13 @@ export function LeaderboardTable({
         render: (member) => {
           const isUser = !!member.isCurrentUser
           const fullName = `${member.firstName} ${member.lastName}`.trim()
-          return (
-            <Link
-              href={
-                isUser
-                  ? "/perfil"
-                  : `/conexoes/${member.id}/${getMemberSlug(member)}`
-              }
-              className="group/member flex items-center gap-3 w-fit max-w-full"
-            >
+          const canLink = isUser || isModuleEnabled("networking")
+          const targetHref = isUser
+            ? "/perfil"
+            : `/conexoes/${member.id}/${getMemberSlug(member)}`
+
+          const content = (
+            <>
               <Avatar
                 size="sm"
                 className="shrink-0 transition-transform group-hover/member:scale-105"
@@ -83,7 +84,13 @@ export function LeaderboardTable({
               </Avatar>
               <div className="min-w-0">
                 <div className="flex items-center gap-2">
-                  <span className="font-bold text-zinc-900 dark:text-white truncate group-hover/member:text-brand-primary group-hover/member:underline transition-colors">
+                  <span
+                    className={cn(
+                      "font-bold text-zinc-900 dark:text-white truncate",
+                      canLink &&
+                        "group-hover/member:text-brand-primary group-hover/member:underline transition-colors"
+                    )}
+                  >
                     {fullName}
                   </span>
                   {isUser && (
@@ -96,7 +103,24 @@ export function LeaderboardTable({
                   {member.role} • {member.company}
                 </p>
               </div>
-            </Link>
+            </>
+          )
+
+          if (canLink) {
+            return (
+              <Link
+                href={targetHref}
+                className="group/member flex items-center gap-3 w-fit max-w-full"
+              >
+                {content}
+              </Link>
+            )
+          }
+
+          return (
+            <div className="flex items-center gap-3 w-fit max-w-full">
+              {content}
+            </div>
           )
         },
       },

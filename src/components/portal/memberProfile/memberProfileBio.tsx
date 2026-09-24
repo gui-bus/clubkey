@@ -1,4 +1,4 @@
-﻿"use client"
+"use client"
 
 import * as React from "react"
 
@@ -15,6 +15,8 @@ import {
 } from "@/src/components/ui/avatar/avatar"
 
 import { formatNumber } from "@/src/lib/formatters"
+
+import { isModuleEnabled } from "@/src/config/brand.config"
 
 interface MemberProfileBioProps {
   member: Member
@@ -102,7 +104,7 @@ export function MemberProfileBio({
         </div>
       </div>
 
-      {memberTier && (
+      {isModuleEnabled("keypass") && memberTier && (
         <div className="w-full sm:w-auto flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6 p-3.5 sm:p-4 rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-2xs self-start lg:self-end">
           <div className="flex items-center justify-between sm:justify-start gap-3">
             <div className="flex items-center gap-3">

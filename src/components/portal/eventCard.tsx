@@ -33,7 +33,11 @@ import { toast } from "@/src/components/ui/toast/toast"
 
 import { CtaButton } from "@/src/components/common/ctaButton"
 
+import { cn } from "@/src/lib/utils"
+
 import { useMounted } from "@/src/hooks/useMounted"
+
+import { isModuleEnabled } from "@/src/config/brand.config"
 
 interface EventCardProps {
   event: EventItem
@@ -159,20 +163,24 @@ export function EventCard({ event }: EventCardProps): React.JSX.Element {
                 <Users className="w-3.5 h-3.5 text-brand-primary shrink-0" />
                 <span>{remainingSpots} vagas restantes</span>
               </div>
-              <span className="text-zinc-300 dark:text-zinc-700 hidden sm:inline">
-                •
-              </span>
-              <div className="flex items-center gap-1.5 font-medium">
-                <div className="relative w-3.5 h-3.5 shrink-0">
-                  <Image
-                    src="/utils/gamification/utils/xp.webp"
-                    alt="XP"
-                    fill
-                    className="object-contain"
-                  />
-                </div>
-                <span>+{event.xp || 200} XP</span>
-              </div>
+              {isModuleEnabled("keypass") && (
+                <>
+                  <span className="text-zinc-300 dark:text-zinc-700 hidden sm:inline">
+                    •
+                  </span>
+                  <div className="flex items-center gap-1.5 font-medium">
+                    <div className="relative w-3.5 h-3.5 shrink-0">
+                      <Image
+                        src="/utils/gamification/utils/xp.webp"
+                        alt="XP"
+                        fill
+                        className="object-contain"
+                      />
+                    </div>
+                    <span>+{event.xp || 200} XP</span>
+                  </div>
+                </>
+              )}
             </div>
           </div>
 
@@ -180,7 +188,7 @@ export function EventCard({ event }: EventCardProps): React.JSX.Element {
             <div className="flex items-center gap-3 min-w-0">
               <AvatarGroup
                 showTooltip
-                isPressable
+                isPressable={isModuleEnabled("networking")}
                 radius="full"
                 size="sm"
                 overlap="sm"
@@ -190,13 +198,17 @@ export function EventCard({ event }: EventCardProps): React.JSX.Element {
                     key={member.id}
                     title={`${member.firstName} ${member.lastName} • ${member.role} (${member.company})`}
                     onClick={(e) => {
-                      e.preventDefault()
-                      e.stopPropagation()
-                      router.push(
-                        `/conexoes/${member.id}/${getMemberSlug(member)}`
-                      )
+                      if (isModuleEnabled("networking")) {
+                        e.preventDefault()
+                        e.stopPropagation()
+                        router.push(
+                          `/conexoes/${member.id}/${getMemberSlug(member)}`
+                        )
+                      }
                     }}
-                    className="cursor-pointer"
+                    className={cn(
+                      isModuleEnabled("networking") && "cursor-pointer"
+                    )}
                   >
                     {member.avatar && (
                       <AvatarImage

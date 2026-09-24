@@ -10,6 +10,8 @@ import { MapPin } from "@phosphor-icons/react"
 
 import { cn } from "@/src/lib/utils"
 
+import { isModuleEnabled } from "@/src/config/brand.config"
+
 export interface RelatedEventsCardProps {
   event: EventItem
   className?: string
@@ -61,18 +63,22 @@ export function RelatedEventsCard({
           </span>
           <span>•</span>
           <span className="shrink-0">{event.time}</span>
-          <span>•</span>
-          <div className="flex items-center gap-1.5 font-medium shrink-0">
-            <div className="relative w-3.5 h-3.5 shrink-0">
-              <Image
-                src="/utils/gamification/utils/xp.webp"
-                alt="XP"
-                fill
-                className="object-contain"
-              />
-            </div>
-            <span>+{event.xp || 200} XP</span>
-          </div>
+          {isModuleEnabled("keypass") && (
+            <>
+              <span>•</span>
+              <div className="flex items-center gap-1.5 font-medium shrink-0">
+                <div className="relative w-3.5 h-3.5 shrink-0">
+                  <Image
+                    src="/utils/gamification/utils/xp.webp"
+                    alt="XP"
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+                <span>+{event.xp || 200} XP</span>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </Link>
