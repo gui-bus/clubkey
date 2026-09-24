@@ -26,7 +26,6 @@ export default function KeyPassRulesPage(): React.JSX.Element {
 
   return (
     <Container className="py-6 sm:py-8 space-y-4">
-      {}
       <div className="space-y-3">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4">
           <div className="space-y-0.5 min-w-0">
@@ -57,7 +56,6 @@ export default function KeyPassRulesPage(): React.JSX.Element {
                   : "border-zinc-200 dark:border-zinc-800"
               )}
             >
-              {}
               <span className="absolute -bottom-2 -right-1 text-6xl font-heading font-black text-zinc-900/[0.04] dark:text-white/[0.04] pointer-events-none select-none leading-none z-0">
                 0{index + 1}
               </span>
@@ -159,8 +157,6 @@ export default function KeyPassRulesPage(): React.JSX.Element {
           ))}
         </div>
       </div>
-
-      {}
       <div className="space-y-3">
         <div className="flex items-center gap-2">
           <ClockCounterClockwise
@@ -174,9 +170,7 @@ export default function KeyPassRulesPage(): React.JSX.Element {
 
         <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-5 sm:p-6 space-y-4 shadow-2xs">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {}
             <div className="relative overflow-hidden p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-800/30">
-              {}
               <div className="absolute -bottom-4 -right-4 pointer-events-none select-none opacity-[0.06] dark:opacity-[0.1]">
                 <ShieldCheck
                   className="w-28 h-28 text-zinc-900 dark:text-white"
@@ -209,10 +203,7 @@ export default function KeyPassRulesPage(): React.JSX.Element {
                 </p>
               </div>
             </div>
-
-            {}
             <div className="relative overflow-hidden p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-800/30">
-              {}
               <div className="absolute -bottom-4 -right-4 pointer-events-none select-none opacity-[0.06] dark:opacity-[0.1]">
                 <ClockCounterClockwise
                   className="w-28 h-28 text-zinc-900 dark:text-white"
@@ -241,10 +232,7 @@ export default function KeyPassRulesPage(): React.JSX.Element {
                 </p>
               </div>
             </div>
-
-            {}
             <div className="relative overflow-hidden p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-800/30">
-              {}
               <div className="absolute -bottom-4 -right-4 pointer-events-none select-none opacity-[0.06] dark:opacity-[0.1]">
                 <ArrowsClockwise
                   className="w-28 h-28 text-zinc-900 dark:text-white"
@@ -271,8 +259,6 @@ export default function KeyPassRulesPage(): React.JSX.Element {
               </div>
             </div>
           </div>
-
-          {}
           <div className="p-3.5 rounded-lg bg-zinc-50/70 dark:bg-zinc-800/40 border border-zinc-200 dark:border-zinc-800 flex items-center gap-3">
             <Info
               className="w-4 h-4 text-zinc-700 dark:text-zinc-300 shrink-0"

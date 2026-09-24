@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 
-import { brandConfig } from "@/src/config/brand.config"
+import { assertModule, brandConfig } from "@/src/config/brand.config"
 
 export const metadata: Metadata = {
   title: "Agenda de Eventos & Encontros",
@@ -12,5 +12,7 @@ export default function EventosLayout({
 }: {
   children: React.ReactNode
 }): React.JSX.Element {
+  assertModule("events")
+
   return <>{children}</>
 }

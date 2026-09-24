@@ -1,5 +1,7 @@
 import type { Metadata } from "next"
 
+import { assertModule } from "@/src/config/brand.config"
+
 export const metadata: Metadata = {
   title: "Minhas Hospedagens & Reservas",
   description:
@@ -11,5 +13,7 @@ export default function MinhasHospedagensLayout({
 }: {
   children: React.ReactNode
 }): React.JSX.Element {
+  assertModule("stays")
+
   return <>{children}</>
 }

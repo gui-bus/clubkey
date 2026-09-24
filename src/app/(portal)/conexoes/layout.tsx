@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 
-import { brandConfig } from "@/src/config/brand.config"
+import { assertModule, brandConfig } from "@/src/config/brand.config"
 
 export const metadata: Metadata = {
   title: "Conexões & Rede de Membros",
@@ -12,5 +12,7 @@ export default function ConexoesLayout({
 }: {
   children: React.ReactNode
 }): React.JSX.Element {
+  assertModule("networking")
+
   return <>{children}</>
 }

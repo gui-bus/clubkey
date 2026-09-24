@@ -22,6 +22,8 @@ import {
 
 import { useMounted } from "@/src/hooks/useMounted"
 
+import { isModuleEnabled } from "@/src/config/brand.config"
+
 export default function ProfilePage(): React.JSX.Element {
   const {
     userProfile,
@@ -39,6 +41,18 @@ export default function ProfilePage(): React.JSX.Element {
   const [pendingCover, setPendingCover] = React.useState(
     userProfile.coverImage || "/utils/banners/pessoas.webp"
   )
+
+  const availableBadges = React.useMemo(() => {
+    return badges.filter((b) => {
+      if (b.category === "estadias" && !isModuleEnabled("stays")) return false
+      if (b.category === "eventos" && !isModuleEnabled("events")) return false
+      if (b.category === "experiencias" && !isModuleEnabled("experiences"))
+        return false
+      if (b.category === "networking" && !isModuleEnabled("networking"))
+        return false
+      return true
+    })
+  }, [badges])
 
   const formData: ProfileFormData = {
     nationality:
@@ -140,14 +154,18 @@ export default function ProfilePage(): React.JSX.Element {
           onSave={handleSaveProfile}
         />
 
-        <ProfileNetworkingSection
-          seeking={userProfile?.seeking || DEFAULT_USER.seeking || []}
-          offering={userProfile?.offering || DEFAULT_USER.offering || []}
-          onUpdateSeeking={(tags) => updateProfile({ seeking: tags })}
-          onUpdateOffering={(tags) => updateProfile({ offering: tags })}
-        />
+        {isModuleEnabled("networking") && (
+          <ProfileNetworkingSection
+            seeking={userProfile?.seeking || DEFAULT_USER.seeking || []}
+            offering={userProfile?.offering || DEFAULT_USER.offering || []}
+            onUpdateSeeking={(tags) => updateProfile({ seeking: tags })}
+            onUpdateOffering={(tags) => updateProfile({ offering: tags })}
+          />
+        )}
 
-        <ProfileBadgesSection badges={badges} />
+        {isModuleEnabled("keypass") && (
+          <ProfileBadgesSection badges={availableBadges} />
+        )}
 
         <ProfileSecuritySection
           is2FAEnabled={is2FAEnabled}

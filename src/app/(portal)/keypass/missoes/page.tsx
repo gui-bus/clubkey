@@ -30,15 +30,24 @@ import { WeeklyDropCard } from "@/src/components/portal/weeklyDropCard"
 
 import { cn } from "@/src/lib/utils"
 
+import {
+  type BrandModulesConfig,
+  isModuleEnabled,
+} from "@/src/config/brand.config"
+
 const MAIN_TABS = ["drops", "carreira", "badges"] as const
 
-const CATEGORIES: { label: string; value: string }[] = [
+const CATEGORIES: {
+  label: string
+  value: string
+  module?: keyof BrandModulesConfig
+}[] = [
   { label: "Todas as Missões", value: "all" },
   { label: "Onboarding & Segurança", value: "onboarding" },
-  { label: "Hospedagens", value: "estadias" },
-  { label: "Eventos", value: "eventos" },
-  { label: "Experiências", value: "experiencias" },
-  { label: "Networking", value: "networking" },
+  { label: "Hospedagens", value: "estadias", module: "stays" },
+  { label: "Eventos", value: "eventos", module: "events" },
+  { label: "Experiências", value: "experiencias", module: "experiences" },
+  { label: "Networking", value: "networking", module: "networking" },
   { label: "Ranking", value: "ranking" },
 ]
 
@@ -71,21 +80,61 @@ export default function KeyPassMissionsPage(): React.JSX.Element {
   const bannerCountdown = useBannerCountdown(WEEKLY_DROPS_CYCLE_SECONDS)
   const [selectedCategory, setSelectedCategory] = React.useState("all")
 
-  const completedCount = missions.filter((m) => m.isCompleted).length
-  const totalCount = missions.length
-  const claimableMissionsCount = missions.filter(
+  const availableCategories = React.useMemo(() => {
+    return CATEGORIES.filter((c) => !c.module || isModuleEnabled(c.module))
+  }, [])
+
+  const availableMissions = React.useMemo(() => {
+    return missions.filter((m) => {
+      if (m.category === "estadias" && !isModuleEnabled("stays")) return false
+      if (m.category === "eventos" && !isModuleEnabled("events")) return false
+      if (m.category === "experiencias" && !isModuleEnabled("experiences"))
+        return false
+      if (m.category === "networking" && !isModuleEnabled("networking"))
+        return false
+      return true
+    })
+  }, [missions])
+
+  const availableDrops = React.useMemo(() => {
+    return weeklyDrops.filter((d) => {
+      if (d.category === "estadias" && !isModuleEnabled("stays")) return false
+      if (d.category === "eventos" && !isModuleEnabled("events")) return false
+      if (d.category === "experiencias" && !isModuleEnabled("experiences"))
+        return false
+      if (d.category === "networking" && !isModuleEnabled("networking"))
+        return false
+      return true
+    })
+  }, [weeklyDrops])
+
+  const availableBadges = React.useMemo(() => {
+    return badges.filter((b) => {
+      if (b.category === "estadias" && !isModuleEnabled("stays")) return false
+      if (b.category === "eventos" && !isModuleEnabled("events")) return false
+      if (b.category === "experiencias" && !isModuleEnabled("experiences"))
+        return false
+      if (b.category === "networking" && !isModuleEnabled("networking"))
+        return false
+      return true
+    })
+  }, [badges])
+
+  const completedCount = availableMissions.filter((m) => m.isCompleted).length
+  const totalCount = availableMissions.length
+  const claimableMissionsCount = availableMissions.filter(
     (m) => m.isCompleted && !m.isClaimed && m.currentProgress >= m.totalRequired
   ).length
 
-  const activeDropsCount = weeklyDrops.filter((d) => !d.isClaimed).length
-  const claimableDropsCount = weeklyDrops.filter(
+  const activeDropsCount = availableDrops.filter((d) => !d.isClaimed).length
+  const claimableDropsCount = availableDrops.filter(
     (d) => d.isCompleted && !d.isClaimed
   ).length
 
-  const unlockedBadgesCount = badges.filter((b) => b.isUnlocked).length
-  const totalBadgesCount = badges.length
+  const unlockedBadgesCount = availableBadges.filter((b) => b.isUnlocked).length
+  const totalBadgesCount = availableBadges.length
 
-  const filteredMissions = missions.filter((mission) => {
+  const filteredMissions = availableMissions.filter((mission) => {
     if (selectedCategory === "all") return true
     return mission.category === selectedCategory
   })
@@ -166,8 +215,6 @@ export default function KeyPassMissionsPage(): React.JSX.Element {
           </div>
         }
       />
-
-      {}
       <div className="flex items-center gap-2 p-1.5 rounded-sm bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 w-full sm:w-auto overflow-x-auto scrollbar-none">
         <button
           type="button"
@@ -247,8 +294,6 @@ export default function KeyPassMissionsPage(): React.JSX.Element {
           </span>
         </button>
       </div>
-
-      {}
       {activeMainTab === "drops" && (
         <div className="space-y-6">
           <div className="p-4 sm:p-5 rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
@@ -280,7 +325,7 @@ export default function KeyPassMissionsPage(): React.JSX.Element {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {weeklyDrops.map((drop) => (
+            {availableDrops.map((drop) => (
               <WeeklyDropCard
                 key={drop.id}
                 drop={drop}
@@ -290,12 +335,10 @@ export default function KeyPassMissionsPage(): React.JSX.Element {
           </div>
         </div>
       )}
-
-      {}
       {activeMainTab === "carreira" && (
         <div className="space-y-6">
           <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
-            {CATEGORIES.map((cat) => {
+            {availableCategories.map((cat) => {
               const isSelected = selectedCategory === cat.value
               return (
                 <CtaButton
@@ -424,12 +467,10 @@ export default function KeyPassMissionsPage(): React.JSX.Element {
           </div>
         </div>
       )}
-
-      {}
       {activeMainTab === "badges" && (
         <div className="space-y-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {badges.map((badge) => (
+            {availableBadges.map((badge) => (
               <BadgeCard key={badge.id} badge={badge} />
             ))}
           </div>

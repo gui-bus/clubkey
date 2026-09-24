@@ -23,7 +23,7 @@ import { LeaderboardTargetCard } from "@/src/components/portal/leaderboardTarget
 import { formatNumber } from "@/src/lib/formatters"
 import { cn } from "@/src/lib/utils"
 
-import { brandConfig } from "@/src/config/brand.config"
+import { brandConfig, isModuleEnabled } from "@/src/config/brand.config"
 
 export default function KeyPassRankingPage(): React.JSX.Element {
   const { xp, ribTokens, leaderboardTimeframe, setLeaderboardTimeframe } =
@@ -81,18 +81,26 @@ export default function KeyPassRankingPage(): React.JSX.Element {
               </div>
 
               <div>
-                <Link
-                  href={
-                    leader.isCurrentUser
-                      ? "/perfil"
-                      : `/conexoes/${leader.id}/${getMemberSlug(leader)}`
-                  }
-                  className="group/leader inline-block"
-                >
-                  <h1 className="text-2xl sm:text-3xl font-heading font-black uppercase tracking-tight text-zinc-900 dark:text-white group-hover/leader:text-brand-primary group-hover/leader:underline transition-colors">
+                {leader.isCurrentUser ? (
+                  <Link href="/perfil" className="group/leader inline-block">
+                    <h1 className="text-2xl sm:text-3xl font-heading font-black uppercase tracking-tight text-zinc-900 dark:text-white group-hover/leader:text-brand-primary group-hover/leader:underline transition-colors">
+                      {leader.firstName} {leader.lastName}
+                    </h1>
+                  </Link>
+                ) : isModuleEnabled("networking") ? (
+                  <Link
+                    href={`/conexoes/${leader.id}/${getMemberSlug(leader)}`}
+                    className="group/leader inline-block"
+                  >
+                    <h1 className="text-2xl sm:text-3xl font-heading font-black uppercase tracking-tight text-zinc-900 dark:text-white group-hover/leader:text-brand-primary group-hover/leader:underline transition-colors">
+                      {leader.firstName} {leader.lastName}
+                    </h1>
+                  </Link>
+                ) : (
+                  <h1 className="text-2xl sm:text-3xl font-heading font-black uppercase tracking-tight text-zinc-900 dark:text-white">
                     {leader.firstName} {leader.lastName}
                   </h1>
-                </Link>
+                )}
                 <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 font-medium">
                   {leader.role} na {leader.company} • {leader.city}
                 </p>

@@ -22,6 +22,8 @@ import { NetworkingMissions } from "@/src/components/portal/networkingMissions"
 import { PortalHero } from "@/src/components/portal/portalHero"
 import { PortalHeroFilterBar } from "@/src/components/portal/portalHeroFilterBar"
 
+import { isModuleEnabled } from "@/src/config/brand.config"
+
 function MinhasConexoesContent(): React.JSX.Element {
   const {
     connectedMembers,
@@ -144,7 +146,9 @@ function MinhasConexoesContent(): React.JSX.Element {
     toast.success(
       `Conexão aceita com ${member.firstName} ${member.lastName}!`,
       {
-        description: "Você ganhou +50 XP e agora estão conectados diretamente.",
+        description: isModuleEnabled("keypass")
+          ? "Você ganhou +50 XP e agora estão conectados diretamente."
+          : "Agora vocês estão conectados diretamente.",
       }
     )
   }
@@ -175,7 +179,11 @@ function MinhasConexoesContent(): React.JSX.Element {
             Minhas <span className="text-brand-primary">Conexões</span>
           </>
         }
-        description="Gerencie suas conexões diretas, aprove convites recebidos com ganho de XP e atinja as metas de networking do KeyPass."
+        description={
+          isModuleEnabled("keypass")
+            ? "Gerencie suas conexões diretas, aprove convites recebidos com ganho de XP e atinja as metas de networking do KeyPass."
+            : "Gerencie suas conexões diretas, aprove convites recebidos e amplie sua rede de contatos no clube."
+        }
         imageSrc="/utils/banners/pessoas.webp"
         imageAlt="Minhas Conexões e Networking"
       >
@@ -224,11 +232,13 @@ function MinhasConexoesContent(): React.JSX.Element {
           </div>
         )}
 
-        <NetworkingMissions
-          missions={networkingMissions}
-          activeConnectionsCount={activeConnectionsList.length}
-          onClaim={handleClaim}
-        />
+        {isModuleEnabled("keypass") && (
+          <NetworkingMissions
+            missions={networkingMissions}
+            activeConnectionsCount={activeConnectionsList.length}
+            onClaim={handleClaim}
+          />
+        )}
 
         {(activeFilter === "todos" || activeFilter === "recebidos") &&
           filteredReceived.length > 0 && (

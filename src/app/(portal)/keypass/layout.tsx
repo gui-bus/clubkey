@@ -5,7 +5,7 @@ import type { Metadata } from "next"
 import { KeyPassNav } from "@/src/components/portal/keyPassNav"
 import { PortalHero } from "@/src/components/portal/portalHero"
 
-import { brandConfig } from "@/src/config/brand.config"
+import { assertModule, brandConfig } from "@/src/config/brand.config"
 
 export const metadata: Metadata = {
   title: "KeyPass — Tiers & Recompensas",
@@ -17,6 +17,8 @@ export default function KeyPassLayout({
 }: {
   children: React.ReactNode
 }): React.JSX.Element {
+  assertModule("keypass")
+
   return (
     <div className="w-full flex flex-col min-h-screen">
       <PortalHero

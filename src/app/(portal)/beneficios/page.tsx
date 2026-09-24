@@ -27,6 +27,8 @@ import { BenefitCard } from "@/src/components/portal/benefitCard"
 import { PortalHero } from "@/src/components/portal/portalHero"
 import { PortalHeroFilterBar } from "@/src/components/portal/portalHeroFilterBar"
 
+import { isModuleEnabled } from "@/src/config/brand.config"
+
 const ITEMS_PER_PAGE = 6
 
 const CATEGORIES = [
@@ -153,7 +155,8 @@ export default function BenefitsPage(): React.JSX.Element {
           </div>
         )}
 
-        {!searchQuery &&
+        {isModuleEnabled("stays") &&
+          !searchQuery &&
           (activeCategory === "Todos" || activeCategory === "Viagem") && (
             <div className="relative rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] p-6 sm:p-8 overflow-hidden">
               <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">

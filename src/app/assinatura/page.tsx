@@ -18,7 +18,7 @@ import {
   type SubscriptionUser,
 } from "@/src/components/subscription/subscriptionForm"
 
-import { brandConfig } from "@/src/config/brand.config"
+import { brandConfig, isModuleEnabled } from "@/src/config/brand.config"
 
 export default function SubscriptionPage(): React.JSX.Element {
   const [user, setUser] = React.useState<SubscriptionUser | null>(null)
@@ -99,9 +99,16 @@ export default function SubscriptionPage(): React.JSX.Element {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-3 w-full pt-2">
-                <CtaButton href="/hospedagens" className="flex-1 py-3.5">
+                <CtaButton
+                  href={isModuleEnabled("stays") ? "/hospedagens" : "/"}
+                  className="flex-1 py-3.5"
+                >
                   <Key className="w-4 h-4 mr-2" />
-                  <span>Explorar Hospedagens</span>
+                  <span>
+                    {isModuleEnabled("stays")
+                      ? "Explorar Hospedagens"
+                      : "Acessar Portal"}
+                  </span>
                 </CtaButton>
 
                 <Link

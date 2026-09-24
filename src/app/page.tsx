@@ -1,6 +1,6 @@
 "use client"
 
-import * as React from "react"
+import { redirect } from "next/navigation"
 
 import { usePortalStore } from "@/src/store/usePortalStore"
 
@@ -16,10 +16,21 @@ import { TopBanner } from "@/src/components/landing/topBanner"
 import { WhatIsBrand } from "@/src/components/landing/whatIsBrand"
 import { PortalHome } from "@/src/components/portal/portalHome"
 
+import { isModuleEnabled } from "@/src/config/brand.config"
+
 export default function Page(): React.JSX.Element {
   const { isAuthenticated } = usePortalStore()
 
   if (isAuthenticated) {
+    if (!isModuleEnabled("home")) {
+      if (isModuleEnabled("stays")) redirect("/hospedagens")
+      if (isModuleEnabled("events")) redirect("/eventos")
+      if (isModuleEnabled("experiences")) redirect("/experiencias")
+      if (isModuleEnabled("benefits")) redirect("/beneficios")
+      if (isModuleEnabled("networking")) redirect("/conexoes")
+      if (isModuleEnabled("keypass")) redirect("/keypass")
+      redirect("/perfil")
+    }
     return (
       <div className="flex-1 w-full text-zinc-900 dark:text-white flex flex-col font-sans selection:bg-brand-primary/20 selection:text-brand-primary">
         <Header />

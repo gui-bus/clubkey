@@ -22,6 +22,8 @@ import { WeeklyDropCard } from "@/src/components/portal/weeklyDropCard"
 
 import { formatNumber } from "@/src/lib/formatters"
 
+import { isModuleEnabled } from "@/src/config/brand.config"
+
 export default function KeyPassOverviewPage(): React.JSX.Element {
   const {
     xp,
@@ -43,8 +45,33 @@ export default function KeyPassOverviewPage(): React.JSX.Element {
   const displayedNextTier = getNextTier(displayedTier.id)
   const isViewingOtherTier = displayedTier.id !== userTier.id
 
-  const activeDrop = weeklyDrops.find((d) => !d.isClaimed) || weeklyDrops[0]
-  const previewBadges = badges.slice(0, 4)
+  const availableDrops = React.useMemo(() => {
+    return weeklyDrops.filter((d) => {
+      if (d.category === "estadias" && !isModuleEnabled("stays")) return false
+      if (d.category === "eventos" && !isModuleEnabled("events")) return false
+      if (d.category === "experiencias" && !isModuleEnabled("experiences"))
+        return false
+      if (d.category === "networking" && !isModuleEnabled("networking"))
+        return false
+      return true
+    })
+  }, [weeklyDrops])
+
+  const availableBadges = React.useMemo(() => {
+    return badges.filter((b) => {
+      if (b.category === "estadias" && !isModuleEnabled("stays")) return false
+      if (b.category === "eventos" && !isModuleEnabled("events")) return false
+      if (b.category === "experiencias" && !isModuleEnabled("experiences"))
+        return false
+      if (b.category === "networking" && !isModuleEnabled("networking"))
+        return false
+      return true
+    })
+  }, [badges])
+
+  const activeDrop =
+    availableDrops.find((d) => !d.isClaimed) || availableDrops[0] || null
+  const previewBadges = availableBadges.slice(0, 4)
 
   const handleClaimDrop = (dropId: string) => {
     claimWeeklyDrop(dropId)
@@ -56,7 +83,6 @@ export default function KeyPassOverviewPage(): React.JSX.Element {
 
   return (
     <Container className="py-6 sm:py-8 space-y-6">
-      {}
       <div className="rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-5 sm:p-6 shadow-2xs space-y-4">
         <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8">
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 sm:gap-6">
@@ -156,23 +182,17 @@ export default function KeyPassOverviewPage(): React.JSX.Element {
           </div>
         </div>
       </div>
-
-      {}
       <KeyPassMilestoneProgress
         xp={xp}
         currentTier={displayedTier}
         nextTier={displayedNextTier}
       />
-
-      {}
       <KeyPassTierTrack
         userTier={userTier}
         selectedTierId={effectiveTierId}
         onSelectTier={setSelectedTierId}
         userXp={xp}
       />
-
-      {}
       {activeDrop && (
         <div className="space-y-3">
           <div className="flex items-center justify-between">
@@ -192,7 +212,7 @@ export default function KeyPassOverviewPage(): React.JSX.Element {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {weeklyDrops.slice(0, 3).map((drop) => (
+            {availableDrops.slice(0, 3).map((drop) => (
               <WeeklyDropCard
                 key={drop.id}
                 drop={drop}
@@ -202,8 +222,6 @@ export default function KeyPassOverviewPage(): React.JSX.Element {
           </div>
         </div>
       )}
-
-      {}
       <div className="space-y-3 pt-2">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -216,7 +234,7 @@ export default function KeyPassOverviewPage(): React.JSX.Element {
             href="/keypass/missoes?tab=badges"
             className="text-xs font-bold text-brand-primary hover:underline inline-flex items-center gap-1"
           >
-            <span>Ver galeria completa ({badges.length})</span>
+            <span>Ver galeria completa ({availableBadges.length})</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>
@@ -227,8 +245,6 @@ export default function KeyPassOverviewPage(): React.JSX.Element {
           ))}
         </div>
       </div>
-
-      {}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 items-stretch pt-2">
         <KeyPassMissionsWidget className="h-full" />
         <KeyPassHistoryWidget className="h-full" />
