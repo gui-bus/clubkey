@@ -58,20 +58,20 @@ const PUBLIC_NAV_LINKS = [
 
 const PORTAL_NAV_LINKS = [
   { name: "Home", href: "/" },
+  { name: "Conexões", href: "/conexoes" },
   { name: "Hospedagens", href: "/hospedagens" },
   { name: "Eventos", href: "/eventos" },
   { name: "Experiências", href: "/experiencias" },
   { name: "Benefícios", href: "/beneficios" },
-  { name: "Conexões", href: "/conexoes" },
 ]
 
 const MOBILE_PORTAL_NAV_LINKS = [
   { name: "Home", href: "/" },
+  { name: "Conexões", href: "/conexoes" },
   { name: "Hospedagens", href: "/hospedagens" },
   { name: "Eventos", href: "/eventos" },
   { name: "Experiências", href: "/experiencias" },
   { name: "Benefícios", href: "/beneficios" },
-  { name: "Conexões", href: "/conexoes" },
   { name: "KeyPass", href: "/keypass" },
 ]
 
@@ -113,7 +113,6 @@ export function Header({ isTransparent }: HeaderProps = {}): React.JSX.Element {
   const userAvatar = userProfile?.avatar || DEFAULT_USER.avatar
 
   const isDetailRoute = Boolean(
-    (pathname?.startsWith("/rooms/") && pathname !== "/rooms") ||
     (pathname?.startsWith("/hospedagens/") &&
       pathname !== "/hospedagens" &&
       pathname !== "/hospedagens/minhas-hospedagens") ||
@@ -128,11 +127,11 @@ export function Header({ isTransparent }: HeaderProps = {}): React.JSX.Element {
   )
 
   const isAuthRoute = Boolean(
-    pathname === "/sign-in" ||
-    pathname === "/sign-up" ||
+    pathname === "/entrar" ||
+    pathname === "/cadastro" ||
     pathname === "/login" ||
-    pathname === "/forgot-password" ||
-    pathname === "/reset-password"
+    pathname === "/esqueci-minha-senha" ||
+    pathname === "/redefinir-senha"
   )
 
   const transparent =
@@ -142,7 +141,7 @@ export function Header({ isTransparent }: HeaderProps = {}): React.JSX.Element {
 
   const handleLogout = () => {
     logout()
-    router.push("/sign-in")
+    router.push("/entrar")
   }
 
   React.useEffect(() => {
@@ -327,10 +326,9 @@ export function Header({ isTransparent }: HeaderProps = {}): React.JSX.Element {
                   const linkHash = link.href.startsWith("/#")
                     ? link.href.replace("/", "")
                     : link.href
-                  const isCatalogPath =
-                    pathname === "/hospedagens" || pathname === "/rooms"
+                  const isCatalogPath = pathname === "/hospedagens"
                   const isActive = isCatalogPath
-                    ? link.href === "/hospedagens" || link.href === "/rooms"
+                    ? link.href === "/hospedagens"
                     : activeSection === linkHash || activeSection === link.href
 
                   return (
@@ -361,8 +359,7 @@ export function Header({ isTransparent }: HeaderProps = {}): React.JSX.Element {
             <nav className="hidden 2xl:flex items-center gap-6 xl:gap-8">
               {PORTAL_NAV_LINKS.map((link) => {
                 const isCatalogPath =
-                  link.href === "/hospedagens" &&
-                  (pathname === "/hospedagens" || pathname === "/rooms")
+                  link.href === "/hospedagens" && pathname === "/hospedagens"
 
                 const isActive =
                   link.href === "/"
@@ -624,8 +621,7 @@ export function Header({ isTransparent }: HeaderProps = {}): React.JSX.Element {
                               {MOBILE_PORTAL_NAV_LINKS.map((link) => {
                                 const isCatalogPath =
                                   link.href === "/hospedagens" &&
-                                  (pathname === "/hospedagens" ||
-                                    pathname === "/rooms")
+                                  pathname === "/hospedagens"
 
                                 const isActive =
                                   link.href === "/"
@@ -660,12 +656,9 @@ export function Header({ isTransparent }: HeaderProps = {}): React.JSX.Element {
                               const linkHash = link.href.startsWith("/#")
                                 ? link.href.replace("/", "")
                                 : link.href
-                              const isCatalogPath =
-                                pathname === "/hospedagens" ||
-                                pathname === "/rooms"
+                              const isCatalogPath = pathname === "/hospedagens"
                               const isActive = isCatalogPath
-                                ? link.href === "/hospedagens" ||
-                                  link.href === "/rooms"
+                                ? link.href === "/hospedagens"
                                 : activeSection === linkHash ||
                                   activeSection === link.href
 
