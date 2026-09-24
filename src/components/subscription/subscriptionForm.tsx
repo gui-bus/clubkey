@@ -176,7 +176,7 @@ export function SubscriptionForm({
 
               <div className="flex flex-col sm:flex-row gap-2.5 w-full pt-1">
                 <CtaButton
-                  href="/sign-in"
+                  href="/entrar"
                   size="sm"
                   isFullWidth
                   className="flex-1"
@@ -184,7 +184,7 @@ export function SubscriptionForm({
                   Fazer Login
                 </CtaButton>
                 <CtaButton
-                  href="/sign-up"
+                  href="/cadastro"
                   variant="dark-outline"
                   size="sm"
                   isFullWidth

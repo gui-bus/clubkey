@@ -95,9 +95,9 @@ export const brandPresets: Record<string, BrandConfig> = {
       ogImage: "/og.png",
     },
     links: {
-      subscription: "/subscription",
+      subscription: "/assinatura",
       rooms: "/hospedagens",
-      login: "/sign-in",
+      login: "/entrar",
       instagram: "https://instagram.com/clubkey.io",
       instagramUser: "clubkey.io",
       contactEmail: "contato@clubkey.io",
@@ -149,9 +149,9 @@ export const brandPresets: Record<string, BrandConfig> = {
       ogImage: "/og.png",
     },
     links: {
-      subscription: "/subscription",
+      subscription: "/assinatura",
       rooms: "/hospedagens",
-      login: "/sign-in",
+      login: "/entrar",
       instagram: "https://instagram.com/viverdeitaipava",
       instagramUser: "@viverdeitaipava",
       whatsapp: "(21) 99786-2692",
