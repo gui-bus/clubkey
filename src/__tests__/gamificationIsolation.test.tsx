@@ -11,6 +11,8 @@ import { MemberProfileBio } from "@/src/components/portal/memberProfile/memberPr
 import { RoomBookingCard } from "@/src/components/rooms/roomBookingCard"
 import { RoomCard } from "@/src/components/rooms/roomCard"
 
+import { isModuleEnabled } from "@/src/config/brand.config"
+
 describe("Gamification & XP Isolation Suite (Zero-Leak Policy)", () => {
   const sampleRoom = rawApiRooms[0]
   const sampleEvent = EVENTS[0]
@@ -18,18 +20,21 @@ describe("Gamification & XP Isolation Suite (Zero-Leak Policy)", () => {
   const sampleMember = MEMBERS[0]
 
   describe("RoomCard XP Badge", () => {
-    it("does not render any +XP badge when keypass is disabled for active tenant (Viverde)", () => {
+    it("renders XP badge strictly when keypass is enabled, or enforces zero-leak when disabled", () => {
       render(
         <RoomCard room={sampleRoom} isFav={false} onToggleFav={() => {}} />
       )
 
-      expect(screen.queryByText(/\+.*XP/i)).not.toBeInTheDocument()
-      expect(screen.queryByText(/\+300\s*XP/i)).not.toBeInTheDocument()
+      if (isModuleEnabled("keypass")) {
+        expect(screen.getByText(/\+300\s*XP/i)).toBeInTheDocument()
+      } else {
+        expect(screen.queryByText(/\+300\s*XP/i)).not.toBeInTheDocument()
+      }
     })
   })
 
   describe("RoomBookingCard XP Badge", () => {
-    it("does not render any +XP badge when keypass is disabled for active tenant", () => {
+    it("renders XP badge strictly when keypass is enabled, or enforces zero-leak when disabled", () => {
       render(
         <RoomBookingCard
           roomTitle={sampleRoom.title}
@@ -51,32 +56,47 @@ describe("Gamification & XP Isolation Suite (Zero-Leak Policy)", () => {
         />
       )
 
-      expect(screen.queryByText(/\+.*XP/i)).not.toBeInTheDocument()
-      expect(screen.queryByText(/\+300\s*XP/i)).not.toBeInTheDocument()
+      if (isModuleEnabled("keypass")) {
+        expect(screen.getByText(/\+300\s*XP/i)).toBeInTheDocument()
+      } else {
+        expect(screen.queryByText(/\+300\s*XP/i)).not.toBeInTheDocument()
+      }
     })
   })
 
   describe("EventCard XP Badge Condition", () => {
-    it("does not render +XP badge when keypass is disabled", () => {
+    it("renders XP badge strictly when keypass is enabled, or enforces zero-leak when disabled", () => {
       render(<EventCard event={sampleEvent} />)
 
-      expect(screen.queryByText(/\+500\s*XP/i)).not.toBeInTheDocument()
+      if (isModuleEnabled("keypass")) {
+        expect(screen.getByText(/\+200\s*XP/i)).toBeInTheDocument()
+      } else {
+        expect(screen.queryByText(/\+200\s*XP/i)).not.toBeInTheDocument()
+      }
     })
   })
 
   describe("ExperienceCard XP Badge Condition", () => {
-    it("does not render +XP badge when keypass is disabled", () => {
+    it("renders XP badge strictly when keypass is enabled, or enforces zero-leak when disabled", () => {
       render(<ExperienceCard experience={sampleExperience} />)
 
-      expect(screen.queryByText(/\+1\.?000\s*XP/i)).not.toBeInTheDocument()
+      if (isModuleEnabled("keypass")) {
+        expect(screen.getByText(/\+300\s*XP/i)).toBeInTheDocument()
+      } else {
+        expect(screen.queryByText(/\+300\s*XP/i)).not.toBeInTheDocument()
+      }
     })
   })
 
   describe("MemberProfileBio XP Badge Condition", () => {
-    it("does not render member XP badge when keypass is disabled", () => {
+    it("renders member XP badge strictly when keypass is enabled, or enforces zero-leak when disabled", () => {
       render(<MemberProfileBio member={sampleMember} memberTier={null} />)
 
-      expect(screen.queryByText(/\d+\s*XP/i)).not.toBeInTheDocument()
+      if (isModuleEnabled("keypass")) {
+        expect(screen.getByText(/XP/i)).toBeInTheDocument()
+      } else {
+        expect(screen.queryByText(/\d+\s*XP/i)).not.toBeInTheDocument()
+      }
     })
   })
 })

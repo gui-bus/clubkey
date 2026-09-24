@@ -1,5 +1,7 @@
 import { expect, test } from "@playwright/test"
 
+import { brandConfig } from "@/src/config/brand.config"
+
 test.describe("Authentication & Member Journey E2E Suite", () => {
   test("full login, cockpit access, dropdown menu checks and logout journey", async ({
     page,
@@ -24,11 +26,28 @@ test.describe("Authentication & Member Journey E2E Suite", () => {
     await userTrigger.click()
 
     await expect(page.locator("text=Meu Perfil").first()).toBeVisible()
-    await expect(page.locator("text=Minhas Hospedagens").first()).toBeVisible()
     await expect(page.locator("text=Minha Assinatura").first()).toBeVisible()
     await expect(page.locator("text=Sair do Portal").first()).toBeVisible()
 
-    await expect(page.locator("text=Meus Eventos")).toHaveCount(0)
+    if (brandConfig.modules.stays) {
+      await expect(
+        page.locator("text=Minhas Hospedagens").first()
+      ).toBeVisible()
+    } else {
+      await expect(page.locator("text=Minhas Hospedagens")).toHaveCount(0)
+    }
+
+    if (brandConfig.modules.events) {
+      await expect(page.locator("text=Meus Eventos").first()).toBeVisible()
+    } else {
+      await expect(page.locator("text=Meus Eventos")).toHaveCount(0)
+    }
+
+    if (brandConfig.modules.keypass) {
+      await expect(page.locator("text=KeyPass").first()).toBeVisible()
+    } else {
+      await expect(page.locator("text=KeyPass")).toHaveCount(0)
+    }
 
     await page.click("text=Sair do Portal")
     await page.waitForTimeout(500)
