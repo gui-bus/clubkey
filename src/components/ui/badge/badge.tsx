@@ -2,8 +2,9 @@
 
 import * as React from "react"
 
-import { useKeyboardClick } from "@/lib/hooks"
 import { Slot } from "@radix-ui/react-slot"
+
+import { useKeyboardClick } from "@/src/lib/hooks"
 
 import { designRadius } from "../../../lib/design-system"
 import { cn } from "../../../lib/utils"

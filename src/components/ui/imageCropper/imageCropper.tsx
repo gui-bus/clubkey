@@ -248,7 +248,6 @@ export const ImageCropper = React.forwardRef<
           onTouchStart={handleMouseDown}
         >
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            {}
             <img
               ref={imageRef}
               src={src}
@@ -347,7 +346,6 @@ export const ImageCropper = React.forwardRef<
             <h3 className="text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">
               Resultado
             </h3>
-            {}
             <img
               src={croppedImage}
               alt="Cropped result"

@@ -2,9 +2,10 @@
 
 import * as React from "react"
 
-import { useKeyboardClick } from "@/lib/hooks"
 import { Icon } from "@iconify/react"
 import { cva } from "class-variance-authority"
+
+import { useKeyboardClick } from "@/src/lib/hooks"
 
 import { cn } from "../../../lib/utils"
 

@@ -2,8 +2,9 @@
 
 import * as React from "react"
 
-import { useKeyboardClick } from "@/lib/hooks"
 import * as AvatarPrimitive from "@radix-ui/react-avatar"
+
+import { useKeyboardClick } from "@/src/lib/hooks"
 
 import { designRadius } from "../../../lib/design-system"
 import { cn } from "../../../lib/utils"

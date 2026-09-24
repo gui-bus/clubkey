@@ -7,13 +7,13 @@ import {
   AvatarContext,
   AvatarFallback,
   type AvatarProps,
-} from "@/components/ui/avatar/avatar"
+} from "@/src/components/ui/avatar/avatar"
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip/tooltip"
+} from "@/src/components/ui/tooltip/tooltip"
 
 import { cn } from "../../../lib/utils"
 

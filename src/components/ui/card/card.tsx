@@ -2,11 +2,12 @@
 
 import * as React from "react"
 
-import { useKeyboardClick } from "@/lib/hooks"
 import { Ripple } from "@/lib/ripple/ripple"
 import { useRipples } from "@/lib/ripple/useRipple"
 import { Icon } from "@iconify/react"
 import { Slot } from "@radix-ui/react-slot"
+
+import { useKeyboardClick } from "@/src/lib/hooks"
 
 import { designRadius } from "../../../lib/design-system"
 import { cn } from "../../../lib/utils"
