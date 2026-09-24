@@ -13,7 +13,7 @@ export default async function ExperienciaCheckoutRedirectPage({
   const experience = EXPERIENCES.find((e) => e.id === Number(id))
   if (experience) {
     redirect(
-      `/experiencias/${experience.id}/${getExperienceSlug(experience)}/checkout`
+      `/experiencias/${experience.id}/${getExperienceSlug(experience)}/reserva`
     )
   }
   redirect(`/experiencias`)

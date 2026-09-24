@@ -402,7 +402,7 @@ export function ExperienceDetailClient({
                   </CtaButton>
                 ) : (
                   <CtaButton
-                    href={`/experiencias/${experience.id}/${expSlug}/checkout`}
+                    href={`/experiencias/${experience.id}/${expSlug}/reserva`}
                     variant="primary"
                     size="md"
                     isFullWidth

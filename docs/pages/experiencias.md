@@ -10,7 +10,7 @@ O módulo de **Experiências** gerencia vivências exclusivas, jantares sensoria
 | :--- | :--- | :--- | :--- |
 | `/experiencias` | Catálogo geral com filtros por categoria e busca | Client Component | Autenticado |
 | `/experiencias/[id]/[slug]` | Página de detalhes completos da experiência | Server + Client | Autenticado |
-| `/experiencias/[id]/[slug]/checkout` | Fluxo de reserva e checkout (PIX / Cartão / Tokens RIB) | Client Component | Autenticado |
+| `/experiencias/[id]/[slug]/reserva` | Fluxo de reserva e checkout (PIX / Cartão / Tokens RIB) | Client Component | Autenticado |
 | `/experiencias/[id]/[slug]/quem-vai` | Lista de membros com presença confirmada | Server + Client | Autenticado |
 
 ---
@@ -39,9 +39,9 @@ O módulo de **Experiências** gerencia vivências exclusivas, jantares sensoria
   - **Descrição Completa & Menu Degustação**: Detalhamento prato a prato ou etapas da vivência.
   - **Itens Inclusos (`includes`)**: Harmonização de rótulos raros, transporte executivo, material didático e presentes exclusivos.
   - **Widget "Quem Vai"**: Miniatura dos participantes confirmados com link para `/quem-vai`.
-  - **Botão de Reserva Principal**: Leva diretamente para a tela de checkout (`/checkout`).
+  - **Botão de Reserva Principal**: Leva diretamente para a tela de reserva (`/reserva`).
 
-### 3. Checkout de Experiência (`/experiencias/[id]/[slug]/checkout`)
+### 3. Checkout & Reserva de Experiência (`/experiencias/[id]/[slug]/reserva`)
 - **Resumo do Pedido**:
   - Nome da experiência, data, horário e valor unitário da cota.
   - **Seletor de Vagas**: Contador numérico (`1` a `4` cotas).
