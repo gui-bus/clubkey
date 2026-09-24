@@ -495,7 +495,7 @@ export function SignUpForm({ onSuccess }: SignUpFormProps): React.JSX.Element {
         <div className="text-center text-xs text-zinc-500 dark:text-zinc-400">
           Já possui uma conta?{" "}
           <Link
-            href="/sign-in"
+            href="/entrar"
             className="text-brand-primary hover:text-brand-primary-hover font-bold transition-colors"
           >
             Entrar

@@ -80,7 +80,7 @@ export default function SignInPage(): React.JSX.Element {
               Senha
             </label>
             <Link
-              href="/forgot-password"
+              href="/esqueci-minha-senha"
               className="text-xs text-brand-primary hover:text-brand-primary-hover font-semibold transition-colors outline-none"
             >
               Esqueci minha senha
@@ -110,7 +110,7 @@ export default function SignInPage(): React.JSX.Element {
         <div className="text-center text-xs text-zinc-500 dark:text-zinc-400 mt-2">
           Ainda não tem conta?{" "}
           <Link
-            href="/sign-up"
+            href="/cadastro"
             className="text-brand-primary hover:text-brand-primary-hover font-bold transition-colors"
           >
             Cadastre-se

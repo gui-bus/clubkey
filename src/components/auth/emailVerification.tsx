@@ -50,7 +50,7 @@ export function EmailVerification({
       if (onSuccess) {
         onSuccess()
       } else {
-        router.push("/sign-in")
+        router.push("/entrar")
       }
     }, 800)
   }

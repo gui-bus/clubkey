@@ -67,7 +67,7 @@ export function UserDropdownMenu({
 
   const handleLogout = () => {
     logout()
-    router.push("/sign-in")
+    router.push("/entrar")
   }
 
   return (

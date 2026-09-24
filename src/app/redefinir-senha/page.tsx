@@ -45,7 +45,7 @@ function ResetPasswordForm(): React.JSX.Element {
       toast.success(
         "Senha redefinida com sucesso! Faça login com sua nova senha."
       )
-      router.push("/sign-in")
+      router.push("/entrar")
     }, 700)
   }
 
@@ -135,7 +135,7 @@ function ResetPasswordForm(): React.JSX.Element {
 
         <div className="text-center mt-2">
           <Link
-            href="/sign-in"
+            href="/entrar"
             className="inline-flex items-center gap-2 text-xs font-bold text-zinc-600 dark:text-zinc-400 hover:text-brand-primary transition-colors"
           >
             <ArrowLeft className="w-3.5 h-3.5" />

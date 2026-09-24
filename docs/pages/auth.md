@@ -1,4 +1,4 @@
-# Especificação de Módulo: Autenticação & Acesso (`/auth`, `/sign-in`, `/sign-up`)
+# Especificação de Módulo: Autenticação & Acesso (`/auth`, `/entrar`, `/cadastro`)
 
 O módulo de **Autenticação & Acesso** gerencia o controle de entrada, adesão ao clube por convite, recuperação segura de credenciais, geração de tokens JWT e ciclo de vida da sessão do associado no ClubKey.
 
@@ -8,27 +8,27 @@ O módulo de **Autenticação & Acesso** gerencia o controle de entrada, adesão
 
 | Rota | Descrição | Tipo | Acesso |
 | :--- | :--- | :--- | :--- |
-| `/sign-in` (ou `/login`) | Tela de autenticação com e-mail corporativo e senha | Client Component | Público |
-| `/sign-up` | Solicitação de adesão ao clube com código de convite | Client Component | Público |
-| `/forgot-password` | Solicitação de link de redefinição de senha por e-mail | Client Component | Público |
-| `/reset-password` | Criação de nova senha através de token de segurança | Client Component | Público |
+| `/entrar` (ou `/login`) | Tela de autenticação com e-mail corporativo e senha | Client Component | Público |
+| `/cadastro` | Solicitação de adesão ao clube com código de convite | Client Component | Público |
+| `/esqueci-minha-senha` | Solicitação de link de redefinição de senha por e-mail | Client Component | Público |
+| `/redefinir-senha` | Criação de nova senha através de token de segurança | Client Component | Público |
 
 ---
 
 ## 🖥️ Arquitetura Visual & Componentes por Tela
 
-### 1. Login de Membro (`/sign-in`)
+### 1. Login de Membro (`/entrar`)
 - **Layout**:
   - Painel dividido: à esquerda, banner institucional escuro com fotografia de alta qualidade; à direita, card minimalista neutro de autenticação.
 - **Campos do Formulário (`signInForm.tsx`)**:
   - **E-mail Profissional (`email`)**: Input com validação de formato e sanitização.
   - **Senha (`password`)**: `passwordInput` com botão de revelar/ocultar senha (ícone de olho).
   - **Checkbox "Lembrar-me" (`rememberMe`)**: Mantém refresh token ativo em cookie seguro.
-  - **Link "Esqueci minha senha"**: Redireciona para `/forgot-password`.
+  - **Link "Esqueci minha senha"**: Redireciona para `/esqueci-minha-senha`.
   - **Botão CTA "Entrar no ClubKey"**: Dispara login com animação de spinner durante processamento.
-  - **Rodapé**: Atalho *"Ainda não possui convite? Solicite sua adesão"* $\rightarrow$ `/sign-up`.
+  - **Rodapé**: Atalho *"Ainda não possui convite? Solicite sua adesão"* $\rightarrow$ `/cadastro`.
 
-### 2. Solicitação de Adesão (`/sign-up`)
+### 2. Solicitação de Adesão (`/cadastro`)
 - **Campos do Formulário (`signUpForm.tsx` com validação Zod)**:
   - **Identificação**: Primeiro Nome (`firstName`), Sobrenome (`lastName`), E-mail Corporativo (`email`), Telefone / WhatsApp (`phone`).
   - **Posicionamento Profissional**: Empresa (`company`), Cargo Executivo (`role`), Cidade (`city`), Estado (`state`).
@@ -37,15 +37,15 @@ O módulo de **Autenticação & Acesso** gerencia o controle de entrada, adesão
   - **Termos & Conduta**: Checkbox obrigatório de concordância com o Estatuto do Clube.
   - **Botão CTA "Enviar Solicitação de Adesão"**: Exibe tela de confirmação de cadastro e direciona ao portal.
 
-### 3. Recuperação de Senha (`/forgot-password`)
+### 3. Recuperação de Senha (`/esqueci-minha-senha`)
 - Input de e-mail corporativo cadastrado.
 - Botão *"Enviar Link de Recuperação"*.
 - Mensagem de sucesso com instrução de verificação da caixa de entrada e link para retornar ao login.
 
-### 4. Redefinição de Senha (`/reset-password`)
-- Valida o parâmetro `token` presente na URL (ex: `/reset-password?token=abc123xyz`).
+### 4. Redefinição de Senha (`/redefinir-senha`)
+- Valida o parâmetro `token` presente na URL (ex: `/redefinir-senha?token=abc123xyz`).
 - Campos: Nova Senha (`newPassword`) e Confirmação (`confirmPassword`).
-- Ao submeter, valida no backend, atualiza o hash da senha e redireciona para `/sign-in` com mensagem de sucesso.
+- Ao submeter, valida no backend, atualiza o hash da senha e redireciona para `/entrar` com mensagem de sucesso.
 
 ---
 
