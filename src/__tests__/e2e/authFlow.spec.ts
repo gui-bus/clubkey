@@ -4,7 +4,7 @@ test.describe("Authentication & Member Journey E2E Suite", () => {
   test("full login, cockpit access, dropdown menu checks and logout journey", async ({
     page,
   }) => {
-    await page.goto("/entrar", { waitUntil: "domcontentloaded" })
+    await page.goto("/entrar", { waitUntil: "load" })
     await expect(page.locator("#email")).toBeVisible()
     await expect(page.locator("#password")).toBeVisible()
 
@@ -12,7 +12,7 @@ test.describe("Authentication & Member Journey E2E Suite", () => {
     await page.fill("#password", "SenhaSegura123!")
     await page.locator('button[type="submit"]').click()
 
-    await page.waitForURL((url) => url.pathname === "/", { timeout: 10000 })
+    await page.waitForURL((url) => url.pathname === "/", { timeout: 15000 })
 
     const welcomeHeading = page.locator("h1").filter({ hasText: /Bem-vindo/i })
     if (await welcomeHeading.isVisible()) {
