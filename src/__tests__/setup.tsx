@@ -46,7 +46,17 @@ vi.mock("next/link", () => ({
   default: MockLink,
 }))
 
-const IMAGE_PROPS = new Set(["fill", "priority"])
+const IMAGE_PROPS = new Set([
+  "fill",
+  "priority",
+  "unoptimized",
+  "quality",
+  "placeholder",
+  "blurDataURL",
+  "loader",
+  "overrideSrc",
+  "onLoadingComplete",
+])
 
 const MockImage = React.forwardRef<
   HTMLImageElement,
