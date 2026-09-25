@@ -9,7 +9,7 @@ import { PortalHome } from "@/src/components/portal/portalHome"
 
 import { isModuleEnabled } from "@/src/config/brand.config"
 
-describe("PortalHome Cockpit Multi-Tenant Suite", () => {
+describe("PortalHome Multi-Tenant Suite", () => {
   it("renders welcome banner with member info", () => {
     usePortalStore.setState({
       isAuthenticated: true,
@@ -29,7 +29,7 @@ describe("PortalHome Cockpit Multi-Tenant Suite", () => {
     expect(screen.getByText(/Bem-vindo\(a\), Lucas/i)).toBeInTheDocument()
   })
 
-  it("renders cockpit cards strictly for enabled modules", () => {
+  it("renders indicator cards strictly for enabled modules", () => {
     render(<PortalHome />)
 
     if (isModuleEnabled("stays")) {

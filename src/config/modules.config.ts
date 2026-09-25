@@ -32,7 +32,7 @@ export const SYSTEM_MODULE_REGISTRY: Record<SystemModule, ModuleDefinition> = {
   home: {
     id: "home",
     label: "Início",
-    description: "Visão geral e cockpit central do associado.",
+    description: "Visão geral e painel dinâmico do associado.",
     routePrefixes: ["/"],
     defaultHref: "/",
     requiresAuth: false,

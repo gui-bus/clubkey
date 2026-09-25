@@ -106,7 +106,7 @@ export function PortalHome(): React.JSX.Element {
   return (
     <div className="w-full flex flex-col pb-16">
       <section
-        id="cockpit-hero"
+        id="welcome-hero"
         className="relative z-30 w-full text-white overflow-hidden"
       >
         <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none select-none">

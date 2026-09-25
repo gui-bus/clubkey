@@ -3,7 +3,7 @@ import { expect, test } from "@playwright/test"
 import { brandConfig } from "@/src/config/brand.config"
 
 test.describe("Authentication & Member Journey E2E Suite", () => {
-  test("full login, cockpit access, dropdown menu checks and logout journey", async ({
+  test("full login, portal access, dropdown menu checks and logout journey", async ({
     page,
   }) => {
     await page.goto("/entrar", { waitUntil: "load" })
