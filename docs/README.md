@@ -14,6 +14,7 @@ Este diretório foi projetado especificamente para que desenvolvedores de backen
 - **[`API_SPECIFICATIONS.md`](./API_SPECIFICATIONS.md)**: Especificação completa de todas as rotas de API, métodos HTTP, parâmetros de rota/query, schemas de requisição e resposta (JSON), autenticação e status codes.
 - **[`ENUMS.md`](./ENUMS.md)**: Dicionário central de todos os Enums e constantes padronizados em inglês (`lowercase`/`snake_case`).
 - **[`GAMIFICATION_RULES.md`](./GAMIFICATION_RULES.md)**: Manual de regras de negócio do KeyPass, algoritmos de cálculo de XP, subida de tier, bônus de RIB tokens, marcos intermediários e regras de retenção/descongelamento.
+- **[`WHITE_LABEL.md`](./WHITE_LABEL.md)**: Especificação completa do Sistema White-Label & Arquitetura Modular (`brandPresets`, matriz `modules`, defesa em profundidade em 4 camadas, Edge Proxy, guards de rota e desacoplamento visual).
 - **[`SEED_DATA.md`](./SEED_DATA.md)**: Datasets iniciais prontos em JSON para seeders de banco de dados (Tiers, Badges, Missões, Drops e Benefícios).
 
 ### 2. Especificações por Página / Módulo

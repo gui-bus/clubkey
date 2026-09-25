@@ -51,7 +51,13 @@ Para manter o princípio de Responsabilidade Única (SRP) e segregação de inte
 ### 4. Diretrizes de Tema Neutro (Bloom UI & ClubKey)
 - **Superfícies de Cards & Contêineres**: Fundo estritamente branco puro (`bg-white`) no modo claro e cinza neutro profundo (`bg-zinc-900`, `dark:bg-zinc-900`, bordas `border-zinc-200`, `dark:border-zinc-800`) no modo escuro.
 - **Sem Contêineres Coloridos/Azulados**: Apenas superfícies limpas e neutras.
-- **Cores de Destaque**: A cor da marca (`#00E599` / `text-brand-primary`) e cores semânticas (`emerald`, `amber`, `red`) são reservadas exclusivamente para tipografia, ícones de status, badges, tags e acentos.
+- **Cores de Destaque**: A cor da marca (ex: `#FF6847` no ClubKey, `#B88A2D` no Viverde) e cores semânticas (`emerald`, `amber`, `red`) são reservadas exclusivamente para tipografia, ícones de status, badges, tags e acentos.
+
+### 5. Arquitetura White-Label & Sistema Modular
+A plataforma opera em regime single-codebase multi-tenant controlado por `NEXT_PUBLIC_TENANT`:
+- **Presets de Marca (`src/config/brand.config.ts`)**: Matriz de ativação dos 7 módulos do sistema (`home`, `stays`, `networking`, `events`, `experiences`, `benefits`, `keypass`), tokens de cores com injeção dinâmica de variáveis CSS e assets de logotipo.
+- **Defesa em Profundidade (4 Camadas)**: Edge Proxy (`src/proxy.ts`), Server Route Guards (`assertModule`), componente declarativo `<ModuleGate>` e hook reativo `useBrandModules()`.
+- Para a especificação completa, consulte o documento [`docs/WHITE_LABEL.md`](./WHITE_LABEL.md).
 
 ---
 
