@@ -1,17 +1,59 @@
 # Especificação de Módulo: Experiências & Lifestyle (`/experiencias`)
 
-O módulo de **Experiências** gerencia vivências exclusivas, jantares sensoriais conduzidos por chefs renomados, masterclasses de enologia e degustações raras em caves privadas para associados do ClubKey.
+O módulo de **Experiências** gerencia vivências exclusivas, jantares sensoriais conduzidos por chefs renomados, masterclasses de enologia e degustações raras em caves privadas para associados do clube.
+
+---
+
+## 🛡️ Controle de Acesso Modular & White-Label
+
+O módulo de Experiências é governado pela flag `modules.experiences` no preset ativo em [`src/config/brand.config.ts`](file:///c:/Users/Guilherme/Desktop/ID/clubkey/src/config/brand.config.ts).
+
+```mermaid
+flowchart TD
+    Req[Usuário acessa /experiencias] --> Proxy[Edge Proxy src/proxy.ts]
+    Proxy -- isRouteAllowed: false (módulo desabilitado) --> 404[Rewrite para /not-found]
+    Proxy -- isRouteAllowed: true (módulo habilitado) --> Layout[Server Component Layout]
+    Layout --> Guard[assertModule('experiences')]
+    Guard -- Módulo Ativo --> Page[Renderiza Catálogo de Experiências]
+```
+
+### Regras de Isolamento por Preset:
+- **Quando o módulo está ativo no preset (`experiences: true`)**: Acesso completo ao catálogo, compra de cotas, abatimento com Tokens RIB (se keypass ativo) e lista "Quem Vai".
+- **Quando o módulo está desabilitado no preset (`experiences: false`)**: O módulo fica **desativado**. Links de navegação no Header, Footer, Dropdown e seções no feed da página inicial são suprimidos com `<ModuleGate>`. Qualquer tentativa de acesso direto retorna **404 Not Found**.
 
 ---
 
 ## 🗺️ Rotas do Módulo & Hierarquia
 
-| Rota | Descrição | Tipo | Acesso |
-| :--- | :--- | :--- | :--- |
-| `/experiencias` | Catálogo geral com filtros por categoria e busca | Client Component | Autenticado |
-| `/experiencias/[id]/[slug]` | Página de detalhes completos da experiência | Server + Client | Autenticado |
-| `/experiencias/[id]/[slug]/reserva` | Fluxo de reserva e checkout (PIX / Cartão / Tokens RIB) | Client Component | Autenticado |
-| `/experiencias/[id]/[slug]/quem-vai` | Lista de membros com presença confirmada | Server + Client | Autenticado |
+| Rota | Descrição | Tipo | Proteção Modular |
+| :--- | :--- | :--- | :---: |
+| `/experiencias` | Catálogo geral com filtros por categoria e busca | Client Component | `assertModule("experiences")` |
+| `/experiencias/[id]/[slug]` | Página de detalhes completos da experiência | Server + Client | `assertModule("experiences")` |
+| `/experiencias/[id]/[slug]/reserva` | Fluxo de reserva e checkout (PIX / Cartão / Tokens RIB) | Client Component | `assertModule("experiences")` |
+| `/experiencias/[id]/[slug]/quem-vai` | Lista de membros com presença confirmada | Server + Client | `assertModule("experiences")` |
+
+---
+
+## 🔄 Fluxo de Reserva e Checkout com Tokens RIB
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Member as Associado
+    participant Client as Frontend (ExperienceCheckout)
+    participant Store as Zustand (gamificationSlice)
+    participant API as Backend REST API
+    participant Gateway as Gateway de Pagamento
+
+    Member->>Client: Seleciona cotas e ativa "Abater com Tokens RIB"
+    Client->>Store: Valida saldo de RIB Tokens
+    Client->>API: POST /api/v1/experiences/:id/checkout { seats, useRibTokensDiscount, paymentMethod }
+    API->>Gateway: Processa PIX ou Cartão de Crédito
+    Gateway-->>API: Transação Aprovada
+    API->>API: Debita Tokens RIB e credita +150 XP
+    API-->>Client: 200 OK (orderId, voucherCode, qrCodeUrl)
+    Client->>Member: Exibe confirmação com Voucher Digital
+```
 
 ---
 
@@ -20,7 +62,7 @@ O módulo de **Experiências** gerencia vivências exclusivas, jantares sensoria
 ### 1. Catálogo de Experiências (`/experiencias`)
 - **Hero de Apresentação**:
   - Título `"EXPERIÊNCIAS & LIFESTYLE EXCLUSIVO"`.
-  - Subtítulo com destaque para curadoria gastronômica e vivências de alto luxo.
+  - Subtítulo com destaque para curadoria gastronômica e vivências de alto padrão.
 - **Barra de Filtros & Busca**:
   - Filtros de categoria: `"Todos"`, `"Vinhos & Degustação"`, `"Alta Gastronomia"`, `"Lifestyle"`, `"Arte & Cultura"`.
   - Input de busca por nome da experiência, chef ou local.
@@ -33,31 +75,24 @@ O módulo de **Experiências** gerencia vivências exclusivas, jantares sensoria
 ### 2. Detalhes da Experiência (`/experiencias/[id]/[slug]`)
 - **`experienceDetailClient.tsx`**:
   - `backButton.tsx`: Retorna para `/experiencias`.
-  - `shareButton.tsx`: Compartilha a vivência nas redes ou via link direto.
-  - **Banner Hero & Dados Gerais**: Data, horário, endereço/localização e categoria.
-  - **Card do Chef / Especialista**: Mini-bio do anfitrião com foto, especialidade e conquistas (estrelas Michelin, prêmios).
-  - **Descrição Completa & Menu Degustação**: Detalhamento prato a prato ou etapas da vivência.
-  - **Itens Inclusos (`includes`)**: Harmonização de rótulos raros, transporte executivo, material didático e presentes exclusivos.
+  - `shareButton.tsx`: Compartilha a vivência via link direto.
+  - **Banner Hero & Dados Gerais**: Data, horário, endereço e categoria.
+  - **Card do Chef / Especialista**: Mini-bio do anfitrião com foto, especialidade e conquistas.
+  - **Descrição Completa & Menu Degustação**: Detalhamento prato a prato.
+  - **Itens Inclusos (`includes`)**: Harmonização de rótulos raros, transporte executivo, material didático.
   - **Widget "Quem Vai"**: Miniatura dos participantes confirmados com link para `/quem-vai`.
   - **Botão de Reserva Principal**: Leva diretamente para a tela de reserva (`/reserva`).
 
 ### 3. Checkout & Reserva de Experiência (`/experiencias/[id]/[slug]/reserva`)
-- **Resumo do Pedido**:
-  - Nome da experiência, data, horário e valor unitário da cota.
-  - **Seletor de Vagas**: Contador numérico (`1` a `4` cotas).
+- **Resumo do Pedido**: Nome da experiência, data, horário, valor unitário e seletor de cotas (`1` a `4`).
 - **Abatimento com Tokens RIB (`useRibTokensDiscount`)**:
   - Switch/Checkbox permitindo abater valor financeiro utilizando o saldo disponível de Tokens RIB.
   - Exibe o valor do desconto calculado dinamicamente em Reais.
 - **Métodos de Pagamento (`paymentMethod`)**:
-  - Tabs ou botões de rádio para escolher entre **PIX** ou **Cartão de Crédito**.
-  - Se **PIX**: Gera QR Code dinâmico, código Pix Copia-e-Cola e contador de expiração de 15 minutos.
-  - Se **Cartão de Crédito**: Formulário seguro com campos de Número do Cartão, Nome Impresso, Validade (`MM/AA`), CVV e opção de parcelamento.
+  - **PIX**: Gera QR Code dinâmico, código Pix Copia-e-Cola e contador de expiração.
+  - **Cartão de Crédito**: Formulário seguro com validação de campos e parcelamento.
 - **Botão "Confirmar Pagamento & Garantir Vagas"**:
-  - Processa a transação, credita XP de compra na conta do associado e exibe tela/modal de confirmação com voucher digital.
-
-### 4. Tela "Quem Vai" (`/experiencias/[id]/[slug]/quem-vai`)
-- Lista os membros que adquiriram cotas para o mesmo encontro.
-- Suporta busca e botão de conexão rápida entre os participantes.
+  - Processa a transação, credita XP de compra e exibe voucher digital.
 
 ---
 
@@ -98,120 +133,29 @@ export interface ExperienceCheckoutPayload {
     installments?: number
   }
 }
-
-export interface ExperienceCheckoutResponse {
-  orderId: string
-  status: "confirmed" | "pending_payment" | "failed"
-  amountPaid: number
-  discountApplied: number
-  tokensUsed: number
-  xpEarned: number
-  voucherCode: string
-  qrCodeUrl?: string
-}
 ```
 
 ---
 
-## 📡 Especificação Completa dos Endpoints de API
+## 📡 Especificação dos Endpoints de API
 
 ### 1. `GET /api/v1/experiences`
 Lista todas as experiências com filtros de categoria e busca.
-- **Query Params**:
-  - `category` (opcional): `"wine"` | `"gastronomy"` | `"lifestyle"` | `"art"`
-  - `search` (opcional): Termo de busca no título ou descrição.
-- **Response (200 OK)**:
-```json
-[
-  {
-    "id": 1,
-    "title": "Masterclass de Vinhos Raros da Borgonha",
-    "sub": "Degustação de 6 safras premiadas com o Sommelier Ricardo",
-    "category": "wine",
-    "date": "28 Outubro 2026",
-    "time": "19:00",
-    "location": "Cave Privée • ClubKey Jardins",
-    "image": "/utils/banners/img_03.png",
-    "description": "Uma imersão sensorial única pelas encostas da Côte de Nuits...",
-    "price": 850.00,
-    "ribTokensCost": 4,
-    "capacity": 10,
-    "spotsLeft": 2,
-    "xpReward": 150
-  }
-]
-```
+- **Query Params**: `category`, `search`
+- **Response (200 OK)**: Array de `ExperienceItem`.
 
 ### 2. `GET /api/v1/experiences/:id`
 Retorna todos os dados detalhados da experiência.
-- **Path Params**: `id` (número inteiro).
-- **Response (200 OK)**:
-```json
-{
-  "id": 1,
-  "title": "Masterclass de Vinhos Raros da Borgonha",
-  "sub": "Degustação de 6 safras premiadas com o Sommelier Ricardo",
-  "category": "wine",
-  "date": "28 Outubro 2026",
-  "time": "19:00",
-  "location": "Cave Privée • ClubKey Jardins",
-  "image": "/utils/banners/img_03.png",
-  "description": "Uma imersão sensorial única pelas encostas da Côte de Nuits e Côte de Beaune.",
-  "fullDescription": "Conduzida pelo Sommelier Executivo Ricardo Silveira, esta masterclass reúne seis garrafas raras das safras 2010 a 2018. A degustação será acompanhada por um menu degustação criado especialmente para a ocasião.",
-  "includes": [
-    "Degustação guiada de 6 vinhos Grands Crus & Premiers Crus",
-    "Menu harmonizado em 5 tempos pelo Chef Convidado",
-    "Caderno de notas enológicas personalizado em couro ClubKey",
-    "Certificado de participação na masterclass assinado pelo sommelier"
-  ],
-  "participants": [1, 2, 4],
-  "price": 850.00,
-  "ribTokensCost": 4,
-  "capacity": 10,
-  "spotsLeft": 2,
-  "xpReward": 150
-}
-```
+- **Response (200 OK)**: Objeto completo `ExperienceItem` com `includes` e `participants`.
 
 ### 3. `GET /api/v1/experiences/:id/attendees`
 Retorna os associados confirmados para a tela *"Quem Vai"*.
-- **Response (200 OK)**:
-```json
-[
-  {
-    "id": 1,
-    "firstName": "Rodrigo",
-    "lastName": "Salles",
-    "role": "Founder & Managing Partner",
-    "company": "Venture Capital Partners",
-    "city": "São Paulo, SP",
-    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400",
-    "tierId": "patrono",
-    "membershipTier": "Patrono"
-  }
-]
-```
+- **Response (200 OK)**: Array de `RecommendedMember`.
 
 ### 4. `POST /api/v1/experiences/:id/checkout`
 Processa o pagamento das cotas da experiência.
 - **Headers**: `Authorization: Bearer <jwt_token>`
-- **Request Body**:
-```json
-{
-  "experienceId": 1,
-  "seats": 1,
-  "paymentMethod": "credit_card",
-  "useRibTokensDiscount": true,
-  "tokensToRedeem": 2,
-  "creditCard": {
-    "cardNumber": "4111111111111234",
-    "holderName": "RODRIGO SALLES",
-    "expiry": "11/28",
-    "cvv": "123",
-    "installments": 1
-  }
-}
-```
+- **Request Body**: `ExperienceCheckoutPayload`
 - **Response (200 OK)**:
 ```json
 {
@@ -228,20 +172,8 @@ Processa o pagamento das cotas da experiência.
 
 ---
 
-## ⚡ Interações & Comportamento do Usuário
-
-1. **Seleção de Cotas**: Atualiza o subtotal em tempo real conforme o número de vagas selecionadas.
-2. **Aplicação de Desconto com Tokens RIB**: O usuário pode ativar o switch para abater até o limite permitido; o valor final a pagar é recalculado na hora.
-3. **Pagamento PIX**:
-   - Exibe código PIX Copia-e-Cola com botão de cópia rápida.
-   - O backend pode notificar via WebSocket ou pooling a liquidação do PIX para direcionar o usuário à tela de sucesso.
-4. **Toast de Sucesso**: Ao concluir, exibe mensagem celebrando a reserva e informando o total de XP adicionado.
-
----
-
 ## 🛡️ Regras de Negócio & Casos de Borda
 
 1. **Saldo Insuficiente de Tokens RIB**: O checkbox de desconto só fica elegível se o membro possuir saldo de tokens maior que zero.
-2. **Capacidade Esgotada**: Se as vagas forem preenchidas simultaneamente por outro associado durante o checkout, o backend deve responder com `409 Conflict` e o frontend avisar para tentar outra data.
+2. **Capacidade Esgotada**: Se as vagas forem preenchidas simultaneamente por outro associado durante o checkout, o backend responde com `409 Conflict`.
 3. **Reembolso & Cancelamento**: Cancelamentos solicitados com até 48h de antecedência estornam o valor integral e devolvem os Tokens RIB à conta.
-

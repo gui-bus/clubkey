@@ -1,14 +1,53 @@
 # Especificação de Módulo: Benefícios & Parcerias (`/beneficios`)
 
-O módulo de **Benefícios & Parcerias** concentra as vantagens exclusivas negociadas pela diretoria do ClubKey com marcas de luxo, restaurantes com estrelas Michelin, empresas de aviação executiva, spas de alto padrão e serviços de atendimento internacional.
+O módulo de **Benefícios & Parcerias** concentra as vantagens exclusivas negociadas com marcas de luxo, restaurantes renomados, aviação executiva, spas de alto padrão e serviços de hospitalidade internacional para membros do clube.
+
+---
+
+## 🛡️ Controle de Acesso Modular & White-Label
+
+O módulo de Benefícios é governado pela flag `modules.benefits` em [`src/config/brand.config.ts`](file:///c:/Users/Guilherme/Desktop/ID/clubkey/src/config/brand.config.ts).
+
+```mermaid
+flowchart TD
+    Req[Usuário acessa /beneficios] --> Proxy[Edge Proxy src/proxy.ts]
+    Proxy -- isRouteAllowed: false (módulo desabilitado) --> 404[Rewrite para /not-found]
+    Proxy -- isRouteAllowed: true (módulo habilitado) --> Layout[Server Component Layout]
+    Layout --> Guard[assertModule('benefits')]
+    Guard -- Módulo Ativo --> Page[Renderiza Galeria de Benefícios]
+```
+
+### Regras de Isolamento por Preset:
+- **Quando o módulo está ativo no preset (`benefits: true`)**: Acesso total à galeria de benefícios, regras de parceria e resgate de cupons.
+- **Quando o módulo está desabilitado no preset (`benefits: false`)**: O módulo fica **desativado**. Links de navegação no Header, Footer, Dropdown e atalhos no feed da página inicial são suprimidos via `<ModuleGate>`. Qualquer tentativa de acesso direto retorna **404 Not Found**.
 
 ---
 
 ## 🗺️ Rotas do Módulo & Hierarquia
 
-| Rota | Descrição | Tipo | Acesso |
-| :--- | :--- | :--- | :--- |
-| `/beneficios` | Galeria geral de benefícios com filtros por categoria e modal de resgate | Client Component | Autenticado |
+| Rota | Descrição | Tipo | Proteção Modular |
+| :--- | :--- | :--- | :---: |
+| `/beneficios` | Galeria geral de benefícios com filtros por categoria e modal de resgate | Client Component | `assertModule("benefits")` |
+
+---
+
+## 🔄 Fluxo de Resgate de Vantagem
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Member as Associado
+    participant Client as Frontend (BenefitCard / Modal)
+    participant API as Backend REST API
+
+    Member->>Client: Clica em "Resgatar Vantagem"
+    Client->>Client: Abre BenefitRedemptionDialog com regras
+    Member->>Client: Clica no botão de Copiar Cupom
+    Client->>Client: Copia código para a área de transferência
+    Client->>API: POST /api/v1/benefits/:id/claim
+    API-->>Client: 200 OK (claimedAt, couponCode)
+    Client->>Member: Dispara Toast Sonner "Cupom copiado com sucesso!"
+```
 
 ---
 
@@ -17,27 +56,22 @@ O módulo de **Benefícios & Parcerias** concentra as vantagens exclusivas negoc
 ### 1. Galeria de Benefícios (`/beneficios`)
 - **Hero & Filtros de Categoria**:
   - Título `"BENEFÍCIOS EXCLUSIVOS & PARCERIAS DE LUXO"`.
-  - Pílulas de seleção de categoria:
-    - `"Todos"`
-    - `"Gastronomia & Vinhos"` (`"gastronomy"`)
-    - `"Mobilidade & Aviação"` (`"mobility"`)
-    - `"Lifestyle & Moda"` (`"lifestyle"`)
-    - `"Wellness & Saúde"` (`"wellness"`)
+  - Pílulas de seleção de categoria: `"Todos"`, `"Gastronomia & Vinhos"` (`gastronomy`), `"Mobilidade & Aviação"` (`mobility`), `"Lifestyle & Moda"` (`lifestyle`), `"Wellness & Saúde"` (`wellness`).
   - Campo de pesquisa em tempo real por nome do parceiro ou tipo de vantagem.
 - **Grid de Cards de Benefício (`BenefitCard`)**:
   - Logotipo da marca parceira (`partnerLogo`).
-  - Nome do parceiro (`partnerName`) e badge de destaque da vantagem (`discountBadge`: ex: `"20% OFF"`, `"Isenção de Rolha"`, `"Upgrade de Categoria"`, `"Welcome Amenity"`).
+  - Nome do parceiro (`partnerName`) e badge de destaque (`discountBadge`: ex: `"20% OFF"`, `"Isenção de Rolha"`, `"Upgrade"`).
   - Título da oportunidade (`title`) e resumo das condições.
   - Data de validade da parceria (`validUntil`).
   - Botão de ação *"Resgatar Vantagem"* $\rightarrow$ Abre o modal detalhado de resgate.
 
 ### 2. Modal de Resgate de Cupom (`BenefitRedemptionDialog`)
-- **Cabeçalho**: Logotipo oficial do parceiro, título da vantagem e selo de garantia ClubKey.
+- **Cabeçalho**: Logotipo oficial do parceiro, título da vantagem e selo de garantia.
 - **Bloco de Cupom / Código**:
-  - Caixa de código estilizada em fonte monoespaçada (ex: `"CLUBKEY-FASANO-2026"`).
+  - Caixa de código estilizada em fonte monoespaçada (ex: `"PARCEIRO-VIP-2026"`).
   - Botão interativo de cópia com um clique (`Copy`), disparando Toast de confirmação.
 - **Instruções de Utilização**:
-  - Passo 1: Informar o código no checkout ou apresentar a carteira digital KeyPass.
+  - Passo 1: Informar o código no checkout ou apresentar a carteira digital.
   - Passo 2: Condições de reserva prévia (se aplicável).
 - **Botão de Ação Externa**: Link seguro para abrir o portal do parceiro ou chamar o suporte no WhatsApp.
 
@@ -64,50 +98,16 @@ export interface BenefitItem {
 
 ---
 
-## 📡 Especificação Completa dos Endpoints de API
+## 📡 Especificação dos Endpoints de API
 
 ### 1. `GET /api/v1/benefits`
 Lista os parceiros e benefícios disponíveis com filtros.
-- **Query Params**:
-  - `category` (opcional): `"gastronomy"` | `"mobility"` | `"lifestyle"` | `"wellness"`
-  - `search` (opcional): Termo de busca por nome do parceiro ou título.
-- **Response (200 OK)**:
-```json
-[
-  {
-    "id": 1,
-    "partnerName": "Fasano Gastronomia",
-    "partnerLogo": "/utils/partners/fasano.png",
-    "category": "gastronomy",
-    "title": "Welcome Drink & Isenção de Rolha",
-    "discountBadge": "VIP Club",
-    "description": "Benefício exclusivo em todas as unidades do grupo no Brasil e Uruguai.",
-    "fullRules": "Válido para mesas de até 4 pessoas mediante apresentação do KeyPass digital. Não cumulativo com outras promoções.",
-    "redemptionType": "coupon",
-    "couponCode": "CLUBKEY-FASANO-2026",
-    "actionUrl": "https://www.fasano.com.br/reservas",
-    "validUntil": "Dezembro 2026"
-  },
-  {
-    "id": 2,
-    "partnerName": "Flapper Aviação Executiva",
-    "partnerLogo": "/utils/partners/flapper.png",
-    "category": "mobility",
-    "title": "US$ 250 de Crédito em Voos Compartilhados",
-    "discountBadge": "US$ 250 OFF",
-    "description": "Crédito na primeira reserva de assento em jatos e helicópteros executivos.",
-    "fullRules": "Aplicável no app Flapper inserindo o cupom exclusivo ClubKey antes do checkout.",
-    "redemptionType": "coupon",
-    "couponCode": "FLAPPER-CLUBKEY-VIP",
-    "actionUrl": "https://flyflapper.com",
-    "validUntil": "Novembro 2026"
-  }
-]
-```
+- **Query Params**: `category`, `search`
+- **Response (200 OK)**: Array de `BenefitItem`.
 
 ### 2. `GET /api/v1/benefits/:id`
 Retorna as regras completas e detalhes de um benefício específico.
-- **Response (200 OK)**: Retorna o objeto `BenefitItem` individual.
+- **Response (200 OK)**: Objeto `BenefitItem` individual.
 
 ### 3. `POST /api/v1/benefits/:id/claim`
 Registra a visualização/cópia do cupom pelo associado para contabilização de métricas de conversão do parceiro.
@@ -117,17 +117,9 @@ Registra a visualização/cópia do cupom pelo associado para contabilização d
 {
   "benefitId": 1,
   "claimedAt": "2026-09-17T17:40:00Z",
-  "couponCode": "CLUBKEY-FASANO-2026"
+  "couponCode": "PARCEIRO-VIP-2026"
 }
 ```
-
----
-
-## ⚡ Interações & Comportamento do Usuário
-
-1. **Filtro Rápido por Pílulas**: A seleção de categoria filtra a grade instantaneamente.
-2. **Cópia do Código de Cupom**: Clicar no botão de cópia armazena a string no clipboard do sistema e dispara Toast de sucesso: `"Código CLUBKEY-FASANO-2026 copiado!"`.
-3. **Abertura de Link do Parceiro**: Abre uma nova aba (`target="_blank" rel="noopener noreferrer"`) mantendo o associado no portal.
 
 ---
 
@@ -135,4 +127,3 @@ Registra a visualização/cópia do cupom pelo associado para contabilização d
 
 1. **Benefício Expirado**: Benefícios cuja data `validUntil` tenha sido ultrapassada são ocultados automaticamente da listagem.
 2. **Categorização Obrigatória**: Todo benefício pertence a uma das quatro categorias oficiais (`gastronomy`, `mobility`, `lifestyle`, `wellness`).
-

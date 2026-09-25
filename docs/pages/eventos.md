@@ -1,18 +1,62 @@
 # Especificação de Módulo: Eventos (`/eventos`)
 
-O módulo de **Eventos** gerencia toda a programação presencial exclusiva do ClubKey, incluindo jantares executivos (*Private Dinners*), painéis estratégicos (*Keynotes*), encontros de c-levels (*Exclusive Roundtables*) e vivências de alta gastronomia.
+O módulo de **Eventos** gerencia toda a programação presencial exclusiva do clube, incluindo jantares executivos (*Private Dinners*), painéis estratégicos (*Keynotes*), encontros de c-levels (*Exclusive Roundtables*) e vivências de alta gastronomia.
+
+---
+
+## 🛡️ Controle de Acesso Modular & White-Label
+
+O módulo de Eventos é governado pela flag `modules.events` do preset ativo em [`src/config/brand.config.ts`](file:///c:/Users/Guilherme/Desktop/ID/clubkey/src/config/brand.config.ts).
+
+```mermaid
+flowchart TD
+    Req[Usuário acessa /eventos ou /agenda] --> Proxy[Edge Proxy src/proxy.ts]
+    Proxy -- isRouteAllowed: false (módulo desabilitado) --> 404[Rewrite para /not-found]
+    Proxy -- isRouteAllowed: true (módulo habilitado) --> Layout[Server Component Layout]
+    Layout --> Guard[assertModule('events')]
+    Guard -- Módulo Ativo --> Page[Renderiza Catálogo de Eventos]
+```
+
+### Regras de Isolamento por Preset:
+- **Quando o módulo está ativo no preset (`events: true`)**: Acesso total ao catálogo, detalhes, RSVP, lista "Quem Vai" e Meus Eventos.
+- **Quando o módulo está desabilitado no preset (`events: false`)**: O módulo fica **100% inativo**. Links no Header, Footer, Dropdown de usuário e seções no feed inicial são omitidos via `<ModuleGate>`. Qualquer tentativa de acesso direto via URL resulta imediatamente em **404 Not Found**.
 
 ---
 
 ## 🗺️ Rotas do Módulo & Hierarquia
 
-| Rota | Descrição | Tipo | Acesso |
-| :--- | :--- | :--- | :--- |
-| `/eventos` | Catálogo geral de eventos com filtros e busca | Client Component | Autenticado |
-| `/eventos/[id]/[slug]` | Página de detalhes completos do evento | Server + Client | Autenticado |
-| `/eventos/[id]/[slug]/quem-vai` | Lista de membros confirmados ("Quem Vai") | Server + Client | Autenticado |
-| `/eventos/meus-eventos` | Agenda pessoal do associado com eventos confirmados | Client Component | Autenticado |
-| `/eventos/meus-eventos/[id]/[slug]` | Voucher / Ingresso digital do associado com QR Code | Server + Client | Autenticado |
+| Rota | Descrição | Tipo | Proteção Modular |
+| :--- | :--- | :--- | :---: |
+| `/eventos` | Catálogo geral de eventos com filtros e busca | Client Component | `assertModule("events")` |
+| `/agenda` | Rota alias para `/eventos` | Server Component | `assertModule("events")` |
+| `/eventos/[id]/[slug]` | Página de detalhes completos do evento | Server + Client | `assertModule("events")` |
+| `/eventos/[id]/[slug]/quem-vai` | Lista de membros confirmados ("Quem Vai") | Server + Client | `assertModule("events")` |
+| `/eventos/meus-eventos` | Agenda pessoal do associado com eventos confirmados | Client Component | `assertModule("events")` |
+| `/meus-eventos` | Rota alias para `/eventos/meus-eventos` | Server Component | `assertModule("events")` |
+| `/eventos/meus-eventos/[id]/[slug]` | Voucher / Ingresso digital do associado com QR Code | Server + Client | `assertModule("events")` |
+
+---
+
+## 🔄 Fluxo de Confirmação de Presença (RSVP)
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Member as Associado
+    participant Client as Frontend (EventCard / Detail)
+    participant Store as Zustand (eventsSlice)
+    participant API as Backend REST API
+    participant Gamification as Motor de Gamificação
+
+    Member->>Client: Clica em "Confirmar Presença"
+    Client->>Store: Optimistic Update (isConfirmed: true, spotsLeft - 1)
+    Client->>API: POST /api/v1/events/:id/rsvp { action: "toggle" }
+    API->>API: Valida Vagas & Tier Mínimo
+    API->>Gamification: Credita +250 XP e +1 RIB Token (se keypass ativo)
+    API-->>Client: 200 OK (currentCount, spotsLeft, xpEarned)
+    Client->>Member: Dispara Toast Sonner "Presença Confirmada!"
+    Client->>Client: Atualiza contador no Header e Painel Inicial
+```
 
 ---
 
@@ -33,15 +77,15 @@ O módulo de **Eventos** gerencia toda a programação presencial exclusiva do C
 ### 2. Detalhes do Evento (`/eventos/[id]/[slug]`)
 - **`eventDetailClient.tsx`**:
   - `backButton.tsx`: Retorna para `/eventos`.
-  - `shareButton.tsx`: Compartilha o link amigável via Web Share API ou cópia para área de transferência.
+  - `shareButton.tsx`: Compartilha link via Web Share API ou cópia para área de transferência.
   - `addToCalendarButton.tsx`: Dropdown para adicionar o evento ao Google Calendar, Apple iCal e Outlook.
   - **Banner Principal & Badges**: Exibe categoria, recompensa de XP e RIB Tokens, formato e traje exigido (`dressCode`).
   - **Card do Host / Anfitrião**: Foto, nome, cargo, empresa e tier do membro anfitrião (`organizer`).
   - **Barra de Ocupação**: `Progress` com porcentagem de vagas preenchidas (`fillPercentage`) e contagem de vagas restantes.
-  - **Destaques da Programação (`highlights`)**: Lista de blocos com título e descrição do cronograma/regras (ex: Regra Chatham House, Mesa Redonda).
+  - **Destaques da Programação (`highlights`)**: Blocos com cronograma e regras (ex: Regra Chatham House, Mesa Redonda).
   - **Itens Inclusos (`inclusions`)**: Lista de benefícios inclusos (ex: Welcome Drink, Jantar em 4 etapas, Vagas reservadas).
   - **Widget "Quem Vai"**: Miniatura dos participantes confirmados com link para a visualização expandida.
-  - **Navegação Entre Eventos (`relatedEventsCard.tsx`)**: Cards para navegar rapidamente para o evento anterior e próximo da grade.
+  - **Navegação Entre Eventos (`relatedEventsCard.tsx`)**: Cards para navegar rapidamente para o evento anterior e próximo.
 
 ### 3. Tela "Quem Vai" (`/eventos/[id]/[slug]/quem-vai`)
 - Cabeçalho com o nome do evento e contagem total de confirmados.
@@ -98,7 +142,7 @@ export interface EventRSVPResponse {
 
 ---
 
-## 📡 Especificação Completa dos Endpoints de API
+## 📡 Especificação dos Endpoints de API
 
 ### 1. `GET /api/v1/events`
 Lista os eventos com paginação e filtros.
@@ -119,7 +163,7 @@ Lista os eventos com paginação e filtros.
       "day": "24",
       "month": "OUT",
       "time": "19:30 - 22:30",
-      "location": "Salão Nobre • ClubKey Faria Lima",
+      "location": "Salão Nobre • Sede Central",
       "image": "/utils/banners/img_01.png",
       "description": "Encontro exclusivo entre fundadores e gestores de patrimônio...",
       "capacity": 24,
@@ -142,140 +186,25 @@ Lista os eventos com paginação e filtros.
 ### 2. `GET /api/v1/events/:id`
 Retorna todos os detalhes de um evento específico.
 - **Path Params**: `id` (número inteiro do evento).
-- **Response (200 OK)**:
-```json
-{
-  "id": 1,
-  "organizerId": 1,
-  "title": "Private Dinner: Macroeconomia & Family Offices 2026",
-  "category": "networking",
-  "date": "24 Out 2026",
-  "day": "24",
-  "month": "OUT",
-  "time": "19:30 - 22:30",
-  "location": "Salão Nobre • ClubKey Faria Lima",
-  "image": "/utils/banners/img_01.png",
-  "description": "Encontro exclusivo entre fundadores e gestores de patrimônio.",
-  "fullDescription": "Uma noite reservada para debater alocação de ativos, cenários de liquidez para 2027 e co-investimentos estratégicos. Jantar harmonizado servido em quatro etapas pelo Chef convidado.",
-  "capacity": 24,
-  "initialConfirmed": 20,
-  "spotsLeft": 4,
-  "participants": [1, 2, 3, 5],
-  "dressCode": "Passeio Completo / Traje Executivo",
-  "format": "Jantar Exclusivo & Mesa Redonda",
-  "highlights": [
-    {
-      "title": "Mesa Redonda Sem Palco",
-      "desc": "Diálogo aberto e sem apresentações formais, onde cada membro compartilha um desafio estratégico real do trimestre."
-    },
-    {
-      "title": "Regra Chatham House",
-      "desc": "Total confidencialidade: os participantes são livres para usar as informações recebidas, mas a identidade dos relatores é estritamente protegida."
-    }
-  ],
-  "inclusions": [
-    "Menu degustação exclusivo em 4 tempos",
-    "Harmonização de vinhos e bebidas premium",
-    "Acesso à lista privada de contatos dos participantes",
-    "Estacionamento com manobrista VIP no local"
-  ],
-  "xpReward": 250,
-  "ribTokensReward": 1,
-  "isExclusive": true,
-  "minTierId": "titular",
-  "isUserConfirmed": false,
-  "organizer": {
-    "id": 1,
-    "firstName": "Rodrigo",
-    "lastName": "Salles",
-    "role": "Founder & Managing Partner",
-    "company": "Venture Capital Partners",
-    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400",
-    "tierId": "patrono"
-  }
-}
-```
+- **Response (200 OK)**: Retorna objeto completo `EventItem` com `organizer`, `highlights` e `inclusions`.
 
 ### 3. `GET /api/v1/events/:id/attendees`
 Retorna a lista completa de associados confirmados para a tela *"Quem Vai"*.
-- **Response (200 OK)**:
-```json
-[
-  {
-    "id": 2,
-    "firstName": "Fernanda",
-    "lastName": "Camargo",
-    "role": "Chief Investment Officer",
-    "company": "Atlas Asset Management",
-    "city": "São Paulo, SP",
-    "avatar": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400",
-    "tierId": "incorporador",
-    "membershipTier": "Incorporador",
-    "seeking": ["AgroTech", "Deals Seed"],
-    "offering": ["Investimentos", "Venture Capital"],
-    "connectionStatus": "none"
-  }
-]
-```
+- **Response (200 OK)**: Array de `RecommendedMember`.
 
 ### 4. `GET /api/v1/events/my-events`
 Retorna a lista de eventos nos quais o usuário autenticado confirmou presença.
-- **Response (200 OK)**:
-```json
-[
-  {
-    "id": 1,
-    "title": "Private Dinner: Macroeconomia & Family Offices 2026",
-    "date": "24 Out 2026",
-    "time": "19:30",
-    "location": "Salão Nobre • ClubKey Faria Lima",
-    "image": "/utils/banners/img_01.png",
-    "confirmationCode": "CK-EVT-8821",
-    "confirmedAt": "2026-09-15T14:30:00Z"
-  }
-]
-```
+- **Response (200 OK)**: Array de ingressos com `confirmationCode` e `confirmedAt`.
 
 ### 5. `POST /api/v1/events/:id/rsvp`
 Confirma ou cancela a presença do usuário logado no evento.
-- **Request Body**:
-```json
-{
-  "action": "toggle"
-}
-```
-- **Response (200 OK)**:
-```json
-{
-  "eventId": 1,
-  "isConfirmed": true,
-  "currentCount": 21,
-  "spotsLeft": 3,
-  "xpEarned": 250,
-  "ribTokensEarned": 1
-}
-```
-
----
-
-## ⚡ Interações & Comportamento do Usuário
-
-1. **Confirmação de Presença (RSVP)**:
-   - Ao clicar em *"Confirmar Presença"*, o botão exibe spinner de carregamento breve, altera para *"Presença Confirmada"* com check verde e dispara Toast de sucesso.
-   - O contador de vagas restantes diminui em 1 e o saldo de XP do associado é acrescido no topo do portal.
-2. **Cancelamento de Presença**:
-   - Ao cancelar, o botão volta ao estado inicial, libera 1 vaga e dispara Toast de informação.
-3. **Filtros e Busca no Catálogo**:
-   - As pílulas de categoria filtram a grade instantaneamente sem recarregar a página.
-   - A barra de pesquisa filtra por termos no título, local e descrição.
-4. **Adicionar à Agenda (`AddToCalendarButton`)**:
-   - Gera arquivo `.ics` para Apple/Outlook ou abre URL com parâmetros para o Google Calendar com horário de início e fim preenchidos.
+- **Request Body**: `{ "action": "toggle" }`
+- **Response (200 OK)**: `EventRSVPResponse`.
 
 ---
 
 ## 🛡️ Regras de Negócio & Casos de Borda
 
-1. **Exclusividade por Tier**: Se o evento possuir `isExclusive: true` e o usuário tiver um `tierId` com nível de ordem menor que `minTierId`, o botão de RSVP é desabilitado com o texto *"Exclusivo para {minTier}"*.
-2. **Capacidade Esgotada**: Se `spotsLeft === 0` e o usuário não estiver confirmado, o botão exibe *"Vagas Esgotadas"* (ou inscreve na lista de espera se habilitado).
-3. **Cancelamento no Dia do Evento**: Caso o cancelamento ocorra a menos de 4 horas do evento, o sistema pode exibir alerta sobre política de pontuação do clube.
-
+1. **Exclusividade por Tier**: Se o evento possuir `isExclusive: true` e o usuário tiver um `tierId` inferior a `minTierId`, o botão de RSVP é desabilitado com o texto *"Exclusivo para {minTier}"*.
+2. **Capacidade Esgotada**: Se `spotsLeft === 0` e o usuário não estiver confirmado, o botão exibe *"Vagas Esgotadas"*.
+3. **Cancelamento no Dia do Evento**: Cancelamentos a menos de 4 horas geram alerta sobre retenção de pontos de reputação.

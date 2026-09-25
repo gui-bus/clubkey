@@ -1,6 +1,24 @@
 # Especificação de Módulo: Central de Notificações (`NotificationsDropdown`)
 
-A **Central de Notificações** é o componente global presente no cabeçalho (*Header*) de todas as páginas do portal do ClubKey. Ela consolida em tempo real todas as interações sociais, convites de networking pendentes, mensagens não lidas de chat e avisos do ecossistema.
+A **Central de Notificações** é o componente global presente no cabeçalho (*Header*) de todas as páginas do portal. Ela consolida em tempo real todas as interações sociais, convites de networking pendentes, mensagens não lidas de chat e avisos do ecossistema.
+
+---
+
+## 🛡️ Filtro Dinâmico de Notificações & White-Label
+
+A central de notificações consome `useBrandModules()` para garantir que **somente notificações de módulos ativos no tenant sejam exibidas**:
+
+```mermaid
+flowchart TD
+    API[Notificação Recebida via API/WebSocket] --> Filter{Módulo Ativo no Tenant?}
+    Filter -- Módulo Inativo no Preset (ex: events: false) --> Drop[Oculta Notificação]
+    Filter -- Módulo Inativo no Preset (ex: keypass: false) --> Drop
+    Filter -- Módulo Habilitado --> Render[Renderiza no Dropdown e Incrementa Badge]
+```
+
+### Regras de Filtragem por Preset:
+- **Quando todos os módulos estão ativos**: Exibe notificações de todos os tipos (convites de networking, chat direto, lembretes de eventos, confirmações de estadias, drops semanais do KeyPass e comunicados institucionais).
+- **Quando módulos específicos estão inativos**: O sistema suprime automaticamente notificações de módulos desabilitados no preset (ex: se `events: false`, suprime lembretes de eventos; se `keypass: false`, suprime drops semanais), mantendo o feed de notificações estritamente alinhado com o escopo da marca ativa.
 
 ---
 
@@ -12,36 +30,44 @@ A **Central de Notificações** é o componente global presente no cabeçalho (*
 
 ---
 
-## 🖥️ Arquitetura Visual & Componentes do Dropdown
+## 🔄 Fluxo de Atualização e Ações de Notificação
 
-O menu de notificações é ativado pelo ícone de sino (`Bell`) e possui as seguintes seções integradas:
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Member as Associado
+    participant Header as Header (Sino de Notificações)
+    participant Dropdown as NotificationsDropdown
+    participant API as Backend REST API
+
+    Header->>API: GET /api/v1/notifications/summary
+    API-->>Header: 200 OK (totalUnread: 2, pendingInvitesCount: 1)
+    Header->>Header: Exibe badge numérico vermelho no sino
+    Member->>Header: Clica no sino para abrir Dropdown
+    Dropdown->>Member: Exibe convite de networking de Carlos
+    Member->>Dropdown: Clica em "Aceitar Conexão"
+    Dropdown->>API: PATCH /api/v1/connections/:id/accept
+    API-->>Dropdown: 200 OK
+    Dropdown->>Header: Decrementa badge de não lidas (-1)
+```
+
+---
+
+## 🖥️ Arquitetura Visual & Componentes do Dropdown
 
 1. **Gatilho de Sino & Badge de Contagem (`NotificationTrigger`)**:
    - Ícone Phosphor `Bell` com efeito hover.
-   - Badge flutuante circular vermelho com a quantidade total de notificações pendentes (`totalCount = pendingInvitesCount + unreadMessagesCount + systemNotificationsCount`).
-   - Caso `totalCount === 0`, o sino não exibe o badge vermelho.
+   - Badge flutuante circular vermelho com o total de pendências (`totalCount`).
+   - Se `totalCount === 0`, o sino não exibe o badge vermelho.
 2. **Cabeçalho do Dropdown**:
-   - Título `"Notificações"`.
-   - Contador visual (ex: `"3 novas"`).
-   - Botão de ação rápida *"Marcar todas como lidas"*.
+   - Título `"Notificações"` e botão *"Marcar todas como lidas"*.
 3. **Seção: Solicitações de Conexão Pendentes (`receivedPendingInvites`)**:
-   - Para cada solicitação de networking recebida:
-     - Avatar do membro remetente com fallback de iniciais.
-     - Nome completo (`firstName` + `lastName`), cargo executivo e empresa.
-     - Botão *"Aceitar"* (verde): Aceita a conexão, credita +50 XP imediatamente com feedback via Toast e remove o item da lista de pendências.
-     - Botão *"Recusar"* (cinza/vermelho): Recusa o convite e remove da lista.
+   - Avatar do membro remetente, nome, cargo, empresa e botões *"Aceitar"* (verde) e *"Recusar"* (cinza/vermelho).
 4. **Seção: Mensagens de Chat Não Lidas (`unreadMessageThreads`)**:
-   - Para cada conversa ativa com mensagens pendentes:
-     - Avatar do associado e indicador de status.
-     - Nome e empresa.
-     - Trecho da última mensagem (`lastMessage.text`).
-     - Horário relativo do envio (ex: `"há 5 min"`, `"14:30"`).
-     - Badge numérico de mensagens não lidas naquele chat.
-     - Ao clicar: Fecha o dropdown e abre diretamente o chat com o membro no mensageiro flutuante (`openChat(memberId)`).
+   - Avatar, nome, trecho da última mensagem, horário relativo e badge numérico.
+   - Ao clicar, abre o mensageiro flutuante (`openChat(memberId)`).
 5. **Seção: Notificações do Sistema & Atividades**:
-   - Alertas sobre confirmação de reservas em hospedagens, lembretes de eventos de hoje/amanhã, liberação de Drops Semanais do KeyPass e resgates de missões.
-6. **Estado Vazio (Empty State)**:
-   - Ilustração/ícone suave com mensagem: `"Tudo limpo! Você não possui notificações pendentes."`
+   - Alertas sobre confirmação de estadias, lembretes de eventos e drops semanais.
 
 ---
 
@@ -64,13 +90,6 @@ export interface NotificationItem {
     role: string
     company: string
   }
-  metadata?: {
-    memberId?: number
-    eventId?: number
-    stayId?: string
-    dropId?: string
-    unreadCount?: number
-  }
 }
 
 export interface NotificationsSummaryResponse {
@@ -83,111 +102,20 @@ export interface NotificationsSummaryResponse {
 
 ---
 
-## 📡 Especificação Completa dos Endpoints de API
+## 📡 Especificação dos Endpoints de API
 
 ### 1. `GET /api/v1/notifications/summary`
-Retorna o resumo para alimentar o contador do sino e a listagem inicial do dropdown.
-- **Headers**: `Authorization: Bearer <jwt_token>`
-- **Response (200 OK)**:
-```json
-{
-  "totalUnread": 3,
-  "pendingInvitesCount": 1,
-  "unreadMessagesCount": 2,
-  "notifications": [
-    {
-      "id": "notif-001",
-      "type": "connection_request",
-      "title": "Solicitação de Conexão",
-      "message": "Carlos Eduardo enviou uma solicitação de networking para você.",
-      "isRead": false,
-      "createdAt": "2026-09-17T15:30:00Z",
-      "sender": {
-        "id": 4,
-        "firstName": "Carlos",
-        "lastName": "Eduardo",
-        "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400",
-        "role": "Managing Partner",
-        "company": "Prado Agro Global"
-      },
-      "metadata": {
-        "memberId": 4
-      }
-    },
-    {
-      "id": "notif-002",
-      "type": "chat_message",
-      "title": "Nova Mensagem",
-      "message": "Fernanda Camargo: Olá Rodrigo, vamos agendar o almoço na próxima semana?",
-      "isRead": false,
-      "createdAt": "2026-09-17T16:15:00Z",
-      "sender": {
-        "id": 2,
-        "firstName": "Fernanda",
-        "lastName": "Camargo",
-        "avatar": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400",
-        "role": "Chief Investment Officer",
-        "company": "Atlas Asset Management"
-      },
-      "metadata": {
-        "memberId": 2,
-        "unreadCount": 2
-      }
-    },
-    {
-      "id": "notif-003",
-      "type": "event_reminder",
-      "title": "Lembrete de Evento",
-      "message": "O Private Dinner: Macroeconomia acontece em 24 de Outubro às 19:30.",
-      "actionUrl": "/eventos/1/private-dinner-macroeconomia",
-      "isRead": true,
-      "createdAt": "2026-09-17T10:00:00Z",
-      "metadata": {
-        "eventId": 1
-      }
-    }
-  ]
-}
-```
+Retorna o resumo para o sino e a listagem inicial.
 
 ### 2. `PATCH /api/v1/notifications/:id/read`
-Marca uma notificação individual como lida.
-- **Path Params**: `id` (identificador da notificação).
-- **Response (200 OK)**:
-```json
-{
-  "id": "notif-001",
-  "isRead": true
-}
-```
+Marca notificação individual como lida.
 
 ### 3. `POST /api/v1/notifications/read-all`
-Marca todas as notificações pendentes do usuário como lidas de uma só vez.
-- **Response (200 OK)**:
-```json
-{
-  "success": true,
-  "markedCount": 3
-}
-```
-
----
-
-## ⚡ Interações & Comportamento do Usuário
-
-1. **Ações Rápidas de Convite**:
-   - Clicar em *"Aceitar"* dispara `PATCH /api/v1/connections/:memberId/accept`, credita +50 XP ao usuário e exibe Toast Sonner: `"Conexão aceita com {nome}! +50 XP"`.
-   - Clicar em *"Recusar"* dispara `DELETE /api/v1/connections/:memberId` e remove o item com feedback `"Convite recusado."`.
-2. **Clique na Notificação de Mensagem**:
-   - Fecha o dropdown, abre a janela de chat (`memberMessengerWidget.tsx`) com a conversa do remetente selecionada e dispara a marcação de leitura.
-3. **Hover & Fechamento Suave**:
-   - O menu suporta abertura por hover com tolerância de 80ms no mouseLeave para navegação fluida sem fechar acidentalmente.
+Marca todas as notificações pendentes como lidas.
 
 ---
 
 ## 🛡️ Regras de Negócio & Casos de Borda
 
-1. **Sincronização em Tempo Real**:
-   - Pode ser atualizado via polling a cada 30 segundos ou evento Server-Sent Events (SSE) / WebSocket.
-2. **Contador no Sino**:
-   - Deve refletir a soma exata de convites pendentes recebidos + conversas com mensagens não lidas + notificações de sistema não lidas.
+1. **Sincronização em Tempo Real**: Polling a cada 30 segundos ou SSE/WebSocket.
+2. **Contador no Sino**: Soma exata de convites pendentes recebidos + mensagens não lidas + avisos de sistema não lidos.
