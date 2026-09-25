@@ -2,22 +2,22 @@
 
 Este documento descreve detalhadamente a regra de negócio, a estrutura técnica e o funcionamento do **Sistema White-Label e Arquitetura Modular Dinâmica** da plataforma.
 
-O sistema foi concebido para permitir que múltiplos clubes e marcas parceiras (como **ClubKey** e **Viverde**) operem a partir de uma **única base de código compartilhada** (Single Codebase Multi-Tenant), onde cada parceiro possui sua própria identidade de marca (cores, logotipos, tipografia, slogan, links) e **ativa ou desativa módulos inteiros do sistema sob demanda**.
+O sistema foi concebido para permitir que múltiplos clubes e marcas parceiras operem a partir de uma **única base de código compartilhada** (Single Codebase Multi-Tenant), onde cada parceiro possui sua própria identidade de marca (cores, logotipos, tipografia, slogan, links) e **ativa ou desativa módulos inteiros do sistema sob demanda**.
 
 ---
 
 ## 🧭 Visão Geral & Motivação
 
-Em plataformas SaaS multi-tenant voltadas a comunidades e clubes executivos, cada marca parceira possui seu modelo de negócio, proposta de valor e escopo operacional:
+Em plataformas SaaS multi-tenant voltadas a comunidades, clubes e ecossistemas de hospitalidade, cada marca parceira possui seu modelo de negócio, proposta de valor e escopo operacional:
 
-- **ClubKey (Tenant Completo)**: Ecossistema abrangente para membros e executivos de alta performance com todos os **7 módulos ativos** (Cockpit, Hospedagens, Conexões/Networking, Eventos & Jantares, Experiências Gastronômicas, Benefícios de Parceiros e Gamificação KeyPass com Tokens RIB e Tiers).
-- **Viverde (Tenant de Hospitalidade & Refúgios)**: Marca focada em acomodações de alto padrão na serra e conexões qualificadas. Por regra de negócio, opera **exclusivamente com os módulos Início (`home`), Hospedagens (`stays`) e Conexões (`networking`)**, mantendo *Eventos*, *Experiências*, *Benefícios* e *KeyPass* **100% desativados e inacessíveis**.
+- **Ecossistema Completo (Exemplo: Preset com 7 Módulos Ativos)**: Projetado para clubes executivos abrangentes com todos os **7 módulos ativos** (Página Inicial, Hospedagens, Conexões/Networking, Eventos & Jantares, Experiências Gastronômicas, Benefícios de Parceiros e Gamificação KeyPass com Tokens RIB e Tiers).
+- **Ecossistema Especializado (Exemplo: Preset de Hospitalidade & Conexões)**: Projetado para marcas focadas exclusivamente em refúgios, acomodações e conexões qualificadas. Por configuração do preset, opera **exclusivamente com os módulos Início (`home`), Hospedagens (`stays`) e Conexões (`networking`)**, mantendo *Eventos*, *Experiências*, *Benefícios* e *KeyPass* **100% desativados e inacessíveis**.
 
-### Premissas do White-Label:
-1. **Zero Exposição Visual**: Menus (Header/Sidebar/Footer), Cockpit, cards de membros e dropdowns de usuário nunca exibem botões, links ou seções de módulos desabilitados na marca ativa.
-2. **Segurança e Bloqueio de Rotas (404 Not Found)**: Qualquer tentativa de acesso direto a rotas de módulos desativados via URL (ex: `/eventos`, `/agenda`, `/keypass` no tenant Viverde) é interceptada e resulta em **404 Not Found**.
+### Premissas Fundamentais do White-Label:
+1. **Zero Exposição Visual**: Menus de navegação (Header, Sidebar, Footer), feeds iniciais, cards de membros e dropdowns de usuário nunca exibem botões, links ou seções de módulos desabilitados na marca ativa.
+2. **Segurança e Bloqueio de Rotas (404 Not Found)**: Qualquer tentativa de acesso direto a rotas de módulos desativados via URL (ex: `/eventos`, `/agenda`, `/keypass` quando o respectivo módulo estiver desabilitado) é interceptada e resulta em **404 Not Found**.
 3. **Desacoplamento Cruzado**: Elementos visuais compostos (ex: badges de XP/Tier do KeyPass dentro dos cards do diretório de membros) se adaptam automaticamente e omitem campos de módulos inativos sem quebrar a árvore de componentes.
-4. **Isolamento em 4 Camadas (Defesa em Profundidade)**: Validação no Edge Proxy, nos Server Components, em componentes declarativos (`<ModuleGate>`) e em custom hooks de cliente (`useBrandModules`).
+4. **Isolamento em 4 Camadas (Defesa em Profundidade)**: Validação coordenada no Edge Proxy, nos Server Components, em componentes declarativos (`<ModuleGate>`) e em custom hooks de cliente (`useBrandModules`).
 
 ---
 
@@ -26,7 +26,7 @@ Em plataformas SaaS multi-tenant voltadas a comunidades e clubes executivos, cad
 O núcleo do sistema White-Label fica centralizado em [`src/config/brand.config.ts`](file:///c:/Users/Guilherme/Desktop/ID/clubkey/src/config/brand.config.ts).
 
 ### 1. Resolução do Tenant Ativo
-A marca ativa em tempo de execução/build é definida pela variável de ambiente `NEXT_PUBLIC_TENANT`. Caso não seja informada, o sistema aplica fallback seguro para `"clubkey"`:
+A marca ativa em tempo de execução/build é definida pela variável de ambiente `NEXT_PUBLIC_TENANT`. Caso não seja informada, o sistema aplica fallback seguro para o preset padrão (`"clubkey"`):
 
 ```typescript
 const rawTenant = process.env.NEXT_PUBLIC_TENANT || ""
@@ -40,18 +40,18 @@ export const brandConfig: BrandConfig =
 
 ```typescript
 export interface BrandConfig {
-  id: string                     // Slug identificador único do tenant ("clubkey", "viverde")
-  name: string                   // Nome oficial da marca ("ClubKey", "Viverde")
+  id: string                     // Slug identificador único do tenant ("clubkey", "viverde", etc.)
+  name: string                   // Nome oficial da marca ("ClubKey", "Viverde", etc.)
   shortName: string              // Nome curto para cabeçalhos mobile e notificações
-  tagline: string                // Slogan ou posicionamento
+  tagline: string                // Slogan ou posicionamento da marca
   description: string            // Descrição da proposta de valor e SEO
   colors: {
-    light: BrandColors           // Paleta de cores para o tema claro
-    dark: BrandColors            // Paleta de cores para o tema escuro
+    light: BrandColors           // Paleta de tokens de cores para o tema claro
+    dark: BrandColors            // Paleta de tokens de cores para o tema escuro
   }
   assets: BrandAssets            // Logos SVG (light/dark), ícones, favicons, OG Image
   links: BrandLinks              // Links institucionais, WhatsApp, checkout, redes sociais
-  modules: BrandModulesConfig    // Matriz de ativação/desativação dos 7 módulos
+  modules: BrandModulesConfig    // Matriz booleana de ativação dos 7 módulos
 }
 ```
 
@@ -63,7 +63,7 @@ A propriedade `modules` define quais áreas de negócio estão disponíveis para
 
 ```typescript
 export interface BrandModulesConfig {
-  home: boolean          // Cockpit central e feed dinâmico do associado
+  home: boolean          // Página inicial, feed dinâmico e visão geral do associado
   stays: boolean         // Hospedagens, vilas, reservas e vouchers
   networking: boolean    // Diretório de membros, filtros e chat em tempo real
   events: boolean        // Eventos executivos, jantares, RSVPs e agenda
@@ -73,11 +73,11 @@ export interface BrandModulesConfig {
 }
 ```
 
-### Comparação Prática entre Presets no Código:
+### Exemplos de Presets de Marca no Código:
 
 ```typescript
 export const brandPresets: Record<string, BrandConfig> = {
-  // Preset ClubKey: Todos os 7 módulos habilitados
+  // Exemplo de Preset Completo: Todos os 7 módulos habilitados
   clubkey: {
     id: "clubkey",
     name: "ClubKey",
@@ -139,7 +139,7 @@ export const brandPresets: Record<string, BrandConfig> = {
     },
   },
 
-  // Preset Viverde: Focado em Hospedagens e Conexões (4 módulos desligados)
+  // Exemplo de Preset com Módulos Focados (Hospedagens e Conexões)
   viverde: {
     id: "viverde",
     name: "Viverde",
@@ -150,10 +150,10 @@ export const brandPresets: Record<string, BrandConfig> = {
       home: true,
       stays: true,
       networking: true,
-      events: false,        // DESATIVADO
-      experiences: false,   // DESATIVADO
-      benefits: false,      // DESATIVADO
-      keypass: false,       // DESATIVADO
+      events: false,        // Desabilitado no preset
+      experiences: false,   // Desabilitado no preset
+      benefits: false,      // Desabilitado no preset
+      keypass: false,       // Desabilitado no preset
     },
     colors: {
       light: {
@@ -214,7 +214,7 @@ Para que os tokens de cores da marca alimentem o Tailwind CSS e o Bloom UI sem r
 ```css
 :root {
   --primary: var(--brand-primary);
-  --brand-primary: #FF6847; /* ou #B88A2D no Viverde */
+  --brand-primary: #FF6847; /* Injetado dinamicamente pelo preset */
   --brand-primary-hover: #E85535;
   --brand-primary-light: #FFF0ED;
   --brand-secondary: #141416;
@@ -240,7 +240,7 @@ Centralizado em [`src/config/modules.config.ts`](file:///c:/Users/Guilherme/Desk
 | `keypass` | **KeyPass** | `["/keypass"]` | `/keypass` | Sim |
 
 ### Rotas Universais Isentas
-Rotas comuns e estruturais do sistema nunca são bloqueadas:
+Rotas comuns e estruturais do sistema nunca são bloqueadas por módulos:
 - **Autenticação**: `/entrar`, `/login`, `/cadastro`, `/esqueci-minha-senha`, `/redefinir-senha`
 - **Perfil do Membro**: `/perfil`, `/perfil/minha-assinatura`, `/perfil/seguranca`
 - **Checkout**: `/assinatura`
@@ -269,7 +269,7 @@ flowchart TD
 ### Camada 1: Edge Proxy (`src/proxy.ts`)
 Executado na borda (Edge Runtime do Next.js 16) antes de qualquer processamento de rota:
 - Examina `pathname` contra `isPathAllowed(pathname, brandConfig.modules)`.
-- Se o membro tentar acessar diretamente uma rota desativada pelo preset, o proxy reescreve a resposta para `/not-found` com status 404.
+- Se o usuário tentar acessar diretamente uma rota desativada pelo preset, o proxy reescreve a resposta para `/not-found` com status 404.
 - Faz bypass automático para arquivos estáticos (`/_next/*`, `/utils/*`, `/logos/*`, `favicon.ico`).
 
 ```typescript
@@ -308,7 +308,7 @@ Implementada em `layout.tsx` e `page.tsx` de rotas sensíveis:
 import { assertModule, brandConfig } from "@/src/config/brand.config"
 
 export default function EventosLayout({ children }: { children: React.ReactNode }) {
-  assertModule("events") // Se events for false, interrompe o render com 404
+  assertModule("events") // Se events for false no preset, interrompe o render com 404
 
   return <>{children}</>
 }
@@ -318,11 +318,11 @@ export default function EventosLayout({ children }: { children: React.ReactNode 
 
 ### Camada 3: Componente Declarativo `<ModuleGate>`
 Localizado em [`src/components/common/moduleGate.tsx`](file:///c:/Users/Guilherme/Desktop/ID/clubkey/src/components/common/moduleGate.tsx):
-- Envelopa blocos JSX e widgets no feed, cockpit ou dashboards.
-- Se o módulo estiver habilitado, renderiza os filhos normais. Se estiver desligado, renderiza `fallback` ou `null`.
+- Envelopa blocos JSX e widgets no feed, páginas e dashboards.
+- Se o módulo estiver habilitado, renderiza os filhos normais. Se estiver desabilitado, renderiza `fallback` ou `null`.
 
 ```tsx
-// Exemplo: Ocultando o carrossel de eventos no feed da Home
+// Exemplo: Ocultando o carrossel de eventos na página inicial
 <ModuleGate module="events">
   <FeaturedEventsCarousel events={events} />
 </ModuleGate>
@@ -337,14 +337,14 @@ Localizado em [`src/components/common/moduleGate.tsx`](file:///c:/Users/Guilherm
 
 ### Camada 4: Custom Hook Reativo `useBrandModules()`
 Localizado em [`src/hooks/useBrandModules.ts`](file:///c:/Users/Guilherme/Desktop/ID/clubkey/src/hooks/useBrandModules.ts):
-- Fornece aos componentes de cliente (`use client`) acesso seguro às configurações da marca:
+- Fornece aos componentes de cliente (`use client`) acesso seguro e reativo às configurações da marca:
 
 ```typescript
 const {
   activeBrand,          // Preset completo BrandConfig
   modules,              // Matriz booleana { stays: true, events: false, ... }
   isModuleEnabled,      // Helper: (mod: SystemModule) => boolean
-  enabledModules,       // Array ['home', 'stays', 'networking']
+  enabledModules,       // Array com módulos ativos ['home', 'stays', 'networking']
   getModuleInfo         // Retorna a ModuleDefinition de um módulo
 } = useBrandModules()
 ```
@@ -356,16 +356,15 @@ const {
 Todos os componentes visuais do portal consultam `brandConfig.modules` e `brandConfig.assets`:
 
 1. **Header & Menu Superior (`src/components/portal/header.tsx`)**:
-   - As abas de navegação são filtradas em tempo de renderização.
+   - As abas de navegação são filtradas em tempo de renderização com base nos módulos ativos.
    - O logotipo é carregado dinamicamente de `brandConfig.assets.logoMain` / `logoDark` / `logoLight`.
 2. **Rodapé & Links Institucionais (`src/components/portal/footer.tsx`)**:
    - As colunas de links removem automaticamente as rotas de módulos desativados.
    - O copyright, slogan e links sociais exibem os dados do tenant ativo.
 3. **Dropdown de Usuário (`src/components/portal/userDropdownMenu.tsx`)**:
-   - Atalhos para *Minhas Hospedagens*, *Meus Eventos* e *KeyPass* só são adicionados se o módulo estiver ativo.
-4. **Cockpit / Feed Inicial (`src/app/(portal)/page.tsx`)**:
-   - No **ClubKey**: Exibe feed com eventos em destaque, experiências, indicador de XP do KeyPass e carrossel de estadias.
-   - No **Viverde**: Oculta automaticamente as seções de Eventos, Experiências e KeyPass, apresentando um cockpit limpo focado em *Hospedagens Selecionadas* e *Conexões*.
+   - Atalhos para *Minhas Hospedagens*, *Meus Eventos* e *KeyPass* só são adicionados se o respectivo módulo estiver ativo.
+4. **Página Inicial & Painel do Associado (`src/app/(portal)/page.tsx`)**:
+   - Adapta automaticamente os blocos do feed: seções de módulos desativados são suprimidas de forma transparente.
 5. **Cards de Membros & Diretório**:
    - No perfil público (`memberProfileHero.tsx`), badges de nível de KeyPass e pontuações de XP são exibidas exclusivamente se `isModuleEnabled("keypass") === true`.
 
@@ -396,12 +395,24 @@ Para adicionar uma nova marca parceira:
        light: {
          primary: "#0A84FF",
          primaryHover: "#0066CC",
-         // ... demais tokens de cor
+         primaryLight: "#F0F6FF",
+         primaryDark: "#0055B3",
+         primaryMuted: "rgba(10, 132, 255, 0.15)",
+         primaryGlow: "rgba(10, 132, 255, 0.4)",
+         secondary: "#141416",
+         selectionBg: "rgba(10, 132, 255, 0.2)",
+         selectionText: "#0A84FF",
        },
        dark: {
          primary: "#0A84FF",
          primaryHover: "#409CFF",
-         // ... demais tokens de cor
+         primaryLight: "#0B1D33",
+         primaryDark: "#0066CC",
+         primaryMuted: "rgba(10, 132, 255, 0.15)",
+         primaryGlow: "rgba(10, 132, 255, 0.4)",
+         secondary: "#161616",
+         selectionBg: "rgba(10, 132, 255, 0.2)",
+         selectionText: "#0A84FF",
        },
      },
      assets: {

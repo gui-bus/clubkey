@@ -1,13 +1,39 @@
 # Dicionário Central de Enums & Constantes (Enums & Constants)
 
-Este documento centraliza todos os tipos enumerados (`Enums`), identificadores de domínio e constantes aceitas no ecossistema **ClubKey**.
+Este documento centraliza todos os tipos enumerados (`Enums`), identificadores de domínio e constantes aceitas no ecossistema **White-Label Multi-Tenant**.
 
 > [!IMPORTANT]
 > Todos os valores de Enums na API RESTful e no banco de dados devem seguir estritamente a convenção **em inglês** e em **`lowercase`** ou **`snake_case`**, garantindo uniformidade entre Backend (PHP/Laravel/PostgreSQL) e Frontend (TypeScript/React Query/Orval).
 
 ---
 
-## 1. 🏆 Gamificação & KeyPass
+## 1. 🏢 White-Label & Arquitetura Modular
+
+### `SystemModule`
+Identificadores canônicos dos 7 módulos do sistema:
+```typescript
+type SystemModule = 
+  | "home"          // Página inicial, feed dinâmico e visão geral do associado
+  | "stays"         // Hospedagens, vilas, reservas e vouchers
+  | "networking"    // Diretório de membros e chat em tempo real
+  | "events"        // Eventos, jantares, RSVPs e agenda
+  | "experiences"   // Experiências e vivências lifestyle/gastronomia
+  | "benefits"      // Clube de benefícios e vantagens de parceiros
+  | "keypass"       // Gamificação, tiers, missões, XP e RIB tokens
+```
+
+### `TenantId`
+Identificadores de marcas parceiras (Presets / Tenants):
+```typescript
+type TenantId = 
+  | "clubkey"       // Preset completo (todos os 7 módulos habilitados)
+  | "viverde"       // Preset especializado (foco em Hospedagens e Conexões)
+  | string          // Slugs de novos tenants configurados em brandPresets
+```
+
+---
+
+## 2. 🏆 Gamificação & KeyPass
 
 ### `TierId`
 Identificadores únicos dos 6 patamares executivos de membros:
@@ -34,7 +60,6 @@ type BadgeColor =
 ```
 
 ### `MissionCategory` & `WeeklyDropCategory`
-Categorias de missões e drops semanais:
 ```typescript
 type MissionCategory = 
   | "onboarding"    // Boas-vindas, 2FA, preenchimento de perfil
@@ -45,20 +70,7 @@ type MissionCategory =
   | "ranking"       // Metas de posicionamento na tabela global
 ```
 
-### `BadgeCategory`
-```typescript
-type BadgeCategory = 
-  | "onboarding"
-  | "estadias"
-  | "eventos"
-  | "experiencias"
-  | "networking"
-  | "ranking"
-  | "especial"
-```
-
 ### `XpTransactionCategory`
-Tipos de movimentação no extrato histórico de XP:
 ```typescript
 type XpTransactionCategory = 
   | "onboarding"    // Atividades cadastrais e segurança
@@ -71,7 +83,6 @@ type XpTransactionCategory =
 ```
 
 ### `LeaderboardTimeframe`
-Janelas temporais de filtro no ranking geral:
 ```typescript
 type LeaderboardTimeframe = 
   | "all_time"      // Histórico total acumulado
@@ -81,10 +92,9 @@ type LeaderboardTimeframe =
 
 ---
 
-## 2. 🏨 Hospedagens & Reservas
+## 3. 🏨 Hospedagens & Reservas
 
 ### `StayReservationStatus`
-Status do ciclo de vida de uma reserva de hospedagem:
 ```typescript
 type StayReservationStatus = 
   | "confirmed"     // Reserva confirmada e voucher ativo
@@ -106,7 +116,7 @@ type RoomType =
 
 ---
 
-## 3. 📅 Eventos & Inscrições
+## 4. 📅 Eventos & Inscrições
 
 ### `EventCategory`
 ```typescript
@@ -128,7 +138,7 @@ type EventAttendeeStatus =
 
 ---
 
-## 4. 🍷 Experiências & Checkout
+## 5. 🍷 Experiências & Lifestyle
 
 ### `ExperienceCategory`
 ```typescript
@@ -139,20 +149,11 @@ type ExperienceCategory =
   | "art"           // Vernissages privadas e colecionismo
 ```
 
-### `ExperienceBookingStatus`
-```typescript
-type ExperienceBookingStatus = 
-  | "confirmed"     // Cota paga e vaga garantida
-  | "pending"       // Aguardando liquidação de PIX / Boleto
-  | "cancelled"     // Cancelada ou estornada
-```
-
 ---
 
-## 5. 🤝 Conexões, Mensageria & Notificações
+## 6. 🤝 Conexões & Mensageria
 
 ### `ConnectionStatus`
-Estado da relação entre dois membros:
 ```typescript
 type ConnectionStatus = 
   | "none"          // Sem vínculo
@@ -176,7 +177,7 @@ type NotificationType =
 
 ---
 
-## 6. 💳 Assinaturas & Financeiro
+## 7. 💳 Assinaturas & Financeiro
 
 ### `PaymentMethod`
 ```typescript
@@ -195,25 +196,9 @@ type SubscriptionStatus =
   | "trialing"      // Período de cortesia institucional
 ```
 
-### `BillingCycle`
-```typescript
-type BillingCycle = 
-  | "monthly"       // Cobrança mensal recorrente
-  | "annual"        // Cobrança anual recorrente
-```
-
-### `InvoiceStatus`
-```typescript
-type InvoiceStatus = 
-  | "paid"          // Fatura liquidada com recibo disponível
-  | "pending"       // Aguardando processamento
-  | "failed"        // Cobrança recusada pela operadora
-  | "refunded"      // Estorno total ou parcial
-```
-
 ---
 
-## 7. 🎁 Benefícios & Parcerias
+## 8. 🎁 Benefícios & Parcerias
 
 ### `BenefitCategory`
 ```typescript
@@ -222,23 +207,4 @@ type BenefitCategory =
   | "mobility"      // Aluguel de veículos premium, aviação privada
   | "lifestyle"     // Moda de luxo, joalherias, clubes esportivos
   | "wellness"      // Spas, clínicas de longevidade e resorts
-```
-
-### `BenefitRedemptionType`
-```typescript
-type BenefitRedemptionType = 
-  | "coupon"        // Código promocional copiável
-  | "qr_code"       // QR Code para leitura presencial
-  | "direct_show"   // Apresentação da credencial digital de membro
-```
-
----
-
-## 8. 👤 Usuários & Cadastro
-
-### `Nationality`
-```typescript
-type Nationality = 
-  | "brasileiro"
-  | "estrangeiro"
 ```

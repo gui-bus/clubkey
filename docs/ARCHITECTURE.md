@@ -1,6 +1,6 @@
 # Arquitetura Técnica do Frontend & Decisões de Tecnologia
 
-Este documento detalha a arquitetura, convenções e tecnologias adotadas no desenvolvimento do frontend da plataforma **ClubKey**.
+Este documento detalha a arquitetura, convenções e tecnologias adotadas no desenvolvimento do frontend da plataforma **White-Label Multi-Tenant**.
 
 ---
 
@@ -16,6 +16,8 @@ Este documento detalha a arquitetura, convenções e tecnologias adotadas no des
 | **Ícones** | Phosphor Icons (`@phosphor-icons/react`) | Pacote de ícones consistente, leve e com múltiplos pesos (`bold`, `regular`, `fill`). |
 | **Formulários & Validação** | React Hook Form + Zod | Validação robusta de schemas, controle de erros e feedback em tempo real. |
 | **Feedback Visual** | Sonner (`toast`) | Notificações flutuantes elegantes e reativas para ações de sucesso, erro e alertas. |
+| **Testes Unitários** | Vitest + React Testing Library | Validação ágil de formatação, componentes, stores, hooks e matriz de módulos (83 testes). |
+| **Testes E2E** | Playwright Test | Validação ponta a ponta no navegador de fluxos de login, segurança de rotas e white-label (19 testes). |
 
 ---
 
@@ -23,10 +25,10 @@ Este documento detalha a arquitetura, convenções e tecnologias adotadas no des
 
 ### 1. Separação entre Server Components e Client Components
 Para garantir SEO impecável e máxima performance:
-- **Server Components (`page.tsx`)**:
+- **Server Components (`page.tsx` e `layout.tsx`)**:
   - Responsáveis por receber os parâmetros da rota (ex: `params: Promise<{ id: string; slug: string }>`).
-  - Executam a função `generateMetadata` para gerar tags de `title`, `description`, `openGraph` e `twitter` dinâmicas para cada recurso.
-  - Repassam os identificadores necessários para os componentes clientes.
+  - Executam a função `generateMetadata` para gerar tags de `title`, `description`, `openGraph` e `twitter` dinâmicas.
+  - Executam guards de segurança no servidor com `assertModule("module_name")` para barrar rotas de módulos desativados.
 - **Client Components (`...Client.tsx` / `use client`)**:
   - Responsáveis pela interatividade, leitura/escrita no store Zustand, animações, modais e formulários.
   - Todos os nomes de arquivos e componentes seguem estritamente a convenção `camelCase` em **inglês** (ex: `eventDetailClient.tsx`, `experienceDetailClient.tsx`, `leaderboardTable.tsx`, `memberProfileDetailClient.tsx`).
@@ -48,15 +50,19 @@ Para manter o princípio de Responsabilidade Única (SRP) e segregação de inte
 - **Validação com Zod (`src/schemas/`)**: Schemas de validação de formulários tipados (`auth.schema.ts`, `subscription.schema.ts`).
 - **Utilitários e Formatadores (`src/lib/formatters.ts`)**: Funções centralizadas de formatação (moeda BRL, datas, tempo relativo e números) com suite de testes unitários em Vitest (`src/__tests__/`).
 
-### 4. Diretrizes de Tema Neutro (Bloom UI & ClubKey)
+### 4. Diretrizes de Tema Neutro (Bloom UI)
 - **Superfícies de Cards & Contêineres**: Fundo estritamente branco puro (`bg-white`) no modo claro e cinza neutro profundo (`bg-zinc-900`, `dark:bg-zinc-900`, bordas `border-zinc-200`, `dark:border-zinc-800`) no modo escuro.
 - **Sem Contêineres Coloridos/Azulados**: Apenas superfícies limpas e neutras.
-- **Cores de Destaque**: A cor da marca (ex: `#FF6847` no ClubKey, `#B88A2D` no Viverde) e cores semânticas (`emerald`, `amber`, `red`) são reservadas exclusivamente para tipografia, ícones de status, badges, tags e acentos.
+- **Cores de Destaque**: A cor primária da marca (injetada dinamicamente via variáveis CSS por preset) e cores semânticas (`emerald`, `amber`, `red`) são reservadas exclusivamente para tipografia, ícones de status, badges, tags e acentos.
 
 ### 5. Arquitetura White-Label & Sistema Modular
 A plataforma opera em regime single-codebase multi-tenant controlado por `NEXT_PUBLIC_TENANT`:
 - **Presets de Marca (`src/config/brand.config.ts`)**: Matriz de ativação dos 7 módulos do sistema (`home`, `stays`, `networking`, `events`, `experiences`, `benefits`, `keypass`), tokens de cores com injeção dinâmica de variáveis CSS e assets de logotipo.
-- **Defesa em Profundidade (4 Camadas)**: Edge Proxy (`src/proxy.ts`), Server Route Guards (`assertModule`), componente declarativo `<ModuleGate>` e hook reativo `useBrandModules()`.
+- **Defesa em Profundidade (4 Camadas)**:
+  1. **Edge Proxy (`src/proxy.ts`)**: Intercepta requisições HTTP antes da renderização e reescreve acessos a módulos desativados para `/not-found`.
+  2. **Server Route Guards (`assertModule`)**: Executados em Server Components (`layout.tsx` e `page.tsx`), emitindo digest 404 caso o módulo esteja desligado no tenant.
+  3. **Componente `<ModuleGate>` (`src/components/common/moduleGate.tsx`)**: Oculta condicionalmente blocos visuais, widgets de dashboard e seções do feed.
+  4. **Hook Reativo `useBrandModules()` (`src/hooks/useBrandModules.ts`)**: Expõe o estado reativo de módulos para componentes clientes.
 - Para a especificação completa, consulte o documento [`docs/WHITE_LABEL.md`](./WHITE_LABEL.md).
 
 ---
@@ -66,84 +72,62 @@ A plataforma opera em regime single-codebase multi-tenant controlado por `NEXT_P
 ```
 clubkey/
 ├── docs/                        # Documentação técnica e especificações para o time e IA de backend
-│   ├── ARCHITECTURE.md
-│   ├── DATABASE_MODELS.md
-│   ├── API_SPECIFICATIONS.md
-│   ├── ENUMS.md
-│   ├── GAMIFICATION_RULES.md
-│   ├── SEED_DATA.md
-│   └── pages/                   # Documentação detalhada de cada módulo/página
+│   ├── ARCHITECTURE.md          # Arquitetura global, padrões SOLID e stack
+│   ├── WHITE_LABEL.md           # Sistema White-Label e matriz modular
+│   ├── DATABASE_MODELS.md       # Modelagem relacional e schemas PostgreSQL
+│   ├── API_SPECIFICATIONS.md    # Especificações RESTful e OpenAPI
+│   ├── ENUMS.md                 # Dicionário de Enums canônicos
+│   ├── GAMIFICATION_RULES.md    # Regras de negócio do KeyPass e XP
+│   ├── SEED_DATA.md             # Datasets prontos para seeders
+│   └── pages/                   # Documentação funcional por módulo/tela
 ├── public/                      # Assets estáticos (imagens, logotipos, ilustrações, favicons)
 │   ├── utils/
 │   │   ├── banners/
 │   │   └── gamification/        # Insígnias, tiers, tokens e ícones de XP
+│   └── logos/                   # Logotipos oficiais dos presets de marca
 ├── src/
-│   ├── __tests__/               # Testes unitários com Vitest
-│   │   └── formatters.test.ts
+│   ├── __tests__/               # Testes unitários com Vitest e E2E com Playwright
+│   │   ├── modules.test.ts
+│   │   ├── brandConfig.test.ts
+│   │   ├── moduleGate.test.tsx
+│   │   ├── proxy.test.ts
+│   │   └── e2e/                 # Testes ponta a ponta com Playwright
 │   ├── app/                     # Next.js App Router (Rotas do sistema)
 │   │   ├── (portal)/            # Grupo de rotas autenticadas do portal de membros
 │   │   │   ├── layout.tsx       # Layout principal (Header, Sidebar, Messenger, ToastProvider)
-│   │   │   ├── page.tsx         # Home / Feed principal
-│   │   │   ├── eventos/         # Módulo de Eventos
-│   │   │   ├── experiencias/    # Módulo de Experiências
-│   │   │   ├── hospedagens/     # Módulo de Hospedagens
-│   │   │   ├── conexoes/        # Módulo de Conexões e Networking
-│   │   │   ├── beneficios/      # Módulo de Benefícios
-│   │   │   ├── keypass/         # Módulo KeyPass (Tiers, Missões, Ranking, Regras)
+│   │   │   ├── page.tsx         # Página Inicial e Painel do Associado
+│   │   │   ├── eventos/         # Módulo de Eventos (protegido por assertModule)
+│   │   │   ├── experiencias/    # Módulo de Experiências (protegido por assertModule)
+│   │   │   ├── hospedagens/     # Módulo de Hospedagens (protegido por assertModule)
+│   │   │   ├── conexoes/        # Módulo de Conexões e Networking (protegido por assertModule)
+│   │   │   ├── beneficios/      # Módulo de Benefícios (protegido por assertModule)
+│   │   │   ├── keypass/         # Módulo KeyPass (protegido por assertModule)
 │   │   │   └── perfil/          # Módulo de Perfil e Assinatura
-│   │   ├── sign-in/             # Login
-│   │   ├── sign-up/             # Cadastro
-│   │   ├── forgot-password/     # Recuperação de senha
-│   │   └── reset-password/      # Redefinição de senha
+│   │   ├── entrar/              # Login
+│   │   ├── cadastro/            # Cadastro e adesão
+│   │   ├── esqueci-minha-senha/ # Recuperação de senha
+│   │   └── redefinir-senha/     # Redefinição de senha
+│   ├── config/                  # Configurações multi-tenant, presets de marca e módulos
+│   │   ├── brand.config.ts      # Presets de marcas e gerador de variáveis CSS
+│   │   ├── modules.config.ts    # Registro canônico dos 7 módulos e validação de rotas
+│   │   ├── site.ts              # Metadados globais e links
+│   │   └── env.ts               # Validação de variáveis de ambiente
+│   ├── proxy.ts                 # Edge Proxy do Next.js 16 para segurança de rotas e bypass de assets
 │   ├── components/
 │   │   ├── auth/                # Formulários de autenticação (signInForm.tsx, signUpForm.tsx)
-│   │   ├── common/              # Componentes universais (container.tsx, dataTable.tsx, ctaButton.tsx)
+│   │   ├── common/              # Componentes universais (container.tsx, moduleGate.tsx, ctaButton.tsx)
 │   │   ├── portal/              # Componentes de negócio do portal
-│   │   │   ├── memberProfile/   # Subcomponentes decompostos do perfil público
-│   │   │   │   ├── memberProfileHero.tsx
-│   │   │   │   ├── memberProfileDetailsGrid.tsx
-│   │   │   │   └── memberProfileBioModal.tsx
-│   │   │   ├── header.tsx
-│   │   │   ├── sidebar.tsx
-│   │   │   ├── notificationsDropdown.tsx
-│   │   │   └── memberMessengerWidget.tsx
 │   │   └── ui/                  # Componentes do Design System Bloom UI
-│   ├── data/
-│   │   ├── mocks/               # Datasets mockados divididos por domínio
-│   │   │   ├── members.data.ts
-│   │   │   ├── events.data.ts
-│   │   │   ├── experiences.data.ts
-│   │   │   ├── benefits.data.ts
-│   │   │   ├── gamification.data.ts
-│   │   │   ├── stays.data.ts
-│   │   │   ├── chat.data.ts
-│   │   │   └── slugs.data.ts
-│   │   └── portalData.ts        # Barrel export unificado dos mocks e utilitários de dados
-│   ├── hooks/                   # Custom Hooks reutilizáveis (useItemPagination, useScrollSpy, useMounted)
+│   ├── hooks/                   # Custom Hooks reutilizáveis (useBrandModules, useItemPagination, useScrollSpy)
 │   ├── lib/
-│   │   ├── designSystem.ts      # Configuração de tokens de design
-│   │   ├── formatters.ts        # Utilitários de formatação de dados (moeda, datas, tempo relativo)
+│   │   ├── designSystem.ts      # Configuração de tokens de design Bloom UI
+│   │   ├── formatters.ts        # Utilitários de formatação (moeda, datas, tempo relativo)
 │   │   └── utils.ts             # Utilitários auxiliares (cn)
 │   ├── schemas/                 # Schemas de validação Zod (auth.schema.ts, subscription.schema.ts)
 │   ├── store/
 │   │   ├── slices/              # Fatias de estado Zustand por domínio
-│   │   │   ├── authSlice.ts
-│   │   │   ├── networkingSlice.ts
-│   │   │   ├── chatSlice.ts
-│   │   │   ├── eventsSlice.ts
-│   │   │   ├── staysSlice.ts
-│   │   │   ├── gamificationSlice.ts
-│   │   │   └── profileSlice.ts
-│   │   └── usePortalStore.ts    # Store global Zustand composto pelas fatias com persistência
+│   │   └── usePortalStore.ts    # Store global Zustand composto com persistência
 │   └── types/                   # Tipos e interfaces TypeScript centralizados por domínio
-│       ├── member.types.ts
-│       ├── event.types.ts
-│       ├── stay.types.ts
-│       ├── gamification.types.ts
-│       ├── chat.types.ts
-│       ├── benefit.types.ts
-│       ├── experience.types.ts
-│       └── index.ts             # Barrel export centralizado de todos os tipos
 ```
 
 ---
@@ -153,7 +137,7 @@ clubkey/
 Quando o backend RESTful estiver implementado, a camada de dados do frontend será conectada através de uma pipeline moderna e 100% automatizada e type-safe:
 
 ### 1. Stack de Integração no Frontend
-- **HTTP Client**: `Axios` com interceptors globais para injeção do header `Authorization: Bearer <token>`, refresh token transparente e tratamento padronizado de erros.
+- **HTTP Client**: `Axios` com interceptors globais para injeção do header `Authorization: Bearer <token>`, `X-Tenant-ID: <tenant>`, refresh token transparente e tratamento padronizado de erros.
 - **Gerenciamento de Estado do Servidor**: `TanStack React Query v5` (`@tanstack/react-query`) para cache assíncrono, revalidação em background, optimistic updates e controle de mutações.
 - **Diagnóstico & Debug**: `React Query Devtools` (`@tanstack/react-query-devtools`) integrado em ambiente de desenvolvimento.
 - **Geração Automática de Código**: `Orval` (`orval`) para ler a especificação OpenAPI (Swagger/JSON) gerada pelo backend e gerar automaticamente:
@@ -170,64 +154,20 @@ Recomenda-se fortemente que o backend em **PHP** exponha a especificação **Ope
   - `scalar/laravel` ou `@scalar/api-reference`: Renderiza o visual do Scalar consumindo o JSON da OpenAPI (`/docs/api.json`).
   - `l5-swagger` / `zircote/swagger-php`: Para controle explícito de anotações OpenAPI se preferir Swagger clássico com visual Scalar.
 
-### 3. Exemplo de Fluxo com Orval (`orval.config.ts`)
-Com o backend servindo o arquivo `openapi.json`, a geração de código no frontend é instantânea:
-
-```typescript
-// orval.config.ts (exemplo de configuração no frontend)
-import { defineConfig } from "orval"
-
-export default defineConfig({
-  clubkey: {
-    input: {
-      target: "http://localhost:8000/docs/api.json", // Endpoint OpenAPI do Backend PHP
-    },
-    output: {
-      mode: "tags-split",
-      target: "./src/api/endpoints",
-      schemas: "./src/api/model",
-      client: "react-query",
-      httpClient: "axios",
-      override: {
-        mutator: {
-          path: "./src/lib/axiosInstance.ts",
-          name: "customAxiosInstance",
-        },
-        query: {
-          useQuery: true,
-          useMutation: true,
-          signal: true,
-        },
-      },
-    },
-  },
-})
-```
-
----
-
-## 🎯 Boas Práticas para o Desenvolvedor do Backend Garantir Compatibilidade com Orval
-1. **`operationId` em todas as rotas**: Cada endpoint OpenAPI deve conter um `operationId` claro e semântico (ex: `getEvents`, `createEventRsvp`, `getUserProfile`, `getKeypassTiers`), pois o Orval usará esses nomes para gerar os hooks (`useGetEvents`, `useCreateEventRsvp`, etc.).
-2. **Propriedades em `camelCase`**: Todos os campos de request/response JSON devem seguir `camelCase` para coincidir 1:1 com os tipos do frontend sem necessidade de transformadores.
-3. **CORS liberado para desenvolvimento**: Permitir origem `http://localhost:3000` com `credentials: true` e headers de autorização.
-
 ---
 
 ## 🛡️ Padrões de Qualidade, SOLID & Pipeline Automatizada
 
 ### 1. Princípios SOLID Aplicados
 - **Single Responsibility Principle (SRP)**: Componentes mantidos abaixo do threshold de 250–300 linhas. Componentes complexos (como `memberProfileDetailClient.tsx`) são decompostos em subcomponentes atômicos na pasta da funcionalidade.
-- **Don't Repeat Yourself (DRY)**: Lógicas recorrentes (como paginação, scroll spy e lifecycle de montagem) são isoladas em custom hooks (`src/hooks/`).
+- **Don't Repeat Yourself (DRY)**: Lógicas recorrentes (como paginação, scroll spy e verificação de módulos) são isoladas em custom hooks (`src/hooks/`).
 - **Interface Segregation Principle (ISP)**: Tipos de domínio desacoplados e centralizados por entidade em `src/types/`.
 - **Dependency Inversion / Slice Pattern (DIP)**: O estado global do Zustand é modularizado em fatias autônomas em `src/store/slices/`.
 
 ### 2. Automação de Qualidade & Pipeline de Build
-- **Prebuild Hook (`npm run build`)**: Dispara automaticamente a sequência:
-  1. `stripComments`: Limpa comentários de debug sem afetar o código de produção.
-  2. `prettier`: Garante formatação consistente em todo o código.
-  3. `eslint`: Verifica regras de linting estritas.
-- **Git Hooks com Husky & Commitlint**:
-  - `commit-msg`: Força commits padronizados pelo **Conventional Commits** exclusivamente em **inglês** (`feat`, `fix`, `refactor`, `docs`, `test`, `chore`, etc.).
-- **Suite de Testes Unitários**:
-  - `npm test`: Executa os testes unitários via **Vitest** (`src/__tests__/formatters.test.ts`).
-
+- **Prebuild Hook (`npm run build`)**: Dispara automaticamente a sequência de linters e formatação.
+- **Git Hooks com Husky & Commitlint**: Força commits padronizados pelo **Conventional Commits** exclusivamente em **inglês**.
+- **Suite de Testes Completa**:
+  - `pnpm test`: Executa os testes unitários via **Vitest** (83 testes).
+  - `pnpm test:e2e`: Executa os testes ponta a ponta via **Playwright** (19 testes).
+  - `pnpm test:all`: Executa ambas as suítes em sequência garantindo 100% de integridade.
