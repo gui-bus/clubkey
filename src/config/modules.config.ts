@@ -1,5 +1,3 @@
-import { notFound } from "next/navigation.js"
-
 export type SystemModule =
   | "home"
   | "stays"
@@ -176,6 +174,10 @@ export function assertModuleEnabled(
   modules: BrandModulesConfig
 ): void {
   if (!modules[module]) {
-    notFound()
+    const error = new Error("NEXT_HTTP_ERROR_FALLBACK;404") as Error & {
+      digest?: string
+    }
+    error.digest = "NEXT_HTTP_ERROR_FALLBACK;404"
+    throw error
   }
 }
