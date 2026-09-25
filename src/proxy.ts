@@ -3,7 +3,7 @@ import type { NextRequest } from "next/server"
 
 import { isRouteAllowed } from "@/src/config/brand.config"
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
 
   if (

@@ -1,9 +1,9 @@
 import { NextRequest } from "next/server"
 
-import { middleware } from "@/src/middleware"
+import { proxy } from "@/src/proxy"
 import { describe, expect, it } from "vitest"
 
-describe("Edge Proxy / Route Security Middleware", () => {
+describe("Edge Proxy / Route Security Proxy", () => {
   const createRequest = (path: string) => {
     return new NextRequest(`https://clubkey.io${path}`)
   }
@@ -21,7 +21,7 @@ describe("Edge Proxy / Route Security Middleware", () => {
 
       for (const p of paths) {
         const req = createRequest(p)
-        const res = middleware(req)
+        const res = proxy(req)
 
         expect(res.headers.get("x-middleware-rewrite")).toBeNull()
       }
@@ -44,7 +44,7 @@ describe("Edge Proxy / Route Security Middleware", () => {
 
       for (const p of allowedPaths) {
         const req = createRequest(p)
-        const res = middleware(req)
+        const res = proxy(req)
         expect(res.headers.get("x-middleware-rewrite")).toBeNull()
       }
     })
@@ -63,7 +63,7 @@ describe("Edge Proxy / Route Security Middleware", () => {
 
       for (const p of exemptPaths) {
         const req = createRequest(p)
-        const res = middleware(req)
+        const res = proxy(req)
         expect(res.headers.get("x-middleware-rewrite")).toBeNull()
       }
     })
@@ -86,7 +86,7 @@ describe("Edge Proxy / Route Security Middleware", () => {
 
       for (const p of blockedPaths) {
         const req = createRequest(p)
-        const res = middleware(req)
+        const res = proxy(req)
         const rewriteHeader = res.headers.get("x-middleware-rewrite")
         expect(rewriteHeader).toContain("/not-found")
       }
