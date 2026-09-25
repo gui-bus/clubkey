@@ -1,45 +1,48 @@
-# ClubKey — Documentação Técnica & Especificações de Backend
+# ClubKey — Documentação Técnica & Especificações do Sistema
 
-Bem-vindo à documentação oficial do ecossistema **ClubKey** — portal exclusivo para membros de alta performance e associados executivos.
+Bem-vindo à documentação técnica oficial do ecossistema **ClubKey & White-Label Multi-Tenant**.
 
-Este diretório foi projetado especificamente para que desenvolvedores de backend e agentes de inteligência artificial (IAs) possam entender completamente a arquitetura do frontend, modelar o banco de dados e construir a API RESTful de forma precisa, sem ambiguidades.
+Este diretório foi projetado especificamente para que desenvolvedores, arquitetos de software e agentes de inteligência artificial (IAs) possam compreender integralmente o funcionamento da plataforma, estender funcionalidades e construir integrações e backends de forma precisa, padronizada e sem ambiguidades.
 
 ---
 
-## 📚 Índice da Documentação
+## 📚 Índice Geral da Documentação
 
-### 1. Visão Geral & Arquitetura
-- **[`ARCHITECTURE.md`](./ARCHITECTURE.md)**: Arquitetura técnica do Frontend, Next.js 16 (App Router), convenções de Server/Client Components, gerenciamento de estado (Zustand), Design System (Bloom UI) e decisões de tecnologia.
-- **[`DATABASE_MODELS.md`](./DATABASE_MODELS.md)**: Modelagem relacional de banco de dados sugerida (entidades, relacionamentos, chaves primárias/estrangeiras e tipos).
-- **[`API_SPECIFICATIONS.md`](./API_SPECIFICATIONS.md)**: Especificação completa de todas as rotas de API, métodos HTTP, parâmetros de rota/query, schemas de requisição e resposta (JSON), autenticação e status codes.
-- **[`ENUMS.md`](./ENUMS.md)**: Dicionário central de todos os Enums e constantes padronizados em inglês (`lowercase`/`snake_case`).
-- **[`GAMIFICATION_RULES.md`](./GAMIFICATION_RULES.md)**: Manual de regras de negócio do KeyPass, algoritmos de cálculo de XP, subida de tier, bônus de RIB tokens, marcos intermediários e regras de retenção/descongelamento.
-- **[`WHITE_LABEL.md`](./WHITE_LABEL.md)**: Especificação completa do Sistema White-Label & Arquitetura Modular (`brandPresets`, matriz `modules`, defesa em profundidade em 4 camadas, Edge Proxy, guards de rota e desacoplamento visual).
+### 1. Arquitetura, Estado & Design System
+- **[`ARCHITECTURE.md`](./ARCHITECTURE.md)**: Arquitetura técnica global do Frontend, Next.js 16 (App Router), Server/Client Components, Edge Proxy e decisões de tecnologia.
+- **[`WHITE_LABEL.md`](./WHITE_LABEL.md)**: Especificação completa do Sistema White-Label & Arquitetura Modular (`brandPresets`, matriz `modules`, defesa em profundidade em 4 camadas, guards de rota e desacoplamento visual).
+- **[`STATE_MANAGEMENT.md`](./STATE_MANAGEMENT.md)**: Arquitetura de Gerenciamento de Estado com Zustand 5, Slice Pattern por domínio, persistência isolada por tenant e atualizações otimistas.
+- **[`DESIGN_SYSTEM.md`](./DESIGN_SYSTEM.md)**: Diretrizes do Design System Bloom UI, política de tema neutro (cards brancos/zinco), tokens CVA, injeção dinâmica de CSS variables, formatadores e máscaras.
+- **[`TESTING.md`](./TESTING.md)**: Estratégia de testes automatizados, suítes unitárias com Vitest (83 testes), suítes E2E com Playwright (19 testes) e Git Hooks com Husky.
+
+### 2. Especificações de Dados & Backend
+- **[`DATABASE_MODELS.md`](./DATABASE_MODELS.md)**: Modelagem relacional de banco de dados sugerida (PostgreSQL ERD, tabelas, chaves primárias/estrangeiras e isolamento multi-tenant por `tenantId`).
+- **[`API_SPECIFICATIONS.md`](./API_SPECIFICATIONS.md)**: Especificação completa de todas as rotas RESTful, parâmetros, payloads JSON, autenticação e códigos de resposta HTTP.
+- **[`ENUMS.md`](./ENUMS.md)**: Dicionário central de todos os tipos enumerados (`Enums`) e constantes em inglês padronizados em `lowercase`/`snake_case`.
+- **[`GAMIFICATION_RULES.md`](./GAMIFICATION_RULES.md)**: Manual de regras de negócio do KeyPass, algoritmos de cálculo de XP, subida de tier, bônus de RIB tokens, marcos e política de retenção.
 - **[`SEED_DATA.md`](./SEED_DATA.md)**: Datasets iniciais prontos em JSON para seeders de banco de dados (Tiers, Badges, Missões, Drops e Benefícios).
 
-### 2. Especificações por Página / Módulo (UPPERCASE)
-Cada documento descreve as funcionalidades da tela, dados consumidos, ações do usuário e rotas de API necessárias:
-- **[`pages/HOME.md`](./pages/HOME.md)**: Portal Home / Feed Principal (Eventos em destaque, membros recomendados, experiências, estatísticas e stories).
-- **[`pages/HOSPEDAGENS.md`](./pages/HOSPEDAGENS.md)**: Catálogo de Hospedagens, Detalhes da Acomodação, Minhas Hospedagens, Voucher e Cancelamento de Reservas.
+### 3. Especificações por Página / Módulo (`docs/pages/`)
+Cada documento descreve as funcionalidades da tela, componentes visuais, interações, dados consumidos e rotas de API:
+- **[`pages/HOME.md`](./pages/HOME.md)**: Página Inicial / Feed Principal (Boas-vindas, indicadores rápidos, agenda, matchmaking de conexões e experiências).
+- **[`pages/HOSPEDAGENS.md`](./pages/HOSPEDAGENS.md)**: Catálogo de Hospedagens, Detalhes da Acomodação, Minhas Hospedagens, Voucher com QR Code e Cancelamento.
 - **[`pages/EVENTOS.md`](./pages/EVENTOS.md)**: Catálogo de Eventos, Detalhes, Confirmação de Presença (RSVP), Lista de Participantes ("Quem Vai") e Meus Eventos.
-- **[`pages/EXPERIENCIAS.md`](./pages/EXPERIENCIAS.md)**: Experiências Gastronômicas & Lifestyle, Detalhes, Checkout / Compra de Cotas e Lista de Participantes.
-- **[`pages/BENEFICIOS.md`](./pages/BENEFICIOS.md)**: Parcerias Exclusivas, Vantagens por Categoria e Resgate de Benefícios.
-- **[`pages/CONEXOES.md`](./pages/CONEXOES.md)**: Rede de Membros, Filtros de Networking (Seeking/Offering), Perfil Público do Associado, Minhas Conexões e Chat em Tempo Real.
-- **[`pages/KEYPASS.md`](./pages/KEYPASS.md)**: Sistema KeyPass — Tiers Executivos, Progresso de XP, Tokens RIB, Missões Qualificadoras, Conquistas/Insígnias, Drops Semanais e Ranking Global.
-- **[`pages/PERFIL.md`](./pages/PERFIL.md)**: Perfil do Membro Logado, Edição de Informações, Tags de Negócios, Segurança 2FA e Gestão de Assinatura.
+- **[`pages/EXPERIENCIAS.md`](./pages/EXPERIENCIAS.md)**: Experiências Gastronômicas & Lifestyle, Detalhes, Checkout com Abatimento em Tokens RIB e Lista "Quem Vai".
+- **[`pages/BENEFICIOS.md`](./pages/BENEFICIOS.md)**: Parcerias Exclusivas de Luxo, Categorias e Resgate de Cupons.
+- **[`pages/CONEXOES.md`](./pages/CONEXOES.md)**: Diretório de Membros, Filtros de Matchmaking (Seeking/Offering), Perfil Público do Associado e Chat em Tempo Real.
+- **[`pages/KEYPASS.md`](./pages/KEYPASS.md)**: Sistema KeyPass — Tiers Executivos, Progresso de XP, Tokens RIB, Missões Qualificadoras, Conquistas, Drops Semanais e Ranking Global.
+- **[`pages/PERFIL.md`](./pages/PERFIL.md)**: Perfil do Membro Logado, Edição Cadastral, Tags de Negócios, Segurança 2FA e Gestão de Assinatura.
 - **[`pages/NOTIFICACOES.md`](./pages/NOTIFICACOES.md)**: Central de Notificações Global (Dropdown de avisos, convites de networking pendentes e mensagens não lidas).
-- **[`pages/AUTH.md`](./pages/AUTH.md)**: Fluxos de Autenticação (Sign In, Sign Up, Recuperação e Redefinição de Senha).
+- **[`pages/AUTH.md`](./pages/AUTH.md)**: Fluxos de Autenticação (Login, Solicitação de Adesão, Recuperação e Redefinição de Senha).
 
 ---
 
-## 🤖 Guia Rápido para a IA do Backend & Desenvolvedores
+## 🤖 Guia para Desenvolvedores & Agentes de IA
 
-Para criar o backend a partir deste repositório:
-1. **Consulte [`ENUMS.md`](./ENUMS.md)** para garantir que todos os campos de tipo e status usem os literais corretos em inglês.
-2. **Leia [`DATABASE_MODELS.md`](./DATABASE_MODELS.md)** para criar as migrações/tabelas do banco de dados (Laravel Migrations, Prisma, Drizzle, SQL puro).
-3. **Utilize [`SEED_DATA.md`](./SEED_DATA.md)** para popular as tabelas essenciais (`tiers`, `badges`, `missions`, `weeklyDrops`, `benefits`) com dados válidos no seeder (`DatabaseSeeder.php`).
-4. **Leia [`GAMIFICATION_RULES.md`](./GAMIFICATION_RULES.md)** para implementar a lógica de concessão de XP, cálculo de tier ativo, subida de patamar e retenção de 180 dias.
-5. **Leia [`API_SPECIFICATIONS.md`](./API_SPECIFICATIONS.md)** para implementar os controllers, services e rotas HTTP.
-6. **Consulte [`pages/*.md`](./pages/)** para entender as regras de negócio específicas de cada tela quando tiver dúvidas sobre filtros, paginação ou fluxos de usuário.
-7. **Consulte [`src/types/`](../src/types/) e [`src/data/portalData.ts`](../src/data/portalData.ts)** no código-fonte para ver os tipos TypeScript centralizados e os datasets mockados utilizados pelo frontend.
-8. **Gere a OpenAPI & Documentação com [Scalar](https://scalar.com/)**: Exponha o endpoint `GET /docs/api.json` ou `GET /openapi.json` e atribua `operationId` único em cada rota. O frontend utilizará **Orval** (`orval`) para gerar automaticamente todos os tipos TypeScript e hooks do **TanStack React Query** via **Axios**.
+Para estender ou integrar o ecossistema:
+1. **Consulte [`WHITE_LABEL.md`](./WHITE_LABEL.md)** para entender como o sistema ativa/desativa módulos e isola rotas no Edge Proxy e nos componentes.
+2. **Consulte [`ENUMS.md`](./ENUMS.md)** para garantir que novos campos utilizem os identificadores canônicos corretos.
+3. **Leia [`DATABASE_MODELS.md`](./DATABASE_MODELS.md)** e **[`API_SPECIFICATIONS.md`](./API_SPECIFICATIONS.md)** ao modelar tabelas e construir endpoints de backend.
+4. **Consulte [`DESIGN_SYSTEM.md`](./DESIGN_SYSTEM.md)** ao criar novas interfaces para manter a conformidade com o Bloom UI e a política de temas neutros.
+5. **Consulte [`STATE_MANAGEMENT.md`](./STATE_MANAGEMENT.md)** para entender o fluxo de dados reativo e as fatias do Zustand.
+6. **Execute `pnpm test:all`** (conforme detalhado em **[`TESTING.md`](./TESTING.md)**) para validar a integridade de qualquer nova alteração antes de submeter commits.
