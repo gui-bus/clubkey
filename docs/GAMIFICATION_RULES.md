@@ -1,6 +1,6 @@
 # Manual de Regras de Negócio & Algoritmos de Gamificação (KeyPass)
 
-Este documento descreve detalhadamente o funcionamento dos motores de cálculo de **XP**, **Tiers de Associação**, **Tokens RIB**, **Marcos Intermediários**, **Drops Semanais** e **Retenção de Tiers** do ecossistema **ClubKey**.
+Este documento descreve detalhadamente o funcionamento dos motores de cálculo de **XP**, **Tiers de Associação**, **Tokens RIB**, **Marcos Intermediários**, **Drops Semanais** e **Retenção de Tiers** do ecossistema **ClubKey & White-Label**.
 
 ---
 
@@ -10,6 +10,15 @@ O KeyPass é estruturado em 3 moedas/patrimônios do membro:
 1. **XP (Experience Points)**: Pontos de experiência acumulativos que determinam a posição no ranking e a qualificação para os Tiers. **O saldo total de XP nunca é zerado**.
 2. **Tiers (Patamares)**: Níveis hierárquicos institucionais (do Tier 01 Membro ao Tier 06 Patrono) que destravam descontos progressivos em estadias (até 35% OFF), atendimento prioritário, deal flow e acessos VIP.
 3. **Tokens RIB**: Moeda premium de recompensa recebida ao subir de tier (+2 RIB), ao completar marcos (+0.5 RIB) ou via drops especiais. Pode ser utilizada para abater valores na compra de experiências ou estadias.
+
+---
+
+## 🛡️ Desacoplamento Modular & White-Label
+
+Em tenants com a flag `modules.keypass: false` (como no **Viverde**):
+- O motor de gamificação é **completamente desacoplado da interface visual**.
+- Perfis de membros, cards no feed e diretório de conexões **não exibem pontuações de XP, insígnias de tier ou badges de KeyPass**.
+- Ações de networking ou estadias continuam funcionando normalmente sem dependência obrigatória de pontuação.
 
 ---
 
@@ -46,36 +55,16 @@ flowchart LR
 
 ### Detalhamento por Patamar:
 
-1. **Tier 01 — Membro (`membro`)**:
-   - **Faixa de XP**: 0 a 499 XP
-   - **Status**: **Base Segura Protegida** (Sem risco de rebaixamento).
-   - **Benefícios**: Acesso básico ao catálogo de acomodações, diretório de membros e visualização de eventos.
-2. **Tier 02 — Associado (`associado`)**:
-   - **Faixa de XP**: 500 a 1.999 XP
-   - **Status**: **Base Segura Protegida** (Sem risco de rebaixamento).
-   - **Benefícios**: Tarifas com até 20% OFF em estadias, confirmação em eventos regulares, conexões bilaterais e +2 Tokens RIB na promoção.
-3. **Tier 03 — Titular (`titular`)**:
-   - **Faixa de XP**: 2.000 a 4.999 XP
-   - **Status**: Ciclo de atividade de 180 dias.
-   - **Benefícios**: Tarifas com até 25% OFF, prioridade em listas de espera, jantares fechados, atendimento exclusivo e +2 Tokens RIB na promoção.
-4. **Tier 04 — Investidor (`investidor`)**:
-   - **Faixa de XP**: 5.000 a 9.999 XP
-   - **Status**: Ciclo de atividade de 180 dias.
-   - **Benefícios**: Tarifas com até 30% OFF, reuniões de deal flow e co-investimento, suporte VIP dedicado 24/7 e +2 Tokens RIB na promoção.
-5. **Tier 05 — Incorporador (`incorporador`)**:
-   - **Faixa de XP**: 10.000 a 15.999 XP
-   - **Status**: Patamar máximo por pontuação. Ciclo de atividade de 180 dias.
-   - **Benefícios**: Desconto máximo de até 35% OFF em estadias, acesso irrestrito a regatas e vivências, canal direto com os fundadores, mesa cativa anual e +2 Tokens RIB na promoção.
-6. **Tier 06 — Patrono (`patrono`)**:
-   - **Requisito**: Membro com a **posição #1 no Ranking Geral Global** com mais de 16.000 XP acumulados.
-   - **Status**: Título supremo singular e dinâmico (recalculado em tempo real).
-   - **Benefícios**: Insígnia suprema dourada em todo o ecossistema, cota especial de +5 Tokens RIB por trimestre, acesso livre a propriedades VIP e destaque fixo no Hall da Fama.
+1. **Tier 01 — Membro (`membro`)**: 0 a 499 XP. **Base Segura Protegida**. Acesso básico ao catálogo e eventos abertos.
+2. **Tier 02 — Associado (`associado`)**: 500 a 1.999 XP. **Base Segura Protegida**. Tarifas com até 20% OFF em estadias, conexões diretas e +2 Tokens RIB.
+3. **Tier 03 — Titular (`titular`)**: 2.000 a 4.999 XP. Janela de 180 dias. Tarifas com até 25% OFF, prioridade em experiências e jantares fechados.
+4. **Tier 04 — Investidor (`investidor`)**: 5.000 a 9.999 XP. Janela de 180 dias. Tarifas com até 30% OFF, reuniões de deal flow e suporte VIP 24/7.
+5. **Tier 05 — Incorporador (`incorporador`)**: 10.000 a 15.999 XP. Patamar máximo por pontuação. Tarifas com até 35% OFF e canal direto com fundadores.
+6. **Tier 06 — Patrono (`patrono`)**: #1 no Ranking Geral Global (> 16.000 XP). Título supremo singular recalculado em tempo real.
 
 ---
 
 ## 4. 🔄 Algoritmo de Cálculo de Tier (`getTierByXp`)
-
-A função que calcula o tier ativo de um associado obedece à seguinte lógica de precedência:
 
 ```typescript
 function calculateUserTier(params: {
@@ -118,10 +107,9 @@ function calculateUserTier(params: {
 
 ## 5. 🎯 Sistema de Marcos Intermediários (Milestones)
 
-Para manter o membro altamente engajado mesmo durante a jornada de acúmulo de XP entre um tier e outro:
 - Cada Tier possui **4 marcos intermediários** (25%, 50%, 75% e 100% da faixa de XP).
 - Cada marco resgatado concede **`+0.5 Token RIB`** diretamente na carteira do associado.
-- Os marcos são gravados no array/JSON `claimedMilestones` no formato: `"${tierId}_${milestoneIndex}"` (ex: `"membro_1"`, `"membro_2"`, `"associado_3"`).
+- Gravados no formato `"${tierId}_${milestoneIndex}"` (ex: `"membro_1"`, `"associado_3"`).
 
 ---
 
@@ -129,16 +117,6 @@ Para manter o membro altamente engajado mesmo durante a jornada de acúmulo de X
 
 1. **Base Vitalícia Protegida**: Os tiers **Membro (01)** e **Associado (02)** nunca sofrem rebaixamento ou congelamento.
 2. **Ciclo de Manutenção (Titular, Investidor, Incorporador)**:
-   - O membro deve realizar ao menos **1 atividade qualificadora** (reserva de estadia, presença em evento, compra de experiência ou aceite de conexão) a cada **180 dias**.
-   - Se permanecer inativo por mais de 180 dias, o atributo `isTierFrozen` passa para `true`. O usuário mantém seu histórico de XP e Tokens RIB intactos, mas seu nível ativo desce temporariamente para **Associado**.
-3. **Descongelamento Instantâneo**:
-   - No instante em que o membro realiza **qualquer nova ação**, o backend seta `isTierFrozen = false` e restaura instantaneamente o seu Tier pleno com todas as vantagens máximas.
-
----
-
-## 7. 🎁 Drops Semanais (Weekly Drops)
-
-- Ciclos semanais com prazo de expiração (contagem regressiva em segundos).
-- Apresentam desafios rotativos com altas recompensas de XP e Tokens RIB.
-- Ao atingir a meta (`currentProgress >= totalRequired`), o status `isCompleted` torna-se `true` e o botão *"Resgatar Recompensa"* é habilitado.
-- O resgate seta `isClaimed = true`, credita o XP/Tokens e gera o registro no extrato `xpTransactions`.
+   - Exige ao menos **1 atividade qualificadora** a cada **180 dias**.
+   - Se inativo > 180 dias, `isTierFrozen` torna-se `true` e o nível ativo opera como **Associado**.
+3. **Descongelamento Instantâneo**: Qualquer nova ação restaura imediatamente o Tier pleno.
