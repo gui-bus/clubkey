@@ -17,18 +17,18 @@ Este diretório foi projetado especificamente para que desenvolvedores de backen
 - **[`WHITE_LABEL.md`](./WHITE_LABEL.md)**: Especificação completa do Sistema White-Label & Arquitetura Modular (`brandPresets`, matriz `modules`, defesa em profundidade em 4 camadas, Edge Proxy, guards de rota e desacoplamento visual).
 - **[`SEED_DATA.md`](./SEED_DATA.md)**: Datasets iniciais prontos em JSON para seeders de banco de dados (Tiers, Badges, Missões, Drops e Benefícios).
 
-### 2. Especificações por Página / Módulo
+### 2. Especificações por Página / Módulo (UPPERCASE)
 Cada documento descreve as funcionalidades da tela, dados consumidos, ações do usuário e rotas de API necessárias:
-- **[`pages/home.md`](./pages/home.md)**: Portal Home / Feed Principal (Eventos em destaque, membros recomendados, experiências, estatísticas e stories).
-- **[`pages/hospedagens.md`](./pages/hospedagens.md)**: Catálogo de Hospedagens, Detalhes da Acomodação, Minhas Hospedagens, Voucher e Cancelamento de Reservas.
-- **[`pages/eventos.md`](./pages/eventos.md)**: Catálogo de Eventos, Detalhes, Confirmação de Presença (RSVP), Lista de Participantes ("Quem Vai") e Meus Eventos.
-- **[`pages/experiencias.md`](./pages/experiencias.md)**: Experiências Gastronômicas & Lifestyle, Detalhes, Checkout / Compra de Cotas e Lista de Participantes.
-- **[`pages/beneficios.md`](./pages/beneficios.md)**: Parcerias Exclusivas, Vantagens por Categoria e Resgate de Benefícios.
-- **[`pages/conexoes.md`](./pages/conexoes.md)**: Rede de Membros, Filtros de Networking (Seeking/Offering), Perfil Público do Associado, Minhas Conexões e Chat em Tempo Real.
-- **[`pages/keypass.md`](./pages/keypass.md)**: Sistema KeyPass — Tiers Executivos, Progresso de XP, Tokens RIB, Missões Qualificadoras, Conquistas/Insígnias, Drops Semanais e Ranking Global.
-- **[`pages/perfil.md`](./pages/perfil.md)**: Perfil do Membro Logado, Edição de Informações, Tags de Negócios, Segurança 2FA e Gestão de Assinatura.
-- **[`pages/notificacoes.md`](./pages/notificacoes.md)**: Central de Notificações Global (Dropdown de avisos, convites de networking pendentes e mensagens não lidas).
-- **[`pages/auth.md`](./pages/auth.md)**: Fluxos de Autenticação (Sign In, Sign Up, Recuperação e Redefinição de Senha).
+- **[`pages/HOME.md`](./pages/HOME.md)**: Portal Home / Feed Principal (Eventos em destaque, membros recomendados, experiências, estatísticas e stories).
+- **[`pages/HOSPEDAGENS.md`](./pages/HOSPEDAGENS.md)**: Catálogo de Hospedagens, Detalhes da Acomodação, Minhas Hospedagens, Voucher e Cancelamento de Reservas.
+- **[`pages/EVENTOS.md`](./pages/EVENTOS.md)**: Catálogo de Eventos, Detalhes, Confirmação de Presença (RSVP), Lista de Participantes ("Quem Vai") e Meus Eventos.
+- **[`pages/EXPERIENCIAS.md`](./pages/EXPERIENCIAS.md)**: Experiências Gastronômicas & Lifestyle, Detalhes, Checkout / Compra de Cotas e Lista de Participantes.
+- **[`pages/BENEFICIOS.md`](./pages/BENEFICIOS.md)**: Parcerias Exclusivas, Vantagens por Categoria e Resgate de Benefícios.
+- **[`pages/CONEXOES.md`](./pages/CONEXOES.md)**: Rede de Membros, Filtros de Networking (Seeking/Offering), Perfil Público do Associado, Minhas Conexões e Chat em Tempo Real.
+- **[`pages/KEYPASS.md`](./pages/KEYPASS.md)**: Sistema KeyPass — Tiers Executivos, Progresso de XP, Tokens RIB, Missões Qualificadoras, Conquistas/Insígnias, Drops Semanais e Ranking Global.
+- **[`pages/PERFIL.md`](./pages/PERFIL.md)**: Perfil do Membro Logado, Edição de Informações, Tags de Negócios, Segurança 2FA e Gestão de Assinatura.
+- **[`pages/NOTIFICACOES.md`](./pages/NOTIFICACOES.md)**: Central de Notificações Global (Dropdown de avisos, convites de networking pendentes e mensagens não lidas).
+- **[`pages/AUTH.md`](./pages/AUTH.md)**: Fluxos de Autenticação (Sign In, Sign Up, Recuperação e Redefinição de Senha).
 
 ---
 

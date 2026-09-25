@@ -19,7 +19,7 @@ All source code files across the codebase **MUST strictly follow `camelCase` and
 
 ### 2. Exceptions to Naming Conventions
 - **App Router Route Directories**: Folders inside `src/app/(portal)/*` (such as `hospedagens/`, `eventos/`, `experiencias/`, `beneficios/`, `conexoes/`, `perfil/`) **MUST remain in Portuguese**, as they define user-facing URL routes in Brazil.
-- **Project Documentation**: Documentation pages inside `docs/pages/*` remain in Portuguese to correspond directly with Portuguese UI features and user journeys.
+- **Project Documentation**: All documentation files across `docs/` and `docs/pages/` **MUST strictly use UPPERCASE `.md` file names** (e.g. `docs/ARCHITECTURE.md`, `docs/WHITE_LABEL.md`, `docs/pages/HOME.md`, `docs/pages/EVENTOS.md`). Content remains in Portuguese to correspond directly with Portuguese UI features and user journeys.
 - **Next.js Conventions**: Next.js special files remain standard (`page.tsx`, `layout.tsx`, `loading.tsx`, `error.tsx`, `not-found.tsx`, `route.ts`, `globals.css`).
 - **Standard Configs**: Config files remain standard (`tailwind.config.ts`, `next.config.ts`, `bloom.json`, `tsconfig.json`, `vitest.config.ts`, `package.json`).
 
