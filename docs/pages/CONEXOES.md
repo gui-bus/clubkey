@@ -10,11 +10,11 @@ O módulo de Conexões é governado pela flag `modules.networking` em [`src/conf
 
 ```mermaid
 flowchart TD
-    Req[Usuário acessa /conexoes ou /pessoas] --> Proxy[Edge Proxy src/proxy.ts]
-    Proxy -- isRouteAllowed: false (módulo desabilitado) --> 404[Rewrite para /not-found]
-    Proxy -- isRouteAllowed: true (módulo habilitado) --> Layout[Server Component Layout]
-    Layout --> Guard[assertModule('networking')]
-    Guard -- Módulo Ativo --> Page[Renderiza Diretório de Membros]
+    Req["Usuário acessa /conexoes ou /pessoas"] --> Proxy["Edge Proxy src/proxy.ts"]
+    Proxy -- "isRouteAllowed: false (módulo desabilitado)" --> 404["Rewrite para /not-found"]
+    Proxy -- "isRouteAllowed: true (módulo habilitado)" --> Layout["Server Component Layout"]
+    Layout --> Guard["assertModule('networking')"]
+    Guard -- "Módulo Ativo" --> Page["Renderiza Diretório de Membros"]
 ```
 
 ### Desacoplamento Cruzado de Módulos:

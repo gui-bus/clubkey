@@ -21,20 +21,20 @@ A página inicial utiliza o componente declarativo [`<ModuleGate>`](file:///c:/U
 
 ```mermaid
 flowchart TD
-    subgraph PresetComTodosModulos [Exemplo: Tenant com Todos os 7 Módulos Habilitados]
-        H1[Hero Banner de Boas-Vindas] --> G1[Grid de 4 Indicadores Rápidos]
-        G1 --> C1[Centrais de Navegação - 5 Atalhos]
-        C1 --> E1[Próximo Encontro Confirmado]
-        E1 --> E2[Próximos Eventos em Destaque]
-        E2 --> M1[Conexões Sugeridas Matchmaking]
-        M1 --> X1[Experiências & Lifestyle]
+    subgraph PresetComTodosModulos ["Exemplo: Tenant com Todos os 7 Módulos Habilitados"]
+        H1["Hero Banner de Boas-Vindas"] --> G1["Grid de 4 Indicadores Rápidos"]
+        G1 --> C1["Centrais de Navegação - 5 Atalhos"]
+        C1 --> E1["Próximo Encontro Confirmado"]
+        E1 --> E2["Próximos Eventos em Destaque"]
+        E2 --> M1["Conexões Sugeridas Matchmaking"]
+        M1 --> X1["Experiências & Lifestyle"]
     end
 
-    subgraph PresetModulosFocados [Exemplo: Tenant com Módulos Selecionados]
-        H2[Hero Banner de Boas-Vindas] --> G2[Grid de Indicadores dos Módulos Ativos]
-        G2 --> C2[Centrais dos Módulos Ativos]
-        C2 --> S2[Carrossel de Hospedagens Selecionadas]
-        S2 --> M2[Conexões Sugeridas da Rede]
+    subgraph PresetModulosFocados ["Exemplo: Tenant com Módulos Selecionados"]
+        H2["Hero Banner de Boas-Vindas"] --> G2["Grid de Indicadores dos Módulos Ativos"]
+        G2 --> C2["Centrais dos Módulos Ativos"]
+        C2 --> S2["Carrossel de Hospedagens Selecionadas"]
+        S2 --> M2["Conexões Sugeridas da Rede"]
     end
 ```
 

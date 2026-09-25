@@ -10,11 +10,11 @@ O módulo de Eventos é governado pela flag `modules.events` do preset ativo em 
 
 ```mermaid
 flowchart TD
-    Req[Usuário acessa /eventos ou /agenda] --> Proxy[Edge Proxy src/proxy.ts]
-    Proxy -- isRouteAllowed: false (módulo desabilitado) --> 404[Rewrite para /not-found]
-    Proxy -- isRouteAllowed: true (módulo habilitado) --> Layout[Server Component Layout]
-    Layout --> Guard[assertModule('events')]
-    Guard -- Módulo Ativo --> Page[Renderiza Catálogo de Eventos]
+    Req["Usuário acessa /eventos ou /agenda"] --> Proxy["Edge Proxy src/proxy.ts"]
+    Proxy -- "isRouteAllowed: false (módulo desabilitado)" --> 404["Rewrite para /not-found"]
+    Proxy -- "isRouteAllowed: true (módulo habilitado)" --> Layout["Server Component Layout"]
+    Layout --> Guard["assertModule('events')"]
+    Guard -- "Módulo Ativo" --> Page["Renderiza Catálogo de Eventos"]
 ```
 
 ### Regras de Isolamento por Preset:

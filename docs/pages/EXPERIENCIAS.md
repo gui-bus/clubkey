@@ -10,11 +10,11 @@ O módulo de Experiências é governado pela flag `modules.experiences` no prese
 
 ```mermaid
 flowchart TD
-    Req[Usuário acessa /experiencias] --> Proxy[Edge Proxy src/proxy.ts]
-    Proxy -- isRouteAllowed: false (módulo desabilitado) --> 404[Rewrite para /not-found]
-    Proxy -- isRouteAllowed: true (módulo habilitado) --> Layout[Server Component Layout]
-    Layout --> Guard[assertModule('experiences')]
-    Guard -- Módulo Ativo --> Page[Renderiza Catálogo de Experiências]
+    Req["Usuário acessa /experiencias"] --> Proxy["Edge Proxy src/proxy.ts"]
+    Proxy -- "isRouteAllowed: false (módulo desabilitado)" --> 404["Rewrite para /not-found"]
+    Proxy -- "isRouteAllowed: true (módulo habilitado)" --> Layout["Server Component Layout"]
+    Layout --> Guard["assertModule('experiences')"]
+    Guard -- "Módulo Ativo" --> Page["Renderiza Catálogo de Experiências"]
 ```
 
 ### Regras de Isolamento por Preset:

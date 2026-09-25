@@ -10,11 +10,11 @@ O módulo de Benefícios é governado pela flag `modules.benefits` em [`src/conf
 
 ```mermaid
 flowchart TD
-    Req[Usuário acessa /beneficios] --> Proxy[Edge Proxy src/proxy.ts]
-    Proxy -- isRouteAllowed: false (módulo desabilitado) --> 404[Rewrite para /not-found]
-    Proxy -- isRouteAllowed: true (módulo habilitado) --> Layout[Server Component Layout]
-    Layout --> Guard[assertModule('benefits')]
-    Guard -- Módulo Ativo --> Page[Renderiza Galeria de Benefícios]
+    Req["Usuário acessa /beneficios"] --> Proxy["Edge Proxy src/proxy.ts"]
+    Proxy -- "isRouteAllowed: false (módulo desabilitado)" --> 404["Rewrite para /not-found"]
+    Proxy -- "isRouteAllowed: true (módulo habilitado)" --> Layout["Server Component Layout"]
+    Layout --> Guard["assertModule('benefits')"]
+    Guard -- "Módulo Ativo" --> Page["Renderiza Galeria de Benefícios"]
 ```
 
 ### Regras de Isolamento por Preset:

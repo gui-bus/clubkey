@@ -10,11 +10,11 @@ O módulo de Hospedagens é governado pela flag `modules.stays` em [`src/config/
 
 ```mermaid
 flowchart TD
-    Req[Usuário acessa /hospedagens ou /minhas-hospedagens] --> Proxy[Edge Proxy src/proxy.ts]
-    Proxy -- isRouteAllowed: false (módulo desabilitado) --> 404[Rewrite para /not-found]
-    Proxy -- isRouteAllowed: true (módulo habilitado) --> Layout[Server Component Layout]
-    Layout --> Guard[assertModule('stays')]
-    Guard -- Módulo Ativo --> Page[Renderiza Catálogo de Hospedagens]
+    Req["Usuário acessa /hospedagens ou /minhas-hospedagens"] --> Proxy["Edge Proxy src/proxy.ts"]
+    Proxy -- "isRouteAllowed: false (módulo desabilitado)" --> 404["Rewrite para /not-found"]
+    Proxy -- "isRouteAllowed: true (módulo habilitado)" --> Layout["Server Component Layout"]
+    Layout --> Guard["assertModule('stays')"]
+    Guard -- "Módulo Ativo" --> Page["Renderiza Catálogo de Hospedagens"]
 ```
 
 ### Personalização White-Label por Preset:

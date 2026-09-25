@@ -10,10 +10,10 @@ A central de notificações consome `useBrandModules()` para garantir que **some
 
 ```mermaid
 flowchart TD
-    API[Notificação Recebida via API/WebSocket] --> Filter{Módulo Ativo no Tenant?}
-    Filter -- Módulo Inativo no Preset (ex: events: false) --> Drop[Oculta Notificação]
-    Filter -- Módulo Inativo no Preset (ex: keypass: false) --> Drop
-    Filter -- Módulo Habilitado --> Render[Renderiza no Dropdown e Incrementa Badge]
+    API["Notificação Recebida via API/WebSocket"] --> Filter{"Módulo Ativo no Tenant?"}
+    Filter -- "Módulo Inativo no Preset (ex: events: false)" --> Drop["Oculta Notificação"]
+    Filter -- "Módulo Inativo no Preset (ex: keypass: false)" --> Drop
+    Filter -- "Módulo Habilitado" --> Render["Renderiza no Dropdown e Incrementa Badge"]
 ```
 
 ### Regras de Filtragem por Preset:

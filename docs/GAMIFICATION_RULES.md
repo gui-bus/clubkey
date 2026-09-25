@@ -46,11 +46,11 @@ Sempre que um associado realizar uma ação qualificadora na plataforma, o backe
 
 ```mermaid
 flowchart LR
-    M["01. Membro\n(0 - 499 XP)\n[Base Segura]"] --> A["02. Associado\n(500 - 1.999 XP)\n[Base Segura]"]
-    A --> T["03. Titular\n(2.000 - 4.999 XP)\n[Janela 180 Dias]"]
-    T --> I["04. Investidor\n(5.000 - 9.999 XP)\n[Janela 180 Dias]"]
-    I --> INC["05. Incorporador\n(10.000 - 15.999 XP)\n[Janela 180 Dias]"]
-    INC --> P["06. Patrono\n(16.000+ XP)\n[#1 Ranking Global]"]
+    M["01. Membro<br>(0 - 499 XP)<br>[Base Segura]"] --> A["02. Associado<br>(500 - 1.999 XP)<br>[Base Segura]"]
+    A --> T["03. Titular<br>(2.000 - 4.999 XP)<br>[Janela 180 Dias]"]
+    T --> I["04. Investidor<br>(5.000 - 9.999 XP)<br>[Janela 180 Dias]"]
+    I --> INC["05. Incorporador<br>(10.000 - 15.999 XP)<br>[Janela 180 Dias]"]
+    INC --> P["06. Patrono<br>(16.000+ XP)<br>[#1 Ranking Global]"]
 ```
 
 ### Detalhamento por Patamar:

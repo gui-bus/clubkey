@@ -253,15 +253,15 @@ O sistema implementa **4 camadas coordenadas** para garantir isolamento absoluto
 
 ```mermaid
 flowchart TD
-    Req[Requisição do Usuário] --> L1[Camada 1: Edge Proxy src/proxy.ts]
-    L1 -- Rota de módulo desabilitado --> 404A[Rewrite para /not-found]
-    L1 -- Rota permitida --> L2[Camada 2: Server Component Guard assertModule]
-    L2 -- Módulo inativo no Layout/Page --> 404B[Dispara NEXT_HTTP_ERROR_FALLBACK 404]
-    L2 -- Módulo ativo --> L3[Camada 3: Renderização da Página]
-    L3 --> L3A[Camada 3: Componente Declarativo ModuleGate]
-    L3 --> L4[Camada 4: Custom Hook useBrandModules]
-    L3A -- Módulo inativo --> Hide[Oculta Widget / Renderiza Fallback]
-    L3A -- Módulo ativo --> Render[Renderiza Elemento Visual]
+    Req["Requisição do Usuário"] --> L1["Camada 1: Edge Proxy src/proxy.ts"]
+    L1 -- "Rota de módulo desabilitado" --> 404A["Rewrite para /not-found"]
+    L1 -- "Rota permitida" --> L2["Camada 2: Server Component Guard assertModule"]
+    L2 -- "Módulo inativo no Layout/Page" --> 404B["Dispara NEXT_HTTP_ERROR_FALLBACK 404"]
+    L2 -- "Módulo ativo" --> L3["Camada 3: Renderização da Página"]
+    L3 --> L3A["Camada 3: Componente Declarativo ModuleGate"]
+    L3 --> L4["Camada 4: Custom Hook useBrandModules"]
+    L3A -- "Módulo inativo" --> Hide["Oculta Widget / Renderiza Fallback"]
+    L3A -- "Módulo ativo" --> Render["Renderiza Elemento Visual"]
 ```
 
 ---

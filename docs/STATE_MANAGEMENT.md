@@ -21,14 +21,14 @@ O store principal em [`src/store/usePortalStore.ts`](file:///c:/Users/Guilherme/
 
 ```mermaid
 flowchart TD
-    Store[usePortalStore - Zustand Store Central]
-    Store --> S1[AuthSlice: Sessão e Login]
-    Store --> S2[ProfileSlice: Dados Cadastrais e 2FA]
-    Store --> S3[ChatSlice: Mensageria em Tempo Real]
-    Store --> S4[NetworkingSlice: Conexões e Matchmaking]
-    Store --> S5[EventsSlice: RSVPs e Agenda]
-    Store --> S6[StaysSlice: Reservas e Vouchers]
-    Store --> S7[GamificationSlice: Tiers, XP, RIB Tokens e Missões]
+    Store["usePortalStore - Zustand Store Central"]
+    Store --> S1["AuthSlice: Sessão e Login"]
+    Store --> S2["ProfileSlice: Dados Cadastrais e 2FA"]
+    Store --> S3["ChatSlice: Mensageria em Tempo Real"]
+    Store --> S4["NetworkingSlice: Conexões e Matchmaking"]
+    Store --> S5["EventsSlice: RSVPs e Agenda"]
+    Store --> S6["StaysSlice: Reservas e Vouchers"]
+    Store --> S7["GamificationSlice: Tiers, XP, RIB Tokens e Missões"]
 ```
 
 ### Definição do Tipo Global:

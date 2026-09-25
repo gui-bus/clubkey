@@ -10,23 +10,23 @@ A integridade do sistema, a segurança de rotas multi-tenant e a consistência v
 
 ```mermaid
 flowchart TD
-    subgraph E2ELayer [Camada E2E - Playwright 19 Testes]
-        E1[Fluxos de Autenticação e Sessão]
-        E2[Segurança de Rotas e Rewrite 404]
-        E3[Isolamento de Marca e Logotipos]
-        E4[Navegação e Catálogo de Hospedagens]
-        E5[Smoke Tests e Troca de Tema Dark/Light]
+    subgraph E2ELayer ["Camada E2E - Playwright 19 Testes"]
+        E1["Fluxos de Autenticação e Sessão"]
+        E2["Segurança de Rotas e Rewrite 404"]
+        E3["Isolamento de Marca e Logotipos"]
+        E4["Navegação e Catálogo de Hospedagens"]
+        E5["Smoke Tests e Troca de Tema Dark/Light"]
     end
 
-    subgraph UnitLayer [Camada Unitária e Integração - Vitest 83 Testes]
-        U1[Registro Canônico de Módulos e Prefixo de Rotas]
-        U2[Presets de Marca e Gerador de CSS Variables]
-        U3[Componente Declarativo ModuleGate]
-        U4[Hook Reativo useBrandModules]
-        U5[Edge Proxy de Roteamento]
-        U6[Isolamento de Header, Footer e Dropdown]
-        U7[Desacoplamento Cruzado de Gamificação]
-        U8[Utilitários de Formatação e Máscaras]
+    subgraph UnitLayer ["Camada Unitária e Integração - Vitest 83 Testes"]
+        U1["Registro Canônico de Módulos e Prefixo de Rotas"]
+        U2["Presets de Marca e Gerador de CSS Variables"]
+        U3["Componente Declarativo ModuleGate"]
+        U4["Hook Reativo useBrandModules"]
+        U5["Edge Proxy de Roteamento"]
+        U6["Isolamento de Header, Footer e Dropdown"]
+        U7["Desacoplamento Cruzado de Gamificação"]
+        U8["Utilitários de Formatação e Máscaras"]
     end
 
     E2ELayer --> UnitLayer

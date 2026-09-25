@@ -12,11 +12,11 @@ O módulo KeyPass é governado pela flag `modules.keypass` em [`src/config/brand
 
 ```mermaid
 flowchart TD
-    Req[Usuário acessa /keypass ou sub-rotas] --> Proxy[Edge Proxy src/proxy.ts]
-    Proxy -- isRouteAllowed: false (módulo desabilitado) --> 404[Rewrite para /not-found]
-    Proxy -- isRouteAllowed: true (módulo habilitado) --> Layout[Server Component Layout]
-    Layout --> Guard[assertModule('keypass')]
-    Guard -- Módulo Ativo --> Page[Renderiza Painel KeyPass]
+    Req["Usuário acessa /keypass ou sub-rotas"] --> Proxy["Edge Proxy src/proxy.ts"]
+    Proxy -- "isRouteAllowed: false (módulo desabilitado)" --> 404["Rewrite para /not-found"]
+    Proxy -- "isRouteAllowed: true (módulo habilitado)" --> Layout["Server Component Layout"]
+    Layout --> Guard["assertModule('keypass')"]
+    Guard -- "Módulo Ativo" --> Page["Renderiza Painel KeyPass"]
 ```
 
 ### Regras de Isolamento por Preset:
