@@ -12,6 +12,9 @@ import {
   Check,
   Hourglass,
   MapPin,
+  PencilSimple,
+  Plus,
+  Tag,
   UserMinus,
   UserPlus,
   X,
@@ -20,6 +23,7 @@ import {
 import { toast } from "@/src/components/ui/toast/toast"
 
 import { CtaButton } from "@/src/components/common/ctaButton"
+import { MemberCustomTagsDialog } from "@/src/components/portal/memberCustomTagsDialog"
 
 import { cn } from "@/src/lib/utils"
 
@@ -46,10 +50,12 @@ export function MemberCard({
   onDecline,
   onCancel,
 }: MemberCardProps): React.JSX.Element {
-  const { toggleConnect, getConnectionStatus } = usePortalStore()
+  const { toggleConnect, getConnectionStatus, customTags } = usePortalStore()
+  const [isTagDialogOpen, setIsTagDialogOpen] = React.useState(false)
   const mounted = useMounted()
 
   const status = mounted ? getConnectionStatus(member.id) : "none"
+  const memberTags = mounted && customTags ? customTags[member.id] || [] : []
 
   const handleConnect = (
     e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>
@@ -168,6 +174,65 @@ export function MemberCard({
               </div>
             )}
           </div>
+
+          {/* Minhas Tags Privadas */}
+          {mounted && (status === "connected" || memberTags.length > 0) && (
+            <div className="pt-2 border-t border-zinc-100 dark:border-zinc-800/80 space-y-1">
+              <div className="flex items-center justify-between gap-1">
+                <span className="text-[9px] font-black uppercase tracking-widest text-zinc-500 dark:text-zinc-400 flex items-center gap-1">
+                  <Tag className="w-2.5 h-2.5 text-brand-primary" />
+                  <span>Minhas Tags (Privadas)</span>
+                </span>
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    setIsTagDialogOpen(true)
+                  }}
+                  className="text-[10px] font-bold text-brand-primary hover:underline flex items-center gap-0.5 cursor-pointer z-10"
+                  title="Gerenciar tags privadas"
+                >
+                  {memberTags.length > 0 ? (
+                    <PencilSimple className="w-2.5 h-2.5" />
+                  ) : (
+                    <Plus className="w-2.5 h-2.5" />
+                  )}
+                  <span>{memberTags.length > 0 ? "Editar" : "Adicionar"}</span>
+                </button>
+              </div>
+
+              {memberTags.length > 0 ? (
+                <div className="flex flex-wrap gap-1 pt-0.5">
+                  {memberTags.map((tag) => (
+                    <span
+                      key={tag}
+                      onClick={(e) => {
+                        e.preventDefault()
+                        e.stopPropagation()
+                        setIsTagDialogOpen(true)
+                      }}
+                      className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-xs bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 text-[10px] font-medium border border-zinc-200/60 dark:border-zinc-700/60 hover:border-brand-primary/50 transition-colors cursor-pointer z-10"
+                      title="Clique para editar tags"
+                    >
+                      <span>{tag}</span>
+                    </span>
+                  ))}
+                </div>
+              ) : (
+                <p
+                  onClick={(e) => {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    setIsTagDialogOpen(true)
+                  }}
+                  className="text-[10px] text-zinc-400 dark:text-zinc-500 italic hover:text-brand-primary transition-colors cursor-pointer z-10 pt-0.5"
+                >
+                  + Adicionar tag privada...
+                </p>
+              )}
+            </div>
+          )}
         </div>
 
         {isNetworking && (
@@ -194,7 +259,7 @@ export function MemberCard({
                 </CtaButton>
                 <CtaButton
                   type="button"
-                  variant="dark-outline"
+                  variant="filled"
                   size="xs"
                   onClick={(e) => {
                     e.preventDefault()
@@ -223,7 +288,7 @@ export function MemberCard({
                 {onCancel ? (
                   <CtaButton
                     type="button"
-                    variant="dark-outline"
+                    variant="filled"
                     size="xs"
                     onClick={handleCancel}
                     className="w-8 h-8 px-0 rounded-sm shrink-0 z-10 shadow-none hover:shadow-none flex items-center justify-center border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-white"
@@ -236,7 +301,7 @@ export function MemberCard({
                 ) : onRemove ? (
                   <CtaButton
                     type="button"
-                    variant="dark-outline"
+                    variant="filled"
                     size="xs"
                     onClick={handleRemove}
                     className="w-8 h-8 px-0 rounded-sm shrink-0 z-10 shadow-none hover:shadow-none flex items-center justify-center border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-white"
@@ -251,9 +316,9 @@ export function MemberCard({
                     type="button"
                     variant={
                       status === "connected"
-                        ? "dark-outline"
+                        ? "filled"
                         : status === "pending"
-                          ? "dark-outline"
+                          ? "filled"
                           : "primary"
                     }
                     size="xs"
@@ -305,28 +370,36 @@ export function MemberCard({
     </>
   )
 
-  if (isNetworking) {
-    return (
-      <Link
-        href={`/conexoes/${member.id}/${getMemberSlug(member)}`}
-        className={cn(
-          "group/card flex flex-row rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors duration-200 overflow-hidden cursor-pointer",
-          className
-        )}
-      >
-        {innerContent}
-      </Link>
-    )
-  }
-
   return (
-    <div
-      className={cn(
-        "group/card flex flex-row rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] transition-colors duration-200 overflow-hidden",
-        className
+    <>
+      {isNetworking ? (
+        <Link
+          href={`/conexoes/${member.id}/${getMemberSlug(member)}`}
+          className={cn(
+            "group/card flex flex-row rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors duration-200 overflow-hidden cursor-pointer",
+            className
+          )}
+        >
+          {innerContent}
+        </Link>
+      ) : (
+        <div
+          className={cn(
+            "group/card flex flex-row rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] transition-colors duration-200 overflow-hidden",
+            className
+          )}
+        >
+          {innerContent}
+        </div>
       )}
-    >
-      {innerContent}
-    </div>
+
+      {mounted && (
+        <MemberCustomTagsDialog
+          member={member}
+          open={isTagDialogOpen}
+          onOpenChange={setIsTagDialogOpen}
+        />
+      )}
+    </>
   )
 }

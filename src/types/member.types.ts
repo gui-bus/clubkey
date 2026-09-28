@@ -48,3 +48,5 @@ export interface UserProfile {
 }
 
 export type MemberConnectionStatus = "none" | "pending" | "connected"
+
+export type MemberCustomTags = Record<number, string[]>

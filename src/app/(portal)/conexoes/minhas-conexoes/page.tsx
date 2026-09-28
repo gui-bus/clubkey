@@ -29,6 +29,7 @@ function MinhasConexoesContent(): React.JSX.Element {
     connectedMembers,
     receivedPendingInvites,
     missions,
+    customTags,
     acceptInvite,
     declineInvite,
     cancelSentInvite,
@@ -95,6 +96,7 @@ function MinhasConexoesContent(): React.JSX.Element {
       const q = searchQuery.trim().toLowerCase()
       if (!q) return list
       return list.filter((m) => {
+        const memberTags = customTags?.[m.id] || []
         const fullText = [
           m.firstName,
           m.lastName,
@@ -103,13 +105,14 @@ function MinhasConexoesContent(): React.JSX.Element {
           m.city,
           ...m.seeking,
           ...m.offering,
+          ...memberTags,
         ]
           .join(" ")
           .toLowerCase()
         return fullText.includes(q)
       })
     },
-    [searchQuery]
+    [searchQuery, customTags]
   )
 
   const filteredReceived = React.useMemo(
@@ -195,7 +198,7 @@ function MinhasConexoesContent(): React.JSX.Element {
           categories={filterOptions}
           searchQuery={searchQuery}
           onSearchQueryChange={setSearchQuery}
-          searchPlaceholder="Buscar conexões por nome, empresa, cargo ou cidade..."
+          searchPlaceholder="Buscar conexões por nome, empresa, cargo ou suas tags privadas..."
         />
       </PortalHero>
 

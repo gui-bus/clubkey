@@ -1,4 +1,5 @@
-import type { MemberConnectionStatus } from "@/src/types"
+import { DEFAULT_CUSTOM_TAGS } from "@/src/data/portalData"
+import type { MemberConnectionStatus, MemberCustomTags } from "@/src/types"
 import { StateCreator } from "zustand"
 
 import type { PortalState } from "../usePortalStore"
@@ -6,12 +7,17 @@ import type { PortalState } from "../usePortalStore"
 export interface NetworkingSlice {
   connectedMembers: Record<number, "pending" | "connected">
   receivedPendingInvites: number[]
+  customTags: MemberCustomTags
   toggleConnect: (memberId: number) => MemberConnectionStatus
   getConnectionStatus: (memberId: number) => MemberConnectionStatus
   acceptInvite: (memberId: number) => void
   declineInvite: (memberId: number) => void
   cancelSentInvite: (memberId: number) => void
   removeConnection: (memberId: number) => void
+  addCustomTag: (memberId: number, tag: string) => void
+  removeCustomTag: (memberId: number, tag: string) => void
+  setCustomTags: (memberId: number, tags: string[]) => void
+  getCustomTags: (memberId: number) => string[]
 }
 
 export const createNetworkingSlice: StateCreator<
@@ -29,6 +35,49 @@ export const createNetworkingSlice: StateCreator<
     14: "pending",
   },
   receivedPendingInvites: [1, 5, 9],
+  customTags: DEFAULT_CUSTOM_TAGS,
+
+  getCustomTags: (memberId: number): string[] => {
+    return get().customTags?.[memberId] || []
+  },
+
+  addCustomTag: (memberId: number, tag: string) => {
+    const trimmed = tag.trim()
+    if (!trimmed) return
+    set((state) => {
+      const current = state.customTags?.[memberId] || []
+      if (current.some((t) => t.toLowerCase() === trimmed.toLowerCase())) {
+        return state
+      }
+      return {
+        customTags: {
+          ...(state.customTags || {}),
+          [memberId]: [...current, trimmed],
+        },
+      }
+    })
+  },
+
+  removeCustomTag: (memberId: number, tag: string) => {
+    set((state) => {
+      const current = state.customTags?.[memberId] || []
+      return {
+        customTags: {
+          ...(state.customTags || {}),
+          [memberId]: current.filter((t) => t !== tag),
+        },
+      }
+    })
+  },
+
+  setCustomTags: (memberId: number, tags: string[]) => {
+    set((state) => ({
+      customTags: {
+        ...(state.customTags || {}),
+        [memberId]: tags,
+      },
+    }))
+  },
 
   getConnectionStatus: (memberId: number): MemberConnectionStatus => {
     return get().connectedMembers[memberId] || "none"

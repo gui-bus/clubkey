@@ -425,3 +425,10 @@ export function getInitials(nameOrFirst?: string, lastName?: string): string {
   }
   return "WT"
 }
+
+export const DEFAULT_CUSTOM_TAGS: Record<number, string[]> = {
+  0: ["Frontend developer", "Fintech", "Parceria Estratégica"],
+  2: ["Diretoria", "Fintech & Banking"],
+  7: ["Tech Lead", "Next.js"],
+  10: ["Investidor Anjo", "Mentoria"],
+}

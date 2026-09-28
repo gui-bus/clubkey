@@ -1,6 +1,7 @@
 import {
   DEFAULT_BADGES,
   DEFAULT_CHAT_MESSAGES,
+  DEFAULT_CUSTOM_TAGS,
   DEFAULT_MEMBER_STAYS,
   DEFAULT_MISSIONS,
   DEFAULT_TIERS,
@@ -162,6 +163,9 @@ export const usePortalStore = create<PortalState>()(
             }
           }
           migratedState.connectedMembers = fixed
+        }
+        if (!migratedState.customTags) {
+          migratedState.customTags = DEFAULT_CUSTOM_TAGS
         }
         return migratedState
       },
