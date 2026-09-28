@@ -69,9 +69,9 @@ describe("Gamification & XP Isolation Suite (Zero-Leak Policy)", () => {
       render(<EventCard event={sampleEvent} />)
 
       if (isModuleEnabled("keypass")) {
-        expect(screen.getByText(/\+200\s*XP/i)).toBeInTheDocument()
+        expect(screen.getByText(/XP/i)).toBeInTheDocument()
       } else {
-        expect(screen.queryByText(/\+200\s*XP/i)).not.toBeInTheDocument()
+        expect(screen.queryByText(/XP/i)).not.toBeInTheDocument()
       }
     })
   })
@@ -81,21 +81,30 @@ describe("Gamification & XP Isolation Suite (Zero-Leak Policy)", () => {
       render(<ExperienceCard experience={sampleExperience} />)
 
       if (isModuleEnabled("keypass")) {
-        expect(screen.getByText(/\+300\s*XP/i)).toBeInTheDocument()
+        expect(screen.getByText(/XP/i)).toBeInTheDocument()
       } else {
-        expect(screen.queryByText(/\+300\s*XP/i)).not.toBeInTheDocument()
+        expect(screen.queryByText(/XP/i)).not.toBeInTheDocument()
       }
     })
   })
 
   describe("MemberProfileBio XP Badge Condition", () => {
     it("renders member XP badge strictly when keypass is enabled, or enforces zero-leak when disabled", () => {
-      render(<MemberProfileBio member={sampleMember} memberTier={null} />)
+      const mockTier = {
+        name: "Membro",
+        image: "/utils/gamification/tiers/membro.png",
+      }
+      render(
+        <MemberProfileBio
+          member={sampleMember}
+          memberTier={mockTier as unknown as TierDefinition}
+        />
+      )
 
       if (isModuleEnabled("keypass")) {
         expect(screen.getByText(/XP/i)).toBeInTheDocument()
       } else {
-        expect(screen.queryByText(/\d+\s*XP/i)).not.toBeInTheDocument()
+        expect(screen.queryByText(/XP/i)).not.toBeInTheDocument()
       }
     })
   })

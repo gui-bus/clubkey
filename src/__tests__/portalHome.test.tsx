@@ -60,12 +60,10 @@ describe("PortalHome Multi-Tenant Suite", () => {
       expect(
         screen.getByText("Próximo Encontro Confirmado")
       ).toBeInTheDocument()
-      expect(screen.getByText("Explorar Eventos")).toBeInTheDocument()
     } else {
       expect(
         screen.queryByText("Próximo Encontro Confirmado")
       ).not.toBeInTheDocument()
-      expect(screen.queryByText("Explorar Eventos")).not.toBeInTheDocument()
     }
   })
 

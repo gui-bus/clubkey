@@ -1,7 +1,9 @@
 import { NextRequest } from "next/server"
 
 import { proxy } from "@/src/proxy"
-import { describe, expect, it } from "vitest"
+import { describe, expect, it, vi } from "vitest"
+
+import * as brandConfig from "@/src/config/brand.config"
 
 describe("Edge Proxy / Route Security Proxy", () => {
   const createRequest = (path: string) => {
@@ -30,6 +32,8 @@ describe("Edge Proxy / Route Security Proxy", () => {
 
   describe("Tenant Route Authorization", () => {
     it("allows access to enabled module routes (home, stays, networking)", () => {
+      vi.spyOn(brandConfig, "isRouteAllowed").mockReturnValue(true)
+
       const allowedPaths = [
         "/",
         "/hospedagens",
@@ -69,6 +73,8 @@ describe("Edge Proxy / Route Security Proxy", () => {
     })
 
     it("rewrites to /not-found when attempting to access disabled module routes", () => {
+      vi.spyOn(brandConfig, "isRouteAllowed").mockReturnValue(false)
+
       const blockedPaths = [
         "/eventos",
         "/eventos/10",

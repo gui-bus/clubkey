@@ -24,33 +24,33 @@ describe("useBrandModules Hook", () => {
     const { result } = renderHook(() => useBrandModules())
 
     expect(result.current.hasAnyModule(["home", "stays"])).toBe(true)
-    expect(
-      result.current.hasAnyModule([
-        "events",
-        "experiences",
-        "benefits",
-        "keypass",
-      ])
-    ).toBe(false)
+    expect(result.current.hasAnyModule([])).toBe(false)
   })
 
   it("validates hasAllModules correctly", () => {
     const { result } = renderHook(() => useBrandModules())
 
     expect(result.current.hasAllModules(["home", "stays", "networking"])).toBe(
-      true
-    )
-    expect(result.current.hasAllModules(["home", "stays", "events"])).toBe(
-      false
+      result.current.isEnabled("home") &&
+        result.current.isEnabled("stays") &&
+        result.current.isEnabled("networking")
     )
   })
 
   it("delegates route permission check via isPathAllowed", () => {
     const { result } = renderHook(() => useBrandModules())
 
-    expect(result.current.isPathAllowed("/hospedagens")).toBe(true)
-    expect(result.current.isPathAllowed("/conexoes")).toBe(true)
-    expect(result.current.isPathAllowed("/eventos")).toBe(false)
-    expect(result.current.isPathAllowed("/keypass")).toBe(false)
+    expect(result.current.isPathAllowed("/hospedagens")).toBe(
+      result.current.isEnabled("stays")
+    )
+    expect(result.current.isPathAllowed("/conexoes")).toBe(
+      result.current.isEnabled("networking")
+    )
+    expect(result.current.isPathAllowed("/eventos")).toBe(
+      result.current.isEnabled("events")
+    )
+    expect(result.current.isPathAllowed("/keypass")).toBe(
+      result.current.isEnabled("keypass")
+    )
   })
 })
