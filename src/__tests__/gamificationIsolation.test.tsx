@@ -2,6 +2,7 @@ import * as React from "react"
 
 import { rawApiRooms } from "@/src/data/mockRooms"
 import { EVENTS, EXPERIENCES, MEMBERS } from "@/src/data/portalData"
+import type { TierDefinition } from "@/src/types"
 import { render, screen } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
