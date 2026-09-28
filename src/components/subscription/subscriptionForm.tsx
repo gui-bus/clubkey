@@ -185,7 +185,7 @@ export function SubscriptionForm({
                 </CtaButton>
                 <CtaButton
                   href="/cadastro"
-                  variant="dark-outline"
+                  variant="filled"
                   size="sm"
                   isFullWidth
                   className="flex-1"

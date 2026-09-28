@@ -383,7 +383,7 @@ export function ExperienceDetailClient({
                 {isBought ? (
                   <CtaButton
                     type="button"
-                    variant="dark-outline"
+                    variant="filled"
                     size="md"
                     isFullWidth
                     className="h-12 text-xs shadow-none hover:shadow-none border-emerald-500/40 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 cursor-default"

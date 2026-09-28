@@ -138,7 +138,7 @@ export function ProfileAvatarDialog({
           <DialogClose asChild>
             <CtaButton
               type="button"
-              variant="dark-outline"
+              variant="filled"
               size="xs"
               className="text-xs"
             >

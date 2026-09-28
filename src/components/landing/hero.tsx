@@ -123,7 +123,7 @@ export function Hero(): React.JSX.Element {
               {isModuleEnabled("stays") && (
                 <CtaButton
                   href="/hospedagens"
-                  variant="dark-outline"
+                  variant="filled"
                   size="lg"
                   className="w-full sm:w-auto"
                 >

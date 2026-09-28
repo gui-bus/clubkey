@@ -344,7 +344,7 @@ export default function KeyPassMissionsPage(): React.JSX.Element {
                 <CtaButton
                   key={cat.value}
                   size="xs"
-                  variant={isSelected ? "primary" : "dark-outline"}
+                  variant={isSelected ? "primary" : "filled"}
                   onClick={() => setSelectedCategory(cat.value)}
                   className="whitespace-nowrap shrink-0 text-xs"
                 >

@@ -490,7 +490,7 @@ export function EventDetailClient({
                 {isConfirmed ? (
                   <CtaButton
                     type="button"
-                    variant="dark-outline"
+                    variant="filled"
                     size="md"
                     isFullWidth
                     onClick={handleToggleRSVP}

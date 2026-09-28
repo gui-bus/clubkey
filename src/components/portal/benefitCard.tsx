@@ -180,7 +180,7 @@ export function BenefitCard({ benefit }: BenefitCardProps): React.JSX.Element {
 
                 <CtaButton
                   type="button"
-                  variant={copied ? "dark-outline" : "primary"}
+                  variant={copied ? "filled" : "primary"}
                   size="sm"
                   onClick={handleCopyCode}
                   className="h-10 text-xs shadow-none hover:shadow-none shrink-0"

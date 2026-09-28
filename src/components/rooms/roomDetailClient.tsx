@@ -18,6 +18,7 @@ import { AnimatePresence, motion } from "framer-motion"
 import { toast } from "@/src/components/ui/toast/toast"
 
 import { Container } from "@/src/components/common/container"
+import { CtaButton } from "@/src/components/common/ctaButton"
 import { FloatingCta } from "@/src/components/landing/floatingCta"
 import { Header } from "@/src/components/landing/header"
 import { TopBanner } from "@/src/components/landing/topBanner"
@@ -120,10 +121,18 @@ export function RoomDetailClient({
 
           <div className="flex items-center gap-2 w-full sm:w-auto">
             <ShareButton className="flex-1 sm:flex-initial" />
-            <button
+            <CtaButton
               type="button"
+              variant="filled"
+              size="xs"
               onClick={handleToggleFav}
-              className="relative inline-flex flex-1 sm:flex-initial items-center justify-center gap-1.5 h-9 px-3.5 rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] hover:border-zinc-300 dark:hover:border-zinc-700 text-xs font-semibold text-zinc-800 dark:text-zinc-200 transition-all cursor-pointer shadow-2xs hover:shadow-xs active:scale-95 group overflow-hidden"
+              className={cn(
+                "h-9 px-3.5 text-xs shadow-none hover:shadow-none font-bold uppercase tracking-wider flex-1 sm:flex-initial",
+                isFav &&
+                  "border-brand-primary/40 bg-brand-primary/10 text-brand-primary dark:border-brand-primary/30"
+              )}
+              sliderClassName={isFav ? "bg-brand-primary/15" : undefined}
+              textClassName="gap-1.5"
             >
               <div className="relative flex items-center justify-center">
                 <motion.div
@@ -155,8 +164,10 @@ export function RoomDetailClient({
                   )}
                 </AnimatePresence>
               </div>
-              <span>{isFav ? "Salvo" : "Salvar"}</span>
-            </button>
+              <span className={cn(isFav && "text-brand-primary font-bold")}>
+                {isFav ? "Salvo" : "Salvar"}
+              </span>
+            </CtaButton>
           </div>
         </div>
 
