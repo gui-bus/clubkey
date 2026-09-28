@@ -291,7 +291,7 @@ export function MemberCard({
                     variant="filled"
                     size="xs"
                     onClick={handleCancel}
-                    className="w-8 h-8 px-0 rounded-sm shrink-0 z-10 shadow-none hover:shadow-none flex items-center justify-center border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-white"
+                    className="w-8 h-8 px-0 rounded-sm shrink-0 z-10 shadow-none hover:shadow-none flex items-center justify-center text-zinc-900 dark:text-white"
                     sliderClassName="bg-red-500/15"
                     textClassName="text-zinc-900 dark:text-white group-hover:text-red-500 transition-colors"
                     title="Cancelar convite"
@@ -304,7 +304,7 @@ export function MemberCard({
                     variant="filled"
                     size="xs"
                     onClick={handleRemove}
-                    className="w-8 h-8 px-0 rounded-sm shrink-0 z-10 shadow-none hover:shadow-none flex items-center justify-center border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-white"
+                    className="w-8 h-8 px-0 rounded-sm shrink-0 z-10 shadow-none hover:shadow-none flex items-center justify-center text-zinc-900 dark:text-white"
                     sliderClassName="bg-red-500/15"
                     textClassName="text-zinc-900 dark:text-white group-hover:text-red-500 transition-colors"
                     title="Desfazer conexão"

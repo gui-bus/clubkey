@@ -33,14 +33,14 @@ const sizeClasses: Record<CtaButtonSize, string> = {
 const variantClasses: Record<CtaButtonVariant, string> = {
   primary: "bg-brand-primary text-white border-0 shadow-md hover:shadow-lg",
   outline:
-    "bg-transparent text-zinc-900 dark:text-zinc-100 border border-zinc-900/15 dark:border-white/20 shadow-xs hover:border-zinc-900/35 dark:hover:border-white/40",
+    "bg-transparent text-zinc-900 dark:text-zinc-100 border border-zinc-200 dark:border-zinc-800 shadow-xs hover:border-zinc-300 dark:hover:border-zinc-700",
   filled:
     "bg-white dark:bg-[#141416] text-zinc-900 dark:text-zinc-100 border border-zinc-200 dark:border-zinc-800 shadow-xs hover:border-zinc-300 dark:hover:border-zinc-700",
 }
 
 const defaultSliderClasses: Record<CtaButtonVariant, string> = {
   primary: "bg-brand-primary-dark",
-  outline: "bg-zinc-900/5 dark:bg-white/10",
+  outline: "bg-zinc-100 dark:bg-zinc-800",
   filled: "bg-zinc-100 dark:bg-zinc-800",
 }
 
