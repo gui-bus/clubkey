@@ -89,6 +89,15 @@ sequenceDiagram
 
 ### 3. Minhas Conexões (`/conexoes/minhas-conexoes`)
 - **Abas de Controle**: Conexões Ativas, Solicitações Recebidas e Convites Enviados.
+- **Barra de Pesquisa Inteligente**:
+  - Busca por nome, cargo, empresa, cidade ou por **Tags Privadas** atribuídas às conexões.
+- **Sistema de Notas & Etiquetas Privadas (Custom Tags)**:
+  - **100% Confidencial**: As tags atribuídas a uma conexão são visíveis **exclusivamente na conta do usuário logado** (o outro membro não visualiza nem recebe notificação sobre as tags).
+  - **Modal de Gerenciamento (`memberCustomTagsDialog.tsx`)**:
+    - Adição de tags personalizadas (com validação anti-duplicação *case-insensitive*).
+    - **Reordenação Drag-and-Drop (`@dnd-kit`)**: Suporte completo a arrastar e soltar (`DndContext` + `SortableContext` com `rectSortingStrategy`) para definir a ordem de exibição das tags.
+    - Remoção individual de etiquetas.
+  - **Exibição Contextual**: Tags visíveis nos cards de conexão (`memberCard.tsx`) e na barra lateral de perfil (`memberProfileSidebar.tsx`).
 
 ### 4. Mensageiro Flutuante (`memberMessengerWidget.tsx`)
 - Widget fixo no canto inferior direito com conversas recentes, contagem de não lidas e confirmação de leitura.
@@ -121,6 +130,8 @@ export interface Member {
   connectionStatus?: "none" | "pending" | "received" | "connected"
 }
 
+export type MemberCustomTags = Record<number, string[]>
+
 export interface ChatMessage {
   id: string | number
   senderId: number
@@ -148,23 +159,42 @@ Retorna todos os detalhes do perfil público do associado.
 Retorna conexões ativas e solicitações recebidas/enviadas.
 - **Response (200 OK)**: `{ connected: [], receivedInvites: [], sentInvites: [] }`.
 
-### 4. `POST /api/v1/connections/:memberId/request`
+### 4. `GET /api/v1/connections/custom-tags`
+Retorna o mapa de todas as tags privadas criadas pelo usuário logado.
+- **Response (200 OK)**:
+```json
+{
+  "0": ["Frontend developer", "Fintech", "Parceria Estratégica"]
+}
+```
+
+### 5. `PUT /api/v1/connections/:memberId/custom-tags`
+Atualiza a lista ordenada de tags privadas atribuídas a um membro específico.
+- **Request Body**:
+```json
+{
+  "tags": ["Frontend developer", "Fintech", "Parceria Estratégica"]
+}
+```
+- **Response (200 OK)**: `{ "memberId": 0, "tags": ["Frontend developer", "Fintech", "Parceria Estratégica"] }`
+
+### 6. `POST /api/v1/connections/:memberId/request`
 Envia solicitação de conexão.
 - **Request Body**: `{ "note": "Olá..." }`
 - **Response (200 OK)**: `{ "status": "pending", "memberId": 2 }`
 
-### 5. `PATCH /api/v1/connections/:memberId/accept`
+### 7. `PATCH /api/v1/connections/:memberId/accept`
 Aceita solicitação de conexão.
 - **Response (200 OK)**: `{ "status": "connected", "memberId": 4 }`
 
-### 6. `DELETE /api/v1/connections/:memberId`
+### 8. `DELETE /api/v1/connections/:memberId`
 Recusa, cancela ou desfaz conexão.
 - **Response (200 OK)**: `{ "status": "none", "memberId": 2 }`
 
-### 7. `GET /api/v1/chat/conversations` & `GET /api/v1/chat/:memberId/messages`
+### 9. `GET /api/v1/chat/conversations` & `GET /api/v1/chat/:memberId/messages`
 Retorna conversas ativas e histórico de mensagens.
 
-### 8. `POST /api/v1/chat/messages`
+### 10. `POST /api/v1/chat/messages`
 Envia nova mensagem privada no chat.
 - **Request Body**: `{ "receiverId": 2, "text": "..." }`
 - **Response (201 Created)**: Objeto `ChatMessage`.
@@ -175,4 +205,5 @@ Envia nova mensagem privada no chat.
 
 1. **Auto-Conexão**: O associado logado nunca é exibido para si mesmo com botão de conectar.
 2. **Privacidade de Contatos**: WhatsApp e redes sociais completas só são visíveis se a conexão estiver no estado `connected`.
-3. **XP de Networking**: Cada conexão aceita credita +50 XP para ambos os associados (quando `keypass: true`).
+3. **Privacidade Estrita de Tags**: As etiquetas de identificação pessoal são estritamente privadas por conta do associado (`customTags`).
+4. **XP de Networking**: Cada conexão aceita credita +50 XP para ambos os associados (quando `keypass: true`).

@@ -88,15 +88,22 @@ Controla o mensageiro instantâneo flutuante e histórico de conversas diretas.
 ---
 
 ### 4. `NetworkingSlice` (`src/store/slices/networkingSlice.ts`)
-Gerencia o grafo social de relacionamentos entre membros.
+Gerencia o grafo social de relacionamentos entre membros e etiquetas privadas de categorização.
 - **State**:
   - `connectedMembers: Record<number, "pending" | "connected">` (mapa de status de conexão indexado por `memberId`)
-  - `receivedInvites: number[]` (IDs dos membros com solicitações pendentes de aprovação)
+  - `receivedPendingInvites: number[]` (IDs dos membros com solicitações pendentes de aprovação)
+  - `customTags: MemberCustomTags` (dicionário de tags privadas ordenadas por `memberId`)
 - **Actions**:
-  - `sendConnectionRequest(memberId: number): void`
-  - `acceptConnectionRequest(memberId: number): void`
-  - `removeConnection(memberId: number): void`
+  - `toggleConnect(memberId: number): MemberConnectionStatus`
   - `getConnectionStatus(memberId: number): MemberConnectionStatus`
+  - `acceptInvite(memberId: number): void`
+  - `declineInvite(memberId: number): void`
+  - `cancelSentInvite(memberId: number): void`
+  - `removeConnection(memberId: number): void`
+  - `addCustomTag(memberId: number, tag: string): void`
+  - `removeCustomTag(memberId: number, tag: string): void`
+  - `setCustomTags(memberId: number, tags: string[]): void`
+  - `getCustomTags(memberId: number): string[]`
 
 ---
 

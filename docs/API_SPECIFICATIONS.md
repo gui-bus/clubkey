@@ -86,6 +86,25 @@ Retorna detalhes completos do perfil público de um associado.
 ### `GET /connections/my-connections`
 Retorna os associados conectados (`connected`), convites recebidos (`receivedInvites`) e convites enviados (`sentInvites`).
 
+### `GET /connections/custom-tags`
+Retorna o dicionário com todas as etiquetas privadas criadas pelo usuário logado indexadas por `memberId`.
+- **Response (200 OK)**:
+```json
+{
+  "0": ["Frontend developer", "Fintech", "Parceria Estratégica"]
+}
+```
+
+### `PUT /connections/:memberId/custom-tags`
+Atualiza e persiste a lista ordenada de tags privadas de uma conexão.
+- **Request Body**:
+```json
+{
+  "tags": ["Frontend developer", "Fintech", "Parceria Estratégica"]
+}
+```
+- **Response (200 OK)**: `{ "memberId": 0, "tags": ["Frontend developer", "Fintech", "Parceria Estratégica"] }`
+
 ### `POST /connections/:memberId/request`
 Envia solicitação de conexão.
 
