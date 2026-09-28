@@ -64,6 +64,12 @@ describe("UserDropdownMenu Multi-Tenant Suite", () => {
       expect(screen.queryByText("Meus Eventos")).not.toBeInTheDocument()
     }
 
+    if (isModuleEnabled("networking")) {
+      expect(screen.getByText("Minhas Conexões")).toBeInTheDocument()
+    } else {
+      expect(screen.queryByText("Minhas Conexões")).not.toBeInTheDocument()
+    }
+
     if (isModuleEnabled("keypass")) {
       expect(screen.getByText(/^KeyPass$/i)).toBeInTheDocument()
     } else {

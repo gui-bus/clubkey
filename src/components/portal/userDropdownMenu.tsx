@@ -15,6 +15,7 @@ import {
   SignOut,
   Trophy,
   User,
+  Users,
 } from "@phosphor-icons/react"
 
 import {
@@ -45,8 +46,14 @@ export function UserDropdownMenu({
   className,
 }: UserDropdownMenuProps): React.JSX.Element | null {
   const router = useRouter()
-  const { isAuthenticated, userProfile, logout, memberStays, confirmedEvents } =
-    usePortalStore()
+  const {
+    isAuthenticated,
+    userProfile,
+    logout,
+    memberStays,
+    confirmedEvents,
+    connectedMembers,
+  } = usePortalStore()
 
   if (!isAuthenticated || !userProfile) {
     return null
@@ -57,6 +64,9 @@ export function UserDropdownMenu({
     Object.keys(confirmedEvents || {}).filter(
       (k) => !!confirmedEvents[Number(k)]
     ).length || 1
+  const connectionsCount = Object.values(connectedMembers || {}).filter(
+    (status) => status === "connected"
+  ).length
 
   const userFirstName = userProfile?.firstName || DEFAULT_USER.firstName
   const userLastName = userProfile?.lastName || DEFAULT_USER.lastName
@@ -117,7 +127,7 @@ export function UserDropdownMenu({
           align="end"
           className="w-64 bg-white/95 dark:bg-[#141416]/95 backdrop-blur-xl border border-zinc-200 dark:border-zinc-800 p-2 rounded-sm shadow-2xl space-y-1"
         >
-          <div className="px-3 py-2.5 border-b border-zinc-100 dark:border-zinc-800/80 mb-1 flex items-center gap-3">
+          <div className="px-3 py-2.5 border-b border-zinc-200 dark:border-zinc-800 mb-1 flex items-center gap-3">
             <Avatar size="sm">
               {userAvatar && (
                 <AvatarImage src={userAvatar} alt={userFullName} />
@@ -146,18 +156,6 @@ export function UserDropdownMenu({
                 <span>Meu Perfil</span>
               </Link>
             </DropdownMenuItem>
-
-            {isModuleEnabled("keypass") && (
-              <DropdownMenuItem asChild>
-                <Link
-                  href="/keypass"
-                  className="flex items-center gap-2.5 px-3 py-2 rounded-sm text-xs font-semibold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800/80 hover:text-brand-primary dark:hover:text-brand-primary cursor-pointer transition-colors"
-                >
-                  <Trophy className="w-3.5 h-3.5 text-zinc-400" />
-                  <span>KeyPass</span>
-                </Link>
-              </DropdownMenuItem>
-            )}
 
             {isModuleEnabled("stays") && (
               <DropdownMenuItem asChild>
@@ -205,6 +203,31 @@ export function UserDropdownMenu({
               </DropdownMenuItem>
             )}
 
+            {isModuleEnabled("networking") && (
+              <DropdownMenuItem asChild>
+                <Link
+                  href="/conexoes/minhas-conexoes"
+                  className="flex items-center justify-between px-3 py-2 rounded-sm text-xs font-semibold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800/80 hover:text-brand-primary dark:hover:text-brand-primary cursor-pointer transition-colors group"
+                >
+                  <div className="flex items-center gap-2.5">
+                    <Users className="w-3.5 h-3.5 text-zinc-400" />
+                    <span>Minhas Conexões</span>
+                  </div>
+                  {connectionsCount > 0 && (
+                    <Badge
+                      color="primary"
+                      variant="flat"
+                      size="sm"
+                      radius="sm"
+                      className="font-black text-[10px] px-1.5 py-0 min-w-4 h-4 flex items-center justify-center leading-none"
+                    >
+                      {connectionsCount}
+                    </Badge>
+                  )}
+                </Link>
+              </DropdownMenuItem>
+            )}
+
             <DropdownMenuItem asChild>
               <Link
                 href="/perfil/minha-assinatura"
@@ -216,7 +239,22 @@ export function UserDropdownMenu({
             </DropdownMenuItem>
           </div>
 
-          <DropdownMenuSeparator className="my-1.5 bg-zinc-100 dark:bg-zinc-800" />
+          {isModuleEnabled("keypass") && (
+            <>
+              <DropdownMenuSeparator className="mx-0 my-1 h-0 bg-transparent border-t border-zinc-200 dark:border-zinc-800" />
+              <DropdownMenuItem asChild>
+                <Link
+                  href="/keypass"
+                  className="flex items-center gap-2.5 px-3 py-2 rounded-sm text-xs font-semibold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800/80 hover:text-brand-primary dark:hover:text-brand-primary cursor-pointer transition-colors"
+                >
+                  <Trophy className="w-3.5 h-3.5 text-zinc-400" />
+                  <span>KeyPass</span>
+                </Link>
+              </DropdownMenuItem>
+            </>
+          )}
+
+          <DropdownMenuSeparator className="mx-0 my-1 h-0 bg-transparent border-t border-zinc-200 dark:border-zinc-800" />
 
           <DropdownMenuItem
             onClick={handleLogout}
