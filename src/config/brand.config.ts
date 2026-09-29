@@ -144,9 +144,9 @@ export const brandPresets: Record<string, BrandConfig> = {
       stays: true,
       networking: true,
       events: true,
-      experiences: true,
-      benefits: true,
-      keypass: true,
+      experiences: false,
+      benefits: false,
+      keypass: false,
     },
     colors: {
       light: {
