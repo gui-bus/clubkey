@@ -1,16 +1,11 @@
 "use client"
 
 import * as React from "react"
-import Link from "next/link"
+
 import Image from "next/image"
-import { useQueryState, parseAsString, parseAsInteger } from "nuqs"
-import {
-  CaretDown,
-  CaretRight,
-  PencilSimple,
-  Check,
-  X,
-} from "@phosphor-icons/react"
+import Link from "next/link"
+
+import type { AdminAccountStatus, AdminUser } from "@clubkey/types"
 import {
   Avatar,
   AvatarFallback,
@@ -19,13 +14,21 @@ import {
   PaginationContent,
   PaginationItem,
   PaginationLink,
-  PaginationPrevious,
   PaginationNext,
+  PaginationPrevious,
   Select,
   type SelectOption,
 } from "@clubkey/ui"
 import { cn, getAdminUserSlug } from "@clubkey/utils"
-import type { AdminUser, AdminAccountStatus } from "@clubkey/types"
+import {
+  CaretDown,
+  CaretRight,
+  Check,
+  PencilSimple,
+  X,
+} from "@phosphor-icons/react"
+import { parseAsInteger, parseAsString, useQueryState } from "nuqs"
+
 import { AdminUserWalletCard } from "./adminUserWalletCard"
 
 const PAGE_SIZE_OPTIONS: SelectOption[] = [
@@ -48,11 +51,20 @@ export function AdminUsersTable({
   className,
 }: AdminUsersTableProps): React.JSX.Element {
   // nuqs URL query state for expanded row with human-readable user slug (e.g. RCT77599-karine-de-siqueira-antunes)
-  const [expandedSlug, setExpandedSlug] = useQueryState("expanded", parseAsString)
+  const [expandedSlug, setExpandedSlug] = useQueryState(
+    "expanded",
+    parseAsString
+  )
 
   // nuqs URL query state for pagination (page & pageSize)
-  const [pageSize, setPageSize] = useQueryState("pageSize", parseAsInteger.withDefault(10))
-  const [currentPage, setCurrentPage] = useQueryState("page", parseAsInteger.withDefault(1))
+  const [pageSize, setPageSize] = useQueryState(
+    "pageSize",
+    parseAsInteger.withDefault(10)
+  )
+  const [currentPage, setCurrentPage] = useQueryState(
+    "page",
+    parseAsInteger.withDefault(1)
+  )
 
   const totalPages = Math.max(1, Math.ceil(users.length / (pageSize || 10)))
   const safePage = Math.min(Math.max(1, currentPage || 1), totalPages)
@@ -118,13 +130,18 @@ export function AdminUsersTable({
   }
 
   return (
-    <div className={cn("rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] overflow-hidden shadow-2xs", className)}>
-      <div className="overflow-x-auto scrollbar-none">
-        <table className="w-full text-left border-collapse text-xs">
+    <div
+      className={cn(
+        "rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] overflow-hidden shadow-2xs",
+        className
+      )}
+    >
+      <div className="w-full overflow-x-auto overflow-y-hidden [scrollbar-width:thin] [scrollbar-color:theme(colors.zinc.300)_transparent] dark:[scrollbar-color:theme(colors.zinc.700)_transparent]">
+        <table className="w-full min-w-[920px] text-left border-collapse text-xs">
           <thead>
             <tr className="border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-800/40 text-zinc-500 dark:text-zinc-400 font-bold uppercase tracking-wider text-[10px]">
               {/* Column 1: Left-aligned and takes remaining space */}
-              <th className="py-3.5 px-4 font-bold select-none text-left w-full">
+              <th className="py-3.5 px-4 font-bold select-none text-left min-w-[480px] whitespace-nowrap">
                 Usuário / Cadastro
               </th>
               {/* All other columns: Right-aligned and width-compact */}
@@ -179,8 +196,8 @@ export function AdminUsersTable({
                           : "hover:bg-zinc-50/60 dark:hover:bg-zinc-800/30"
                       )}
                     >
-                      {/* Column 1: User Identity, Taxa, Criado em, Tipo, Level, Status (Left-aligned) */}
-                      <td className="py-4 px-4 align-middle text-left w-full">
+                      {/* Column 1: User Identity, Taxa, Criado em, Tipo, Level, Status (Left-aligned, full single-line width) */}
+                      <td className="py-4 px-4 align-middle text-left min-w-[480px] whitespace-nowrap">
                         <div className="flex items-center gap-3.5">
                           {/* Avatar / Initials with height matching the 3-line content */}
                           <Avatar className="size-[52px] shrink-0 ring-1 ring-zinc-200 dark:ring-zinc-800">
@@ -194,7 +211,7 @@ export function AdminUsersTable({
 
                           {/* Identity & Subtext */}
                           <div className="min-w-0 flex-1 space-y-1">
-                            <div className="flex items-center gap-1.5 flex-wrap">
+                            <div className="flex items-center gap-1.5 whitespace-nowrap">
                               <span className="font-bold text-zinc-900 dark:text-white text-xs group-hover:text-brand-primary transition-colors">
                                 {user.name}
                               </span>
@@ -203,20 +220,42 @@ export function AdminUsersTable({
                               </span>
                             </div>
 
-                            <p className="text-[11px] text-zinc-500 dark:text-zinc-400 truncate">
+                            <p className="text-[11px] text-zinc-500 dark:text-zinc-400 whitespace-nowrap">
                               {user.email}
                             </p>
 
-                            <div className="flex items-center gap-1.5 text-[10px] text-zinc-400 dark:text-zinc-500 font-medium flex-wrap">
-                              <span className="font-mono text-zinc-600 dark:text-zinc-400 font-semibold">{user.handle}</span>
+                            <div className="flex items-center gap-1.5 text-[10px] text-zinc-400 dark:text-zinc-500 font-medium whitespace-nowrap">
+                              <span className="font-mono text-zinc-600 dark:text-zinc-400 font-semibold">
+                                {user.handle}
+                              </span>
                               <span>•</span>
-                              <span>Taxa: <strong className="text-zinc-700 dark:text-zinc-300 font-bold">{user.taxa}</strong></span>
+                              <span>
+                                Taxa:{" "}
+                                <strong className="text-zinc-700 dark:text-zinc-300 font-bold">
+                                  {user.taxa}
+                                </strong>
+                              </span>
                               <span>•</span>
-                              <span>Criado em: <strong className="text-zinc-700 dark:text-zinc-300 font-bold">{user.createdAt}</strong></span>
+                              <span>
+                                Criado em:{" "}
+                                <strong className="text-zinc-700 dark:text-zinc-300 font-bold">
+                                  {user.createdAt}
+                                </strong>
+                              </span>
                               <span>•</span>
-                              <span>Tipo: <strong className="text-zinc-700 dark:text-zinc-300 font-bold">{user.documentType}</strong></span>
+                              <span>
+                                Tipo:{" "}
+                                <strong className="text-zinc-700 dark:text-zinc-300 font-bold">
+                                  {user.documentType}
+                                </strong>
+                              </span>
                               <span>•</span>
-                              <span>Level: <strong className="text-zinc-700 dark:text-zinc-300 font-bold uppercase">{user.level}</strong></span>
+                              <span>
+                                Level:{" "}
+                                <strong className="text-zinc-700 dark:text-zinc-300 font-bold uppercase">
+                                  {user.level}
+                                </strong>
+                              </span>
                               <span>•</span>
                               {getStatusBadge(user.accountStatus)}
                             </div>
@@ -274,10 +313,13 @@ export function AdminUsersTable({
                         <div className="space-y-0.5 text-right">
                           <div className="flex items-center justify-end gap-1.5 font-mono font-bold text-xs text-zinc-900 dark:text-white">
                             <span>
-                              {(user.balances?.total || 0).toLocaleString("pt-BR", {
-                                minimumFractionDigits: 2,
-                                maximumFractionDigits: 2,
-                              })}
+                              {(user.balances?.total || 0).toLocaleString(
+                                "pt-BR",
+                                {
+                                  minimumFractionDigits: 2,
+                                  maximumFractionDigits: 2,
+                                }
+                              )}
                             </span>
                             <div className="relative w-3.5 h-3.5 shrink-0 inline-block">
                               <Image
@@ -290,7 +332,11 @@ export function AdminUsersTable({
                           </div>
                           <div className="flex items-center justify-end gap-1 text-[10px] text-zinc-400 dark:text-zinc-500 font-mono">
                             <span>
-                              Disp: {(user.balances?.available || 0).toLocaleString("pt-BR", { minimumFractionDigits: 0 })}
+                              Disp:{" "}
+                              {(user.balances?.available || 0).toLocaleString(
+                                "pt-BR",
+                                { minimumFractionDigits: 0 }
+                              )}
                             </span>
                             <div className="relative w-2.5 h-2.5 shrink-0 inline-block opacity-75">
                               <Image
@@ -326,10 +372,18 @@ export function AdminUsersTable({
                               toggleExpand(user)
                             }}
                             className="flex h-7 w-7 items-center justify-center rounded-sm text-zinc-400 hover:text-zinc-950 dark:hover:text-white transition-colors cursor-pointer"
-                            title={isExpanded ? "Recolher detalhes" : "Expandir detalhes"}
+                            title={
+                              isExpanded
+                                ? "Recolher detalhes"
+                                : "Expandir detalhes"
+                            }
                           >
                             {isExpanded ? (
-                              <CaretDown size={14} weight="bold" className="text-zinc-900 dark:text-white" />
+                              <CaretDown
+                                size={14}
+                                weight="bold"
+                                className="text-zinc-900 dark:text-white"
+                              />
                             ) : (
                               <CaretRight size={14} weight="bold" />
                             )}
@@ -378,35 +432,65 @@ export function AdminUsersTable({
           </div>
           <span>•</span>
           <span>
-            Mostrando <strong className="text-zinc-900 dark:text-white font-bold">{users.length === 0 ? 0 : (safePage - 1) * (pageSize || 10) + 1}</strong> - <strong className="text-zinc-900 dark:text-white font-bold">{Math.min(safePage * (pageSize || 10), users.length)}</strong> de <strong className="text-zinc-900 dark:text-white font-bold">{users.length}</strong> usuários
+            Mostrando{" "}
+            <strong className="text-zinc-900 dark:text-white font-bold">
+              {users.length === 0 ? 0 : (safePage - 1) * (pageSize || 10) + 1}
+            </strong>{" "}
+            -{" "}
+            <strong className="text-zinc-900 dark:text-white font-bold">
+              {Math.min(safePage * (pageSize || 10), users.length)}
+            </strong>{" "}
+            de{" "}
+            <strong className="text-zinc-900 dark:text-white font-bold">
+              {users.length}
+            </strong>{" "}
+            usuários
           </span>
         </div>
 
         {/* Right: Pagination Navigation Controls */}
         {totalPages > 1 && (
-          <Pagination radius="sm" color="primary" className="w-auto justify-end">
+          <Pagination
+            radius="sm"
+            color="primary"
+            className="w-auto justify-end"
+          >
             <PaginationContent className="gap-1">
               <PaginationItem>
                 <PaginationPrevious
                   label="Anterior"
-                  onClick={() => setCurrentPage(Math.max(1, safePage - 1), { shallow: true, scroll: false })}
+                  onClick={() =>
+                    setCurrentPage(Math.max(1, safePage - 1), {
+                      shallow: true,
+                      scroll: false,
+                    })
+                  }
                   disabled={safePage <= 1}
                 />
               </PaginationItem>
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                <PaginationItem key={page}>
-                  <PaginationLink
-                    isActive={safePage === page}
-                    onClick={() => setCurrentPage(page, { shallow: true, scroll: false })}
-                  >
-                    {page}
-                  </PaginationLink>
-                </PaginationItem>
-              ))}
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                (page) => (
+                  <PaginationItem key={page}>
+                    <PaginationLink
+                      isActive={safePage === page}
+                      onClick={() =>
+                        setCurrentPage(page, { shallow: true, scroll: false })
+                      }
+                    >
+                      {page}
+                    </PaginationLink>
+                  </PaginationItem>
+                )
+              )}
               <PaginationItem>
                 <PaginationNext
                   label="Próxima"
-                  onClick={() => setCurrentPage(Math.min(totalPages, safePage + 1), { shallow: true, scroll: false })}
+                  onClick={() =>
+                    setCurrentPage(Math.min(totalPages, safePage + 1), {
+                      shallow: true,
+                      scroll: false,
+                    })
+                  }
                   disabled={safePage >= totalPages}
                 />
               </PaginationItem>
