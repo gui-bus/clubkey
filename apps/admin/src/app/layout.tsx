@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import { ThemeProvider } from "next-themes"
-
-import { Toaster } from "sonner"
+import { NuqsAdapter } from "nuqs/adapters/next/app"
+import { Toast } from "@clubkey/ui"
 
 import "./globals.css"
 
@@ -24,8 +24,8 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
-          <Toaster richColors position="top-right" />
+          <NuqsAdapter>{children}</NuqsAdapter>
+          <Toast position="bottom-right" />
         </ThemeProvider>
       </body>
     </html>
