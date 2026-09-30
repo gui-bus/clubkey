@@ -4,13 +4,9 @@ import * as React from "react"
 
 import { useTheme } from "next-themes"
 
+import { AnimatedThemeToggler, type TransitionVariant } from "@clubkey/ui"
 import { Moon, Sun } from "@phosphor-icons/react"
 import { AnimatePresence, motion } from "framer-motion"
-
-import {
-  AnimatedThemeToggler,
-  type TransitionVariant,
-} from "@/src/components/ui/animatedThemeToggler"
 
 import { cn } from "@/src/lib/utils"
 
@@ -50,7 +46,7 @@ export function ThemeToggle({
   return (
     <AnimatedThemeToggler
       theme={isDark ? "dark" : "light"}
-      onThemeChange={(nextTheme) => setTheme(nextTheme)}
+      onThemeChange={(nextTheme: string) => setTheme(nextTheme)}
       variant={variant}
       duration={duration}
       title={isDark ? "Mudar para modo claro" : "Mudar para modo escuro"}

@@ -1,4 +1,4 @@
-export * from "@/src/types"
+export * from "@clubkey/types"
 export { formatBRL } from "@/src/lib/formatters"
 
 export * from "./mocks/slugs.data"

@@ -1,135 +1,194 @@
 "use client"
 
-import Link from "next/link"
+import { useState } from "react"
+
 import { usePathname } from "next/navigation"
 
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@clubkey/ui"
 import { cn } from "@clubkey/utils"
 import {
-  Bed,
-  CalendarCheck,
+  Buildings,
+  CaretLeft,
+  CaretRight,
+  ChartBar,
   ChartPieSlice,
-  GearSix,
-  Gift,
-  ShieldCheck,
+  CreditCard,
+  Key,
+  ShieldWarning,
   SignOut,
+  UserGear,
   Users,
 } from "@phosphor-icons/react"
 
-const navItems = [
+import { AdminSidebarItem } from "./adminSidebarItem"
+import { AdminSidebarLogo } from "./adminSidebarLogo"
+
+export interface AdminNavItem {
+  label: string
+  href: string
+  icon: typeof ChartPieSlice
+  badge?: string
+}
+
+const ADMIN_NAV_ITEMS: AdminNavItem[] = [
   {
-    label: "Dashboard",
-    href: "/dashboard",
+    label: "Painel",
+    href: "/painel",
     icon: ChartPieSlice,
   },
   {
-    label: "Membros",
-    href: "/membros",
+    label: "Sinistros",
+    href: "/sinistros",
+    icon: ShieldWarning,
+  },
+  {
+    label: "Crédito",
+    href: "/credito",
+    icon: CreditCard,
+  },
+  {
+    label: "Imóveis",
+    href: "/imoveis",
+    icon: Buildings,
+  },
+  {
+    label: "Proteção Key",
+    href: "/protecao-key",
+    icon: Key,
+  },
+  {
+    label: "Relatórios",
+    href: "/relatorios",
+    icon: ChartBar,
+  },
+  {
+    label: "Usuários",
+    href: "/usuarios",
     icon: Users,
-    badge: "1.2k",
   },
   {
-    label: "Hospedagens",
-    href: "/hospedagens",
-    icon: Bed,
-  },
-  {
-    label: "Eventos & KeyPass",
-    href: "/eventos",
-    icon: CalendarCheck,
-  },
-  {
-    label: "Benefícios & Parceiros",
-    href: "/beneficios",
-    icon: Gift,
-  },
-  {
-    label: "Configurações",
-    href: "/configuracoes",
-    icon: GearSix,
+    label: "Administradores",
+    href: "/administradores",
+    icon: UserGear,
   },
 ]
 
 export function AdminSidebar() {
   const pathname = usePathname()
+  const [isCollapsed, setIsCollapsed] = useState(false)
+
+  const toggleCollapse = () => {
+    setIsCollapsed((prev) => !prev)
+  }
 
   return (
-    <aside className="sticky top-0 flex h-screen w-64 flex-col border-r border-border bg-card">
-      {/* Brand Header */}
-      <div className="flex h-16 items-center gap-3 border-b border-border px-6">
-        <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground font-bold shadow-xs">
-          CK
+    <TooltipProvider delayDuration={80}>
+      <aside
+        className={cn(
+          "sticky top-0 z-40 flex h-screen flex-col border-r border-border bg-card transition-all duration-300 ease-in-out select-none",
+          isCollapsed ? "w-[72px]" : "w-64"
+        )}
+      >
+        {/* White-Label Brand Logo */}
+        <AdminSidebarLogo isCollapsed={isCollapsed} />
+
+        {/* Navigation Menu */}
+        <div className="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+          {!isCollapsed && (
+            <div className="px-3 pb-2 pt-1">
+              <p className="text-[11px] font-semibold tracking-wider text-muted-foreground uppercase">
+                Menu Principal
+              </p>
+            </div>
+          )}
+
+          <nav className="space-y-1">
+            {ADMIN_NAV_ITEMS.map((item) => {
+              const isActive =
+                pathname === item.href ||
+                (item.href !== "/painel" && pathname.startsWith(item.href)) ||
+                (item.href === "/painel" &&
+                  (pathname === "/" || pathname === "/dashboard"))
+
+              return (
+                <AdminSidebarItem
+                  key={item.href}
+                  label={item.label}
+                  href={item.href}
+                  icon={item.icon}
+                  isActive={isActive}
+                  isCollapsed={isCollapsed}
+                  badge={item.badge}
+                />
+              )
+            })}
+          </nav>
         </div>
-        <div className="flex flex-col">
-          <span className="font-semibold tracking-tight text-sm">
-            ClubKey Admin
-          </span>
-          <span className="text-[11px] text-muted-foreground flex items-center gap-1">
-            <ShieldCheck size={12} weight="fill" className="text-primary" />{" "}
-            Painel de Gestão
-          </span>
+
+        {/* Footer Actions: Collapse Toggle & Logout */}
+        <div className="border-t border-border p-2.5 space-y-1">
+          {/* Collapse Toggle Button */}
+          {isCollapsed ? (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button
+                  onClick={toggleCollapse}
+                  className="flex h-10 w-11 mx-auto items-center justify-center rounded-lg text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
+                  aria-label="Expandir menu lateral"
+                >
+                  <CaretRight size={18} />
+                </button>
+              </TooltipTrigger>
+              <TooltipContent side="right" sideOffset={10}>
+                Expandir Menu
+              </TooltipContent>
+            </Tooltip>
+          ) : (
+            <button
+              onClick={toggleCollapse}
+              className="flex h-9 w-full items-center justify-between rounded-lg px-3 text-xs font-medium text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
+            >
+              <span>Recolher Menu</span>
+              <CaretLeft size={16} />
+            </button>
+          )}
+
+          {/* Logout Button */}
+          {isCollapsed ? (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button
+                  onClick={() => {
+                    // handle logout
+                  }}
+                  className="flex h-10 w-11 mx-auto items-center justify-center rounded-lg text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-colors"
+                  aria-label="Sair da conta"
+                >
+                  <SignOut size={18} />
+                </button>
+              </TooltipTrigger>
+              <TooltipContent side="right" sideOffset={10}>
+                Sair da Conta
+              </TooltipContent>
+            </Tooltip>
+          ) : (
+            <button
+              onClick={() => {
+                // handle logout
+              }}
+              className="flex h-9 w-full items-center gap-3 rounded-lg px-3 text-xs font-medium text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-colors"
+            >
+              <SignOut size={16} />
+              <span>Sair da Conta</span>
+            </button>
+          )}
         </div>
-      </div>
-
-      {/* Navigation Links */}
-      <div className="flex-1 overflow-y-auto px-3 py-4">
-        <div className="px-3 mb-2">
-          <p className="text-[11px] font-semibold tracking-wider text-muted-foreground uppercase">
-            Módulos Principais
-          </p>
-        </div>
-
-        <nav className="space-y-1">
-          {navItems.map((item) => {
-            const Icon = item.icon
-            const isActive =
-              pathname === item.href ||
-              (item.href !== "/dashboard" && pathname.startsWith(item.href))
-
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={cn(
-                  "flex items-center justify-between rounded-md px-3 py-2 text-sm font-medium transition-colors",
-                  isActive
-                    ? "bg-primary text-primary-foreground shadow-xs"
-                    : "text-muted-foreground hover:bg-accent hover:text-foreground"
-                )}
-              >
-                <div className="flex items-center gap-3">
-                  <Icon size={18} weight={isActive ? "fill" : "regular"} />
-                  <span>{item.label}</span>
-                </div>
-                {item.badge && (
-                  <span
-                    className={cn(
-                      "rounded-full px-2 py-0.5 text-[10px] font-semibold",
-                      isActive
-                        ? "bg-primary-foreground/20 text-primary-foreground"
-                        : "bg-muted text-muted-foreground"
-                    )}
-                  >
-                    {item.badge}
-                  </span>
-                )}
-              </Link>
-            )
-          })}
-        </nav>
-      </div>
-
-      {/* Footer Profile & Logout */}
-      <div className="border-t border-border p-3">
-        <button
-          onClick={() => {
-            // handle logout
-          }}
-          className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
-        >
-          <SignOut size={18} />
-          <span>Sair da Conta</span>
-        </button>
-      </div>
-    </aside>
+      </aside>
+    </TooltipProvider>
   )
 }

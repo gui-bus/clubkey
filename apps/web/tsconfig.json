@@ -4,6 +4,11 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./*", "./src/*"],
+      "@/src/components/ui/*": ["../../packages/ui/src/components/ui/*"],
+      "@/src/types/*": ["../../packages/types/src/*"],
+      "@/src/types": ["../../packages/types/src/index.ts"],
+      "@/src/schemas/*": ["../../packages/schemas/src/*"],
+      "@/src/schemas": ["../../packages/schemas/src/index.ts"],
       "@clubkey/ui": ["../../packages/ui/src/index.ts"],
       "@clubkey/ui/*": ["../../packages/ui/src/*"],
       "@clubkey/types": ["../../packages/types/src/index.ts"],
