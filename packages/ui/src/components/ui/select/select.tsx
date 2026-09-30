@@ -63,6 +63,7 @@ export interface SelectProps extends Omit<
   selectAllLabel?: string
   deselectAllLabel?: string
 
+  placement?: "top" | "bottom"
   renderOption?: (option: SelectOption) => React.ReactNode
   renderValue?: (
     optionOrOptions: SelectOption | SelectOption[]
@@ -72,25 +73,25 @@ export interface SelectProps extends Omit<
 
 const variantStyles: Record<SelectVariant, string> = {
   default:
-    "bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-xs focus:border-sky-500 focus:ring-2 focus:ring-sky-500/40 text-zinc-900 dark:text-zinc-100",
+    "bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-xs focus:outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary/20 focus-visible:border-brand-primary focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary text-zinc-900 dark:text-zinc-100",
   bordered:
-    "bg-transparent border-2 border-zinc-200 dark:border-zinc-800 focus:border-sky-500 text-zinc-900 dark:text-zinc-100",
-  flat: "bg-zinc-100 dark:bg-zinc-800/60 border-transparent hover:bg-zinc-200/70 dark:hover:bg-zinc-800 focus:bg-white dark:focus:bg-zinc-900 focus:border-sky-500 border text-zinc-900 dark:text-zinc-100",
+    "bg-transparent border-2 border-zinc-200 dark:border-zinc-800 focus:border-zinc-400 dark:focus:border-zinc-600 text-zinc-900 dark:text-zinc-100",
+  flat: "bg-zinc-100 dark:bg-zinc-800/60 border-transparent hover:bg-zinc-200/70 dark:hover:bg-zinc-800 focus:bg-white dark:focus:bg-zinc-900 focus:border-zinc-400 border text-zinc-900 dark:text-zinc-100",
   underlined:
-    "bg-transparent border-b-2 border-zinc-200 dark:border-zinc-800 rounded-none px-0 focus:border-sky-500 text-zinc-900 dark:text-zinc-100",
+    "bg-transparent border-b-2 border-zinc-200 dark:border-zinc-800 rounded-none px-0 focus:border-zinc-400 text-zinc-900 dark:text-zinc-100",
   filled:
-    "bg-zinc-100 dark:bg-zinc-800/80 border border-transparent focus:border-sky-500 focus:ring-2 focus:ring-sky-500/40 text-zinc-900 dark:text-zinc-100",
+    "bg-zinc-100 dark:bg-zinc-800/80 border border-transparent focus:border-zinc-400 dark:focus:border-zinc-600 focus:ring-1 focus:ring-zinc-900/10 text-zinc-900 dark:text-zinc-100",
   glassmorphism:
-    "backdrop-blur-md bg-white/10 dark:bg-black/10 border border-white/20 dark:border-white/10 focus:border-sky-500 shadow-lg text-zinc-900 dark:text-zinc-100",
+    "backdrop-blur-md bg-white/10 dark:bg-black/10 border border-white/20 dark:border-white/10 focus:border-zinc-400 shadow-lg text-zinc-900 dark:text-zinc-100",
   "gradient-border":
-    "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 relative [background-clip:padding-box] border border-transparent before:absolute before:inset-0 before:-z-10 before:rounded-[inherit] before:p-[1px] before:bg-gradient-to-r before:from-sky-500 before:via-indigo-500 before:to-pink-500 focus:ring-2 focus:ring-indigo-500/30",
-  glow: "bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-xs focus:border-sky-500 focus:shadow-[0_0_12px_rgba(14,165,233,0.35)] text-zinc-900 dark:text-zinc-100",
+    "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 relative [background-clip:padding-box] border border-transparent focus:ring-1 focus:ring-zinc-400",
+  glow: "bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-xs focus:border-zinc-400 text-zinc-900 dark:text-zinc-100",
 }
 
 const sizeMap = {
-  sm: "min-h-8 px-2.5 text-xs py-1 gap-1.5",
-  md: "min-h-10 px-3 text-sm py-1.5 gap-2",
-  lg: "min-h-12 px-4 text-base py-2 gap-2.5",
+  sm: "h-9 min-h-9 px-3 text-xs gap-1.5",
+  md: "h-11 min-h-11 px-3.5 text-sm gap-2",
+  lg: "h-13 min-h-13 px-4 text-base gap-2.5",
 }
 
 const Select = React.forwardRef<HTMLDivElement, SelectProps>(
@@ -120,6 +121,7 @@ const Select = React.forwardRef<HTMLDivElement, SelectProps>(
       showBatchActions = false,
       selectAllLabel = "Select All",
       deselectAllLabel = "Deselect All",
+      placement = "bottom",
       renderOption,
       renderValue,
       children,
@@ -330,7 +332,7 @@ const Select = React.forwardRef<HTMLDivElement, SelectProps>(
     }
 
     return (
-      <div ref={ref} className="w-full flex flex-col gap-1.5">
+      <div ref={ref} className={cn("w-full flex flex-col gap-1.5", isOpen && "relative z-30")}>
         {label && (
           <label className="text-xs font-semibold text-zinc-900 dark:text-zinc-100">
             {label}
@@ -338,7 +340,7 @@ const Select = React.forwardRef<HTMLDivElement, SelectProps>(
           </label>
         )}
 
-        <div className="relative w-full">
+        <div className={cn("relative w-full", isOpen && "z-30")}>
           <div
             onClick={() => !disabled && setIsOpen((prev) => !prev)}
             className={cn(
@@ -346,6 +348,7 @@ const Select = React.forwardRef<HTMLDivElement, SelectProps>(
               variantStyles[variant],
               sizeMap[size],
               variant !== "underlined" && designRadius[radius],
+              isOpen && "border-brand-primary ring-2 ring-brand-primary/20",
               isInvalid &&
                 "border-rose-500 focus:ring-rose-500/20 text-rose-500",
               disabled && "cursor-not-allowed opacity-50 pointer-events-none",
@@ -378,12 +381,15 @@ const Select = React.forwardRef<HTMLDivElement, SelectProps>(
 
               <div
                 className={cn(
-                  "absolute left-0 right-0 top-full mt-1.5 z-50 max-h-80 overflow-y-auto rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl shadow-2xl p-1.5 animate-in fade-in-0 zoom-in-95"
+                  "absolute left-0 right-0 z-50 max-h-80 overflow-y-auto rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl shadow-2xl p-1.5 animate-in fade-in-0 zoom-in-95",
+                  placement === "top"
+                    ? "bottom-full mb-1.5"
+                    : "top-full mt-1.5"
                 )}
               >
                 {(isSearchable || options.length > 6) && (
                   <div className="p-1 mb-1 border-b border-zinc-100 dark:border-zinc-800/80 sticky top-0 bg-white/95 dark:bg-zinc-900/95 z-10">
-                    <div className="flex items-center gap-2 px-2 py-1.5 rounded-xl bg-zinc-100 dark:bg-zinc-800/70 border border-transparent focus-within:border-sky-500">
+                    <div className="flex items-center gap-2 px-2 py-1.5 rounded-xl bg-zinc-100 dark:bg-zinc-800/70 border border-transparent focus-within:border-zinc-400 dark:focus-within:border-zinc-600">
                       <Icon
                         icon="hugeicons:search-01"
                         className="size-4 text-zinc-400 shrink-0"
@@ -417,7 +423,7 @@ const Select = React.forwardRef<HTMLDivElement, SelectProps>(
                     <button
                       type="button"
                       onClick={handleSelectAll}
-                      className="text-sky-500 hover:text-sky-600 dark:hover:text-sky-400 transition-colors cursor-pointer"
+                      className="text-zinc-900 dark:text-white hover:underline transition-colors cursor-pointer"
                     >
                       {selectAllLabel}
                     </button>
@@ -518,10 +524,10 @@ function renderOptionItem(
         }
       }}
       className={cn(
-        "relative flex items-center justify-between w-full px-2.5 py-2 rounded-xl text-xs cursor-pointer transition-colors select-none",
+        "relative flex items-center justify-between w-full px-2.5 py-1.5 rounded-lg text-xs cursor-pointer transition-colors select-none",
         isSelected
-          ? "bg-sky-50 dark:bg-sky-950/40 text-sky-600 dark:text-sky-400 font-semibold"
-          : "hover:bg-zinc-100 dark:hover:bg-zinc-800/80 text-zinc-900 dark:text-zinc-100",
+          ? "bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white font-bold"
+          : "hover:bg-zinc-50 dark:hover:bg-zinc-800/60 text-zinc-700 dark:text-zinc-300",
         opt.disabled && "opacity-40 cursor-not-allowed pointer-events-none"
       )}
     >
@@ -557,7 +563,7 @@ function renderOptionItem(
           </span>
         )}
         {isSelected && (
-          <Icon icon="hugeicons:tick-02" className="size-4 text-sky-500" />
+          <Icon icon="hugeicons:tick-02" className="size-4 text-zinc-900 dark:text-white shrink-0" />
         )}
       </div>
     </div>
@@ -582,7 +588,7 @@ const SelectTrigger = React.forwardRef<
     <SelectPrimitive.Trigger
       ref={ref}
       className={cn(
-        "flex w-full items-center justify-between border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs focus:outline-none focus:ring-2 focus:ring-sky-500/20 disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer transition-colors",
+        "flex w-full items-center justify-between border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs focus:outline-none focus:ring-1 focus:ring-zinc-400 dark:focus:ring-zinc-600 disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer transition-colors",
         sizeMap[size],
         designRadius[radius],
         isInvalid && "border-rose-500 focus:ring-rose-500/20 text-rose-500",
@@ -661,7 +667,7 @@ const SelectItem = React.forwardRef<
   >
     <span className="absolute left-2.5 flex size-3.5 items-center justify-center">
       <SelectPrimitive.ItemIndicator>
-        <Icon icon="hugeicons:tick-02" className="size-4 text-sky-500" />
+        <Icon icon="hugeicons:tick-02" className="size-4 text-zinc-900 dark:text-white" />
       </SelectPrimitive.ItemIndicator>
     </span>
     <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
