@@ -14,7 +14,7 @@ node_modules
 /test-results
 
 # next.js
-/.next/
+.next/
 /out/
 
 # production

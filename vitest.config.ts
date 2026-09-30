@@ -7,8 +7,15 @@ export default defineConfig({
   test: {
     environment: "jsdom",
     globals: true,
-    setupFiles: ["./src/__tests__/setup.tsx"],
-    exclude: ["**/node_modules/**", "**/dist/**", "**/src/__tests__/e2e/**"],
+    setupFiles: ["./apps/web/src/__tests__/setup.tsx"],
+    exclude: [
+      "**/node_modules/**",
+      "**/dist/**",
+      "**/.next/**",
+      "**/e2e/**",
+      "**/*.spec.ts",
+      "**/*.spec.tsx",
+    ],
     server: {
       deps: {
         inline: ["@bloomui-react/components", "next"],
@@ -17,7 +24,21 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./"),
+      "@/src": path.resolve(__dirname, "./apps/web/src"),
+      "@": path.resolve(__dirname, "./apps/web"),
+      "@clubkey/ui": path.resolve(__dirname, "./packages/ui/src/index.ts"),
+      "@clubkey/types": path.resolve(
+        __dirname,
+        "./packages/types/src/index.ts"
+      ),
+      "@clubkey/schemas": path.resolve(
+        __dirname,
+        "./packages/schemas/src/index.ts"
+      ),
+      "@clubkey/utils": path.resolve(
+        __dirname,
+        "./packages/utils/src/index.ts"
+      ),
     },
   },
 })
