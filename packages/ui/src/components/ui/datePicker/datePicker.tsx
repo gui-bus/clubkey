@@ -9,24 +9,24 @@ import { useKeyboardClick } from "../../../lib/hooks"
 import { cn } from "../../../lib/utils"
 
 export const datePickerTriggerVariants = cva(
-  "h-10 w-full flex items-center justify-between px-3 py-2 text-sm text-zinc-900 dark:text-zinc-100 shadow-xs outline-none focus:ring-2 focus:ring-sky-500/40 transition-all cursor-pointer select-none",
+  "h-10 w-full flex items-center justify-between px-3 py-2 text-sm text-zinc-900 dark:text-zinc-100 shadow-xs outline-none focus:outline-none focus-visible:outline-none focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary focus-visible:ring-2 focus-visible:ring-brand-primary/20 focus-visible:border-brand-primary transition-all cursor-pointer select-none",
   {
     variants: {
       variant: {
         default:
-          "bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-xs focus:border-sky-500 focus:ring-2 focus:ring-sky-500/40 text-zinc-900 dark:text-zinc-100 rounded-xl",
+          "bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-xs focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20 text-zinc-900 dark:text-zinc-100 rounded-xl",
         bordered:
-          "bg-transparent border-2 border-zinc-200 dark:border-zinc-800 focus:border-sky-500 text-zinc-900 dark:text-zinc-100 rounded-xl",
-        flat: "bg-zinc-100 dark:bg-zinc-800/60 border-transparent hover:bg-zinc-200/70 dark:hover:bg-zinc-800 focus:bg-white dark:focus:bg-zinc-900 focus:border-sky-500 border text-zinc-900 dark:text-zinc-100 rounded-xl",
+          "bg-transparent border-2 border-zinc-200 dark:border-zinc-800 focus:border-brand-primary text-zinc-900 dark:text-zinc-100 rounded-xl",
+        flat: "bg-zinc-100 dark:bg-zinc-800/60 border-transparent hover:bg-zinc-200/70 dark:hover:bg-zinc-800 focus:bg-white dark:focus:bg-zinc-900 focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20 border text-zinc-900 dark:text-zinc-100 rounded-xl",
         underlined:
-          "bg-transparent border-b-2 border-zinc-200 dark:border-zinc-800 px-0 focus:border-sky-500 text-zinc-900 dark:text-zinc-100 rounded-none",
+          "bg-transparent border-b-2 border-zinc-200 dark:border-zinc-800 px-0 focus:border-brand-primary text-zinc-900 dark:text-zinc-100 rounded-none",
         filled:
-          "bg-zinc-100 dark:bg-zinc-800/80 border border-transparent focus:border-sky-500 focus:ring-2 focus:ring-sky-500/40 text-zinc-900 dark:text-zinc-100 rounded-xl",
+          "bg-zinc-100 dark:bg-zinc-800/80 border border-transparent focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20 text-zinc-900 dark:text-zinc-100 rounded-xl",
         glassmorphism:
-          "backdrop-blur-md bg-white/10 dark:bg-black/10 border border-white/20 dark:border-white/10 focus:border-sky-500 shadow-lg text-zinc-900 dark:text-zinc-100 rounded-xl",
+          "backdrop-blur-md bg-white/10 dark:bg-black/10 border border-white/20 dark:border-white/10 focus:border-brand-primary shadow-lg text-zinc-900 dark:text-zinc-100 rounded-xl",
         "gradient-border":
-          "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 relative [background-clip:padding-box] border border-transparent before:absolute before:inset-0 before:-z-10 before:rounded-[inherit] before:p-[1px] before:bg-gradient-to-r before:from-sky-500 before:via-indigo-500 before:to-pink-500 focus:ring-2 focus:ring-indigo-500/30 rounded-xl",
-        glow: "bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-xs focus:border-sky-500 focus:shadow-[0_0_12px_rgba(14,165,233,0.35)] text-zinc-900 dark:text-zinc-100 rounded-xl",
+          "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 relative [background-clip:padding-box] border border-transparent focus:ring-2 focus:ring-brand-primary/30 rounded-xl",
+        glow: "bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-xs focus:border-brand-primary focus:shadow-[0_0_12px_rgba(255,107,0,0.35)] text-zinc-900 dark:text-zinc-100 rounded-xl",
       },
     },
     defaultVariants: {
@@ -480,6 +480,7 @@ export function DatePicker({
         onClick={() => !disabled && setIsOpen((prev) => !prev)}
         className={cn(
           datePickerTriggerVariants({ variant }),
+          isOpen && "border-brand-primary ring-2 ring-brand-primary/20",
           isInvalid && "border-rose-500 dark:border-rose-500 text-rose-500",
           disabled && "opacity-50 cursor-not-allowed pointer-events-none"
         )}
@@ -536,7 +537,7 @@ export function DatePicker({
                   key={preset.label}
                   type="button"
                   onClick={() => handleApplyPreset(preset)}
-                  className="text-left px-2 py-1.5 rounded-lg text-xs font-medium text-zinc-600 dark:text-zinc-300 hover:bg-sky-50 dark:hover:bg-sky-950/40 hover:text-sky-600 dark:hover:text-sky-400 transition-colors cursor-pointer"
+                  className="text-left px-2 py-1.5 rounded-lg text-xs font-medium text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-white transition-colors cursor-pointer"
                 >
                   {preset.label}
                 </button>
@@ -582,7 +583,7 @@ export function DatePicker({
                       className={cn(
                         "h-12 rounded-xl border border-zinc-200 dark:border-zinc-800 flex flex-col items-center justify-center text-xs font-semibold transition-colors cursor-pointer",
                         isSelected
-                          ? "bg-sky-600 text-white border-sky-600"
+                          ? "bg-zinc-900 text-white border-zinc-900 dark:bg-zinc-100 dark:text-zinc-900 dark:border-zinc-100"
                           : "hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-800 dark:text-zinc-200"
                       )}
                     >
@@ -617,7 +618,7 @@ export function DatePicker({
                       className={cn(
                         "h-10 rounded-xl border border-zinc-200 dark:border-zinc-800 flex items-center justify-center text-xs font-semibold transition-colors cursor-pointer",
                         isSelected
-                          ? "bg-sky-600 text-white border-sky-600"
+                          ? "bg-zinc-900 text-white border-zinc-900 dark:bg-zinc-100 dark:text-zinc-900 dark:border-zinc-100"
                           : "hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-800 dark:text-zinc-200"
                       )}
                     >
@@ -675,7 +676,7 @@ export function DatePicker({
                   <div className="flex items-center gap-1 text-xs font-semibold text-zinc-700 dark:text-zinc-300">
                     <Icon
                       icon="hugeicons:clock-01"
-                      className="size-4 text-sky-500"
+                      className="size-4 text-brand-primary"
                     />
                     <span>Time</span>
                   </div>
@@ -685,7 +686,7 @@ export function DatePicker({
                       onChange={(e) =>
                         handleTimeChange(Number(e.target.value), minutes)
                       }
-                      className="px-2 py-1 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-[#F1F1F1] dark:bg-zinc-900 text-xs font-mono font-semibold text-zinc-800 dark:text-zinc-200 focus:outline-none focus:ring-1 focus:ring-sky-500"
+                      className="px-2 py-1 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-[#F1F1F1] dark:bg-zinc-900 text-xs font-mono font-semibold text-zinc-800 dark:text-zinc-200 focus:outline-none focus:ring-1 focus:ring-brand-primary focus:border-brand-primary"
                     >
                       {Array.from({ length: 24 }, (_, i) => i).map((h) => (
                         <option key={h} value={h}>
@@ -699,7 +700,7 @@ export function DatePicker({
                       onChange={(e) =>
                         handleTimeChange(hours, Number(e.target.value))
                       }
-                      className="px-2 py-1 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-[#F1F1F1] dark:bg-zinc-900 text-xs font-mono font-semibold text-zinc-800 dark:text-zinc-200 focus:outline-none focus:ring-1 focus:ring-sky-500"
+                      className="px-2 py-1 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-[#F1F1F1] dark:bg-zinc-900 text-xs font-mono font-semibold text-zinc-800 dark:text-zinc-200 focus:outline-none focus:ring-1 focus:ring-brand-primary focus:border-brand-primary"
                     >
                       {Array.from({ length: 12 }, (_, i) => i * 5).map((m) => (
                         <option key={m} value={m}>
@@ -821,14 +822,14 @@ function renderMonthCalendar(
                 "size-7 rounded-lg text-xs flex items-center justify-center transition-colors cursor-pointer select-none",
                 "text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800",
                 isInRange &&
-                  "bg-sky-50 dark:bg-sky-950/40 text-sky-600 dark:text-sky-400 rounded-none",
+                  "bg-brand-primary/15 text-brand-primary rounded-none font-medium",
                 isRangeStart &&
-                  "rounded-l-lg bg-sky-600 text-white font-semibold hover:bg-sky-500 dark:bg-sky-500",
+                  "rounded-l-lg bg-brand-primary text-white font-semibold hover:bg-brand-primary/90",
                 isRangeEnd &&
-                  "rounded-r-lg bg-sky-600 text-white font-semibold hover:bg-sky-500 dark:bg-sky-500",
+                  "rounded-r-lg bg-brand-primary text-white font-semibold hover:bg-brand-primary/90",
                 isSelected &&
                   mode !== "range" &&
-                  "bg-sky-600 text-white font-semibold hover:bg-sky-500 dark:bg-sky-500 dark:hover:bg-sky-400",
+                  "bg-brand-primary text-white font-semibold hover:bg-brand-primary/90 shadow-xs",
                 isDisabled &&
                   "opacity-25 cursor-not-allowed pointer-events-none hover:bg-transparent"
               )}
