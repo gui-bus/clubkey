@@ -1,16 +1,18 @@
 "use client"
 
 import * as React from "react"
-import { DownloadSimple, ArrowClockwise, Sparkle } from "@phosphor-icons/react"
-import { CtaButton, toast } from "@clubkey/ui"
-import type { AdminUser } from "@clubkey/types"
+
 import { MOCK_ADMIN_USERS } from "@/src/data/mocks/adminUsers.data"
+import type { AdminUser } from "@clubkey/types"
+
+import { Container } from "@/src/components/common/container"
+
 import { AdminHero } from "../common/adminHero"
-import { AdminUsersStats } from "./adminUsersStats"
 import {
-  AdminUsersFilterBar,
   type AdminUserSearchField,
+  AdminUsersFilterBar,
 } from "./adminUsersFilterBar"
+import { AdminUsersStats } from "./adminUsersStats"
 import { AdminUsersTable } from "./adminUsersTable"
 
 function parseDateToTime(dateStr?: string): number | null {
@@ -32,7 +34,8 @@ function parseDateToTime(dateStr?: string): number | null {
 export function AdminUsersClient(): React.JSX.Element {
   const [users] = React.useState<AdminUser[]>(MOCK_ADMIN_USERS)
   const [searchQuery, setSearchQuery] = React.useState("")
-  const [searchField, setSearchField] = React.useState<AdminUserSearchField>("ALL")
+  const [searchField, setSearchField] =
+    React.useState<AdminUserSearchField>("ALL")
   const [statusFilter, setStatusFilter] = React.useState("ALL")
   const [levelFilter, setLevelFilter] = React.useState("ALL")
   const [createdFrom, setCreatedFrom] = React.useState("")
@@ -168,16 +171,8 @@ export function AdminUsersClient(): React.JSX.Element {
     setBirthDateTo("")
   }
 
-  const handleExport = () => {
-    toast.success(`Exportando ${filteredUsers.length} usuários em formato CSV...`)
-  }
-
-  const handleRefresh = () => {
-    toast.info("Dados de usuários sincronizados com o servidor.")
-  }
-
   return (
-    <div className="space-y-8">
+    <div className="w-full flex flex-col">
       {/* Portal-Style Hero Section with Image, Gradient, Title & Filter Bar */}
       <AdminHero
         badge="Gestão de Membros • Base de Associados"
@@ -208,59 +203,17 @@ export function AdminUsersClient(): React.JSX.Element {
           birthDateTo={birthDateTo}
           onBirthDateToChange={setBirthDateTo}
           onReset={handleResetFilters}
-          totalFiltered={filteredUsers.length}
-          totalCount={users.length}
         />
       </AdminHero>
 
-      {/* Main Content Area (Stats, Actions & Table) */}
-      <div className="space-y-6">
-        {/* Section Header & Actions */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <div className="flex items-center gap-2">
-              <h2 className="text-xl font-black font-heading tracking-tight text-zinc-900 dark:text-white uppercase">
-                Métricas da Base
-              </h2>
-              <span className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-brand-primary/10 text-brand-primary border border-brand-primary/20">
-                <Sparkle size={12} weight="fill" />
-                Módulo Ativo
-              </span>
-            </div>
-            <p className="text-xs text-zinc-500 dark:text-zinc-400 font-medium mt-1">
-              Visão consolidada de associados, status cadastrais e saldos sob custódia RIB.
-            </p>
-          </div>
-
-          <div className="flex items-center gap-2 self-start sm:self-auto">
-            <CtaButton
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={handleRefresh}
-            >
-              <ArrowClockwise size={14} weight="bold" />
-              <span>Atualizar</span>
-            </CtaButton>
-
-            <CtaButton
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={handleExport}
-            >
-              <DownloadSimple size={14} weight="bold" />
-              <span>Exportar</span>
-            </CtaButton>
-          </div>
-        </div>
-
+      {/* Main Content Area (Stats & Table) */}
+      <Container className="space-y-6 -mt-3 sm:-mt-4">
         {/* Summary Metrics */}
         <AdminUsersStats users={users} />
 
         {/* Users Table */}
         <AdminUsersTable users={filteredUsers} />
-      </div>
+      </Container>
     </div>
   )
 }

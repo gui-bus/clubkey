@@ -12,6 +12,8 @@ import {
 import { formatCurrency } from "@clubkey/utils"
 import { Bed, CurrencyDollar, MapPin, Plus, Star } from "@phosphor-icons/react"
 
+import { Container } from "@/src/components/common/container"
+
 const mockProperties = [
   {
     id: "prop_1",
@@ -47,8 +49,8 @@ const mockProperties = [
 
 export default function AdminStaysPage() {
   return (
-    <div className="space-y-6">
-      
+    <Container className="space-y-6">
+      {/* Header */}
       <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">
@@ -64,7 +66,7 @@ export default function AdminStaysPage() {
         </Button>
       </div>
 
-      
+      {/* Grid de Hospedagens */}
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {mockProperties.map((prop) => (
           <Card key={prop.id} className="border-border bg-card overflow-hidden">
@@ -111,6 +113,6 @@ export default function AdminStaysPage() {
           </Card>
         ))}
       </div>
-    </div>
+    </Container>
   )
 }

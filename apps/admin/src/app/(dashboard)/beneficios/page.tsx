@@ -11,6 +11,8 @@ import {
 } from "@clubkey/ui"
 import { Buildings, Gift, Plus, Tag } from "@phosphor-icons/react"
 
+import { Container } from "@/src/components/common/container"
+
 const mockBenefits = [
   {
     id: "ben_1",
@@ -40,8 +42,8 @@ const mockBenefits = [
 
 export default function AdminBenefitsPage() {
   return (
-    <div className="space-y-6">
-      
+    <Container className="space-y-6">
+      {/* Header */}
       <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">
@@ -57,7 +59,7 @@ export default function AdminBenefitsPage() {
         </Button>
       </div>
 
-      
+      {/* Grid de Benefícios */}
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {mockBenefits.map((ben) => (
           <Card key={ben.id} className="border-border bg-card">
@@ -91,6 +93,6 @@ export default function AdminBenefitsPage() {
           </Card>
         ))}
       </div>
-    </div>
+    </Container>
   )
 }

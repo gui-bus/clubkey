@@ -20,6 +20,8 @@ import {
   Users,
 } from "@phosphor-icons/react"
 
+import { Container } from "@/src/components/common/container"
+
 const stats = [
   {
     title: "Total de Membros Ativos",
@@ -88,8 +90,7 @@ const recentMembers = [
 
 export default function AdminDashboardPage() {
   return (
-    <div className="space-y-8">
-      
+    <Container className="space-y-8">
       <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">
@@ -110,7 +111,6 @@ export default function AdminDashboardPage() {
         </div>
       </div>
 
-      
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {stats.map((stat, idx) => {
           const Icon = stat.icon
@@ -140,9 +140,7 @@ export default function AdminDashboardPage() {
         })}
       </div>
 
-      
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-        
         <Card className="lg:col-span-2 border-border bg-card">
           <CardHeader className="flex flex-row items-center justify-between p-6">
             <div>
@@ -204,7 +202,6 @@ export default function AdminDashboardPage() {
           </CardContent>
         </Card>
 
-        
         <Card className="border-border bg-card">
           <CardHeader className="p-6">
             <CardTitle className="text-base font-semibold">
@@ -253,6 +250,6 @@ export default function AdminDashboardPage() {
           </CardContent>
         </Card>
       </div>
-    </div>
+    </Container>
   )
 }

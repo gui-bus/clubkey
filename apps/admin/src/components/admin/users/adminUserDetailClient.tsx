@@ -1,25 +1,26 @@
 "use client"
 
 import * as React from "react"
+
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { CaretLeft, User } from "@phosphor-icons/react"
-import {
-  Card,
-  CardBody,
-  CtaButton,
-} from "@clubkey/ui"
-import { getAdminUserSlug } from "@clubkey/utils"
-import type { AdminUser } from "@clubkey/types"
+
 import { MOCK_ADMIN_USERS } from "@/src/data/mocks/adminUsers.data"
+import type { AdminUser } from "@clubkey/types"
+import { Card, CardBody, CtaButton } from "@clubkey/ui"
+import { getAdminUserSlug } from "@clubkey/utils"
+import { CaretLeft, User } from "@phosphor-icons/react"
+
+import { AdminUnderConstruction } from "@/src/components/admin/common/adminUnderConstruction"
+import { Container } from "@/src/components/common/container"
+
 import {
+  type AdminUserDetailTabId,
   AdminUserDetailTabsNav,
   USER_DETAIL_TABS,
-  type AdminUserDetailTabId,
 } from "./details/adminUserDetailTabsNav"
-import { AdminUserProfileTab } from "./details/adminUserProfileTab"
 import { AdminUserHeroBanner } from "./details/adminUserHeroBanner"
-import { AdminUnderConstruction } from "@/src/components/admin/common/adminUnderConstruction"
+import { AdminUserProfileTab } from "./details/adminUserProfileTab"
 
 export interface AdminUserDetailClientProps {
   slug: string
@@ -59,7 +60,7 @@ export function AdminUserDetailClient({
 
   if (!user) {
     return (
-      <div className="space-y-6">
+      <Container className="space-y-6">
         <div className="flex items-center gap-2">
           <Link
             href="/usuarios"
@@ -80,7 +81,11 @@ export function AdminUserDetailClient({
                 Usuário não encontrado
               </h2>
               <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                O identificador ou slug <code className="font-mono font-bold bg-zinc-100 dark:bg-zinc-800 px-1.5 py-0.5 rounded-xs">{slug}</code> não corresponde a nenhum usuário cadastrado no sistema.
+                O identificador ou slug{" "}
+                <code className="font-mono font-bold bg-zinc-100 dark:bg-zinc-800 px-1.5 py-0.5 rounded-xs">
+                  {slug}
+                </code>{" "}
+                não corresponde a nenhum usuário cadastrado no sistema.
               </p>
             </div>
             <CtaButton
@@ -94,14 +99,14 @@ export function AdminUserDetailClient({
             </CtaButton>
           </CardBody>
         </Card>
-      </div>
+      </Container>
     )
   }
 
   const currentTabConfig = USER_DETAIL_TABS.find((t) => t.id === currentTab)
 
   return (
-    <div className="space-y-6">
+    <Container className="space-y-6">
       {/* Top Header & Breadcrumb */}
       <div className="flex items-center gap-2 text-xs font-semibold text-zinc-400 dark:text-zinc-500">
         <Link
@@ -112,9 +117,13 @@ export function AdminUserDetailClient({
           <span>Usuários</span>
         </Link>
         <span>/</span>
-        <span className="text-zinc-800 dark:text-zinc-200 font-bold">{user.name}</span>
+        <span className="text-zinc-800 dark:text-zinc-200 font-bold">
+          {user.name}
+        </span>
         <span>/</span>
-        <span className="text-zinc-500 capitalize">{currentTabConfig?.label || currentTab}</span>
+        <span className="text-zinc-500 capitalize">
+          {currentTabConfig?.label || currentTab}
+        </span>
       </div>
 
       {/* Social Network Style User Hero Banner */}
@@ -134,6 +143,6 @@ export function AdminUserDetailClient({
           backgroundIcon={currentTabConfig?.icon}
         />
       )}
-    </div>
+    </Container>
   )
 }

@@ -21,6 +21,8 @@ import {
   XCircle,
 } from "@phosphor-icons/react"
 
+import { Container } from "@/src/components/common/container"
+
 const mockMembersList = [
   {
     id: "mem_1",
@@ -95,8 +97,7 @@ export default function AdminMembersPage() {
   })
 
   return (
-    <div className="space-y-6">
-      
+    <Container className="space-y-6">
       <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">
@@ -117,7 +118,6 @@ export default function AdminMembersPage() {
         </div>
       </div>
 
-      
       <Card className="border-border bg-card">
         <CardContent className="p-4">
           <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
@@ -153,7 +153,6 @@ export default function AdminMembersPage() {
         </CardContent>
       </Card>
 
-      
       <Card className="border-border bg-card">
         <CardContent className="p-0">
           <div className="overflow-x-auto">
@@ -217,6 +216,6 @@ export default function AdminMembersPage() {
           </div>
         </CardContent>
       </Card>
-    </div>
+    </Container>
   )
 }
