@@ -1,0 +1,652 @@
+"use client"
+
+import * as React from "react"
+
+import {
+  ArrowClockwise,
+  ArrowCounterClockwise,
+  CheckCircle,
+  CloudArrowUp,
+  Crop,
+  FileAudio,
+  File as FileIcon,
+  FileImage,
+  FilePdf,
+  FileVideo,
+  Pause,
+  Play,
+  WarningCircle,
+  X,
+} from "@phosphor-icons/react"
+import { cva } from "class-variance-authority"
+
+import { cn } from "../../../lib/utils"
+
+export const fileUploadDragVariants = cva(
+  "relative flex flex-col items-center justify-center p-8 border-2 border-dashed rounded-2xl transition-all duration-300 cursor-pointer select-none group",
+  {
+    variants: {
+      variant: {
+        default:
+          "bg-white dark:bg-zinc-950 border-zinc-200 dark:border-zinc-800 hover:bg-[#F1F1F1]/50 dark:hover:bg-zinc-900/30",
+        bordered:
+          "bg-transparent border-zinc-200 dark:border-zinc-800 hover:bg-[#F1F1F1]/30 dark:hover:bg-zinc-900/10",
+        flat: "bg-zinc-100 dark:bg-zinc-800/60 border-transparent hover:bg-zinc-200/70 dark:hover:bg-zinc-800",
+        underlined:
+          "bg-transparent border-t-0 border-x-0 border-b-2 border-zinc-200 dark:border-zinc-800 hover:bg-[#F1F1F1]/10 rounded-none",
+        filled:
+          "bg-zinc-100 dark:bg-zinc-800/80 border-transparent hover:bg-zinc-200/50 dark:hover:bg-zinc-800/40",
+        glassmorphism:
+          "backdrop-blur-md bg-white/10 dark:bg-black/10 border-white/20 dark:border-white/10 hover:bg-white/20 dark:hover:bg-black/20 shadow-lg",
+        "gradient-border":
+          "bg-white dark:bg-zinc-950 border-transparent before:absolute before:inset-0 before:-z-10 before:rounded-[inherit] before:p-[1px] before:bg-gradient-to-r before:from-sky-500 before:via-indigo-500 before:to-pink-500 hover:bg-[#F1F1F1]/50 dark:hover:bg-zinc-900/30",
+        glow: "bg-white dark:bg-zinc-950 border-zinc-200 dark:border-zinc-800 shadow-xs hover:shadow-[0_0_12px_rgba(14,165,233,0.15)]",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+    },
+  }
+)
+
+const matchAcceptRule = (
+  fileName: string,
+  fileType: string,
+  accept: string
+) => {
+  const rules = accept.split(",").map((r) => r.trim().toLowerCase())
+  return rules.some((rule) => {
+    if (rule.startsWith(".")) {
+      return fileName.toLowerCase().endsWith(rule)
+    }
+    if (rule.endsWith("/*")) {
+      const baseType = rule.replace("/*", "")
+      return fileType.toLowerCase().startsWith(baseType)
+    }
+    return fileType.toLowerCase() === rule
+  })
+}
+
+export interface FileItemState {
+  id: string
+  file: File
+  previewUrl?: string
+  progress: number
+  status: "uploading" | "paused" | "completed" | "error"
+  errorMessage?: string
+}
+
+export interface FileValidationRules {
+  minWidth?: number
+  minHeight?: number
+  maxWidth?: number
+  maxHeight?: number
+  aspectRatio?: number
+  aspectRatioTolerance?: number
+}
+
+export interface FileUploadProps {
+  onFilesSelected?: (files: File[]) => void
+  accept?: string
+  multiple?: boolean
+  maxSizeMB?: number
+  allowPaste?: boolean
+  enableCrop?: boolean
+  validationRules?: FileValidationRules
+  label?: React.ReactNode
+  description?: React.ReactNode
+  disabled?: boolean
+  showPreviews?: boolean
+  simulateProgress?: boolean
+  variant?:
+    | "default"
+    | "bordered"
+    | "flat"
+    | "underlined"
+    | "filled"
+    | "glassmorphism"
+    | "gradient-border"
+    | "glow"
+  isRequired?: boolean
+  className?: string
+}
+
+export function FileUpload({
+  onFilesSelected,
+  accept,
+  multiple = false,
+  maxSizeMB = 10,
+  allowPaste = true,
+  enableCrop = false,
+  validationRules,
+  label,
+  description = "Arraste e solte arquivos aqui, cole uma imagem ou clique para selecionar",
+  disabled = false,
+  showPreviews = true,
+  simulateProgress = true,
+  variant = "default",
+  isRequired = false,
+  className,
+}: FileUploadProps) {
+  const [dragActive, setDragActive] = React.useState(false)
+  const [fileItems, setFileItems] = React.useState<FileItemState[]>([])
+  const [cropFileItem, setCropFileItem] = React.useState<FileItemState | null>(
+    null
+  )
+  const [cropRotation, setCropRotation] = React.useState<number>(0)
+  const [cropZoom, setCropZoom] = React.useState<number>(1)
+  const inputRef = React.useRef<HTMLInputElement>(null)
+
+  const _validateImageDimensions = React.useCallback(
+    (file: File): Promise<string | null> => {
+      return new Promise((resolve) => {
+        if (!validationRules || !file.type.startsWith("image/")) {
+          resolve(null)
+          return
+        }
+
+        const img = new Image()
+        const objectUrl = URL.createObjectURL(file)
+        img.onload = () => {
+          URL.revokeObjectURL(objectUrl)
+          const { width, height } = img
+          const {
+            minWidth,
+            minHeight,
+            maxWidth,
+            maxHeight,
+            aspectRatio,
+            aspectRatioTolerance = 0.05,
+          } = validationRules
+
+          if (minWidth && width < minWidth) {
+            resolve(
+              `A largura da imagem (${width}px) é menor que o mínimo de ${minWidth}px.`
+            )
+            return
+          }
+          if (minHeight && height < minHeight) {
+            resolve(
+              `A altura da imagem (${height}px) é menor que o mínimo de ${minHeight}px.`
+            )
+            return
+          }
+          if (maxWidth && width > maxWidth) {
+            resolve(
+              `A largura da imagem (${width}px) excede o máximo de ${maxWidth}px.`
+            )
+            return
+          }
+          if (maxHeight && height > maxHeight) {
+            resolve(
+              `A altura da imagem (${height}px) excede o máximo de ${maxHeight}px.`
+            )
+            return
+          }
+          if (aspectRatio) {
+            const currentRatio = width / height
+            if (Math.abs(currentRatio - aspectRatio) > aspectRatioTolerance) {
+              resolve(
+                `A proporção (${currentRatio.toFixed(2)}) não corresponde à proporção exigida (${aspectRatio.toFixed(2)}).`
+              )
+              return
+            }
+          }
+          resolve(null)
+        }
+        img.onerror = () => {
+          URL.revokeObjectURL(objectUrl)
+          resolve(null)
+        }
+        img.src = objectUrl
+      })
+    },
+    [validationRules]
+  )
+
+  const processFiles = React.useCallback(
+    async (filesList: File[]) => {
+      const newItems: FileItemState[] = []
+
+      for (const file of filesList) {
+        let errorMessage: string | undefined
+
+        if (file.size > maxSizeMB * 1024 * 1024) {
+          errorMessage = `O arquivo excede o limite de ${maxSizeMB}MB.`
+        } else if (accept && !matchAcceptRule(file.name, file.type, accept)) {
+          errorMessage = `Tipo de arquivo inválido. Permitido: ${accept}`
+        } else {
+          const valError = await _validateImageDimensions(file)
+          if (valError) errorMessage = valError
+        }
+
+        let previewUrl: string | undefined
+        if (file.type.startsWith("image/") || file.type.startsWith("video/")) {
+          previewUrl = URL.createObjectURL(file)
+        }
+
+        const item: FileItemState = {
+          id: `${file.name}-${Date.now()}-${Math.random().toString(36).substring(2, 5)}`,
+          file,
+          previewUrl,
+          progress: errorMessage ? 0 : simulateProgress ? 0 : 100,
+          status: errorMessage
+            ? "error"
+            : simulateProgress
+              ? "uploading"
+              : "completed",
+          errorMessage,
+        }
+
+        newItems.push(item)
+      }
+
+      const updated = multiple ? [...fileItems, ...newItems] : newItems
+      setFileItems(updated)
+      onFilesSelected?.(
+        updated.filter((i) => i.status !== "error").map((item) => item.file)
+      )
+
+      if (
+        enableCrop &&
+        newItems.length > 0 &&
+        newItems[0].file.type.startsWith("image/") &&
+        !newItems[0].errorMessage
+      ) {
+        setCropFileItem(newItems[0])
+        setCropRotation(0)
+        setCropZoom(1)
+      }
+    },
+    [
+      maxSizeMB,
+      accept,
+      simulateProgress,
+      multiple,
+      fileItems,
+      onFilesSelected,
+      enableCrop,
+      _validateImageDimensions,
+    ]
+  )
+
+  const handleFiles = (files: FileList | null) => {
+    if (!files) return
+    processFiles(Array.from(files))
+  }
+
+  React.useEffect(() => {
+    if (!allowPaste || disabled) return
+
+    const handlePaste = (e: ClipboardEvent) => {
+      const items = e.clipboardData?.items
+      if (!items) return
+
+      const pastedFiles: File[] = []
+      for (let i = 0; i < items.length; i++) {
+        if (items[i].type.startsWith("image/")) {
+          const blob = items[i].getAsFile()
+          if (blob) {
+            const pastedFile = new File(
+              [blob],
+              `pasted-image-${Date.now()}.png`,
+              { type: blob.type }
+            )
+            pastedFiles.push(pastedFile)
+          }
+        }
+      }
+
+      if (pastedFiles.length > 0) {
+        processFiles(pastedFiles)
+      }
+    }
+
+    window.addEventListener("paste", handlePaste)
+    return () => window.removeEventListener("paste", handlePaste)
+  }, [allowPaste, disabled, processFiles])
+
+  React.useEffect(() => {
+    if (!simulateProgress) return
+
+    const interval = setInterval(() => {
+      setFileItems((prev) =>
+        prev.map((item) => {
+          if (item.status === "uploading" && item.progress < 100) {
+            const nextProgress = Math.min(
+              100,
+              item.progress + Math.floor(Math.random() * 25) + 10
+            )
+            return {
+              ...item,
+              progress: nextProgress,
+              status: nextProgress === 100 ? "completed" : "uploading",
+            }
+          }
+          return item
+        })
+      )
+    }, 400)
+
+    return () => clearInterval(interval)
+  }, [simulateProgress])
+
+  const handleDrag = (e: React.DragEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    if (e.type === "dragenter" || e.type === "dragover") {
+      setDragActive(true)
+    } else if (e.type === "dragleave") {
+      setDragActive(false)
+    }
+  }
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setDragActive(false)
+    if (e.dataTransfer.files?.[0]) {
+      handleFiles(e.dataTransfer.files)
+    }
+  }
+
+  const removeFile = (id: string) => {
+    const updated = fileItems.filter((item) => item.id !== id)
+    setFileItems(updated)
+    onFilesSelected?.(
+      updated.filter((i) => i.status !== "error").map((item) => item.file)
+    )
+  }
+
+  const togglePause = (id: string) => {
+    setFileItems((prev) =>
+      prev.map((item) => {
+        if (item.id === id) {
+          const nextStatus = item.status === "paused" ? "uploading" : "paused"
+          return { ...item, status: nextStatus }
+        }
+        return item
+      })
+    )
+  }
+
+  const handleApplyCrop = () => {
+    if (!cropFileItem) return
+
+    setCropFileItem(null)
+  }
+
+  const renderFileIcon = (file: File) => {
+    if (file.type.startsWith("image/")) return <FileImage className="size-5" />
+    if (file.type.startsWith("video/")) return <FileVideo className="size-5" />
+    if (file.type.startsWith("audio/")) return <FileAudio className="size-5" />
+    if (file.type.includes("pdf")) return <FilePdf className="size-5" />
+    return <FileIcon className="size-5" />
+  }
+
+  return (
+    <div className={cn("flex flex-col gap-2 w-full", className)}>
+      {label && (
+        <label className="text-xs font-semibold text-zinc-900 dark:text-zinc-100 select-none">
+          {label}
+          {isRequired && <span className="text-rose-500 ml-0.5">*</span>}
+        </label>
+      )}
+
+      <div
+        onDragEnter={handleDrag}
+        onDragLeave={handleDrag}
+        onDragOver={handleDrag}
+        onDrop={handleDrop}
+        onClick={() => !disabled && inputRef.current?.click()}
+        className={cn(
+          fileUploadDragVariants({ variant }),
+          dragActive &&
+            "border-brand-primary bg-brand-primary/5 dark:border-brand-primary dark:bg-brand-primary/10 scale-[1.01]",
+          disabled && "opacity-50 cursor-not-allowed pointer-events-none"
+        )}
+      >
+        <input
+          ref={inputRef}
+          type="file"
+          accept={accept}
+          multiple={multiple}
+          disabled={disabled}
+          onChange={(e) => handleFiles(e.target.files)}
+          className="hidden"
+        />
+        <div className="p-3.5 bg-zinc-50 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700 rounded-2xl shadow-xs mb-3 text-brand-primary group-hover:scale-110 transition-transform duration-200">
+          <CloudArrowUp className="size-7 text-brand-primary" />
+        </div>
+        <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-100 text-center">
+          {description}
+        </p>
+        <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">
+          Tamanho máx.: {maxSizeMB}MB {allowPaste && "• Suporta colar (Ctrl+V)"}
+        </p>
+      </div>
+
+      {fileItems.length > 0 && (
+        <div className="flex flex-col gap-2.5 mt-3">
+          {fileItems.map((item) => (
+            <div
+              key={item.id}
+              className={cn(
+                "flex flex-col gap-2 p-3 bg-white dark:bg-zinc-900 border rounded-2xl text-xs shadow-xs transition-all",
+                item.status === "error"
+                  ? "border-rose-300 dark:border-rose-900/50 bg-rose-50/30 dark:bg-rose-950/10"
+                  : "border-zinc-200 dark:border-zinc-800"
+              )}
+            >
+              <div className="flex items-center justify-between gap-3">
+                <div className="flex items-center gap-3 min-w-0">
+                  {showPreviews && item.previewUrl ? (
+                    <div className="size-10 rounded-xl overflow-hidden bg-zinc-100 dark:bg-zinc-800 shrink-0 border border-zinc-200 dark:border-zinc-700">
+                      {item.file.type.startsWith("image/") ? (
+                        <img
+                          src={item.previewUrl}
+                          alt={item.file.name}
+                          className="size-full object-cover"
+                        />
+                      ) : (
+                        <video
+                          src={item.previewUrl}
+                          className="size-full object-cover"
+                          aria-label={item.file.name}
+                        >
+                          <track kind="captions" />
+                        </video>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="size-10 rounded-xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center shrink-0 border border-zinc-200 dark:border-zinc-700 text-zinc-500">
+                      {renderFileIcon(item.file)}
+                    </div>
+                  )}
+
+                  <div className="flex flex-col min-w-0">
+                    <span className="truncate font-semibold text-zinc-900 dark:text-zinc-100">
+                      {item.file.name}
+                    </span>
+                    <span className="text-[11px] text-zinc-400">
+                      {(item.file.size / (1024 * 1024)).toFixed(2)} MB •{" "}
+                      <span
+                        className={cn(
+                          item.status === "completed" &&
+                            "text-emerald-500 font-semibold inline-flex items-center gap-1",
+                          item.status === "uploading" &&
+                            "text-brand-primary font-semibold",
+                          item.status === "paused" &&
+                            "text-amber-500 font-semibold inline-flex items-center gap-1",
+                          item.status === "error" &&
+                            "text-rose-600 dark:text-rose-400 font-semibold inline-flex items-center gap-1"
+                        )}
+                      >
+                        {item.status === "error" ? (
+                          <>
+                            <WarningCircle className="size-3.5 shrink-0" />
+                            <span>
+                              {item.errorMessage ?? "Erro de validação"}
+                            </span>
+                          </>
+                        ) : item.status === "completed" ? (
+                          <>
+                            <CheckCircle className="size-3.5 shrink-0" />
+                            <span>Concluído</span>
+                          </>
+                        ) : item.status === "paused" ? (
+                          <span>Pausado</span>
+                        ) : (
+                          `${item.progress}%`
+                        )}
+                      </span>
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-1 shrink-0">
+                  {enableCrop &&
+                    item.file.type.startsWith("image/") &&
+                    item.status !== "error" && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setCropFileItem(item)
+                          setCropRotation(0)
+                          setCropZoom(1)
+                        }}
+                        className="p-1.5 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg text-zinc-400 hover:text-brand-primary cursor-pointer transition-colors"
+                        title="Recortar e girar imagem"
+                      >
+                        <Crop className="size-4" />
+                      </button>
+                    )}
+                  {item.status !== "completed" && item.status !== "error" && (
+                    <button
+                      type="button"
+                      onClick={() => togglePause(item.id)}
+                      className="p-1.5 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 cursor-pointer transition-colors"
+                      title={item.status === "paused" ? "Continuar" : "Pausar"}
+                    >
+                      {item.status === "paused" ? (
+                        <Play className="size-4" />
+                      ) : (
+                        <Pause className="size-4" />
+                      )}
+                    </button>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => removeFile(item.id)}
+                    className="p-1.5 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg text-zinc-400 hover:text-rose-500 cursor-pointer transition-colors"
+                    title="Remover arquivo"
+                  >
+                    <X className="size-4" />
+                  </button>
+                </div>
+              </div>
+
+              {item.status !== "completed" && item.status !== "error" && (
+                <div className="w-full bg-zinc-100 dark:bg-zinc-800 h-1.5 rounded-full overflow-hidden">
+                  <div
+                    className={cn(
+                      "h-full transition-all duration-300 rounded-full",
+                      item.status === "paused"
+                        ? "bg-amber-500"
+                        : "bg-brand-primary"
+                    )}
+                    style={{ width: `${item.progress}%` }}
+                  />
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {cropFileItem && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4">
+          <div className="w-full max-w-md bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-6 shadow-2xl flex flex-col gap-4">
+            <div className="flex items-center justify-between">
+              <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-100">
+                Recortar e Girar Imagem
+              </h3>
+              <button
+                type="button"
+                onClick={() => setCropFileItem(null)}
+                className="p-1 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-400 cursor-pointer"
+                title="Fechar"
+              >
+                <X className="size-4" />
+              </button>
+            </div>
+
+            <div className="relative size-64 mx-auto overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-950 flex items-center justify-center">
+              {cropFileItem.previewUrl && (
+                <img
+                  src={cropFileItem.previewUrl}
+                  alt="Pré-visualização de recorte"
+                  className="max-h-full max-w-full object-contain transition-transform duration-200"
+                  style={{
+                    transform: `rotate(${cropRotation}deg) scale(${cropZoom})`,
+                  }}
+                />
+              )}
+            </div>
+
+            <div className="flex items-center justify-between gap-4">
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setCropRotation((r) => (r - 90) % 360)}
+                  className="p-2 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 cursor-pointer"
+                  title="Girar para a esquerda"
+                >
+                  <ArrowCounterClockwise className="size-4" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setCropRotation((r) => (r + 90) % 360)}
+                  className="p-2 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 cursor-pointer"
+                  title="Girar para a direita"
+                >
+                  <ArrowClockwise className="size-4" />
+                </button>
+              </div>
+
+              <div className="flex items-center gap-2 text-xs font-semibold text-zinc-600 dark:text-zinc-400">
+                <span>Zoom</span>
+                <input
+                  type="range"
+                  min="0.5"
+                  max="2.5"
+                  step="0.1"
+                  value={cropZoom}
+                  onChange={(e) => setCropZoom(Number(e.target.value))}
+                  className="w-24 accent-brand-primary"
+                />
+              </div>
+            </div>
+
+            <div className="flex justify-end gap-2 pt-2 border-t border-zinc-200 dark:border-zinc-800">
+              <button
+                type="button"
+                onClick={() => setCropFileItem(null)}
+                className="px-4 py-2 text-xs font-semibold rounded-xl border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+              >
+                Cancelar
+              </button>
+              <button
+                type="button"
+                onClick={handleApplyCrop}
+                className="px-4 py-2 text-xs font-semibold rounded-xl bg-brand-primary hover:bg-brand-primary/90 text-white transition-colors cursor-pointer"
+              >
+                Aplicar Alterações
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}

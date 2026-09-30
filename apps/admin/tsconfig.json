@@ -1,0 +1,27 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./*", "./src/*"],
+      "@clubkey/ui": ["../../packages/ui/src/index.ts"],
+      "@clubkey/ui/*": ["../../packages/ui/src/*"],
+      "@clubkey/types": ["../../packages/types/src/index.ts"],
+      "@clubkey/schemas": ["../../packages/schemas/src/index.ts"],
+      "@clubkey/utils": ["../../packages/utils/src/index.ts"]
+    },
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts"
+  ],
+  "exclude": ["node_modules"]
+}

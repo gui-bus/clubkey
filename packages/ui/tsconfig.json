@@ -1,0 +1,21 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@clubkey/ui": ["./src/index.ts"],
+      "@clubkey/ui/*": ["./src/*"],
+      "@clubkey/utils": ["../utils/src/index.ts"],
+      "@/src/lib/designSystem": ["./src/lib/designSystem.ts"],
+      "@/src/lib/design-system": ["./src/lib/designSystem.ts"],
+      "@/src/lib/utils": ["./src/lib/utils.ts"],
+      "@/src/lib/hooks": ["./src/lib/hooks/index.ts"],
+      "@/src/lib/hooks/*": ["./src/lib/hooks/*"],
+      "@/src/lib/ripple/*": ["./src/lib/ripple/*"],
+      "@/lib/ripple/*": ["./src/lib/ripple/*"],
+      "@/lib/*": ["./src/lib/*"],
+      "@/src/components/ui/*": ["./src/components/ui/*"]
+    }
+  },
+  "include": ["src/**/*"]
+}
