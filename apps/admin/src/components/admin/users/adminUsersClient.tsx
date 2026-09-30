@@ -5,6 +5,7 @@ import { DownloadSimple, ArrowClockwise, Sparkle } from "@phosphor-icons/react"
 import { CtaButton, toast } from "@clubkey/ui"
 import type { AdminUser } from "@clubkey/types"
 import { MOCK_ADMIN_USERS } from "@/src/data/mocks/adminUsers.data"
+import { AdminHero } from "../common/adminHero"
 import { AdminUsersStats } from "./adminUsersStats"
 import {
   AdminUsersFilterBar,
@@ -176,75 +177,90 @@ export function AdminUsersClient(): React.JSX.Element {
   }
 
   return (
-    <div className="space-y-6">
-      {/* Header Section */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-black font-heading tracking-tight text-zinc-900 dark:text-white uppercase">
-              Usuários
-            </h1>
-            <span className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-brand-primary/10 text-brand-primary border border-brand-primary/20">
-              <Sparkle size={12} weight="fill" />
-              Módulo Ativo
-            </span>
+    <div className="space-y-8">
+      {/* Portal-Style Hero Section with Image, Gradient, Title & Filter Bar */}
+      <AdminHero
+        badge="Gestão de Membros • Base de Associados"
+        title={
+          <>
+            Gestão de <span className="text-brand-primary">Usuários</span>
+          </>
+        }
+        description="Pesquise, filtre e gerencie associados, permissões P2P, limites operacionais e status cadastrais."
+        imageSrc="/utils/banners/pessoas.webp"
+        imageAlt="Gestão de Usuários ClubKey"
+      >
+        <AdminUsersFilterBar
+          searchQuery={searchQuery}
+          onSearchQueryChange={setSearchQuery}
+          searchField={searchField}
+          onSearchFieldChange={setSearchField}
+          statusFilter={statusFilter}
+          onStatusChange={setStatusFilter}
+          levelFilter={levelFilter}
+          onLevelChange={setLevelFilter}
+          createdFrom={createdFrom}
+          onCreatedFromChange={setCreatedFrom}
+          createdTo={createdTo}
+          onCreatedToChange={setCreatedTo}
+          birthDateFrom={birthDateFrom}
+          onBirthDateFromChange={setBirthDateFrom}
+          birthDateTo={birthDateTo}
+          onBirthDateToChange={setBirthDateTo}
+          onReset={handleResetFilters}
+          totalFiltered={filteredUsers.length}
+          totalCount={users.length}
+        />
+      </AdminHero>
+
+      {/* Main Content Area (Stats, Actions & Table) */}
+      <div className="space-y-6">
+        {/* Section Header & Actions */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <div className="flex items-center gap-2">
+              <h2 className="text-xl font-black font-heading tracking-tight text-zinc-900 dark:text-white uppercase">
+                Métricas da Base
+              </h2>
+              <span className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-brand-primary/10 text-brand-primary border border-brand-primary/20">
+                <Sparkle size={12} weight="fill" />
+                Módulo Ativo
+              </span>
+            </div>
+            <p className="text-xs text-zinc-500 dark:text-zinc-400 font-medium mt-1">
+              Visão consolidada de associados, status cadastrais e saldos sob custódia RIB.
+            </p>
           </div>
-          <p className="text-xs text-zinc-500 dark:text-zinc-400 font-medium mt-1">
-            Gestão executiva, controle de limites, wallets Fireblocks e permissões P2P de associados.
-          </p>
+
+          <div className="flex items-center gap-2 self-start sm:self-auto">
+            <CtaButton
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={handleRefresh}
+            >
+              <ArrowClockwise size={14} weight="bold" />
+              <span>Atualizar</span>
+            </CtaButton>
+
+            <CtaButton
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={handleExport}
+            >
+              <DownloadSimple size={14} weight="bold" />
+              <span>Exportar</span>
+            </CtaButton>
+          </div>
         </div>
 
-        <div className="flex items-center gap-2 self-start sm:self-auto">
-          <CtaButton
-            type="button"
-            variant="outline"
-            size="sm"
-            onClick={handleRefresh}
-          >
-            <ArrowClockwise size={14} weight="bold" />
-            <span>Atualizar</span>
-          </CtaButton>
+        {/* Summary Metrics */}
+        <AdminUsersStats users={users} />
 
-          <CtaButton
-            type="button"
-            variant="outline"
-            size="sm"
-            onClick={handleExport}
-          >
-            <DownloadSimple size={14} weight="bold" />
-            <span>Exportar</span>
-          </CtaButton>
-        </div>
+        {/* Users Table */}
+        <AdminUsersTable users={filteredUsers} />
       </div>
-
-      {/* Summary Metrics */}
-      <AdminUsersStats users={users} />
-
-      {/* Rich Portal-Style Filter and Search Bar */}
-      <AdminUsersFilterBar
-        searchQuery={searchQuery}
-        onSearchQueryChange={setSearchQuery}
-        searchField={searchField}
-        onSearchFieldChange={setSearchField}
-        statusFilter={statusFilter}
-        onStatusChange={setStatusFilter}
-        levelFilter={levelFilter}
-        onLevelChange={setLevelFilter}
-        createdFrom={createdFrom}
-        onCreatedFromChange={setCreatedFrom}
-        createdTo={createdTo}
-        onCreatedToChange={setCreatedTo}
-        birthDateFrom={birthDateFrom}
-        onBirthDateFromChange={setBirthDateFrom}
-        birthDateTo={birthDateTo}
-        onBirthDateToChange={setBirthDateTo}
-        onReset={handleResetFilters}
-        totalFiltered={filteredUsers.length}
-        totalCount={users.length}
-      />
-
-      {/* Users Table */}
-      <AdminUsersTable users={filteredUsers} />
     </div>
   )
 }

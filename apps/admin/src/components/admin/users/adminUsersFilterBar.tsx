@@ -594,12 +594,12 @@ export function AdminUsersFilterBar({
       </div>
 
       {/* Active Filter Chips & Counter Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 px-1">
-        <div className="flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-400">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 px-2 pt-1 text-left">
+        <div className="flex items-center gap-2 text-xs text-zinc-200 drop-shadow-sm font-medium">
           <Funnel size={14} className="text-brand-primary shrink-0" weight="bold" />
           <span>
-            Exibindo <strong className="text-zinc-900 dark:text-white font-bold">{totalFiltered}</strong> de{" "}
-            <strong className="text-zinc-900 dark:text-white font-bold">{totalCount}</strong> associados
+            Exibindo <strong className="text-white font-bold">{totalFiltered}</strong> de{" "}
+            <strong className="text-white font-bold">{totalCount}</strong> associados
           </span>
         </div>
 
@@ -607,12 +607,12 @@ export function AdminUsersFilterBar({
           <div className="flex items-center gap-2 flex-wrap">
             {/* Active Chip: Target Field */}
             {searchField !== "ALL" && (
-              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700">
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-white/15 dark:bg-zinc-800/80 backdrop-blur-md text-white border border-white/20 dark:border-zinc-700 shadow-xs">
                 <span>Campo: {currentFieldConfig.short}</span>
                 <button
                   type="button"
                   onClick={() => onSearchFieldChange("ALL")}
-                  className="hover:text-red-500 transition-colors"
+                  className="hover:text-red-400 transition-colors"
                 >
                   <X size={10} weight="bold" />
                 </button>
@@ -621,7 +621,7 @@ export function AdminUsersFilterBar({
 
             {/* Active Chip: Dates */}
             {(createdFrom || createdTo) && (
-              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-brand-primary/10 text-brand-primary border border-brand-primary/20">
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-brand-primary/20 backdrop-blur-md text-brand-primary-foreground border border-brand-primary/40 shadow-xs">
                 <span>Criado: {createdLabel}</span>
                 <button
                   type="button"
@@ -629,7 +629,7 @@ export function AdminUsersFilterBar({
                     onCreatedFromChange("")
                     onCreatedToChange("")
                   }}
-                  className="hover:text-red-500 transition-colors"
+                  className="hover:text-red-400 transition-colors"
                 >
                   <X size={10} weight="bold" />
                 </button>
@@ -637,7 +637,7 @@ export function AdminUsersFilterBar({
             )}
 
             {(birthDateFrom || birthDateTo) && (
-              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-brand-primary/10 text-brand-primary border border-brand-primary/20">
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-brand-primary/20 backdrop-blur-md text-brand-primary-foreground border border-brand-primary/40 shadow-xs">
                 <span>Nascimento: {birthLabel}</span>
                 <button
                   type="button"
@@ -645,7 +645,7 @@ export function AdminUsersFilterBar({
                     onBirthDateFromChange("")
                     onBirthDateToChange("")
                   }}
-                  className="hover:text-red-500 transition-colors"
+                  className="hover:text-red-400 transition-colors"
                 >
                   <X size={10} weight="bold" />
                 </button>
@@ -653,12 +653,12 @@ export function AdminUsersFilterBar({
             )}
 
             {statusFilter !== "ALL" && (
-              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700">
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-white/15 dark:bg-zinc-800/80 backdrop-blur-md text-white border border-white/20 dark:border-zinc-700 shadow-xs">
                 <span>Status: {statusFilter}</span>
                 <button
                   type="button"
                   onClick={() => onStatusChange("ALL")}
-                  className="hover:text-red-500 transition-colors"
+                  className="hover:text-red-400 transition-colors"
                 >
                   <X size={10} weight="bold" />
                 </button>
@@ -666,12 +666,12 @@ export function AdminUsersFilterBar({
             )}
 
             {levelFilter !== "ALL" && (
-              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700">
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-white/15 dark:bg-zinc-800/80 backdrop-blur-md text-white border border-white/20 dark:border-zinc-700 shadow-xs">
                 <span>Level: {levelFilter}</span>
                 <button
                   type="button"
                   onClick={() => onLevelChange("ALL")}
-                  className="hover:text-red-500 transition-colors"
+                  className="hover:text-red-400 transition-colors"
                 >
                   <X size={10} weight="bold" />
                 </button>
@@ -684,7 +684,7 @@ export function AdminUsersFilterBar({
               variant="outline"
               size="xs"
               onClick={onReset}
-              className="text-xs ml-1"
+              className="text-xs ml-1 bg-white/10 hover:bg-white/20 border-white/20 text-white backdrop-blur-md"
             >
               <ArrowClockwise size={12} weight="bold" />
               <span>Limpar Tudo</span>
