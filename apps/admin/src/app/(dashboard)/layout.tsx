@@ -12,12 +12,12 @@ export default async function DashboardLayout({
     cookieStore.get("clubkey_admin_sidebar_collapsed")?.value === "true"
 
   return (
-    <div className="flex min-h-screen bg-background text-foreground">
-      {/* Sidebar */}
+    <div className="flex flex-col md:flex-row flex-1 w-full min-h-screen bg-background text-foreground">
+      
       <AdminSidebar defaultCollapsed={defaultCollapsed} />
 
-      {/* Main Content Area */}
-      <main className="flex-1 overflow-x-hidden p-6 lg:p-8">{children}</main>
+      
+      <main className="flex-1 overflow-x-hidden p-4 sm:p-6 lg:p-8">{children}</main>
     </div>
   )
 }

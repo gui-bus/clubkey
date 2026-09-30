@@ -20,6 +20,7 @@ import {
 } from "@phosphor-icons/react"
 import { AnimatePresence, motion } from "framer-motion"
 
+import { AdminMobileHeader } from "./adminMobileHeader"
 import { AdminSidebarItem } from "./adminSidebarItem"
 import { AdminSidebarLogo } from "./adminSidebarLogo"
 import { AdminUserDropdown } from "./adminUserDropdown"
@@ -36,7 +37,7 @@ export interface AdminNavSection {
   items: AdminNavItem[]
 }
 
-const ADMIN_NAV_SECTIONS: AdminNavSection[] = [
+export const ADMIN_NAV_SECTIONS: AdminNavSection[] = [
   {
     title: "Geral",
     items: [
@@ -116,19 +117,24 @@ export function AdminSidebar({ defaultCollapsed = false }: AdminSidebarProps) {
   }
 
   return (
-    <TooltipProvider delayDuration={80}>
-      <motion.aside
-        initial={false}
-        animate={{ width: isCollapsed ? 72 : 256 }}
-        transition={{
-          type: "spring",
-          stiffness: 380,
-          damping: 32,
-          mass: 0.8,
-        }}
-        className="sticky top-0 z-40 flex h-screen flex-col border-r border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] select-none shrink-0 relative"
-      >
-        {/* Floating Expand/Collapse Button on the border line (no tooltip, sr-only accessible) */}
+    <>
+      
+      <AdminMobileHeader />
+
+      
+      <TooltipProvider delayDuration={80}>
+        <motion.aside
+          initial={false}
+          animate={{ width: isCollapsed ? 72 : 256 }}
+          transition={{
+            type: "spring",
+            stiffness: 380,
+            damping: 32,
+            mass: 0.8,
+          }}
+          className="hidden md:flex sticky top-0 z-40 h-screen flex-col border-r border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] select-none shrink-0 relative"
+        >
+        
         <div className="absolute -right-3 top-5.5 z-50">
           <button
             onClick={toggleCollapse}
@@ -148,7 +154,7 @@ export function AdminSidebar({ defaultCollapsed = false }: AdminSidebarProps) {
           </button>
         </div>
 
-        {/* Top Header: Brand Logo */}
+        
         <div
           className={cn(
             "flex h-16 items-center shrink-0 select-none overflow-hidden",
@@ -158,12 +164,12 @@ export function AdminSidebar({ defaultCollapsed = false }: AdminSidebarProps) {
           <AdminSidebarLogo isCollapsed={isCollapsed} />
         </div>
 
-        {/* Navigation Menu using ScrollArea */}
+        
         <ScrollArea className="flex-1 w-full px-3 py-2 overflow-hidden">
           <nav className="space-y-3">
             {ADMIN_NAV_SECTIONS.map((section, sectionIdx) => (
               <div key={section.title} className="space-y-1">
-                {/* Section Header with subtle text and right divider */}
+                
                 {isCollapsed ? (
                   sectionIdx > 0 && (
                     <div className="py-2 px-2">
@@ -184,7 +190,7 @@ export function AdminSidebar({ defaultCollapsed = false }: AdminSidebarProps) {
                   </div>
                 )}
 
-                {/* Section Items */}
+                
                 <div className="space-y-1">
                   {section.items.map((item) => {
                     const isActive =
@@ -212,7 +218,7 @@ export function AdminSidebar({ defaultCollapsed = false }: AdminSidebarProps) {
           </nav>
         </ScrollArea>
 
-        {/* Footer Actions: Theme Toggle on the right of User Profile when open */}
+        
         <div className="p-2 shrink-0 overflow-hidden">
           {isCollapsed ? (
             <div className="flex flex-col items-center gap-1.5">
@@ -230,5 +236,6 @@ export function AdminSidebar({ defaultCollapsed = false }: AdminSidebarProps) {
         </div>
       </motion.aside>
     </TooltipProvider>
+    </>
   )
 }

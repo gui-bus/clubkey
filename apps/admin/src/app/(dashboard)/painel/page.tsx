@@ -55,7 +55,7 @@ const stats = [
 export default function PainelPage() {
   return (
     <div className="space-y-8">
-      {/* Header */}
+      
       <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">
@@ -76,7 +76,7 @@ export default function PainelPage() {
         </div>
       </div>
 
-      {/* KPI Cards Grid */}
+      
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {stats.map((stat, idx) => {
           const Icon = stat.icon

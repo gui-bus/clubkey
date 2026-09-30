@@ -144,7 +144,7 @@ export function MemberProfileSidebar({
           </CtaButton>
         </div>
 
-        {/* Minhas Tags Privadas */}
+        
         {status === "connected" && (
           <div className="space-y-2.5 pt-4 border-t border-zinc-100 dark:border-zinc-800">
             <div className="flex items-center justify-between gap-1">

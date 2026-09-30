@@ -175,7 +175,7 @@ export function MemberCard({
             )}
           </div>
 
-          {/* Minhas Tags Privadas */}
+          
           {mounted && (status === "connected" || memberTags.length > 0) && (
             <div className="pt-2 border-t border-zinc-100 dark:border-zinc-800/80 space-y-1">
               <div className="flex items-center justify-between gap-1">

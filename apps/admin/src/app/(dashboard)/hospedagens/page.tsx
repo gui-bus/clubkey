@@ -48,7 +48,7 @@ const mockProperties = [
 export default function AdminStaysPage() {
   return (
     <div className="space-y-6">
-      {/* Header */}
+      
       <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">
@@ -64,7 +64,7 @@ export default function AdminStaysPage() {
         </Button>
       </div>
 
-      {/* Grid of properties */}
+      
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {mockProperties.map((prop) => (
           <Card key={prop.id} className="border-border bg-card overflow-hidden">

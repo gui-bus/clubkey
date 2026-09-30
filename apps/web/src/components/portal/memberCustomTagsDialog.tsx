@@ -188,7 +188,7 @@ export function MemberCustomTagsDialog({
           </DialogDescription>
         </DialogHeader>
 
-        {/* Privacy Note (Clean without background) */}
+        
         <div className="flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-400">
           <LockKey className="w-3.5 h-3.5 text-brand-primary shrink-0" />
           <span>
@@ -200,7 +200,7 @@ export function MemberCustomTagsDialog({
           </span>
         </div>
 
-        {/* Tag Input Form */}
+        
         <div className="space-y-2 pt-1">
           <label className="text-[11px] font-bold uppercase tracking-wider text-zinc-900 dark:text-white block">
             Nova Etiqueta
@@ -228,7 +228,7 @@ export function MemberCustomTagsDialog({
           </div>
         </div>
 
-        {/* Current Active Tags with DND Sortable */}
+        
         <div className="space-y-2 pt-1">
           <div className="flex items-center justify-between">
             <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-900 dark:text-white block">
@@ -270,7 +270,7 @@ export function MemberCustomTagsDialog({
           )}
         </div>
 
-        {/* Footer */}
+        
         <div className="pt-2 flex justify-end">
           <CtaButton
             type="button"

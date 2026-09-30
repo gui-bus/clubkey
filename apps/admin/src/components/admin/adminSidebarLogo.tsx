@@ -20,7 +20,7 @@ export function AdminSidebarLogo({ isCollapsed }: AdminSidebarLogoProps) {
     >
       <AnimatePresence mode="wait" initial={false}>
         {isCollapsed ? (
-          /* Collapsed Compact Icon / Logo */
+          
           <motion.div
             key="collapsed-logo"
             initial={{ opacity: 0, scale: 0.8 }}
@@ -64,7 +64,7 @@ export function AdminSidebarLogo({ isCollapsed }: AdminSidebarLogoProps) {
             )}
           </motion.div>
         ) : (
-          /* Expanded Full Brand Logo */
+          
           <motion.div
             key="expanded-logo"
             initial={{ opacity: 0, x: -10 }}

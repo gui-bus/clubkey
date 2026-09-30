@@ -1,8 +1,7 @@
-// Design Tokens & System
+
 export * from "./lib/designSystem"
 export * from "./lib/utils"
 
-// Bloom UI Components
 export * from "./components/ui/alert/alert"
 export * from "./components/ui/alertDialog/alertDialog"
 export * from "./components/ui/avatar/avatar"

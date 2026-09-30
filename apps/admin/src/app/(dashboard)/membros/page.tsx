@@ -96,7 +96,7 @@ export default function AdminMembersPage() {
 
   return (
     <div className="space-y-6">
-      {/* Top Header */}
+      
       <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">
@@ -117,7 +117,7 @@ export default function AdminMembersPage() {
         </div>
       </div>
 
-      {/* Filter and Search Bar */}
+      
       <Card className="border-border bg-card">
         <CardContent className="p-4">
           <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
@@ -153,7 +153,7 @@ export default function AdminMembersPage() {
         </CardContent>
       </Card>
 
-      {/* Members Table */}
+      
       <Card className="border-border bg-card">
         <CardContent className="p-0">
           <div className="overflow-x-auto">

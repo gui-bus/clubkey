@@ -111,7 +111,7 @@ export function AdminUserDropdown({
         sideOffset={isCollapsed ? 12 : 8}
         className="w-60 bg-white/95 dark:bg-[#141416]/95 backdrop-blur-xl border border-zinc-200 dark:border-zinc-800 p-2 rounded-sm shadow-2xl space-y-1 z-50"
       >
-        {/* User Info Header with Role */}
+        
         <div className="px-3 py-2 flex items-center gap-3">
           <Avatar
             size="sm"
@@ -134,7 +134,7 @@ export function AdminUserDropdown({
 
         <DropdownMenuSeparator className="mx-0 my-1 h-0 bg-transparent border-t border-zinc-200 dark:border-zinc-800" />
 
-        {/* Logout Option matching portal style */}
+        
         <DropdownMenuItem
           onClick={handleLogout}
           className="flex items-center gap-2.5 px-3 py-2 rounded-sm text-xs font-semibold text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30 cursor-pointer transition-colors"

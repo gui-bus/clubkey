@@ -31,7 +31,7 @@ export default function AdminSettingsPage() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
+      
       <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">
@@ -47,7 +47,7 @@ export default function AdminSettingsPage() {
         </Button>
       </div>
 
-      {/* Modules Configuration */}
+      
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         <Card className="border-border bg-card">
           <CardHeader className="p-6">
@@ -122,7 +122,7 @@ export default function AdminSettingsPage() {
           </CardContent>
         </Card>
 
-        {/* Security & Access */}
+        
         <Card className="border-border bg-card">
           <CardHeader className="p-6">
             <CardTitle className="text-base font-bold flex items-center gap-2">
