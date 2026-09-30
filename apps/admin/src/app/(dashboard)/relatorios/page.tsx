@@ -1,37 +1,26 @@
 "use client"
 
-import { Button, Card, CardContent } from "@clubkey/ui"
-import { ChartBar, DownloadSimple } from "@phosphor-icons/react"
+import * as React from "react"
+import { ChartBar } from "@phosphor-icons/react"
+import { AdminUnderConstruction } from "@/src/components/admin/common/adminUnderConstruction"
 
-export default function RelatoriosPage() {
+export default function RelatoriosPage(): React.JSX.Element {
   return (
     <div className="space-y-6">
-      <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight">
-            Relatórios & Análises
-          </h1>
-          <p className="text-sm text-muted-foreground">
-            Extração de relatórios financeiros, operacionais, de sinistros e
-            inadimplência.
-          </p>
-        </div>
-        <Button variant="bordered" size="sm">
-          <DownloadSimple size={16} className="mr-1.5" /> Exportar Relatórios
-        </Button>
+      <div className="space-y-1">
+        <h1 className="text-2xl font-black font-heading tracking-tight text-zinc-900 dark:text-white uppercase">
+          Relatórios & BI
+        </h1>
+        <p className="text-xs text-zinc-500 dark:text-zinc-400 font-medium">
+          Extração de relatórios financeiros, operacionais, de sinistros e inadimplência.
+        </p>
       </div>
 
-      <Card className="border-border bg-card">
-        <CardContent className="p-8 text-center text-muted-foreground">
-          <ChartBar
-            size={40}
-            className="mx-auto mb-3 text-muted-foreground/60"
-          />
-          <p className="text-sm font-medium">
-            Módulo de Relatórios pronto para desenvolvimento das telas e fluxos.
-          </p>
-        </CardContent>
-      </Card>
+      <AdminUnderConstruction
+        title="Relatórios & Business Intelligence em Construção"
+        description="A esteira de exportação contábil, gráficos dinâmicos de faturamento e relatórios executivos está em desenvolvimento."
+        icon={ChartBar}
+      />
     </div>
   )
 }

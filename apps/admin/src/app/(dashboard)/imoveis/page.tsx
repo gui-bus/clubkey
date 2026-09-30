@@ -1,35 +1,26 @@
 "use client"
 
-import { Button, Card, CardContent } from "@clubkey/ui"
-import { Buildings, Plus } from "@phosphor-icons/react"
+import * as React from "react"
+import { Buildings } from "@phosphor-icons/react"
+import { AdminUnderConstruction } from "@/src/components/admin/common/adminUnderConstruction"
 
-export default function ImoveisPage() {
+export default function ImoveisPage(): React.JSX.Element {
   return (
     <div className="space-y-6">
-      <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight">Imóveis</h1>
-          <p className="text-sm text-muted-foreground">
-            Cadastro, vistoria, inventário e gestão de imóveis e propriedades do
-            clube.
-          </p>
-        </div>
-        <Button color="primary" size="sm">
-          <Plus size={16} className="mr-1.5" /> Cadastrar Imóvel
-        </Button>
+      <div className="space-y-1">
+        <h1 className="text-2xl font-black font-heading tracking-tight text-zinc-900 dark:text-white uppercase">
+          Imóveis
+        </h1>
+        <p className="text-xs text-zinc-500 dark:text-zinc-400 font-medium">
+          Cadastro, vistoria, inventário e gestão de propriedades e ativos do clube.
+        </p>
       </div>
 
-      <Card className="border-border bg-card">
-        <CardContent className="p-8 text-center text-muted-foreground">
-          <Buildings
-            size={40}
-            className="mx-auto mb-3 text-muted-foreground/60"
-          />
-          <p className="text-sm font-medium">
-            Módulo de Imóveis pronto para desenvolvimento das telas e fluxos.
-          </p>
-        </CardContent>
-      </Card>
+      <AdminUnderConstruction
+        title="Catálogo de Imóveis em Construção"
+        description="A esteira de cadastro de imóveis, laudos de vistoria e acompanhamento patrimonial está em desenvolvimento."
+        icon={Buildings}
+      />
     </div>
   )
 }
