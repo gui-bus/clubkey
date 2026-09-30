@@ -4,12 +4,7 @@ import { useState } from "react"
 
 import { usePathname } from "next/navigation"
 
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@clubkey/ui"
+import { ScrollArea, ThemeToggle, TooltipProvider } from "@clubkey/ui"
 import { cn } from "@clubkey/utils"
 import {
   Buildings,
@@ -20,13 +15,14 @@ import {
   CreditCard,
   Key,
   ShieldWarning,
-  SignOut,
   UserGear,
   Users,
 } from "@phosphor-icons/react"
+import { AnimatePresence, motion } from "framer-motion"
 
 import { AdminSidebarItem } from "./adminSidebarItem"
 import { AdminSidebarLogo } from "./adminSidebarLogo"
+import { AdminUserDropdown } from "./adminUserDropdown"
 
 export interface AdminNavItem {
   label: string
@@ -35,160 +31,204 @@ export interface AdminNavItem {
   badge?: string
 }
 
-const ADMIN_NAV_ITEMS: AdminNavItem[] = [
+export interface AdminNavSection {
+  title: string
+  items: AdminNavItem[]
+}
+
+const ADMIN_NAV_SECTIONS: AdminNavSection[] = [
   {
-    label: "Painel",
-    href: "/painel",
-    icon: ChartPieSlice,
+    title: "Geral",
+    items: [
+      {
+        label: "Painel",
+        href: "/painel",
+        icon: ChartPieSlice,
+      },
+    ],
   },
   {
-    label: "Sinistros",
-    href: "/sinistros",
-    icon: ShieldWarning,
+    title: "Operações",
+    items: [
+      {
+        label: "Sinistros",
+        href: "/sinistros",
+        icon: ShieldWarning,
+      },
+      {
+        label: "Crédito",
+        href: "/credito",
+        icon: CreditCard,
+      },
+      {
+        label: "Imóveis",
+        href: "/imoveis",
+        icon: Buildings,
+      },
+      {
+        label: "Proteção Key",
+        href: "/protecao-key",
+        icon: Key,
+      },
+    ],
   },
   {
-    label: "Crédito",
-    href: "/credito",
-    icon: CreditCard,
-  },
-  {
-    label: "Imóveis",
-    href: "/imoveis",
-    icon: Buildings,
-  },
-  {
-    label: "Proteção Key",
-    href: "/protecao-key",
-    icon: Key,
-  },
-  {
-    label: "Relatórios",
-    href: "/relatorios",
-    icon: ChartBar,
-  },
-  {
-    label: "Usuários",
-    href: "/usuarios",
-    icon: Users,
-  },
-  {
-    label: "Administradores",
-    href: "/administradores",
-    icon: UserGear,
+    title: "Gestão",
+    items: [
+      {
+        label: "Relatórios",
+        href: "/relatorios",
+        icon: ChartBar,
+      },
+      {
+        label: "Usuários",
+        href: "/usuarios",
+        icon: Users,
+      },
+      {
+        label: "Administradores",
+        href: "/administradores",
+        icon: UserGear,
+      },
+    ],
   },
 ]
 
-export function AdminSidebar() {
+const SIDEBAR_COOKIE_NAME = "clubkey_admin_sidebar_collapsed"
+
+export interface AdminSidebarProps {
+  defaultCollapsed?: boolean
+}
+
+export function AdminSidebar({ defaultCollapsed = false }: AdminSidebarProps) {
   const pathname = usePathname()
-  const [isCollapsed, setIsCollapsed] = useState(false)
+  const [isCollapsed, setIsCollapsed] = useState<boolean>(defaultCollapsed)
 
   const toggleCollapse = () => {
-    setIsCollapsed((prev) => !prev)
+    setIsCollapsed((prev) => {
+      const next = !prev
+      try {
+        localStorage.setItem(SIDEBAR_COOKIE_NAME, String(next))
+        document.cookie = `${SIDEBAR_COOKIE_NAME}=${next}; path=/; max-age=31536000; SameSite=Lax`
+      } catch {}
+      return next
+    })
   }
 
   return (
     <TooltipProvider delayDuration={80}>
-      <aside
-        className={cn(
-          "sticky top-0 z-40 flex h-screen flex-col border-r border-border bg-card transition-all duration-300 ease-in-out select-none",
-          isCollapsed ? "w-[72px]" : "w-64"
-        )}
+      <motion.aside
+        initial={false}
+        animate={{ width: isCollapsed ? 72 : 256 }}
+        transition={{
+          type: "spring",
+          stiffness: 380,
+          damping: 32,
+          mass: 0.8,
+        }}
+        className="sticky top-0 z-40 flex h-screen flex-col border-r border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] select-none shrink-0 relative"
       >
-        {/* White-Label Brand Logo */}
-        <AdminSidebarLogo isCollapsed={isCollapsed} />
+        {/* Floating Expand/Collapse Button on the border line (no tooltip, sr-only accessible) */}
+        <div className="absolute -right-3 top-5.5 z-50">
+          <button
+            onClick={toggleCollapse}
+            className="flex h-6 w-6 items-center justify-center rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-500 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white transition-all cursor-pointer hover:scale-110"
+            aria-label={
+              isCollapsed ? "Expandir menu lateral" : "Recolher menu lateral"
+            }
+          >
+            {isCollapsed ? (
+              <CaretRight size={12} weight="bold" />
+            ) : (
+              <CaretLeft size={12} weight="bold" />
+            )}
+            <span className="sr-only">
+              {isCollapsed ? "Expandir menu lateral" : "Recolher menu lateral"}
+            </span>
+          </button>
+        </div>
 
-        {/* Navigation Menu */}
-        <div className="flex-1 overflow-y-auto px-3 py-4 space-y-1">
-          {!isCollapsed && (
-            <div className="px-3 pb-2 pt-1">
-              <p className="text-[11px] font-semibold tracking-wider text-muted-foreground uppercase">
-                Menu Principal
-              </p>
+        {/* Top Header: Brand Logo */}
+        <div
+          className={cn(
+            "flex h-16 items-center shrink-0 select-none overflow-hidden",
+            isCollapsed ? "justify-center px-2" : "pl-5 pr-4"
+          )}
+        >
+          <AdminSidebarLogo isCollapsed={isCollapsed} />
+        </div>
+
+        {/* Navigation Menu using ScrollArea */}
+        <ScrollArea className="flex-1 w-full px-3 py-2 overflow-hidden">
+          <nav className="space-y-3">
+            {ADMIN_NAV_SECTIONS.map((section, sectionIdx) => (
+              <div key={section.title} className="space-y-1">
+                {/* Section Header with subtle text and right divider */}
+                {isCollapsed ? (
+                  sectionIdx > 0 && (
+                    <div className="py-2 px-2">
+                      <div className="h-0 w-5 mx-auto border-t border-zinc-200 dark:border-zinc-800" />
+                    </div>
+                  )
+                ) : (
+                  <div
+                    className={cn(
+                      "flex items-center gap-2 px-3 pb-1 select-none",
+                      sectionIdx === 0 ? "pt-1" : "pt-2.5"
+                    )}
+                  >
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 whitespace-nowrap">
+                      {section.title}
+                    </span>
+                    <div className="h-0 flex-1 border-t border-zinc-200 dark:border-zinc-800" />
+                  </div>
+                )}
+
+                {/* Section Items */}
+                <div className="space-y-1">
+                  {section.items.map((item) => {
+                    const isActive =
+                      pathname === item.href ||
+                      (item.href !== "/painel" &&
+                        pathname.startsWith(item.href)) ||
+                      (item.href === "/painel" &&
+                        (pathname === "/" || pathname === "/dashboard"))
+
+                    return (
+                      <AdminSidebarItem
+                        key={item.href}
+                        label={item.label}
+                        href={item.href}
+                        icon={item.icon}
+                        isActive={isActive}
+                        isCollapsed={isCollapsed}
+                        badge={item.badge}
+                      />
+                    )
+                  })}
+                </div>
+              </div>
+            ))}
+          </nav>
+        </ScrollArea>
+
+        {/* Footer Actions: Theme Toggle on the right of User Profile when open */}
+        <div className="p-2 shrink-0 overflow-hidden">
+          {isCollapsed ? (
+            <div className="flex flex-col items-center gap-1.5">
+              <ThemeToggle className="text-zinc-600 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white" />
+              <AdminUserDropdown isCollapsed />
+            </div>
+          ) : (
+            <div className="flex items-center justify-between gap-1 px-1">
+              <div className="flex-1 min-w-0">
+                <AdminUserDropdown isCollapsed={false} />
+              </div>
+              <ThemeToggle className="shrink-0 text-zinc-600 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white" />
             </div>
           )}
-
-          <nav className="space-y-1">
-            {ADMIN_NAV_ITEMS.map((item) => {
-              const isActive =
-                pathname === item.href ||
-                (item.href !== "/painel" && pathname.startsWith(item.href)) ||
-                (item.href === "/painel" &&
-                  (pathname === "/" || pathname === "/dashboard"))
-
-              return (
-                <AdminSidebarItem
-                  key={item.href}
-                  label={item.label}
-                  href={item.href}
-                  icon={item.icon}
-                  isActive={isActive}
-                  isCollapsed={isCollapsed}
-                  badge={item.badge}
-                />
-              )
-            })}
-          </nav>
         </div>
-
-        {/* Footer Actions: Collapse Toggle & Logout */}
-        <div className="border-t border-border p-2.5 space-y-1">
-          {/* Collapse Toggle Button */}
-          {isCollapsed ? (
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <button
-                  onClick={toggleCollapse}
-                  className="flex h-10 w-11 mx-auto items-center justify-center rounded-lg text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
-                  aria-label="Expandir menu lateral"
-                >
-                  <CaretRight size={18} />
-                </button>
-              </TooltipTrigger>
-              <TooltipContent side="right" sideOffset={10}>
-                Expandir Menu
-              </TooltipContent>
-            </Tooltip>
-          ) : (
-            <button
-              onClick={toggleCollapse}
-              className="flex h-9 w-full items-center justify-between rounded-lg px-3 text-xs font-medium text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
-            >
-              <span>Recolher Menu</span>
-              <CaretLeft size={16} />
-            </button>
-          )}
-
-          {/* Logout Button */}
-          {isCollapsed ? (
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <button
-                  onClick={() => {
-                    // handle logout
-                  }}
-                  className="flex h-10 w-11 mx-auto items-center justify-center rounded-lg text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-colors"
-                  aria-label="Sair da conta"
-                >
-                  <SignOut size={18} />
-                </button>
-              </TooltipTrigger>
-              <TooltipContent side="right" sideOffset={10}>
-                Sair da Conta
-              </TooltipContent>
-            </Tooltip>
-          ) : (
-            <button
-              onClick={() => {
-                // handle logout
-              }}
-              className="flex h-9 w-full items-center gap-3 rounded-lg px-3 text-xs font-medium text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-colors"
-            >
-              <SignOut size={16} />
-              <span>Sair da Conta</span>
-            </button>
-          )}
-        </div>
-      </aside>
+      </motion.aside>
     </TooltipProvider>
   )
 }

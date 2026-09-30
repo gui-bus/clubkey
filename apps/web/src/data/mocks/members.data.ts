@@ -357,7 +357,7 @@ export const DEFAULT_USER: UserProfile = {
   company: "Tabata Capital",
   city: "São Paulo",
   avatar:
-    "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80",
+    "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&auto=format&fit=crop&q=80",
   coverImage: "/utils/banners/pessoas.webp",
   bio: "Investidor em negócios inovadores e tecnologia. Conectando founders e gerando oportunidades estratégicas de alto impacto.",
   seeking: [

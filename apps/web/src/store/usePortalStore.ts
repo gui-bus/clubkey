@@ -51,8 +51,8 @@ export const usePortalStore = create<PortalState>()(
       ...createGamificationSlice(...a),
     }),
     {
-      name: `${brandConfig.id}-portal-storage-v9`,
-      version: 9,
+      name: `${brandConfig.id}-portal-storage-v11`,
+      version: 11,
       migrate: (persistedState: unknown) => {
         const state = persistedState as PortalState
         if (!state) return state
@@ -81,6 +81,14 @@ export const usePortalStore = create<PortalState>()(
           lastName = DEFAULT_USER.lastName
         }
 
+        const rawAvatar = rawProfile?.avatar as string | undefined
+        const avatar =
+          rawAvatar &&
+          !rawAvatar.includes("photo-1534528741775-53994a69daeb") &&
+          !rawAvatar.includes("photo-1507003211169-0a1dd7228f2d")
+            ? rawAvatar
+            : DEFAULT_USER.avatar
+
         migratedState.userProfile = {
           ...DEFAULT_USER,
           ...(rawProfile || {}),
@@ -89,7 +97,7 @@ export const usePortalStore = create<PortalState>()(
           role: (rawProfile?.role as string) || DEFAULT_USER.role,
           company: (rawProfile?.company as string) || DEFAULT_USER.company,
           city: (rawProfile?.city as string) || DEFAULT_USER.city,
-          avatar: (rawProfile?.avatar as string) || DEFAULT_USER.avatar,
+          avatar,
           email: (rawProfile?.email as string) || DEFAULT_USER.email,
         }
 
@@ -183,6 +191,14 @@ export const usePortalStore = create<PortalState>()(
               ? profile.lastName
               : DEFAULT_USER.lastName
 
+          const rawAvatar = profile?.avatar
+          const avatar =
+            rawAvatar &&
+            !rawAvatar.includes("photo-1534528741775-53994a69daeb") &&
+            !rawAvatar.includes("photo-1507003211169-0a1dd7228f2d")
+              ? rawAvatar
+              : DEFAULT_USER.avatar
+
           state.userProfile = {
             ...DEFAULT_USER,
             ...(profile || {}),
@@ -191,7 +207,7 @@ export const usePortalStore = create<PortalState>()(
             role: profile?.role || DEFAULT_USER.role,
             company: profile?.company || DEFAULT_USER.company,
             city: profile?.city || DEFAULT_USER.city,
-            avatar: profile?.avatar || DEFAULT_USER.avatar,
+            avatar,
             email: profile?.email || DEFAULT_USER.email,
           }
         }
