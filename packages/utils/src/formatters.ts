@@ -66,3 +66,15 @@ export function formatNumber(value: number): string {
   if (isNaN(value)) return "0"
   return value.toLocaleString("pt-BR")
 }
+
+export function getAdminUserSlug(handle: string, name: string): string {
+  const cleanHandle = (handle || "").replace(/^@/, "").trim().toUpperCase()
+  const nameSlug = (name || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+
+  return `${cleanHandle}-${nameSlug}`
+}
