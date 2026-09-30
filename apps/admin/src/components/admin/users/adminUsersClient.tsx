@@ -4,6 +4,7 @@ import * as React from "react"
 
 import { MOCK_ADMIN_USERS } from "@/src/data/mocks/adminUsers.data"
 import type { AdminUser } from "@clubkey/types"
+import { parseAsString, parseAsStringLiteral, useQueryState } from "nuqs"
 
 import { Container } from "@/src/components/common/container"
 
@@ -14,6 +15,16 @@ import {
 } from "./adminUsersFilterBar"
 import { AdminUsersStats } from "./adminUsersStats"
 import { AdminUsersTable } from "./adminUsersTable"
+
+const SEARCH_FIELDS = [
+  "ALL",
+  "name",
+  "email",
+  "login",
+  "document",
+  "phone",
+  "wallet",
+] as const
 
 function parseDateToTime(dateStr?: string): number | null {
   if (!dateStr) return null
@@ -33,15 +44,43 @@ function parseDateToTime(dateStr?: string): number | null {
 
 export function AdminUsersClient(): React.JSX.Element {
   const [users] = React.useState<AdminUser[]>(MOCK_ADMIN_USERS)
-  const [searchQuery, setSearchQuery] = React.useState("")
-  const [searchField, setSearchField] =
-    React.useState<AdminUserSearchField>("ALL")
-  const [statusFilter, setStatusFilter] = React.useState("ALL")
-  const [levelFilter, setLevelFilter] = React.useState("ALL")
-  const [createdFrom, setCreatedFrom] = React.useState("")
-  const [createdTo, setCreatedTo] = React.useState("")
-  const [birthDateFrom, setBirthDateFrom] = React.useState("")
-  const [birthDateTo, setBirthDateTo] = React.useState("")
+
+  const [searchQuery, setSearchQuery] = useQueryState(
+    "q",
+    parseAsString
+      .withDefault("")
+      .withOptions({ shallow: true, throttleMs: 250 })
+  )
+  const [searchField, setSearchField] = useQueryState(
+    "campo",
+    parseAsStringLiteral(SEARCH_FIELDS)
+      .withDefault("ALL")
+      .withOptions({ shallow: true })
+  )
+  const [statusFilter, setStatusFilter] = useQueryState(
+    "status",
+    parseAsString.withDefault("ALL").withOptions({ shallow: true })
+  )
+  const [levelFilter, setLevelFilter] = useQueryState(
+    "nivel",
+    parseAsString.withDefault("ALL").withOptions({ shallow: true })
+  )
+  const [createdFrom, setCreatedFrom] = useQueryState(
+    "criadoDe",
+    parseAsString.withDefault("").withOptions({ shallow: true })
+  )
+  const [createdTo, setCreatedTo] = useQueryState(
+    "criadoAte",
+    parseAsString.withDefault("").withOptions({ shallow: true })
+  )
+  const [birthDateFrom, setBirthDateFrom] = useQueryState(
+    "nascDe",
+    parseAsString.withDefault("").withOptions({ shallow: true })
+  )
+  const [birthDateTo, setBirthDateTo] = useQueryState(
+    "nascAte",
+    parseAsString.withDefault("").withOptions({ shallow: true })
+  )
 
   // Filtered list
   const filteredUsers = React.useMemo(() => {
@@ -161,14 +200,14 @@ export function AdminUsersClient(): React.JSX.Element {
   ])
 
   const handleResetFilters = () => {
-    setSearchQuery("")
-    setSearchField("ALL")
-    setStatusFilter("ALL")
-    setLevelFilter("ALL")
-    setCreatedFrom("")
-    setCreatedTo("")
-    setBirthDateFrom("")
-    setBirthDateTo("")
+    void setSearchQuery(null)
+    void setSearchField("ALL")
+    void setStatusFilter("ALL")
+    void setLevelFilter("ALL")
+    void setCreatedFrom(null)
+    void setCreatedTo(null)
+    void setBirthDateFrom(null)
+    void setBirthDateTo(null)
   }
 
   return (
@@ -187,21 +226,23 @@ export function AdminUsersClient(): React.JSX.Element {
       >
         <AdminUsersFilterBar
           searchQuery={searchQuery}
-          onSearchQueryChange={setSearchQuery}
+          onSearchQueryChange={(v) => void setSearchQuery(v || null)}
           searchField={searchField}
-          onSearchFieldChange={setSearchField}
+          onSearchFieldChange={(v) =>
+            void setSearchField(v === "ALL" ? null : v)
+          }
           statusFilter={statusFilter}
-          onStatusChange={setStatusFilter}
+          onStatusChange={(v) => void setStatusFilter(v === "ALL" ? null : v)}
           levelFilter={levelFilter}
-          onLevelChange={setLevelFilter}
+          onLevelChange={(v) => void setLevelFilter(v === "ALL" ? null : v)}
           createdFrom={createdFrom}
-          onCreatedFromChange={setCreatedFrom}
+          onCreatedFromChange={(v) => void setCreatedFrom(v || null)}
           createdTo={createdTo}
-          onCreatedToChange={setCreatedTo}
+          onCreatedToChange={(v) => void setCreatedTo(v || null)}
           birthDateFrom={birthDateFrom}
-          onBirthDateFromChange={setBirthDateFrom}
+          onBirthDateFromChange={(v) => void setBirthDateFrom(v || null)}
           birthDateTo={birthDateTo}
-          onBirthDateToChange={setBirthDateTo}
+          onBirthDateToChange={(v) => void setBirthDateTo(v || null)}
           onReset={handleResetFilters}
         />
       </AdminHero>
