@@ -47,4 +47,5 @@ export interface AdminUser {
   phone?: string
   city?: string
   state?: string
+  birthDate?: string
 }
