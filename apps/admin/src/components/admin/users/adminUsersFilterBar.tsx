@@ -4,7 +4,7 @@ import * as React from "react"
 
 import {
   CtaButton,
-  Input,
+  DatePicker,
   Popover,
   PopoverContent,
   PopoverTrigger,
@@ -236,6 +236,24 @@ export function AdminUsersFilterBar({
     </div>
   )
 
+  const parseStringToDate = (val?: string): Date | undefined => {
+    if (!val) return undefined
+    if (/^\d{4}-\d{2}-\d{2}$/.test(val)) {
+      const [y, m, d] = val.split("-").map(Number)
+      return new Date(y, m - 1, d)
+    }
+    const timestamp = Date.parse(val)
+    return isNaN(timestamp) ? undefined : new Date(timestamp)
+  }
+
+  const formatDateToString = (date?: Date): string => {
+    if (!date) return ""
+    const y = date.getFullYear()
+    const m = String(date.getMonth() + 1).padStart(2, "0")
+    const d = String(date.getDate()).padStart(2, "0")
+    return `${y}-${m}-${d}`
+  }
+
   const renderCreatedForm = () => (
     <div className="space-y-3 text-left">
       <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800 pb-2">
@@ -261,22 +279,30 @@ export function AdminUsersFilterBar({
           <label className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">
             Criado em (de)
           </label>
-          <Input
-            type="date"
-            value={createdFrom}
-            onChange={(e) => onCreatedFromChange(e.target.value)}
-            size="sm"
+          <DatePicker
+            mode="single"
+            locale="pt-BR"
+            placeholder="Data inicial"
+            value={parseStringToDate(createdFrom)}
+            onChange={(d) => onCreatedFromChange(formatDateToString(d))}
+            isClearable
+            variant="flat"
+            className="w-full max-w-full"
           />
         </div>
         <div className="flex flex-col gap-1">
           <label className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">
             Criado em (até)
           </label>
-          <Input
-            type="date"
-            value={createdTo}
-            onChange={(e) => onCreatedToChange(e.target.value)}
-            size="sm"
+          <DatePicker
+            mode="single"
+            locale="pt-BR"
+            placeholder="Data final"
+            value={parseStringToDate(createdTo)}
+            onChange={(d) => onCreatedToChange(formatDateToString(d))}
+            isClearable
+            variant="flat"
+            className="w-full max-w-full"
           />
         </div>
       </div>
@@ -308,22 +334,30 @@ export function AdminUsersFilterBar({
           <label className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">
             Nascimento (de)
           </label>
-          <Input
-            type="date"
-            value={birthDateFrom}
-            onChange={(e) => onBirthDateFromChange(e.target.value)}
-            size="sm"
+          <DatePicker
+            mode="single"
+            locale="pt-BR"
+            placeholder="Data inicial"
+            value={parseStringToDate(birthDateFrom)}
+            onChange={(d) => onBirthDateFromChange(formatDateToString(d))}
+            isClearable
+            variant="flat"
+            className="w-full max-w-full"
           />
         </div>
         <div className="flex flex-col gap-1">
           <label className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">
             Nascimento (até)
           </label>
-          <Input
-            type="date"
-            value={birthDateTo}
-            onChange={(e) => onBirthDateToChange(e.target.value)}
-            size="sm"
+          <DatePicker
+            mode="single"
+            locale="pt-BR"
+            placeholder="Data final"
+            value={parseStringToDate(birthDateTo)}
+            onChange={(d) => onBirthDateToChange(formatDateToString(d))}
+            isClearable
+            variant="flat"
+            className="w-full max-w-full"
           />
         </div>
       </div>
