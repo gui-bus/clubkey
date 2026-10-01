@@ -76,6 +76,8 @@ export interface DatePickerProps {
     | "gradient-border"
     | "glow"
   isRequired?: boolean
+  align?: "start" | "end"
+  onOpenChange?: (open: boolean) => void
   className?: string
 }
 
@@ -202,6 +204,8 @@ export function DatePicker({
   timeZone,
   variant = "default",
   isRequired = false,
+  align = "start",
+  onOpenChange,
   className,
 }: DatePickerProps) {
   const [singleDate, setSingleDate] = React.useState<Date | undefined>(value)
@@ -220,6 +224,11 @@ export function DatePicker({
   )
 
   const [isOpen, setIsOpen] = React.useState(false)
+
+  React.useEffect(() => {
+    onOpenChange?.(isOpen)
+  }, [isOpen, onOpenChange])
+
   const keyboardProps = useKeyboardClick<HTMLDivElement>(!disabled)
   const [currentMonth, setCurrentMonth] = React.useState<Date>(
     value || rangeValue?.[0] || multipleValue?.[0] || new Date()
@@ -466,6 +475,7 @@ export function DatePicker({
       ref={containerRef}
       className={cn(
         "relative w-full flex flex-col gap-1.5 max-w-xs",
+        isOpen && "z-50",
         className
       )}
     >
@@ -524,7 +534,8 @@ export function DatePicker({
       {isOpen && (
         <div
           className={cn(
-            "absolute top-full left-0 z-50 mt-1 flex flex-col md:flex-row rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl text-zinc-900 dark:text-zinc-100 shadow-2xl p-3 animate-in fade-in-80 gap-4"
+            "absolute top-full z-[100] mt-1 flex flex-col md:flex-row rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#18181b] backdrop-blur-xl text-zinc-900 dark:text-zinc-100 shadow-2xl p-3 animate-in fade-in-80 gap-4",
+            align === "end" ? "right-0" : "left-0"
           )}
         >
           {showPresets && viewMode === "date" && (
