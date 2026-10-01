@@ -3,7 +3,6 @@
 import * as React from "react"
 
 import Image from "next/image"
-import Link from "next/link"
 
 import type { AdminAccountStatus, AdminUser } from "@clubkey/types"
 import {
@@ -19,6 +18,7 @@ import {
   Select,
   type SelectOption,
   TableActionButton,
+  TableStatusBadge,
 } from "@clubkey/ui"
 import { cn, getAdminUserSlug } from "@clubkey/utils"
 import {
@@ -27,7 +27,11 @@ import {
   CaretUp,
   CaretUpDown,
   Check,
+  CheckCircle,
+  ClockCountdown,
   PencilSimple,
+  Prohibit,
+  WarningCircle,
   X,
 } from "@phosphor-icons/react"
 import {
@@ -83,7 +87,9 @@ export function AdminUsersTable({
     })
   )
 
-  const handleSort = (column: "name" | "permissions" | "balance") => {
+  const handleSort = (
+    column: "name" | "permissions" | "balance" | "status"
+  ) => {
     if (sortBy === column) {
       if (sortOrder === "asc" || !sortOrder) {
         void setSortOrder("desc")
@@ -118,6 +124,8 @@ export function AdminUsersTable({
         const aTotal = a.balances?.total || 0
         const bTotal = b.balances?.total || 0
         comparison = aTotal - bTotal
+      } else if (sortBy === "status") {
+        comparison = a.accountStatus.localeCompare(b.accountStatus)
       }
 
       return effectiveOrder === "desc" ? -comparison : comparison
@@ -159,31 +167,35 @@ export function AdminUsersTable({
     switch (status) {
       case "CONFIRMADO":
         return (
-          <span className="inline-flex items-center gap-1.5 px-1.5 py-0.5 rounded-xs text-[10px] font-semibold bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700 whitespace-nowrap">
-            <span className="size-1.5 rounded-full bg-emerald-500 shrink-0" />
-            <span>Confirmado</span>
-          </span>
-        )
-      case "PENDENTE":
-        return (
-          <span className="inline-flex items-center gap-1.5 px-1.5 py-0.5 rounded-xs text-[10px] font-semibold bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700 whitespace-nowrap">
-            <span className="size-1.5 rounded-full bg-zinc-400 shrink-0" />
-            <span>Pendente</span>
-          </span>
+          <TableStatusBadge
+            variant="success"
+            label="Confirmado"
+            icon={<CheckCircle size={36} weight="fill" />}
+          />
         )
       case "EM_ANALISE":
         return (
-          <span className="inline-flex items-center gap-1.5 px-1.5 py-0.5 rounded-xs text-[10px] font-semibold bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700 whitespace-nowrap">
-            <span className="size-1.5 rounded-full bg-amber-500 shrink-0" />
-            <span>Em análise</span>
-          </span>
+          <TableStatusBadge
+            variant="warning"
+            label="Em análise"
+            icon={<ClockCountdown size={36} weight="fill" />}
+          />
+        )
+      case "PENDENTE":
+        return (
+          <TableStatusBadge
+            variant="orange"
+            label="Pendente"
+            icon={<WarningCircle size={36} weight="fill" />}
+          />
         )
       case "BLOQUEADO":
         return (
-          <span className="inline-flex items-center gap-1.5 px-1.5 py-0.5 rounded-xs text-[10px] font-semibold bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700 whitespace-nowrap">
-            <span className="size-1.5 rounded-full bg-rose-500 shrink-0" />
-            <span>Bloqueado</span>
-          </span>
+          <TableStatusBadge
+            variant="danger"
+            label="Bloqueado"
+            icon={<Prohibit size={36} weight="bold" />}
+          />
         )
       default:
         return null
@@ -193,15 +205,15 @@ export function AdminUsersTable({
   return (
     <div
       className={cn(
-        "rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] overflow-hidden shadow-2xs",
+        "rounded-2xl border border-zinc-200/80 dark:border-zinc-800 bg-white dark:bg-[#141416] overflow-hidden shadow-2xs",
         className
       )}
     >
       <div className="w-full overflow-x-auto overflow-y-hidden [scrollbar-width:thin] [scrollbar-color:theme(colors.zinc.300)_transparent] dark:[scrollbar-color:theme(colors.zinc.700)_transparent]">
         <table className="w-full min-w-[920px] text-left border-collapse text-xs">
           <thead>
-            <tr className="border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-800/40 text-zinc-500 dark:text-zinc-400 font-bold uppercase tracking-wider text-[10px]">
-              <th className="py-3.5 px-4 font-bold select-none text-left min-w-[480px] whitespace-nowrap">
+            <tr className="border-b border-zinc-200/80 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-800/40 text-zinc-500 dark:text-zinc-400 font-bold uppercase tracking-wider text-[10px]">
+              <th className="py-3.5 px-4 font-bold select-none text-left min-w-[420px] whitespace-nowrap">
                 <button
                   type="button"
                   onClick={() => handleSort("name")}
@@ -215,13 +227,13 @@ export function AdminUsersTable({
                         <CaretUp
                           size={12}
                           weight="bold"
-                          className="text-brand-primary"
+                          className="text-orange-500"
                         />
                       ) : (
                         <CaretDown
                           size={12}
                           weight="bold"
-                          className="text-brand-primary"
+                          className="text-orange-500"
                         />
                       )
                     ) : (
@@ -250,13 +262,13 @@ export function AdminUsersTable({
                           <CaretUp
                             size={12}
                             weight="bold"
-                            className="text-brand-primary"
+                            className="text-orange-500"
                           />
                         ) : (
                           <CaretDown
                             size={12}
                             weight="bold"
-                            className="text-brand-primary"
+                            className="text-orange-500"
                           />
                         )
                       ) : (
@@ -286,13 +298,49 @@ export function AdminUsersTable({
                           <CaretUp
                             size={12}
                             weight="bold"
-                            className="text-brand-primary"
+                            className="text-orange-500"
                           />
                         ) : (
                           <CaretDown
                             size={12}
                             weight="bold"
-                            className="text-brand-primary"
+                            className="text-orange-500"
+                          />
+                        )
+                      ) : (
+                        <CaretUpDown
+                          size={12}
+                          weight="bold"
+                          className="text-zinc-400 group-hover/sort:text-zinc-700 dark:group-hover/sort:text-zinc-300 transition-colors opacity-60"
+                        />
+                      )}
+                    </span>
+                  </button>
+                </div>
+              </th>
+
+              <th className="py-3.5 px-4 font-bold select-none text-center w-px whitespace-nowrap">
+                <div className="flex justify-center">
+                  <button
+                    type="button"
+                    onClick={() => handleSort("status")}
+                    className="inline-flex items-center gap-1.5 hover:text-zinc-900 dark:hover:text-white transition-colors cursor-pointer group/sort text-[10px] font-bold uppercase tracking-wider"
+                    title="Ordenar por status"
+                  >
+                    <span>Status</span>
+                    <span className="flex items-center">
+                      {sortBy === "status" ? (
+                        sortOrder === "asc" || !sortOrder ? (
+                          <CaretUp
+                            size={12}
+                            weight="bold"
+                            className="text-orange-500"
+                          />
+                        ) : (
+                          <CaretDown
+                            size={12}
+                            weight="bold"
+                            className="text-orange-500"
                           />
                         )
                       ) : (
@@ -316,7 +364,7 @@ export function AdminUsersTable({
             {users.length === 0 ? (
               <tr>
                 <td
-                  colSpan={4}
+                  colSpan={5}
                   className="py-12 px-4 text-center text-zinc-500 dark:text-zinc-400 text-xs font-medium"
                 >
                   Nenhum usuário encontrado com os filtros selecionados.
@@ -332,7 +380,6 @@ export function AdminUsersTable({
 
                 return (
                   <React.Fragment key={user.id}>
-                    
                     <tr
                       onClick={() => toggleExpand(user)}
                       className={cn(
@@ -342,10 +389,8 @@ export function AdminUsersTable({
                           : "hover:bg-zinc-50/60 dark:hover:bg-zinc-800/30"
                       )}
                     >
-                      
-                      <td className="py-4 px-4 align-middle text-left min-w-[480px] whitespace-nowrap">
+                      <td className="py-4 px-4 align-middle text-left min-w-[420px] whitespace-nowrap">
                         <div className="flex items-center gap-3.5">
-                          
                           <Avatar className="size-[52px] shrink-0 ring-1 ring-zinc-200 dark:ring-zinc-800">
                             {user.avatar && (
                               <AvatarImage src={user.avatar} alt={user.name} />
@@ -355,7 +400,6 @@ export function AdminUsersTable({
                             </AvatarFallback>
                           </Avatar>
 
-                          
                           <div className="min-w-0 flex-1 space-y-1">
                             <div className="flex items-center gap-1.5 whitespace-nowrap">
                               <span className="font-bold text-zinc-900 dark:text-white text-xs">
@@ -402,17 +446,13 @@ export function AdminUsersTable({
                                   {user.level}
                                 </strong>
                               </span>
-                              <span>•</span>
-                              {getStatusBadge(user.accountStatus)}
                             </div>
                           </div>
                         </div>
                       </td>
 
-                      
                       <td className="py-4 px-4 align-middle text-right w-px whitespace-nowrap">
                         <div className="flex flex-col items-end gap-1 select-none">
-                          
                           <div className="flex items-center gap-1.5">
                             <span className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400">
                               P2P
@@ -432,7 +472,6 @@ export function AdminUsersTable({
                             )}
                           </div>
 
-                          
                           <div className="flex items-center gap-1.5">
                             <span className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400">
                               Saque
@@ -454,7 +493,6 @@ export function AdminUsersTable({
                         </div>
                       </td>
 
-                      
                       <td className="py-4 px-4 align-middle text-right w-px whitespace-nowrap">
                         <div className="space-y-0.5 text-right">
                           <div className="flex items-center justify-end gap-1.5 font-mono font-bold text-xs text-zinc-900 dark:text-white">
@@ -496,7 +534,12 @@ export function AdminUsersTable({
                         </div>
                       </td>
 
-                      
+                      <td className="py-4 px-4 align-middle text-center w-px whitespace-nowrap">
+                        <div className="flex items-center justify-center">
+                          {getStatusBadge(user.accountStatus)}
+                        </div>
+                      </td>
+
                       <td className="py-4 px-4 align-middle text-right w-px whitespace-nowrap pr-4">
                         <div className="flex items-center justify-end gap-1">
                           <TableActionButton
@@ -531,10 +574,9 @@ export function AdminUsersTable({
                       </td>
                     </tr>
 
-                    
                     {isExpanded && (
                       <tr className="bg-zinc-50/40 dark:bg-zinc-900/40">
-                        <td colSpan={4} className="p-0">
+                        <td colSpan={5} className="p-0">
                           <AdminUserWalletCard user={user} />
                         </td>
                       </tr>
@@ -547,9 +589,7 @@ export function AdminUsersTable({
         </table>
       </div>
 
-      
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 border-t border-zinc-100 dark:border-zinc-800 bg-zinc-50/40 dark:bg-zinc-900/30">
-        
         <div className="flex items-center gap-3 text-xs text-zinc-500 dark:text-zinc-400 flex-wrap">
           <div className="flex items-center gap-2">
             <span className="font-medium">Resultados por página:</span>
@@ -587,7 +627,6 @@ export function AdminUsersTable({
           </span>
         </div>
 
-        
         {totalPages > 1 && (
           <Pagination
             radius="sm"

@@ -16,6 +16,7 @@ import {
   Select,
   type SelectOption,
   TableActionButton,
+  TableStatusBadge,
 } from "@clubkey/ui"
 import { cn } from "@clubkey/utils"
 import {
@@ -23,7 +24,9 @@ import {
   CaretUp,
   CaretUpDown,
   Check,
+  CheckCircle,
   EnvelopeSimple,
+  Prohibit,
   ShieldSlash,
   X,
 } from "@phosphor-icons/react"
@@ -70,7 +73,7 @@ export function AdministratorsTable({
     })
   )
 
-  const handleSort = (column: "name" | "2fa") => {
+  const handleSort = (column: "name" | "2fa" | "status") => {
     if (sortBy === column) {
       if (sortOrder === "asc" || !sortOrder) {
         void setSortOrder("desc")
@@ -99,6 +102,8 @@ export function AdministratorsTable({
         const aVal = a.twoFactorEnabled ? 1 : 0
         const bVal = b.twoFactorEnabled ? 1 : 0
         comparison = bVal - aVal
+      } else if (sortBy === "status") {
+        comparison = a.status.localeCompare(b.status)
       }
 
       return effectiveOrder === "desc" ? -comparison : comparison
@@ -125,32 +130,34 @@ export function AdministratorsTable({
   const getStatusBadge = (status: "ATIVO" | "INATIVO") => {
     if (status === "ATIVO") {
       return (
-        <span className="inline-flex items-center gap-1.5 px-1.5 py-0.5 rounded-xs text-[10px] font-semibold bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700 whitespace-nowrap">
-          <span className="size-1.5 rounded-full bg-emerald-500 shrink-0" />
-          <span>Ativo</span>
-        </span>
+        <TableStatusBadge
+          variant="success"
+          label="Ativo"
+          icon={<CheckCircle size={36} weight="fill" />}
+        />
       )
     }
     return (
-      <span className="inline-flex items-center gap-1.5 px-1.5 py-0.5 rounded-xs text-[10px] font-semibold bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700 whitespace-nowrap">
-        <span className="size-1.5 rounded-full bg-zinc-400 shrink-0" />
-        <span>Inativo</span>
-      </span>
+      <TableStatusBadge
+        variant="danger"
+        label="Inativo"
+        icon={<Prohibit size={36} weight="bold" />}
+      />
     )
   }
 
   return (
     <div
       className={cn(
-        "rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#141416] overflow-hidden shadow-2xs",
+        "rounded-2xl border border-zinc-200/80 dark:border-zinc-800 bg-white dark:bg-[#141416] overflow-hidden shadow-2xs",
         className
       )}
     >
       <div className="w-full overflow-x-auto overflow-y-hidden [scrollbar-width:thin] [scrollbar-color:theme(colors.zinc.300)_transparent] dark:[scrollbar-color:theme(colors.zinc.700)_transparent]">
         <table className="w-full min-w-[920px] text-left border-collapse text-xs">
           <thead>
-            <tr className="border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-800/40 text-zinc-500 dark:text-zinc-400 font-bold uppercase tracking-wider text-[10px]">
-              <th className="py-3.5 px-4 font-bold select-none text-left min-w-[480px] whitespace-nowrap">
+            <tr className="border-b border-zinc-200/80 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-800/40 text-zinc-500 dark:text-zinc-400 font-bold uppercase tracking-wider text-[10px]">
+              <th className="py-3.5 px-4 font-bold select-none text-left min-w-[420px] whitespace-nowrap">
                 <button
                   type="button"
                   onClick={() => handleSort("name")}
@@ -160,17 +167,17 @@ export function AdministratorsTable({
                   <span>Administrador</span>
                   <span className="flex items-center">
                     {sortBy === "name" ? (
-                      sortOrder === "asc" ? (
+                      sortOrder === "asc" || !sortOrder ? (
                         <CaretUp
                           size={12}
                           weight="bold"
-                          className="text-brand-primary"
+                          className="text-orange-500"
                         />
                       ) : (
                         <CaretDown
                           size={12}
                           weight="bold"
-                          className="text-brand-primary"
+                          className="text-orange-500"
                         />
                       )
                     ) : (
@@ -195,17 +202,53 @@ export function AdministratorsTable({
                     <span>2FA</span>
                     <span className="flex items-center">
                       {sortBy === "2fa" ? (
-                        sortOrder === "asc" ? (
+                        sortOrder === "asc" || !sortOrder ? (
                           <CaretUp
                             size={12}
                             weight="bold"
-                            className="text-brand-primary"
+                            className="text-orange-500"
                           />
                         ) : (
                           <CaretDown
                             size={12}
                             weight="bold"
-                            className="text-brand-primary"
+                            className="text-orange-500"
+                          />
+                        )
+                      ) : (
+                        <CaretUpDown
+                          size={12}
+                          weight="bold"
+                          className="text-zinc-400 group-hover/sort:text-zinc-700 dark:group-hover/sort:text-zinc-300 transition-colors opacity-60"
+                        />
+                      )}
+                    </span>
+                  </button>
+                </div>
+              </th>
+
+              <th className="py-3.5 px-4 font-bold select-none text-center w-px whitespace-nowrap">
+                <div className="flex justify-center">
+                  <button
+                    type="button"
+                    onClick={() => handleSort("status")}
+                    className="inline-flex items-center gap-1.5 hover:text-zinc-900 dark:hover:text-white transition-colors cursor-pointer group/sort text-[10px] font-bold uppercase tracking-wider"
+                    title="Ordenar por status"
+                  >
+                    <span>Status</span>
+                    <span className="flex items-center">
+                      {sortBy === "status" ? (
+                        sortOrder === "asc" || !sortOrder ? (
+                          <CaretUp
+                            size={12}
+                            weight="bold"
+                            className="text-orange-500"
+                          />
+                        ) : (
+                          <CaretDown
+                            size={12}
+                            weight="bold"
+                            className="text-orange-500"
                           />
                         )
                       ) : (
@@ -229,7 +272,7 @@ export function AdministratorsTable({
             {administrators.length === 0 ? (
               <tr>
                 <td
-                  colSpan={3}
+                  colSpan={4}
                   className="py-12 px-4 text-center text-zinc-500 dark:text-zinc-400 text-xs font-medium"
                 >
                   Nenhum administrador encontrado com os filtros selecionados.
@@ -241,7 +284,7 @@ export function AdministratorsTable({
                   key={admin.id}
                   className="transition-colors hover:bg-zinc-50/60 dark:hover:bg-zinc-800/30 group/row select-none"
                 >
-                  <td className="py-4 px-4 align-middle text-left min-w-[480px] whitespace-nowrap">
+                  <td className="py-4 px-4 align-middle text-left min-w-[420px] whitespace-nowrap">
                     <div className="flex items-center gap-3.5">
                       <Avatar className="size-[52px] shrink-0 ring-1 ring-zinc-200 dark:ring-zinc-800">
                         {admin.avatar && (
@@ -299,14 +342,11 @@ export function AdministratorsTable({
                               {admin.lastLogin}
                             </strong>
                           </span>
-                          <span>•</span>
-                          {getStatusBadge(admin.status)}
                         </div>
                       </div>
                     </div>
                   </td>
 
-                  
                   <td className="py-4 px-4 align-middle text-right w-px whitespace-nowrap">
                     <div className="flex flex-col items-end gap-1 select-none">
                       <div className="flex items-center gap-1.5">
@@ -330,7 +370,12 @@ export function AdministratorsTable({
                     </div>
                   </td>
 
-                  
+                  <td className="py-4 px-4 align-middle text-center w-px whitespace-nowrap">
+                    <div className="flex items-center justify-center">
+                      {getStatusBadge(admin.status)}
+                    </div>
+                  </td>
+
                   <td className="py-4 px-4 align-middle text-right w-px whitespace-nowrap pr-4">
                     <div className="flex items-center justify-end gap-1">
                       {admin.twoFactorEnabled && (
@@ -362,9 +407,7 @@ export function AdministratorsTable({
         </table>
       </div>
 
-      
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 border-t border-zinc-100 dark:border-zinc-800 bg-zinc-50/40 dark:bg-zinc-900/30">
-        
         <div className="flex items-center gap-3 text-xs text-zinc-500 dark:text-zinc-400 flex-wrap">
           <div className="flex items-center gap-2">
             <span className="font-medium">Resultados por página:</span>
@@ -404,7 +447,6 @@ export function AdministratorsTable({
           </span>
         </div>
 
-        
         {totalPages > 1 && (
           <Pagination
             radius="sm"
@@ -457,4 +499,3 @@ export function AdministratorsTable({
     </div>
   )
 }
-

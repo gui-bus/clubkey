@@ -15,6 +15,7 @@ import {
   PaginationPrevious,
   Select,
   type SelectOption,
+  TableStatusBadge,
   Tooltip,
   TooltipContent,
   TooltipProvider,
@@ -168,51 +169,43 @@ export function PropertiesTable({
     switch (status) {
       case "DISPONIVEL":
         return (
-          <div className="relative overflow-hidden w-full min-w-[175px] h-11 px-4 rounded-xl bg-emerald-500/10 dark:bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 flex items-center justify-center text-xs font-bold tracking-wide select-none">
-            <span className="truncate z-10 font-bold">
-              Disponível para reserva
-            </span>
-            <CheckCircle
-              size={56}
-              weight="fill"
-              className="absolute -right-3 -bottom-3 text-emerald-500/20 dark:text-emerald-400/20 pointer-events-none -rotate-12 select-none"
-            />
-          </div>
+          <TableStatusBadge
+            variant="success"
+            size="auto"
+            className="w-[160px]"
+            label="Disponível para reserva"
+            icon={<CheckCircle size={36} weight="fill" />}
+          />
         )
       case "OCULTO":
         return (
-          <div className="relative overflow-hidden w-full min-w-[175px] h-11 px-4 rounded-xl bg-amber-500/10 dark:bg-amber-500/15 text-amber-700 dark:text-amber-400 flex items-center justify-center text-xs font-bold tracking-wide select-none">
-            <span className="truncate z-10 font-bold">Oculto no Stay</span>
-            <EyeSlash
-              size={56}
-              weight="fill"
-              className="absolute -right-3 -bottom-3 text-amber-500/20 dark:text-amber-400/20 pointer-events-none -rotate-12 select-none"
-            />
-          </div>
+          <TableStatusBadge
+            variant="warning"
+            size="auto"
+            className="w-[160px]"
+            label="Oculto no Stay"
+            icon={<EyeSlash size={36} weight="fill" />}
+          />
         )
       case "BLOQUEADO":
         return (
-          <div className="relative overflow-hidden w-full min-w-[175px] h-11 px-4 rounded-xl bg-rose-500/10 dark:bg-rose-500/15 text-rose-700 dark:text-rose-400 flex items-center justify-center text-xs font-bold tracking-wide select-none">
-            <span className="truncate z-10 font-bold">
-              Bloqueado / Manutenção
-            </span>
-            <Prohibit
-              size={56}
-              weight="bold"
-              className="absolute -right-3 -bottom-3 text-rose-500/20 dark:text-rose-400/20 pointer-events-none -rotate-12 select-none"
-            />
-          </div>
+          <TableStatusBadge
+            variant="danger"
+            size="auto"
+            className="w-[160px]"
+            label="Bloqueado / Manutenção"
+            icon={<Prohibit size={36} weight="bold" />}
+          />
         )
       default:
         return (
-          <div className="relative overflow-hidden w-full min-w-[175px] h-11 px-4 rounded-xl bg-zinc-100 dark:bg-zinc-800/80 text-zinc-700 dark:text-zinc-300 flex items-center justify-center text-xs font-bold tracking-wide select-none">
-            <span className="truncate z-10 font-bold">Rascunho</span>
-            <FileText
-              size={56}
-              weight="bold"
-              className="absolute -right-3 -bottom-3 text-zinc-500/20 dark:text-zinc-400/20 pointer-events-none -rotate-12 select-none"
-            />
-          </div>
+          <TableStatusBadge
+            variant="neutral"
+            size="auto"
+            className="w-[160px]"
+            label="Rascunho"
+            icon={<FileText size={36} weight="bold" />}
+          />
         )
     }
   }
