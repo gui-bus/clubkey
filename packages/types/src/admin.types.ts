@@ -152,10 +152,14 @@ export interface ReportExecutionLog {
 export type InsuranceGroupStatus = "ATIVO" | "CANCELADO" | "SUSPENSO" | "EM_ATRASO"
 
 export type InsuranceInvoiceStatus =
-  | "PAGA"
+  | "RASCUNHO"
   | "PENDENTE"
-  | "CANCELADA"
+  | "EM_CARENCIA"
+  | "PAGA"
   | "ATRASADA"
+  | "SUSPENSA"
+  | "CANCELADA"
+  | "FALHA"
   | "EM_ANALISE"
 
 export interface InsuranceGroup {
@@ -217,4 +221,77 @@ export interface InsuranceCycleVariables {
   webhookTimeoutMinutes: number
   maxRetryAttempts: number
   superAdminOnly: boolean
+}
+
+export type ClaimStatus = "ABERTO" | "EM_ANALISE" | "PAGO" | "RECUSADO"
+
+export type ClaimType =
+  | "DANOS_GERAIS"
+  | "INCENDIO_EXPLOSAO"
+  | "ROUBO_FURTO"
+  | "DANOS_ELETRICOS"
+  | "VENDAVAL_GRANIZO"
+  | "QUEDA_RAIO"
+  | "IMPACTO_VEICULOS"
+
+export interface ClaimDocument {
+  id: string
+  title: string
+  fileName: string
+  fileUrl: string
+  fileType: "image" | "pdf" | "document"
+  fileSize: string
+  uploadedAt: string
+}
+
+export interface ClaimMessage {
+  id: string
+  authorName: string
+  authorRole: string
+  authorAvatar?: string
+  content: string
+  createdAt: string
+  isInternal?: boolean
+}
+
+export interface AdminClaim {
+  id: string
+  code: string
+  slug: string
+  occurredDate: string
+  type: ClaimType
+  typeLabel: string
+  status: ClaimStatus
+  insuredName: string
+  insuredDocument?: string
+  insuredContact?: string
+  propertyTitle: string
+  propertyLocation: string
+  propertyInternalCode?: string
+  reservationCode?: string
+  guestName?: string
+  description: string
+  estimatedAmount?: number
+  approvedAmount?: number
+  documents: ClaimDocument[]
+  timeline: ClaimMessage[]
+  updatedAt: string
+  createdAt: string
+}
+
+export interface CoverageLimit {
+  id: string
+  title: string
+  iconName: string
+  maxLimit: number
+  compensationPercentage: number
+  description?: string
+}
+
+export interface PolicyDocument {
+  id: string
+  title: string
+  description: string
+  fileUrl: string
+  fileSize?: string
 }
