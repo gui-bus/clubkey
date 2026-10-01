@@ -3,6 +3,14 @@
 import * as React from "react"
 
 import type { AdminClaim } from "@clubkey/types"
+import {
+  Carousel,
+  CarouselContent,
+  CarouselDots,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@clubkey/ui"
 import { formatCurrency } from "@clubkey/utils"
 import {
   CheckCircle,
@@ -16,10 +24,12 @@ export interface SinistrosStatsProps {
 }
 
 export function SinistrosStats({
-  claims,
+  claims = [],
 }: SinistrosStatsProps): React.JSX.Element {
   const totalClaims = claims.length
-  const inAnalysisCount = claims.filter((c) => c.status === "EM_ANALISE" || c.status === "ABERTO").length
+  const inAnalysisCount = claims.filter(
+    (c) => c.status === "EM_ANALISE" || c.status === "ABERTO"
+  ).length
   const paidClaims = claims.filter((c) => c.status === "PAGO")
   const paidCount = paidClaims.length
   const totalIndemnified = paidClaims.reduce(
@@ -29,73 +39,87 @@ export function SinistrosStats({
 
   const stats = [
     {
-      title: "Total de Sinistros",
-      value: String(totalClaims),
-      helper: "Ocorrências registradas",
+      label: "Total de Sinistros",
+      value: `${totalClaims} ${totalClaims === 1 ? "Sinistro" : "Sinistros"}`,
+      subtext: "Ocorrências patrimoniais registradas",
       icon: WarningCircle,
-      trend: "Total acumulado",
-      trendColor: "text-zinc-500",
     },
     {
-      title: "Em Regulação / Abertos",
-      value: String(inAnalysisCount),
-      helper: "Necessitam de ação / laudo",
+      label: "Em Regulação / Abertos",
+      value: `${inAnalysisCount} ${inAnalysisCount === 1 ? "Ocorrência" : "Ocorrências"}`,
+      subtext:
+        inAnalysisCount > 0
+          ? "Exigem análise pericial ou despacho"
+          : "Sem ocorrências em aberto",
       icon: ClockCountdown,
-      trend: "Fila operacional",
-      trendColor: "text-amber-500",
     },
     {
-      title: "Sinistros Indenizados",
-      value: String(paidCount),
-      helper: "Liquidados com sucesso",
+      label: "Sinistros Indenizados",
+      value: `${paidCount} ${paidCount === 1 ? "Liquidado" : "Liquidados"}`,
+      subtext: "Indenizações pagas aos segurados",
       icon: CheckCircle,
-      trend: "Reembolsados",
-      trendColor: "text-emerald-500",
     },
     {
-      title: "Total Pago em Indenizações",
+      label: "Total Pago em Indenizações",
       value: formatCurrency(totalIndemnified),
-      helper: "Liquidação financeira",
+      subtext: "Liquidação financeira da Proteção Key",
       icon: CurrencyDollar,
-      trend: "Proteção Key",
-      trendColor: "text-emerald-500",
     },
   ]
 
-  return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 w-full">
-      {stats.map((stat, idx) => {
-        const Icon = stat.icon
-        return (
-          <div
-            key={idx}
-            className="p-5 rounded-2xl border border-zinc-200/80 dark:border-zinc-800 bg-white dark:bg-[#141416] shadow-2xs flex flex-col justify-between"
-          >
-            <div className="flex items-center justify-between gap-2">
-              <span className="text-xs font-bold text-zinc-500 dark:text-zinc-400">
-                {stat.title}
-              </span>
-              <div className="size-8 rounded-xl bg-zinc-100 dark:bg-zinc-800/80 text-zinc-600 dark:text-zinc-300 flex items-center justify-center shrink-0">
-                <Icon size={18} weight="bold" />
-              </div>
-            </div>
+  const renderCard = (stat: (typeof stats)[0]) => {
+    const Icon = stat.icon
+    return (
+      <div className="relative overflow-hidden rounded-xl border border-zinc-200/80 dark:border-zinc-800 bg-white dark:bg-[#141416] p-4.5 sm:p-5 flex flex-col justify-between gap-3 h-full shadow-2xs">
+        <div className="absolute -right-5 -bottom-5 sm:-right-6 sm:-bottom-6 pointer-events-none select-none text-zinc-900/[0.04] dark:text-white/[0.04] -rotate-6">
+          <Icon size={128} weight="bold" />
+        </div>
 
-            <div className="mt-4 space-y-1">
-              <span className="text-2xl 2xl:text-3xl font-black font-heading tracking-tight text-zinc-900 dark:text-white block">
-                {stat.value}
-              </span>
-              <div className="flex items-center justify-between text-[11px] pt-1 border-t border-zinc-100 dark:border-zinc-800/60">
-                <span className="text-zinc-400 dark:text-zinc-500 font-medium truncate">
-                  {stat.helper}
-                </span>
-                <span className={`font-bold shrink-0 ml-1 ${stat.trendColor}`}>
-                  {stat.trend}
-                </span>
-              </div>
+        <div className="relative z-10 space-y-1">
+          <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 truncate block">
+            {stat.label}
+          </span>
+          <div className="text-2xl sm:text-[26px] font-black font-heading tracking-tight text-zinc-900 dark:text-white">
+            {stat.value}
+          </div>
+        </div>
+
+        <div className="relative z-10">
+          <p className="text-[11px] sm:text-xs text-zinc-500 dark:text-zinc-400 font-medium truncate">
+            {stat.subtext}
+          </p>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="w-full">
+      <div className="block sm:hidden w-full">
+        <Carousel autoplay autoplayDelay={4000} loop className="w-full">
+          <CarouselContent className="-ml-3">
+            {stats.map((stat) => (
+              <CarouselItem key={stat.label} className="pl-3 basis-full">
+                {renderCard(stat)}
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+
+          <div className="flex items-center justify-between mt-3 px-1">
+            <CarouselDots className="justify-start gap-1.5" />
+            <div className="flex items-center gap-1.5">
+              <CarouselPrevious className="size-7" />
+              <CarouselNext className="size-7" />
             </div>
           </div>
-        )
-      })}
+        </Carousel>
+      </div>
+
+      <div className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {stats.map((stat) => (
+          <div key={stat.label}>{renderCard(stat)}</div>
+        ))}
+      </div>
     </div>
   )
 }
