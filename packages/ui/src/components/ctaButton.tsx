@@ -89,7 +89,7 @@ export const CtaButton = React.forwardRef<
     }
 
     const combinedClasses = cn(
-      "group relative inline-flex items-center justify-center overflow-hidden rounded-sm cursor-pointer select-none transition-all duration-300 ease-out active:scale-[0.98] will-change-transform",
+      "group/cta relative inline-flex items-center justify-center overflow-hidden rounded-sm cursor-pointer select-none transition-all duration-300 ease-out active:scale-[0.98] will-change-transform",
       sizeClasses[size],
       variantClasses[variant],
       isFullWidth && "w-full",
@@ -102,7 +102,7 @@ export const CtaButton = React.forwardRef<
       <span
         aria-hidden="true"
         className={cn(
-          "absolute inset-0 w-full h-full translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-none rounded-sm",
+          "absolute inset-0 w-full h-full translate-y-full group-hover/cta:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-none rounded-sm",
           defaultSliderClasses[variant],
           sliderClassName
         )}
