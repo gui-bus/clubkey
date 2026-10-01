@@ -38,7 +38,7 @@ export function AdminUserWalletCard({ user, className }: AdminUserWalletCardProp
 
   return (
     <div className={cn("p-4 bg-zinc-50/70 dark:bg-zinc-900/60 border-t border-zinc-100 dark:border-zinc-800/80 space-y-3.5", className)}>
-      {/* Wallet Header */}
+      
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="flex items-center gap-2">
           <span className="text-[10px] font-black uppercase tracking-widest text-zinc-400 dark:text-zinc-500">
@@ -68,7 +68,7 @@ export function AdminUserWalletCard({ user, className }: AdminUserWalletCardProp
           </div>
         </div>
 
-        {/* User Metadata Tags */}
+        
         <div className="flex items-center gap-3 text-[11px] text-zinc-500 dark:text-zinc-400">
           <span>Tipo: <strong className="text-zinc-700 dark:text-zinc-300 font-semibold">{user.documentType} ({user.documentNumber})</strong></span>
           <span>•</span>
@@ -78,9 +78,9 @@ export function AdminUserWalletCard({ user, className }: AdminUserWalletCardProp
         </div>
       </div>
 
-      {/* 3 Balance Pills matching design */}
+      
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-        {/* Disponível */}
+        
         <div className="bg-white dark:bg-zinc-800/90 border border-zinc-200 dark:border-zinc-700/80 rounded-sm p-3 space-y-1 shadow-2xs">
           <p className="text-[10px] font-black uppercase tracking-wider text-zinc-400 dark:text-zinc-400">
             DISPONÍVEL
@@ -98,7 +98,7 @@ export function AdminUserWalletCard({ user, className }: AdminUserWalletCardProp
           </div>
         </div>
 
-        {/* Bloqueado */}
+        
         <div className="bg-white dark:bg-zinc-800/90 border border-zinc-200 dark:border-zinc-700/80 rounded-sm p-3 space-y-1 shadow-2xs">
           <p className="text-[10px] font-black uppercase tracking-wider text-zinc-400 dark:text-zinc-400">
             BLOQUEADO
@@ -116,7 +116,7 @@ export function AdminUserWalletCard({ user, className }: AdminUserWalletCardProp
           </div>
         </div>
 
-        {/* Total */}
+        
         <div className="bg-white dark:bg-zinc-800/90 border border-zinc-200 dark:border-zinc-700/80 rounded-sm p-3 space-y-1 shadow-2xs">
           <p className="text-[10px] font-black uppercase tracking-wider text-zinc-400 dark:text-zinc-400">
             TOTAL

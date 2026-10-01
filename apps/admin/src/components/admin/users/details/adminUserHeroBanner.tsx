@@ -125,9 +125,9 @@ export function AdminUserHeroBanner({ user }: AdminUserHeroBannerProps): React.J
   return (
     <div className="w-full py-1">
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-        {/* Left Side: Large Avatar + User Identity + Metadata */}
+        
         <div className="flex flex-col sm:flex-row sm:items-start gap-5 sm:gap-6 min-w-0 flex-1">
-          {/* Avatar (significantly enlarged) */}
+          
           <div className="relative shrink-0">
             <Avatar className="size-24 sm:size-28 md:size-32 shrink-0 rounded-full bg-zinc-900 dark:bg-zinc-800 shadow-sm overflow-hidden">
               {user.avatar ? (
@@ -150,9 +150,9 @@ export function AdminUserHeroBanner({ user }: AdminUserHeroBannerProps): React.J
             />
           </div>
 
-          {/* Identity & Details */}
+          
           <div className="space-y-3 min-w-0 flex-1 pt-1">
-            {/* Header Line: Name, Tag, Level & Status */}
+            
             <div className="space-y-2">
               <div className="flex items-center gap-2.5 flex-wrap">
                 <h2 className="text-2xl sm:text-3xl font-black font-heading tracking-tight text-zinc-900 dark:text-white uppercase">
@@ -166,9 +166,9 @@ export function AdminUserHeroBanner({ user }: AdminUserHeroBannerProps): React.J
                 </span>
               </div>
 
-              {/* Status & Level Badges & Feature Icons */}
+              
               <div className="flex items-center gap-2 flex-wrap">
-                {/* Level Badge without border */}
+                
                 <span
                   className={cn(
                     "inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-xs text-xs font-black uppercase tracking-wider",
@@ -180,7 +180,7 @@ export function AdminUserHeroBanner({ user }: AdminUserHeroBannerProps): React.J
                   <span>{levelStyle.label}</span>
                 </span>
 
-                {/* Status Badge without border */}
+                
                 <span
                   className={cn(
                     "inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-xs text-xs font-bold uppercase tracking-wider",
@@ -191,7 +191,7 @@ export function AdminUserHeroBanner({ user }: AdminUserHeroBannerProps): React.J
                   <span>{statusStyle.label}</span>
                 </span>
 
-                {/* P2P Status with Icon */}
+                
                 <span
                   className={cn(
                     "inline-flex items-center gap-1.5 px-2 py-0.5 rounded-xs text-xs font-mono font-semibold",
@@ -210,7 +210,7 @@ export function AdminUserHeroBanner({ user }: AdminUserHeroBannerProps): React.J
                   )}
                 </span>
 
-                {/* Saque Status with Icon */}
+                
                 <span
                   className={cn(
                     "inline-flex items-center gap-1.5 px-2 py-0.5 rounded-xs text-xs font-mono font-semibold",
@@ -231,15 +231,15 @@ export function AdminUserHeroBanner({ user }: AdminUserHeroBannerProps): React.J
               </div>
             </div>
 
-            {/* Metadata Badges / Info Row */}
+            
             <div className="flex items-center gap-y-1.5 gap-x-4 text-xs text-zinc-600 dark:text-zinc-400 font-medium flex-wrap">
-              {/* Email */}
+              
               <div className="inline-flex items-center gap-1.5">
                 <EnvelopeSimple size={14} className="text-zinc-400 shrink-0" weight="bold" />
                 <span className="text-zinc-800 dark:text-zinc-200">{user.email}</span>
               </div>
 
-              {/* Document */}
+              
               <div className="inline-flex items-center gap-1.5">
                 <IdentificationCard size={14} className="text-zinc-400 shrink-0" weight="bold" />
                 <span>
@@ -247,7 +247,7 @@ export function AdminUserHeroBanner({ user }: AdminUserHeroBannerProps): React.J
                 </span>
               </div>
 
-              {/* Phone */}
+              
               {user.phone && (
                 <div className="inline-flex items-center gap-1.5">
                   <Phone size={14} className="text-zinc-400 shrink-0" weight="bold" />
@@ -255,7 +255,7 @@ export function AdminUserHeroBanner({ user }: AdminUserHeroBannerProps): React.J
                 </div>
               )}
 
-              {/* Location */}
+              
               {(user.city || user.state) && (
                 <div className="inline-flex items-center gap-1.5">
                   <MapPin size={14} className="text-zinc-400 shrink-0" weight="bold" />
@@ -263,7 +263,7 @@ export function AdminUserHeroBanner({ user }: AdminUserHeroBannerProps): React.J
                 </div>
               )}
 
-              {/* Fee */}
+              
               <div className="inline-flex items-center gap-1.5">
                 <Tag size={14} className="text-zinc-400 shrink-0" weight="bold" />
                 <span>
@@ -271,7 +271,7 @@ export function AdminUserHeroBanner({ user }: AdminUserHeroBannerProps): React.J
                 </span>
               </div>
 
-              {/* Created At */}
+              
               <div className="inline-flex items-center gap-1.5">
                 <CalendarBlank size={14} className="text-zinc-400 shrink-0" weight="bold" />
                 <span>
@@ -280,7 +280,7 @@ export function AdminUserHeroBanner({ user }: AdminUserHeroBannerProps): React.J
               </div>
             </div>
 
-            {/* Wallet Address Bar */}
+            
             {user.walletFireblocks && (
               <div className="flex items-center gap-2 pt-0.5">
                 <div className="inline-flex items-center gap-1.5 text-xs font-mono text-zinc-500 dark:text-zinc-400">
@@ -307,7 +307,7 @@ export function AdminUserHeroBanner({ user }: AdminUserHeroBannerProps): React.J
           </div>
         </div>
 
-        {/* Right Side: Total RIB Balance & Custody */}
+        
         <div className="shrink-0 w-full lg:w-auto self-start lg:self-center">
           <div className="space-y-1.5 text-left lg:text-right">
             <div className="flex items-center lg:justify-end gap-1.5 text-zinc-400 dark:text-zinc-500 text-[10px] font-bold uppercase tracking-wider">
@@ -332,7 +332,7 @@ export function AdminUserHeroBanner({ user }: AdminUserHeroBannerProps): React.J
               </div>
             </div>
 
-            {/* Breakdown Available & Blocked */}
+            
             <div className="flex items-center lg:justify-end gap-2 text-xs font-mono">
               <div className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400">
                 <span className="text-zinc-400 dark:text-zinc-500 text-[11px]">Disp:</span>

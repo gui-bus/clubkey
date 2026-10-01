@@ -4,6 +4,7 @@ import * as React from "react"
 
 import { MOCK_ADMIN_USERS } from "@/src/data/mocks/adminUsers.data"
 import type { AdminUser } from "@clubkey/types"
+import { TableTitle } from "@clubkey/ui"
 import { parseAsString, parseAsStringLiteral, useQueryState } from "nuqs"
 
 import { Container } from "@/src/components/common/container"
@@ -28,12 +29,12 @@ const SEARCH_FIELDS = [
 
 function parseDateToTime(dateStr?: string): number | null {
   if (!dateStr) return null
-  // Format: YYYY-MM-DD (from input type="date")
+
   if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
     const [year, month, day] = dateStr.split("-").map(Number)
     return new Date(year, month - 1, day, 0, 0, 0, 0).getTime()
   }
-  // Format: DD/MM/YYYY
+
   if (/^\d{2}\/\d{2}\/\d{4}$/.test(dateStr)) {
     const [day, month, year] = dateStr.split("/").map(Number)
     return new Date(year, month - 1, day, 0, 0, 0, 0).getTime()
@@ -82,12 +83,10 @@ export function AdminUsersClient(): React.JSX.Element {
     parseAsString.withDefault("").withOptions({ shallow: true })
   )
 
-  // Filtered list
   const filteredUsers = React.useMemo(() => {
     return users.filter((u) => {
       const query = searchQuery.toLowerCase().trim()
 
-      // Target field search match
       let matchesSearch = true
       if (query) {
         if (searchField === "name") {
@@ -117,7 +116,6 @@ export function AdminUsersClient(): React.JSX.Element {
         } else if (searchField === "wallet") {
           matchesSearch = u.walletFireblocks.toLowerCase().includes(query)
         } else {
-          // ALL fields
           const cleanQuery = query.replace(/[@#]/g, "")
           const cleanHandle = u.handle.replace(/[@#]/g, "").toLowerCase()
           const cleanIdTag = u.idTag.replace(/[@#]/g, "").toLowerCase()
@@ -132,14 +130,11 @@ export function AdminUsersClient(): React.JSX.Element {
         }
       }
 
-      // Status match
       const matchesStatus =
         statusFilter === "ALL" || u.accountStatus === statusFilter
 
-      // Level match
       const matchesLevel = levelFilter === "ALL" || u.level === levelFilter
 
-      // Date Filters: Created At (de / até)
       let matchesCreatedDate = true
       const userCreatedTime = parseDateToTime(u.createdAt)
       if (userCreatedTime !== null) {
@@ -157,7 +152,6 @@ export function AdminUsersClient(): React.JSX.Element {
         }
       }
 
-      // Date Filters: Birth Date (de / até)
       let matchesBirthDate = true
       const userBirthTime = parseDateToTime(u.birthDate)
       if (birthDateFrom || birthDateTo) {
@@ -212,14 +206,9 @@ export function AdminUsersClient(): React.JSX.Element {
 
   return (
     <div className="w-full flex flex-col">
-      {/* Portal-Style Hero Section with Image, Gradient, Title & Filter Bar */}
       <AdminHero
         badge="Gestão de Membros • Base de Associados"
-        title={
-          <>
-            Gestão de <span className="text-brand-primary">Usuários</span>
-          </>
-        }
+        title="Gestão de Usuários"
         description="Pesquise, filtre e gerencie associados, permissões P2P, limites operacionais e status cadastrais."
         imageSrc="/utils/banners/pessoas.webp"
         imageAlt="Gestão de Usuários ClubKey"
@@ -247,12 +236,14 @@ export function AdminUsersClient(): React.JSX.Element {
         />
       </AdminHero>
 
-      {/* Main Content Area (Stats & Table) */}
-      <Container className="space-y-6 -mt-3 sm:-mt-4">
-        {/* Summary Metrics */}
+      <Container className="space-y-6 -mt-3 sm:-mt-8">
         <AdminUsersStats users={users} />
 
-        {/* Users Table */}
+        <TableTitle
+          title="Lista de Usuários"
+          description="Consulte e gerencie os associados cadastrados, saldos em RIB, níveis e permissões operacionais."
+        />
+
         <AdminUsersTable users={filteredUsers} />
       </Container>
     </div>

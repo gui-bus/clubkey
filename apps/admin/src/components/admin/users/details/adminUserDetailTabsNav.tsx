@@ -127,7 +127,6 @@ export function AdminUserDetailTabsNav({
     ) as HTMLDivElement | null
   }, [])
 
-  // Auto-scroll active tab into view
   React.useEffect(() => {
     const activeEl = containerRef.current?.querySelector(
       `[data-tab-id="${activeTab}"]`
@@ -151,7 +150,6 @@ export function AdminUserDetailTabsNav({
     }
   }, [activeTab, getViewport])
 
-  // Click and drag to scroll handlers
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.button !== 0) return
 
@@ -200,7 +198,6 @@ export function AdminUserDetailTabsNav({
     }
   }
 
-  // Prevent link click when dragged
   const handleClickCapture = (e: React.MouseEvent<HTMLDivElement>) => {
     if (dragRef.current.hasMoved) {
       e.preventDefault()

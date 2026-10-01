@@ -413,15 +413,15 @@ export function AdminUsersFilterBar({
 
   return (
     <div className="space-y-3 w-full">
-      {/* Search Filter Card / Pill Container */}
-      <div className="relative z-30 w-full max-w-5xl lg:max-w-6xl xl:max-w-7xl mx-auto bg-white dark:bg-[#141416] rounded-2xl xl:rounded-full shadow-2xl border border-zinc-200/80 dark:border-zinc-800 p-3 sm:p-3.5 xl:p-2">
-        {/* ========================================================================= */}
-        {/* MOBILE & TABLET / ZOOMED LAYOUT (Up to xl: compact 2-row layout with smart popover triggers) */}
-        {/* ========================================================================= */}
+      
+      <div className="relative z-30 w-full bg-white dark:bg-[#141416] rounded-2xl xl:rounded-full border border-zinc-200/80 dark:border-zinc-800 p-3 sm:p-3.5 xl:p-2">
+        
+        
+        
         <div className="block xl:hidden space-y-2.5 text-left">
-          {/* Row 1: Field Selector + Search Query Input */}
+          
           <div className="grid grid-cols-1 sm:grid-cols-12 gap-2">
-            {/* Field Dropdown Popover */}
+            
             <div className="sm:col-span-4">
               <Popover open={fieldOpenMobile} onOpenChange={setFieldOpenMobile}>
                 <PopoverTrigger asChild>
@@ -463,7 +463,7 @@ export function AdminUsersFilterBar({
               </Popover>
             </div>
 
-            {/* Text Search Input */}
+            
             <div className="sm:col-span-8 flex items-center gap-2.5 p-2.5 rounded-xl bg-zinc-100/90 dark:bg-zinc-800/60 border border-zinc-200/80 dark:border-zinc-700/80">
               <div className="size-7 rounded-lg bg-zinc-200/60 dark:bg-zinc-700/60 text-zinc-600 dark:text-zinc-300 flex items-center justify-center shrink-0">
                 <MagnifyingGlass size={16} weight="bold" />
@@ -493,9 +493,9 @@ export function AdminUsersFilterBar({
             </div>
           </div>
 
-          {/* Row 2: Criado em (Popover) + Nascimento (Popover) + Filtros (Popover) + Botão Buscar */}
+          
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-            {/* Criado em Popover Trigger */}
+            
             <div>
               <Popover
                 open={createdOpenMobile}
@@ -540,7 +540,7 @@ export function AdminUsersFilterBar({
               </Popover>
             </div>
 
-            {/* Nascimento Popover Trigger */}
+            
             <div>
               <Popover open={birthOpenMobile} onOpenChange={setBirthOpenMobile}>
                 <PopoverTrigger asChild>
@@ -582,7 +582,7 @@ export function AdminUsersFilterBar({
               </Popover>
             </div>
 
-            {/* Filtros (Status & Level) Popover Trigger */}
+            
             <div>
               <Popover
                 open={filtersOpenMobile}
@@ -634,7 +634,7 @@ export function AdminUsersFilterBar({
               </Popover>
             </div>
 
-            {/* Action CTA Button */}
+            
             <div className="flex items-center">
               <CtaButton
                 type="button"
@@ -650,11 +650,11 @@ export function AdminUsersFilterBar({
           </div>
         </div>
 
-        {/* ========================================================================= */}
-        {/* DESKTOP PILL LAYOUT (xl and above: fluid, zero-overflow segmented bar) */}
-        {/* ========================================================================= */}
+        
+        
+        
         <div className="hidden xl:flex items-center justify-between w-full gap-1.5 2xl:gap-2">
-          {/* Segment 1: Search Field Target Dropdown */}
+          
           <div className="shrink min-w-0">
             <Popover open={fieldOpenDesktop} onOpenChange={setFieldOpenDesktop}>
               <PopoverTrigger asChild>
@@ -697,7 +697,7 @@ export function AdminUsersFilterBar({
 
           <div className="w-px h-7 bg-zinc-200 dark:bg-zinc-800 shrink-0" />
 
-          {/* Segment 2: Text Search Input */}
+          
           <div className="flex-1 flex items-center gap-2 px-2.5 min-w-0">
             <div className="flex-1 flex flex-col min-w-0">
               <span className="text-[9px] font-black uppercase tracking-widest text-zinc-400 dark:text-zinc-500">
@@ -725,7 +725,7 @@ export function AdminUsersFilterBar({
 
           <div className="w-px h-7 bg-zinc-200 dark:bg-zinc-800 shrink-0" />
 
-          {/* Segment 3: Criado em (De / Até) Popover */}
+          
           <div className="shrink min-w-0">
             <Popover
               open={createdOpenDesktop}
@@ -771,7 +771,7 @@ export function AdminUsersFilterBar({
 
           <div className="w-px h-7 bg-zinc-200 dark:bg-zinc-800 shrink-0" />
 
-          {/* Segment 4: Nascimento (De / Até) Popover */}
+          
           <div className="shrink min-w-0">
             <Popover open={birthOpenDesktop} onOpenChange={setBirthOpenDesktop}>
               <PopoverTrigger asChild>
@@ -814,7 +814,7 @@ export function AdminUsersFilterBar({
 
           <div className="w-px h-7 bg-zinc-200 dark:bg-zinc-800 shrink-0" />
 
-          {/* Segment 5: Status & Level Popover */}
+          
           <div className="shrink min-w-0">
             <Popover
               open={filtersOpenDesktop}
@@ -865,7 +865,7 @@ export function AdminUsersFilterBar({
             </Popover>
           </div>
 
-          {/* Desktop Circular Search Action Button */}
+          
           <button
             type="button"
             className="size-10 2xl:size-11 rounded-full bg-brand-primary hover:bg-brand-primary/90 text-white flex items-center justify-center shadow-md transition-all hover:scale-105 active:scale-95 shrink-0 ml-0.5 cursor-pointer"
@@ -876,10 +876,10 @@ export function AdminUsersFilterBar({
         </div>
       </div>
 
-      {/* Active Filter Chips */}
+      
       {hasActiveFilters && (
         <div className="flex items-center justify-center gap-2 flex-wrap pt-2 text-center">
-          {/* Active Chip: Target Field */}
+          
           {searchField !== "ALL" && (
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-white dark:bg-[#141416] text-zinc-800 dark:text-zinc-200 border border-zinc-200/90 dark:border-zinc-800 shadow-sm">
               <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
@@ -899,7 +899,7 @@ export function AdminUsersFilterBar({
             </span>
           )}
 
-          {/* Active Chip: Dates */}
+          
           {(createdFrom || createdTo) && (
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-white dark:bg-[#141416] text-zinc-800 dark:text-zinc-200 border border-zinc-200/90 dark:border-zinc-800 shadow-sm">
               <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
@@ -982,7 +982,7 @@ export function AdminUsersFilterBar({
             </span>
           )}
 
-          {/* Clear All Button */}
+          
           <button
             type="button"
             onClick={onReset}

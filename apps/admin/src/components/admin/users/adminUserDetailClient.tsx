@@ -33,7 +33,6 @@ export function AdminUserDetailClient({
 }: AdminUserDetailClientProps): React.JSX.Element {
   const router = useRouter()
 
-  // Validate active tab or default to 'perfil'
   const validTabIds = React.useMemo(
     () => USER_DETAIL_TABS.map((t) => t.id as string),
     []
@@ -42,7 +41,6 @@ export function AdminUserDetailClient({
     ? (activeTab as AdminUserDetailTabId)
     : "perfil"
 
-  // Find user by slug or ID or clean handle
   const initialUser = React.useMemo(() => {
     return (
       MOCK_ADMIN_USERS.find((u) => {
@@ -107,7 +105,7 @@ export function AdminUserDetailClient({
 
   return (
     <Container className="space-y-6">
-      {/* Top Header & Breadcrumb */}
+      
       <div className="flex items-center gap-2 text-xs font-semibold text-zinc-400 dark:text-zinc-500">
         <Link
           href="/usuarios"
@@ -126,13 +124,13 @@ export function AdminUserDetailClient({
         </span>
       </div>
 
-      {/* Social Network Style User Hero Banner */}
+      
       <AdminUserHeroBanner user={user} />
 
-      {/* Tabs Navigation */}
+      
       <AdminUserDetailTabsNav slug={slug} activeTab={currentTab} />
 
-      {/* Tab Content Display */}
+      
       {currentTab === "perfil" ? (
         <AdminUserProfileTab user={user} onSaveUser={setUser} />
       ) : (
