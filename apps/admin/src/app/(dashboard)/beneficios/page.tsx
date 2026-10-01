@@ -43,7 +43,7 @@ const mockBenefits = [
 export default function AdminBenefitsPage() {
   return (
     <Container className="space-y-6">
-      {/* Header */}
+      
       <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">
@@ -59,7 +59,7 @@ export default function AdminBenefitsPage() {
         </Button>
       </div>
 
-      {/* Grid de Benefícios */}
+      
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {mockBenefits.map((ben) => (
           <Card key={ben.id} className="border-border bg-card">

@@ -15,7 +15,7 @@ export default async function DashboardLayout({
     <div className="flex flex-col xl:flex-row flex-1 w-full min-h-screen bg-background text-foreground">
       <AdminSidebar defaultCollapsed={defaultCollapsed} />
 
-      {/* Main Content Area */}
+      
       <main className="flex-1 overflow-x-hidden flex flex-col min-w-0 w-full">
         {children}
       </main>

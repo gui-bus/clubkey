@@ -52,7 +52,7 @@ const mockEvents = [
 export default function AdminEventsPage() {
   return (
     <Container className="space-y-6">
-      {/* Header */}
+      
       <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">
@@ -68,7 +68,7 @@ export default function AdminEventsPage() {
         </Button>
       </div>
 
-      {/* Grid de Eventos */}
+      
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {mockEvents.map((evt) => (
           <Card key={evt.id} className="border-border bg-card">
