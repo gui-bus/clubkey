@@ -199,10 +199,6 @@ export function SinistrosTable({
           <thead>
             <tr className="border-b border-zinc-200/80 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-800/40 text-zinc-500 dark:text-zinc-400 font-bold uppercase tracking-wider text-[10px]">
               <th className="py-3.5 px-4 font-bold select-none text-left w-px whitespace-nowrap">
-                #
-              </th>
-
-              <th className="py-3.5 px-4 font-bold select-none text-left w-px whitespace-nowrap">
                 <button
                   type="button"
                   onClick={() => handleSort("date")}
@@ -273,30 +269,20 @@ export function SinistrosTable({
             {claims.length === 0 ? (
               <tr>
                 <td
-                  colSpan={7}
+                  colSpan={6}
                   className="py-12 px-4 text-center text-zinc-500 dark:text-zinc-400 text-xs font-medium"
                 >
                   Nenhum sinistro encontrado com os filtros selecionados.
                 </td>
               </tr>
             ) : (
-              paginatedClaims.map((claim, index) => {
-                const globalIndex = (safePage - 1) * (pageSize || 10) + index + 1
-                const formattedNumber =
-                  globalIndex < 10 ? `0${globalIndex}` : String(globalIndex)
-
+              paginatedClaims.map((claim) => {
                 return (
                   <tr
                     key={claim.id}
                     onClick={() => router.push(`/sinistros/${claim.slug}/detalhes`)}
                     className="transition-colors hover:bg-zinc-50/60 dark:hover:bg-zinc-800/30 group/row cursor-pointer select-none"
                   >
-                    <td className="py-4 px-4 align-middle text-left w-px whitespace-nowrap">
-                      <span className="text-2xl sm:text-3xl font-heading font-black text-zinc-900/[0.15] dark:text-white/[0.20] leading-none select-none">
-                        {formattedNumber}
-                      </span>
-                    </td>
-
                     <td className="py-4 px-4 align-middle text-left w-px whitespace-nowrap">
                       <div className="flex flex-col">
                         <span className="font-bold text-zinc-900 dark:text-white text-xs">
