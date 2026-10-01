@@ -4,42 +4,55 @@ import * as React from "react"
 
 import {
   MOCK_INSURANCE_GROUPS,
+  MOCK_INSURANCE_GROUP_STATUS_OPTIONS,
   MOCK_INSURANCE_INVOICES,
+  MOCK_INSURANCE_INVOICE_STATUS_OPTIONS,
   MOCK_INSURANCE_QUEUE_ITEMS,
+  MOCK_INSURANCE_WORKSPACE_OPTIONS,
 } from "@/src/data/mocks/protecaoKey.data"
 import type {
   InsuranceGroup,
   InsuranceInvoice,
   InsuranceQueueItem,
 } from "@clubkey/types"
-import { TableStats, type TableStatItem, toast } from "@clubkey/ui"
+import {
+  TableFilterBar,
+  type TableFilterSection,
+  type TableStatItem,
+  TableStats,
+  toast,
+} from "@clubkey/ui"
 import { formatCurrency } from "@clubkey/utils"
 import {
+  Buildings,
+  CalendarBlank,
   ClockCountdown,
   FileText,
   Receipt,
   ShieldCheck,
 } from "@phosphor-icons/react"
-import {
-  parseAsString,
-  useQueryState,
-} from "nuqs"
+import { parseAsString, useQueryState } from "nuqs"
 
 import { Container } from "@/src/components/common/container"
 
 import { AdminHero } from "../common/adminHero"
-import { ProtecaoKeyFilterBar } from "./protecaoKeyFilterBar"
 import { ProtecaoKeyOperationalList } from "./protecaoKeyOperationalList"
 import { ProtecaoKeyQueueSection } from "./protecaoKeyQueueSection"
 
 export function ProtecaoKeyClient(): React.JSX.Element {
   const [groups] = React.useState<InsuranceGroup[]>(MOCK_INSURANCE_GROUPS)
-  const [invoices, setInvoices] = React.useState<InsuranceInvoice[]>(MOCK_INSURANCE_INVOICES)
-  const [queueItems, setQueueItems] = React.useState<InsuranceQueueItem[]>(MOCK_INSURANCE_QUEUE_ITEMS)
+  const [invoices, setInvoices] = React.useState<InsuranceInvoice[]>(
+    MOCK_INSURANCE_INVOICES
+  )
+  const [queueItems, setQueueItems] = React.useState<InsuranceQueueItem[]>(
+    MOCK_INSURANCE_QUEUE_ITEMS
+  )
 
   const [searchQuery, setSearchQuery] = useQueryState(
     "q",
-    parseAsString.withDefault("").withOptions({ shallow: true, throttleMs: 250 })
+    parseAsString
+      .withDefault("")
+      .withOptions({ shallow: true, throttleMs: 250 })
   )
   const [groupStatus, setGroupStatus] = useQueryState(
     "grupo",
@@ -75,7 +88,13 @@ export function ProtecaoKeyClient(): React.JSX.Element {
         const matchesProps = (g.propertiesList || []).some((p) =>
           p.toLowerCase().includes(q)
         )
-        if (!matchesName && !matchesWs && !matchesHost && !matchesId && !matchesProps) {
+        if (
+          !matchesName &&
+          !matchesWs &&
+          !matchesHost &&
+          !matchesId &&
+          !matchesProps
+        ) {
           return false
         }
       }
@@ -119,9 +138,9 @@ export function ProtecaoKeyClient(): React.JSX.Element {
 
   const handleResetFilters = () => {
     void setSearchQuery(null)
-    void setGroupStatus("ALL")
-    void setInvoiceStatus("ALL")
-    void setWorkspace("ALL")
+    void setGroupStatus(null)
+    void setInvoiceStatus(null)
+    void setWorkspace(null)
     void setDueDateFrom(null)
     void setDueDateTo(null)
   }
@@ -131,12 +150,15 @@ export function ProtecaoKeyClient(): React.JSX.Element {
     setTimeout(() => {
       setIsRefreshing(false)
       toast.success("Fila operacional atualizada", {
-        description: "Status de apólices e faturas sincronizados com o servidor.",
+        description:
+          "Status de apólices e faturas sincronizados com o servidor.",
       })
     }, 600)
   }
 
-  const handleRecoverOpportunity = (item: InsuranceQueueItem | InsuranceInvoice) => {
+  const handleRecoverOpportunity = (
+    item: InsuranceQueueItem | InsuranceInvoice
+  ) => {
     const invoiceId = "invoiceId" in item ? item.invoiceId : item.id
     if (!invoiceId) return
 
@@ -211,8 +233,131 @@ export function ProtecaoKeyClient(): React.JSX.Element {
     ]
   }, [groups, invoices])
 
+  const sectionsConfig: TableFilterSection[] = React.useMemo(() => {
+    const groupStatusLabel =
+      groupStatus !== "ALL"
+        ? MOCK_INSURANCE_GROUP_STATUS_OPTIONS.find(
+            (o) => o.value === groupStatus
+          )?.label || "Status"
+        : "Todos os Status"
+
+    const invoiceStatusLabel =
+      invoiceStatus !== "ALL"
+        ? MOCK_INSURANCE_INVOICE_STATUS_OPTIONS.find(
+            (o) => o.value === invoiceStatus
+          )?.label || "Fatura"
+        : "Todas as Faturas"
+
+    const statusActive = groupStatus !== "ALL" || invoiceStatus !== "ALL"
+    const statusDisplay = statusActive
+      ? [
+          groupStatus !== "ALL" && groupStatusLabel,
+          invoiceStatus !== "ALL" && invoiceStatusLabel,
+        ]
+          .filter(Boolean)
+          .join(" • ")
+      : "Grupo & Fatura"
+
+    const workspaceLabel =
+      workspace !== "ALL"
+        ? MOCK_INSURANCE_WORKSPACE_OPTIONS.find(
+            (o) => o.value === workspace
+          )?.label?.split(" (")[0] || "Workspace"
+        : "Todos os Workspaces"
+
+    const dateLabel =
+      dueDateFrom || dueDateTo
+        ? dueDateFrom && dueDateTo
+          ? `${dueDateFrom} a ${dueDateTo}`
+          : dueDateFrom
+            ? `A partir de ${dueDateFrom}`
+            : `Até ${dueDateTo}`
+        : "Todas as Datas"
+
+    return [
+      {
+        id: "status",
+        label: "Status",
+        icon: ShieldCheck,
+        displayValue: statusDisplay,
+        fields: [
+          {
+            id: "grupo",
+            type: "select",
+            label: "Status do Grupo",
+            value: groupStatus,
+            onChange: (v: string) =>
+              void setGroupStatus(v === "ALL" ? null : v),
+            options: MOCK_INSURANCE_GROUP_STATUS_OPTIONS,
+            chipLabel: "Grupo",
+          },
+          {
+            id: "fatura",
+            type: "select",
+            label: "Status da Fatura",
+            value: invoiceStatus,
+            onChange: (v: string) =>
+              void setInvoiceStatus(v === "ALL" ? null : v),
+            options: MOCK_INSURANCE_INVOICE_STATUS_OPTIONS,
+            chipLabel: "Fatura",
+          },
+        ],
+      },
+      {
+        id: "workspace",
+        label: "Workspace",
+        icon: Buildings,
+        displayValue: workspaceLabel,
+        fields: [
+          {
+            id: "workspace",
+            type: "select",
+            label: "Workspace",
+            value: workspace,
+            onChange: (v: string) => void setWorkspace(v === "ALL" ? null : v),
+            options: MOCK_INSURANCE_WORKSPACE_OPTIONS,
+            chipLabel: "Workspace",
+            formatDisplayValue: (v: string) =>
+              MOCK_INSURANCE_WORKSPACE_OPTIONS.find(
+                (o) => o.value === v
+              )?.label?.split(" (")[0] || v,
+          },
+        ],
+      },
+      {
+        id: "dueDate",
+        label: "Vencimento",
+        icon: CalendarBlank,
+        displayValue: dateLabel,
+        fields: [
+          {
+            id: "dueDate",
+            type: "date-range",
+            label: "Vencimento da Fatura",
+            dateFrom: dueDateFrom || undefined,
+            dateTo: dueDateTo || undefined,
+            onDateFromChange: (d: string) => void setDueDateFrom(d || null),
+            onDateToChange: (d: string) => void setDueDateTo(d || null),
+            chipLabel: "Vencimento",
+          },
+        ],
+      },
+    ]
+  }, [
+    groupStatus,
+    invoiceStatus,
+    workspace,
+    dueDateFrom,
+    dueDateTo,
+    setGroupStatus,
+    setInvoiceStatus,
+    setWorkspace,
+    setDueDateFrom,
+    setDueDateTo,
+  ])
+
   return (
-    <div className="w-full flex flex-col pb-12">
+    <div className="w-full flex flex-col">
       <AdminHero
         badge="PORTAL INTERNO • ACESSO AUDITADO"
         title="PROTEÇÃO KEY"
@@ -220,25 +365,20 @@ export function ProtecaoKeyClient(): React.JSX.Element {
         imageSrc="/utils/banners/experiencias.webp"
         imageAlt="Proteção Key ClubKey"
       >
-        <ProtecaoKeyFilterBar
+        <TableFilterBar
           searchQuery={searchQuery}
           onSearchQueryChange={(v) => void setSearchQuery(v || null)}
-          groupStatus={groupStatus}
-          onGroupStatusChange={(v) => void setGroupStatus(v === "ALL" ? null : v)}
-          invoiceStatus={invoiceStatus}
-          onInvoiceStatusChange={(v) => void setInvoiceStatus(v === "ALL" ? null : v)}
-          workspace={workspace}
-          onWorkspaceChange={(v) => void setWorkspace(v === "ALL" ? null : v)}
-          dueDateFrom={dueDateFrom}
-          onDueDateFromChange={(v) => void setDueDateFrom(v || null)}
-          dueDateTo={dueDateTo}
-          onDueDateToChange={(v) => void setDueDateTo(v || null)}
+          searchLabel="Imóvel / Código"
+          searchPlaceholder="Buscar por imóvel, host ou código..."
+          sections={sectionsConfig}
           onReset={handleResetFilters}
           onRefresh={handleRefresh}
+          isRefreshing={isRefreshing}
+          actionTitle="Atualizar filtros"
         />
       </AdminHero>
 
-      <Container className="space-y-6 -mt-3 sm:-mt-8">
+      <Container className="space-y-6 pt-6 pb-12">
         <TableStats items={statsItems} />
 
         <ProtecaoKeyQueueSection

@@ -8,17 +8,24 @@ import {
   MOCK_RECENT_REPORTS,
   MOCK_REPORTS,
 } from "@/src/data/mocks/reports.data"
-import type {
-  AdminReportItem,
-  ReportExecutionLog,
-} from "@clubkey/types"
-import { TableStats, type TableStatItem, toast } from "@clubkey/ui"
+import type { AdminReportItem, ReportExecutionLog } from "@clubkey/types"
+import {
+  TableFilterBar,
+  type TableSearchFieldOption,
+  type TableStatItem,
+  TableStats,
+  toast,
+} from "@clubkey/ui"
 import { formatCurrency } from "@clubkey/utils"
 import {
   Buildings,
   CalendarCheck,
   CheckCircle,
   CurrencyDollar,
+  Database,
+  FileText,
+  MagnifyingGlass,
+  Tag,
   UsersThree,
   X,
 } from "@phosphor-icons/react"
@@ -28,28 +35,50 @@ import { Container } from "@/src/components/common/container"
 
 import { AdminHero } from "../common/adminHero"
 import { ReportsFiscalBlock } from "./reportsFiscalBlock"
-import {
-  ReportsFilterBar,
-  type ReportSearchField,
-} from "./reportsFilterBar"
 import { ReportsPlatformBlock } from "./reportsPlatformBlock"
 import { ReportsRecentCard } from "./reportsRecentCard"
-import {
-  REPORT_TABS,
-  ReportsTabsNav,
-  type ReportTabId,
-} from "./reportsTabsNav"
+import { REPORT_TABS, type ReportTabId, ReportsTabsNav } from "./reportsTabsNav"
 import { ReportsWorkspaceBlock } from "./reportsWorkspaceBlock"
 
 const SEARCH_FIELDS = ["ALL", "title", "tag", "source"] as const
 const TAB_IDS: ReportTabId[] = ["plataforma", "workspace", "fiscal"]
+
+const SEARCH_FIELD_OPTIONS: TableSearchFieldOption[] = [
+  {
+    value: "ALL",
+    label: "Todos os campos",
+    short: "Geral",
+    placeholder: "Buscar por título, módulo, tag ou fonte...",
+    icon: MagnifyingGlass,
+  },
+  {
+    value: "title",
+    label: "Título do Relatório",
+    short: "Título",
+    placeholder: "Digitar título do relatório...",
+    icon: FileText,
+  },
+  {
+    value: "tag",
+    label: "Módulo / Tag",
+    short: "Módulo",
+    placeholder: "Digitar tag (ex: Auditoria, Tokens, Keys)...",
+    icon: Tag,
+  },
+  {
+    value: "source",
+    label: "Fonte de Dados",
+    short: "Fonte",
+    placeholder: "Digitar fonte de dados...",
+    icon: Database,
+  },
+]
 
 export function ReportsClient(): React.JSX.Element {
   const [reports] = React.useState<AdminReportItem[]>(MOCK_REPORTS)
   const [recentLogs, setRecentLogs] =
     React.useState<ReportExecutionLog[]>(MOCK_RECENT_REPORTS)
 
-  
   const [activeNavTab, setActiveNavTab] = useQueryState(
     "tab",
     parseAsStringLiteral(TAB_IDS)
@@ -68,14 +97,6 @@ export function ReportsClient(): React.JSX.Element {
     parseAsStringLiteral(SEARCH_FIELDS)
       .withDefault("ALL")
       .withOptions({ shallow: true })
-  )
-  const [categoryFilter, setCategoryFilter] = useQueryState(
-    "categoria",
-    parseAsString.withDefault("ALL").withOptions({ shallow: true })
-  )
-  const [blockFilter, setBlockFilter] = useQueryState(
-    "bloco",
-    parseAsString.withDefault("ALL").withOptions({ shallow: true })
   )
 
   const [workspace, setWorkspace] = useQueryState(
@@ -126,17 +147,9 @@ export function ReportsClient(): React.JSX.Element {
 
       if (!matchesSearch) return false
 
-      if (categoryFilter !== "ALL" && report.category !== categoryFilter) {
-        return false
-      }
-
-      if (blockFilter !== "ALL" && report.block !== blockFilter) {
-        return false
-      }
-
       return true
     })
-  }, [reports, searchQuery, searchField, categoryFilter, blockFilter])
+  }, [reports, searchQuery, searchField])
 
   const plataformaCount = React.useMemo(
     () => filteredReports.filter((r) => r.block === "PLATAFORMA").length,
@@ -222,10 +235,8 @@ Dados exportados com sucesso da plataforma ClubKey.`
   }
 
   const handleResetFilters = () => {
-    setSearchQuery("")
-    setSearchField("ALL")
-    setCategoryFilter("ALL")
-    setBlockFilter("ALL")
+    void setSearchQuery(null)
+    void setSearchField(null)
   }
 
   const handleResetScope = () => {
@@ -246,8 +257,10 @@ Dados exportados com sucesso da plataforma ClubKey.`
     const avgOccupancy =
       totalProperties > 0
         ? Math.round(
-            MOCK_PROPERTIES.reduce((acc, p) => acc + (p.occupancyRate || 0), 0) /
-              totalProperties
+            MOCK_PROPERTIES.reduce(
+              (acc, p) => acc + (p.occupancyRate || 0),
+              0
+            ) / totalProperties
           )
         : 0
     const totalUsers = MOCK_ADMIN_USERS.length
@@ -285,7 +298,7 @@ Dados exportados com sucesso da plataforma ClubKey.`
   }, [])
 
   return (
-    <div className="w-full flex flex-col pb-12">
+    <div className="w-full flex flex-col">
       <AdminHero
         imageSrc="https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=1920&auto=format&fit=crop&q=80"
         imageAlt="Central de Relatórios"
@@ -293,20 +306,20 @@ Dados exportados com sucesso da plataforma ClubKey.`
         title="CENTRAL DE RELATÓRIOS"
         description="Gestão e exportação de dados consolidados, auditoria técnica de integrações, conciliação de transações e relatórios por workspace."
       >
-        <ReportsFilterBar
+        <TableFilterBar
           searchQuery={searchQuery}
-          onSearchQueryChange={setSearchQuery}
-          searchField={searchField}
-          onSearchFieldChange={setSearchField}
-          categoryFilter={categoryFilter}
-          onCategoryChange={setCategoryFilter}
-          blockFilter={blockFilter}
-          onBlockChange={setBlockFilter}
+          onSearchQueryChange={(v) => void setSearchQuery(v || null)}
+          searchFields={SEARCH_FIELD_OPTIONS}
+          selectedSearchField={searchField}
+          onSearchFieldChange={(f) =>
+            void setSearchField(f as typeof searchField)
+          }
           onReset={handleResetFilters}
+          actionTitle="Pesquisar relatórios"
         />
       </AdminHero>
 
-      <Container className="space-y-6 -mt-3 sm:-mt-8">
+      <Container className="space-y-6 pt-6 pb-12">
         <TableStats items={statsItems} />
 
         <ReportsTabsNav
@@ -317,7 +330,6 @@ Dados exportados com sucesso da plataforma ClubKey.`
           fiscalCount={fiscalCount}
         />
 
-        
         {lastGeneratedInfo && (
           <div className="flex items-center justify-between gap-3 p-4 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200/80 dark:border-emerald-900/40 text-emerald-900 dark:text-emerald-200 text-xs sm:text-sm">
             <div className="flex items-center gap-2.5">
@@ -328,7 +340,8 @@ Dados exportados com sucesso da plataforma ClubKey.`
               />
               <span>
                 Planilha <strong>{lastGeneratedInfo.title}</strong> gerada com
-                sucesso às {lastGeneratedInfo.timestamp}. O download foi concluído.
+                sucesso às {lastGeneratedInfo.timestamp}. O download foi
+                concluído.
               </span>
             </div>
             <button
@@ -342,7 +355,6 @@ Dados exportados com sucesso da plataforma ClubKey.`
           </div>
         )}
 
-        
         <div className="pt-2">
           {activeNavTab === "plataforma" && (
             <ReportsPlatformBlock
@@ -379,7 +391,6 @@ Dados exportados com sucesso da plataforma ClubKey.`
           )}
         </div>
 
-        
         <ReportsRecentCard logs={recentLogs} onDownload={handleDownloadLog} />
       </Container>
     </div>

@@ -6,10 +6,27 @@ import Image from "next/image"
 
 import { MOCK_ADMIN_USERS } from "@/src/data/mocks/adminUsers.data"
 import type { AdminUser } from "@clubkey/types"
-import { TableStats, type TableStatItem, TableTitle } from "@clubkey/ui"
+import {
+  type SelectOption,
+  TableFilterBar,
+  type TableFilterSection,
+  type TableSearchFieldOption,
+  type TableStatItem,
+  TableStats,
+  TableTitle,
+} from "@clubkey/ui"
 import {
   ArrowsLeftRight,
+  Cake,
+  CalendarBlank,
+  Crown,
+  EnvelopeSimple,
+  IdentificationCard,
+  MagnifyingGlass,
+  Phone,
   ShieldCheck,
+  SlidersHorizontal,
+  User,
   Users,
   Wallet,
 } from "@phosphor-icons/react"
@@ -18,10 +35,6 @@ import { parseAsString, parseAsStringLiteral, useQueryState } from "nuqs"
 import { Container } from "@/src/components/common/container"
 
 import { AdminHero } from "../common/adminHero"
-import {
-  type AdminUserSearchField,
-  AdminUsersFilterBar,
-} from "./adminUsersFilterBar"
 import { AdminUsersTable } from "./adminUsersTable"
 
 const SEARCH_FIELDS = [
@@ -33,6 +46,78 @@ const SEARCH_FIELDS = [
   "phone",
   "wallet",
 ] as const
+
+type AdminUserSearchField = (typeof SEARCH_FIELDS)[number]
+
+const SEARCH_FIELD_OPTIONS: TableSearchFieldOption[] = [
+  {
+    value: "ALL",
+    label: "Todos os campos",
+    short: "Geral",
+    placeholder: "Buscar por nome, e-mail, login, CPF/CNPJ ou 0x...",
+    icon: MagnifyingGlass,
+  },
+  {
+    value: "name",
+    label: "Nome Completo",
+    short: "Nome",
+    placeholder: "Digitar nome do associado...",
+    icon: User,
+  },
+  {
+    value: "email",
+    label: "E-mail",
+    short: "E-mail",
+    placeholder: "Digitar e-mail cadastrado...",
+    icon: EnvelopeSimple,
+  },
+  {
+    value: "login",
+    label: "Login (@handle / #ID)",
+    short: "Login",
+    placeholder: "Digitar login ou ID (ex: RCT77599 ou #77599)...",
+    icon: IdentificationCard,
+  },
+  {
+    value: "document",
+    label: "Documento (CPF/CNPJ)",
+    short: "Documento",
+    placeholder: "Digitar número do CPF ou CNPJ...",
+    icon: IdentificationCard,
+  },
+  {
+    value: "phone",
+    label: "Telefone",
+    short: "Telefone",
+    placeholder: "Digitar número de telefone...",
+    icon: Phone,
+  },
+  {
+    value: "wallet",
+    label: "Endereço 0x (Carteira)",
+    short: "Endereço 0x",
+    placeholder: "Digitar endereço 0x ou hash Fireblocks...",
+    icon: Wallet,
+  },
+]
+
+const STATUS_FILTER_OPTIONS: SelectOption[] = [
+  { value: "ALL", label: "Status: Todos" },
+  { value: "CONFIRMADO", label: "Confirmado" },
+  { value: "PENDENTE", label: "Pendente" },
+  { value: "EM_ANALISE", label: "Em Análise" },
+  { value: "BLOQUEADO", label: "Bloqueado" },
+]
+
+const LEVEL_FILTER_OPTIONS: SelectOption[] = [
+  { value: "ALL", label: "Level: Todos" },
+  { value: "BRONZE", label: "Bronze" },
+  { value: "PRATA", label: "Prata" },
+  { value: "OURO", label: "Ouro" },
+  { value: "BLACK", label: "Black" },
+  { value: "DIAMANTE", label: "Diamante" },
+  { value: "PATRONO", label: "Patrono" },
+]
 
 function parseDateToTime(dateStr?: string): number | null {
   if (!dateStr) return null
@@ -109,31 +194,60 @@ export function AdminUsersClient(): React.JSX.Element {
             cleanIdTag.includes(cleanQuery) ||
             u.id.toLowerCase().includes(cleanQuery)
         } else if (searchField === "document") {
-          const numOnlyQuery = query.replace(/\D/g, "")
-          const numOnlyDoc = u.documentNumber.replace(/\D/g, "")
+          const cleanDocQuery = query.replace(/\D/g, "")
+          const cleanUserDoc = (u.documentNumber || "").replace(/\D/g, "")
           matchesSearch =
-            (numOnlyQuery.length > 0 && numOnlyDoc.includes(numOnlyQuery)) ||
-            u.documentNumber.toLowerCase().includes(query)
+            (u.documentNumber || "").toLowerCase().includes(query) ||
+            (cleanDocQuery.length > 0 && cleanUserDoc.includes(cleanDocQuery))
         } else if (searchField === "phone") {
-          const numOnlyQuery = query.replace(/\D/g, "")
-          const numOnlyPhone = (u.phone || "").replace(/\D/g, "")
+          const cleanPhoneQuery = query.replace(/\D/g, "")
+          const cleanUserPhone = (u.phone || "").replace(/\D/g, "")
           matchesSearch =
-            (numOnlyQuery.length > 0 && numOnlyPhone.includes(numOnlyQuery)) ||
-            (u.phone || "").toLowerCase().includes(query)
+            (u.phone || "").toLowerCase().includes(query) ||
+            (cleanPhoneQuery.length > 0 &&
+              cleanUserPhone.includes(cleanPhoneQuery))
         } else if (searchField === "wallet") {
-          matchesSearch = u.walletFireblocks.toLowerCase().includes(query)
+          matchesSearch = (u.walletFireblocks || "")
+            .toLowerCase()
+            .includes(query)
         } else {
           const cleanQuery = query.replace(/[@#]/g, "")
-          const cleanHandle = u.handle.replace(/[@#]/g, "").toLowerCase()
-          const cleanIdTag = u.idTag.replace(/[@#]/g, "").toLowerCase()
+          const cleanDocQuery = query.replace(/\D/g, "")
+          const cleanUserDoc = (u.documentNumber || "").replace(/\D/g, "")
+          const cleanPhoneQuery = query.replace(/\D/g, "")
+          const cleanUserPhone = (u.phone || "").replace(/\D/g, "")
+
+          const matchesName = u.name.toLowerCase().includes(query)
+          const matchesEmail = u.email.toLowerCase().includes(query)
+          const matchesHandle = u.handle
+            .replace(/[@#]/g, "")
+            .toLowerCase()
+            .includes(cleanQuery)
+          const matchesIdTag = u.idTag
+            .replace(/[@#]/g, "")
+            .toLowerCase()
+            .includes(cleanQuery)
+          const matchesId = u.id.toLowerCase().includes(cleanQuery)
+          const matchesDoc =
+            (u.documentNumber || "").toLowerCase().includes(query) ||
+            (cleanDocQuery.length > 0 && cleanUserDoc.includes(cleanDocQuery))
+          const matchesPhone =
+            (u.phone || "").toLowerCase().includes(query) ||
+            (cleanPhoneQuery.length > 0 &&
+              cleanUserPhone.includes(cleanPhoneQuery))
+          const matchesWallet = (u.walletFireblocks || "")
+            .toLowerCase()
+            .includes(query)
+
           matchesSearch =
-            u.name.toLowerCase().includes(query) ||
-            u.email.toLowerCase().includes(query) ||
-            cleanHandle.includes(cleanQuery) ||
-            cleanIdTag.includes(cleanQuery) ||
-            u.documentNumber.toLowerCase().includes(query) ||
-            u.walletFireblocks.toLowerCase().includes(query) ||
-            (u.phone || "").toLowerCase().includes(query)
+            matchesName ||
+            matchesEmail ||
+            matchesHandle ||
+            matchesIdTag ||
+            matchesId ||
+            matchesDoc ||
+            matchesPhone ||
+            matchesWallet
         }
       }
 
@@ -200,17 +314,6 @@ export function AdminUsersClient(): React.JSX.Element {
     birthDateTo,
   ])
 
-  const handleResetFilters = () => {
-    void setSearchQuery(null)
-    void setSearchField("ALL")
-    void setStatusFilter("ALL")
-    void setLevelFilter("ALL")
-    void setCreatedFrom(null)
-    void setCreatedTo(null)
-    void setBirthDateFrom(null)
-    void setBirthDateTo(null)
-  }
-
   const statsItems: TableStatItem[] = React.useMemo(() => {
     const totalUsers = users.length
     const confirmedUsers = users.filter(
@@ -267,6 +370,109 @@ export function AdminUsersClient(): React.JSX.Element {
     ]
   }, [users])
 
+  const sectionsConfig: TableFilterSection[] = React.useMemo(() => {
+    const datesActive = createdFrom || createdTo || birthDateFrom || birthDateTo
+    const datesLabel = datesActive
+      ? [
+          createdFrom || createdTo ? "Criado" : "",
+          birthDateFrom || birthDateTo ? "Nascimento" : "",
+        ]
+          .filter(Boolean)
+          .join(" • ")
+      : "Criado & Nasc."
+
+    const filtersActive = statusFilter !== "ALL" || levelFilter !== "ALL"
+    const filtersLabel = filtersActive
+      ? [
+          statusFilter !== "ALL" && statusFilter,
+          levelFilter !== "ALL" && levelFilter,
+        ]
+          .filter(Boolean)
+          .join(" • ")
+      : "Status & Level"
+
+    return [
+      {
+        id: "dates",
+        label: "Datas",
+        icon: CalendarBlank,
+        displayValue: datesLabel,
+        fields: [
+          {
+            id: "created",
+            type: "date-range",
+            label: "Data de Cadastro",
+            dateFrom: createdFrom || undefined,
+            dateTo: createdTo || undefined,
+            onDateFromChange: (d) => void setCreatedFrom(d || null),
+            onDateToChange: (d) => void setCreatedTo(d || null),
+            chipLabel: "Criado",
+          },
+          {
+            id: "birthDate",
+            type: "date-range",
+            label: "Data de Nascimento",
+            dateFrom: birthDateFrom || undefined,
+            dateTo: birthDateTo || undefined,
+            onDateFromChange: (d) => void setBirthDateFrom(d || null),
+            onDateToChange: (d) => void setBirthDateTo(d || null),
+            chipLabel: "Nascimento",
+          },
+        ],
+      },
+      {
+        id: "filters",
+        label: "Filtros",
+        icon: SlidersHorizontal,
+        displayValue: filtersLabel,
+        fields: [
+          {
+            id: "status",
+            type: "select",
+            label: "Status da Conta",
+            value: statusFilter,
+            onChange: (v) => void setStatusFilter(v === "ALL" ? null : v),
+            options: STATUS_FILTER_OPTIONS,
+            chipLabel: "Status",
+          },
+          {
+            id: "level",
+            type: "select",
+            label: "Nível de Acesso",
+            value: levelFilter,
+            onChange: (v) => void setLevelFilter(v === "ALL" ? null : v),
+            options: LEVEL_FILTER_OPTIONS,
+            chipLabel: "Level",
+          },
+        ],
+      },
+    ]
+  }, [
+    createdFrom,
+    createdTo,
+    birthDateFrom,
+    birthDateTo,
+    statusFilter,
+    levelFilter,
+    setCreatedFrom,
+    setCreatedTo,
+    setBirthDateFrom,
+    setBirthDateTo,
+    setStatusFilter,
+    setLevelFilter,
+  ])
+
+  const handleResetFilters = () => {
+    void setSearchQuery(null)
+    void setSearchField(null)
+    void setStatusFilter(null)
+    void setLevelFilter(null)
+    void setCreatedFrom(null)
+    void setCreatedTo(null)
+    void setBirthDateFrom(null)
+    void setBirthDateTo(null)
+  }
+
   return (
     <div className="w-full flex flex-col">
       <AdminHero
@@ -276,30 +482,21 @@ export function AdminUsersClient(): React.JSX.Element {
         imageSrc="/utils/banners/pessoas.webp"
         imageAlt="Gestão de Usuários ClubKey"
       >
-        <AdminUsersFilterBar
+        <TableFilterBar
           searchQuery={searchQuery}
           onSearchQueryChange={(v) => void setSearchQuery(v || null)}
-          searchField={searchField}
+          searchFields={SEARCH_FIELD_OPTIONS}
+          selectedSearchField={searchField}
           onSearchFieldChange={(v) =>
-            void setSearchField(v === "ALL" ? null : v)
+            void setSearchField((v as AdminUserSearchField) || null)
           }
-          statusFilter={statusFilter}
-          onStatusChange={(v) => void setStatusFilter(v === "ALL" ? null : v)}
-          levelFilter={levelFilter}
-          onLevelChange={(v) => void setLevelFilter(v === "ALL" ? null : v)}
-          createdFrom={createdFrom}
-          onCreatedFromChange={(v) => void setCreatedFrom(v || null)}
-          createdTo={createdTo}
-          onCreatedToChange={(v) => void setCreatedTo(v || null)}
-          birthDateFrom={birthDateFrom}
-          onBirthDateFromChange={(v) => void setBirthDateFrom(v || null)}
-          birthDateTo={birthDateTo}
-          onBirthDateToChange={(v) => void setBirthDateTo(v || null)}
+          sections={sectionsConfig}
           onReset={handleResetFilters}
+          actionTitle="Pesquisar usuários"
         />
       </AdminHero>
 
-      <Container className="space-y-6 -mt-3 sm:-mt-8">
+      <Container className="space-y-6 pt-6 pb-12">
         <TableStats items={statsItems} />
 
         <TableTitle

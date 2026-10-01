@@ -4,16 +4,29 @@ import * as React from "react"
 
 import {
   MOCK_CLAIMS,
+  MOCK_CLAIM_STATUS_OPTIONS,
+  MOCK_CLAIM_TYPE_OPTIONS,
   MOCK_COVERAGES_AND_LIMITS,
   MOCK_POLICY_DOCUMENTS,
 } from "@/src/data/mocks/sinistros.data"
 import type { AdminClaim } from "@clubkey/types"
-import { TableStats, type TableStatItem, toast } from "@clubkey/ui"
+import {
+  TableFilterBar,
+  type TableFilterSection,
+  TableStats,
+  type TableStatItem,
+  toast,
+} from "@clubkey/ui"
 import { formatCurrency } from "@clubkey/utils"
 import {
+  ArrowClockwise,
+  CalendarBlank,
   CheckCircle,
   ClockCountdown,
   CurrencyDollar,
+  FileText,
+  HouseLine,
+  ShieldCheck,
   WarningCircle,
 } from "@phosphor-icons/react"
 import { parseAsString, useQueryState } from "nuqs"
@@ -23,7 +36,6 @@ import { Container } from "@/src/components/common/container"
 import { AdminHero } from "../common/adminHero"
 import { SinistrosCoveragesSection } from "./sinistrosCoveragesSection"
 import { SinistrosDocumentsSection } from "./sinistrosDocumentsSection"
-import { SinistrosFilterBar } from "./sinistrosFilterBar"
 import { SinistrosTable } from "./sinistrosTable"
 
 export function SinistrosClient(): React.JSX.Element {
@@ -128,10 +140,86 @@ export function SinistrosClient(): React.JSX.Element {
     ]
   }, [claims])
 
+  const sectionsConfig: TableFilterSection[] = React.useMemo(() => {
+    const statusLabel =
+      statusFilter !== "ALL"
+        ? MOCK_CLAIM_STATUS_OPTIONS.find((o) => o.value === statusFilter)?.label || "Status"
+        : "Todos os Status"
+
+    const typeLabel =
+      typeFilter !== "ALL"
+        ? MOCK_CLAIM_TYPE_OPTIONS.find((o) => o.value === typeFilter)?.label || "Tipo"
+        : "Todos os Tipos"
+
+    const dateLabel =
+      dateFrom || dateTo
+        ? dateFrom && dateTo
+          ? `${dateFrom} a ${dateTo}`
+          : dateFrom
+            ? `A partir de ${dateFrom}`
+            : `Até ${dateTo}`
+        : "Todo o Período"
+
+    return [
+      {
+        id: "status",
+        label: "Status",
+        icon: ShieldCheck,
+        displayValue: statusLabel,
+        fields: [
+          {
+            id: "status",
+            type: "select",
+            label: "Status do Sinistro",
+            value: statusFilter,
+            onChange: (v) => void setStatusFilter(v === "ALL" ? null : v),
+            options: MOCK_CLAIM_STATUS_OPTIONS,
+            chipLabel: "Status",
+          },
+        ],
+      },
+      {
+        id: "tipo",
+        label: "Tipo",
+        icon: FileText,
+        displayValue: typeLabel,
+        fields: [
+          {
+            id: "tipo",
+            type: "select",
+            label: "Tipo de Cobertura / Sinistro",
+            value: typeFilter,
+            onChange: (v) => void setTypeFilter(v === "ALL" ? null : v),
+            options: MOCK_CLAIM_TYPE_OPTIONS,
+            chipLabel: "Tipo",
+          },
+        ],
+      },
+      {
+        id: "dates",
+        label: "Ocorrência",
+        icon: CalendarBlank,
+        displayValue: dateLabel,
+        fields: [
+          {
+            id: "dates",
+            type: "date-range",
+            label: "Data da Ocorrência",
+            dateFrom: dateFrom || undefined,
+            dateTo: dateTo || undefined,
+            onDateFromChange: (d) => void setDateFrom(d || null),
+            onDateToChange: (d) => void setDateTo(d || null),
+            chipLabel: "Ocorrência",
+          },
+        ],
+      },
+    ]
+  }, [statusFilter, typeFilter, dateFrom, dateTo, setStatusFilter, setTypeFilter, setDateFrom, setDateTo])
+
   const handleResetFilters = () => {
     void setSearchQuery(null)
-    void setStatusFilter("ALL")
-    void setTypeFilter("ALL")
+    void setStatusFilter(null)
+    void setTypeFilter(null)
     void setDateFrom(null)
     void setDateTo(null)
   }
@@ -143,7 +231,7 @@ export function SinistrosClient(): React.JSX.Element {
   }
 
   return (
-    <div className="w-full flex flex-col pb-12">
+    <div className="w-full flex flex-col">
       <AdminHero
         badge="PORTAL INTERNO • REGULAÇÃO AUDITADA"
         title="GESTÃO DE SINISTROS"
@@ -151,28 +239,22 @@ export function SinistrosClient(): React.JSX.Element {
         imageSrc="/utils/banners/experiencias.webp"
         imageAlt="Gestão de Sinistros ClubKey"
       >
-        <SinistrosFilterBar
+        <TableFilterBar
           searchQuery={searchQuery}
-          onSearchQueryChange={setSearchQuery}
-          status={statusFilter}
-          onStatusChange={setStatusFilter}
-          claimType={typeFilter}
-          onClaimTypeChange={setTypeFilter}
-          dateFrom={dateFrom}
-          onDateFromChange={setDateFrom}
-          dateTo={dateTo}
-          onDateToChange={setDateTo}
+          onSearchQueryChange={(v) => void setSearchQuery(v || null)}
+          searchLabel="Imóvel / Segurado / Código"
+          searchPlaceholder="Buscar por imóvel, segurado, código ou reserva..."
+          sections={sectionsConfig}
           onReset={handleResetFilters}
           onRefresh={handleRefresh}
+          actionTitle="Atualizar sinistros"
         />
       </AdminHero>
 
-      <Container className="space-y-8 -mt-3 sm:-mt-8">
+      <Container className="space-y-6 pt-6 pb-12">
         <TableStats items={statsItems} />
 
-        <div className="space-y-4">
-          <SinistrosTable claims={filteredClaims} />
-        </div>
+        <SinistrosTable claims={filteredClaims} />
 
         <SinistrosCoveragesSection coverages={MOCK_COVERAGES_AND_LIMITS} />
 
