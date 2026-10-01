@@ -303,7 +303,7 @@ const CarouselDots = React.forwardRef<
           className={cn(
             "h-2 rounded-full transition-all duration-300 cursor-pointer",
             index === selectedIndex
-              ? "bg-sky-500 w-6"
+              ? "bg-brand-primary w-6"
               : "bg-zinc-300 dark:bg-zinc-700 hover:bg-zinc-400 dark:hover:bg-zinc-600 w-2"
           )}
         />
