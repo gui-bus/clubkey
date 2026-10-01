@@ -4,7 +4,9 @@ import * as React from "react"
 
 import { MOCK_PROPERTIES } from "@/src/data/mocks/properties.data"
 import type { AdminProperty } from "@clubkey/types"
-import { TableTitle } from "@clubkey/ui"
+import { TableStats, type TableStatItem, TableTitle } from "@clubkey/ui"
+import { formatCurrency } from "@clubkey/utils"
+import { Bed, Buildings, ChartPieSlice, CurrencyDollar } from "@phosphor-icons/react"
 import { parseAsString, parseAsStringLiteral, useQueryState } from "nuqs"
 
 import { Container } from "@/src/components/common/container"
@@ -14,7 +16,6 @@ import {
   PropertiesFilterBar,
   type PropertySearchField,
 } from "./propertiesFilterBar"
-import { PropertiesStats } from "./propertiesStats"
 import { PropertiesTable } from "./propertiesTable"
 
 const SEARCH_FIELDS = ["ALL", "title", "code", "host", "city"] as const
@@ -137,6 +138,55 @@ export function PropertiesClient(): React.JSX.Element {
     void setPropertyTypeFilter("ALL")
   }
 
+  const statsItems: TableStatItem[] = React.useMemo(() => {
+    const totalProperties = properties.length
+    const totalRevenue = properties.reduce(
+      (acc, p) => acc + (p.revenueLastMonth || 0),
+      0
+    )
+    const avgOccupancy =
+      totalProperties > 0
+        ? properties.reduce((acc, p) => acc + (p.occupancyRate || 0), 0) /
+          totalProperties
+        : 0
+    const avgRevPar =
+      totalProperties > 0
+        ? properties.reduce((acc, p) => acc + (p.revPar || 0), 0) /
+          totalProperties
+        : 0
+
+    const availableStay = properties.filter(
+      (p) => p.stayStatus === "DISPONIVEL"
+    ).length
+
+    return [
+      {
+        label: "Total de Imóveis",
+        value: totalProperties.toString(),
+        subtext: `${availableStay} ativos para reserva no Stay`,
+        icon: Buildings,
+      },
+      {
+        label: "Receita (Últ. Mês)",
+        value: formatCurrency(totalRevenue),
+        subtext: "Fechado: Ago/26 por criação de reserva",
+        icon: CurrencyDollar,
+      },
+      {
+        label: "Ocupação Média",
+        value: `${avgOccupancy.toFixed(1)}%`,
+        subtext: "Média de ocupação da carteira",
+        icon: ChartPieSlice,
+      },
+      {
+        label: "RevPAR Médio",
+        value: formatCurrency(Math.round(avgRevPar)),
+        subtext: "Receita média por noite disponível",
+        icon: Bed,
+      },
+    ]
+  }, [properties])
+
   return (
     <div className="w-full flex flex-col">
       <AdminHero
@@ -178,7 +228,7 @@ export function PropertiesClient(): React.JSX.Element {
       </AdminHero>
 
       <Container className="space-y-6 -mt-3 sm:-mt-8">
-        <PropertiesStats properties={properties} />
+        <TableStats items={statsItems} />
 
         <TableTitle
           title="Lista de Imóveis"

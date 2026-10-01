@@ -4,8 +4,8 @@ import * as React from "react"
 
 import { MOCK_ADMINISTRATORS } from "@/src/data/mocks/administrators.data"
 import type { Administrator } from "@clubkey/types"
-import { CtaButton, TableTitle, toast } from "@clubkey/ui"
-import { UserPlus } from "@phosphor-icons/react"
+import { CtaButton, TableStats, type TableStatItem, TableTitle, toast } from "@clubkey/ui"
+import { LockKey, ShieldCheck, UserCheck, UserGear, UserPlus } from "@phosphor-icons/react"
 import { parseAsString, parseAsStringLiteral, useQueryState } from "nuqs"
 
 import { Container } from "@/src/components/common/container"
@@ -15,7 +15,6 @@ import {
   type AdministratorSearchField,
   AdministratorsFilterBar,
 } from "./administratorsFilterBar"
-import { AdministratorsStats } from "./administratorsStats"
 import { AdministratorsTable } from "./administratorsTable"
 
 const SEARCH_FIELDS = ["ALL", "name", "email", "idTag"] as const
@@ -196,6 +195,42 @@ export function AdministratorsClient(): React.JSX.Element {
     })
   }
 
+  const statsItems: TableStatItem[] = React.useMemo(() => {
+    const totalAdmins = administrators.length
+    const activeAdmins = administrators.filter((a) => a.status === "ATIVO").length
+    const twoFactorAdmins = administrators.filter((a) => a.twoFactorEnabled).length
+    const superAdmins = administrators.filter(
+      (a) => a.role === "SUPER_ADMIN"
+    ).length
+
+    return [
+      {
+        label: "Total de Administradores",
+        value: totalAdmins.toString(),
+        subtext: "Contas com acesso ao painel",
+        icon: UserGear,
+      },
+      {
+        label: "Administradores Ativos",
+        value: `${activeAdmins} (${Math.round((activeAdmins / (totalAdmins || 1)) * 100)}%)`,
+        subtext: "Acessos operacionais liberados",
+        icon: ShieldCheck,
+      },
+      {
+        label: "2FA Habilitado",
+        value: `${twoFactorAdmins} (${Math.round((twoFactorAdmins / (totalAdmins || 1)) * 100)}%)`,
+        subtext: "Autenticação em 2 etapas",
+        icon: LockKey,
+      },
+      {
+        label: "Super Admins",
+        value: `${superAdmins} contas`,
+        subtext: "Acesso irrestrito de gestão",
+        icon: UserCheck,
+      },
+    ]
+  }, [administrators])
+
   return (
     <div className="w-full flex flex-col">
       <AdminHero
@@ -231,7 +266,7 @@ export function AdministratorsClient(): React.JSX.Element {
       </AdminHero>
 
       <Container className="space-y-6 -mt-3 sm:-mt-8">
-        <AdministratorsStats administrators={administrators} />
+        <TableStats items={statsItems} />
 
         <TableTitle
           title="Lista de Administradores"

@@ -12,7 +12,14 @@ import type {
   InsuranceInvoice,
   InsuranceQueueItem,
 } from "@clubkey/types"
-import { toast } from "@clubkey/ui"
+import { TableStats, type TableStatItem, toast } from "@clubkey/ui"
+import { formatCurrency } from "@clubkey/utils"
+import {
+  ClockCountdown,
+  FileText,
+  Receipt,
+  ShieldCheck,
+} from "@phosphor-icons/react"
 import {
   parseAsString,
   useQueryState,
@@ -24,7 +31,6 @@ import { AdminHero } from "../common/adminHero"
 import { ProtecaoKeyFilterBar } from "./protecaoKeyFilterBar"
 import { ProtecaoKeyOperationalList } from "./protecaoKeyOperationalList"
 import { ProtecaoKeyQueueSection } from "./protecaoKeyQueueSection"
-import { ProtecaoKeyStats } from "./protecaoKeyStats"
 
 export function ProtecaoKeyClient(): React.JSX.Element {
   const [groups] = React.useState<InsuranceGroup[]>(MOCK_INSURANCE_GROUPS)
@@ -162,6 +168,49 @@ export function ProtecaoKeyClient(): React.JSX.Element {
     })
   }
 
+  const statsItems: TableStatItem[] = React.useMemo(() => {
+    const totalGroups = groups.length
+    const activeGroups = groups.filter((g) => g.status === "ATIVO").length
+    const totalInvoices = invoices.length
+    const pendingInvoices = invoices.filter(
+      (i) => i.status === "PENDENTE" || i.status === "ATRASADA"
+    ).length
+    const totalMonthlyAmount = groups.reduce(
+      (acc, g) => acc + (g.status === "ATIVO" ? g.monthlyAmount : 0),
+      0
+    )
+
+    return [
+      {
+        label: "Grupos de Proteção",
+        value: `${totalGroups} ${totalGroups === 1 ? "Grupo" : "Grupos"}`,
+        subtext: `${activeGroups} ativos • Cobertura multirrisco`,
+        icon: ShieldCheck,
+      },
+      {
+        label: "Faturas Emitidas",
+        value: `${totalInvoices} ${totalInvoices === 1 ? "Fatura" : "Faturas"}`,
+        subtext: "Cobrança recorrente mensal",
+        icon: Receipt,
+      },
+      {
+        label: "Pendentes / Atrasadas",
+        value: `${pendingInvoices} ${pendingInvoices === 1 ? "Fatura" : "Faturas"}`,
+        subtext:
+          pendingInvoices > 0
+            ? "Exige atenção operacional no SLA"
+            : "Sem faturas em atraso no momento",
+        icon: ClockCountdown,
+      },
+      {
+        label: "Mensalidade sob Proteção",
+        value: formatCurrency(totalMonthlyAmount),
+        subtext: "Recorrência mensal de apólices ativas",
+        icon: FileText,
+      },
+    ]
+  }, [groups, invoices])
+
   return (
     <div className="w-full flex flex-col pb-12">
       <AdminHero
@@ -190,10 +239,8 @@ export function ProtecaoKeyClient(): React.JSX.Element {
       </AdminHero>
 
       <Container className="space-y-6 -mt-3 sm:-mt-8">
-        
-        <ProtecaoKeyStats groups={groups} invoices={invoices} />
+        <TableStats items={statsItems} />
 
-        
         <ProtecaoKeyQueueSection
           queueItems={queueItems}
           onRecoverOpportunity={handleRecoverOpportunity}
@@ -202,7 +249,6 @@ export function ProtecaoKeyClient(): React.JSX.Element {
           isRefreshing={isRefreshing}
         />
 
-        
         <ProtecaoKeyOperationalList
           groups={filteredGroups}
           invoices={filteredInvoices}

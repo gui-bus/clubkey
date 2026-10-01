@@ -2,6 +2,8 @@
 
 import * as React from "react"
 
+import { MOCK_ADMIN_USERS } from "@/src/data/mocks/adminUsers.data"
+import { MOCK_PROPERTIES } from "@/src/data/mocks/properties.data"
 import {
   MOCK_RECENT_REPORTS,
   MOCK_REPORTS,
@@ -10,8 +12,16 @@ import type {
   AdminReportItem,
   ReportExecutionLog,
 } from "@clubkey/types"
-import { toast } from "@clubkey/ui"
-import { CheckCircle, X } from "@phosphor-icons/react"
+import { TableStats, type TableStatItem, toast } from "@clubkey/ui"
+import { formatCurrency } from "@clubkey/utils"
+import {
+  Buildings,
+  CalendarCheck,
+  CheckCircle,
+  CurrencyDollar,
+  UsersThree,
+  X,
+} from "@phosphor-icons/react"
 import { parseAsString, parseAsStringLiteral, useQueryState } from "nuqs"
 
 import { Container } from "@/src/components/common/container"
@@ -24,7 +34,6 @@ import {
 } from "./reportsFilterBar"
 import { ReportsPlatformBlock } from "./reportsPlatformBlock"
 import { ReportsRecentCard } from "./reportsRecentCard"
-import { ReportsStats } from "./reportsStats"
 import {
   REPORT_TABS,
   ReportsTabsNav,
@@ -228,6 +237,53 @@ Dados exportados com sucesso da plataforma ClubKey.`
     setReservationType("ALL")
   }
 
+  const statsItems: TableStatItem[] = React.useMemo(() => {
+    const totalRevenue = MOCK_PROPERTIES.reduce(
+      (acc, p) => acc + (p.revenueLastMonth || 0),
+      0
+    )
+    const totalProperties = MOCK_PROPERTIES.length
+    const avgOccupancy =
+      totalProperties > 0
+        ? Math.round(
+            MOCK_PROPERTIES.reduce((acc, p) => acc + (p.occupancyRate || 0), 0) /
+              totalProperties
+          )
+        : 0
+    const totalUsers = MOCK_ADMIN_USERS.length
+    const confirmedUsers = MOCK_ADMIN_USERS.filter(
+      (u) => u.accountStatus === "CONFIRMADO"
+    ).length
+    const kycPct = Math.round((confirmedUsers / (totalUsers || 1)) * 100)
+
+    return [
+      {
+        label: "Faturamento Consolidado",
+        value: formatCurrency(totalRevenue),
+        subtext: `Receita bruta mensal • ${totalProperties} imóveis`,
+        icon: CurrencyDollar,
+      },
+      {
+        label: "Reservas & Estadias",
+        value: "324 Reservas",
+        subtext: `${avgOccupancy}% taxa média de ocupação`,
+        icon: CalendarCheck,
+      },
+      {
+        label: "Imóveis sob Gestão",
+        value: `${totalProperties} Imóveis`,
+        subtext: "12 workspaces ativos na rede",
+        icon: Buildings,
+      },
+      {
+        label: "Membros & Usuários",
+        value: `${totalUsers} Usuários`,
+        subtext: `${kycPct}% com documentação KYC aprovada`,
+        icon: UsersThree,
+      },
+    ]
+  }, [])
+
   return (
     <div className="w-full flex flex-col pb-12">
       <AdminHero
@@ -251,7 +307,7 @@ Dados exportados com sucesso da plataforma ClubKey.`
       </AdminHero>
 
       <Container className="space-y-6 -mt-3 sm:-mt-8">
-        <ReportsStats reports={reports} recentLogs={recentLogs} />
+        <TableStats items={statsItems} />
 
         <ReportsTabsNav
           activeTab={activeNavTab}

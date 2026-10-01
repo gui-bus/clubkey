@@ -2,7 +2,6 @@
 
 import * as React from "react"
 
-import type { Administrator } from "@clubkey/types"
 import {
   Carousel,
   CarouselContent,
@@ -10,51 +9,30 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "@clubkey/ui"
-import { LockKey, ShieldCheck, UserCheck, UserGear } from "@phosphor-icons/react"
+} from "./ui/carousel/carousel"
+import { cn } from "../lib/utils"
 
-export interface AdministratorsStatsProps {
-  administrators: Administrator[]
+export interface TableStatItem {
+  label: string
+  value: React.ReactNode
+  subtext: React.ReactNode
+  icon: React.ComponentType<{
+    size?: number
+    className?: string
+    weight?: "bold" | "fill" | "regular" | "duotone" | "light" | "thin"
+  }>
 }
 
-export function AdministratorsStats({
-  administrators,
-}: AdministratorsStatsProps): React.JSX.Element {
-  const totalAdmins = administrators.length
-  const activeAdmins = administrators.filter((a) => a.status === "ATIVO").length
-  const twoFactorAdmins = administrators.filter((a) => a.twoFactorEnabled).length
-  const superAdmins = administrators.filter(
-    (a) => a.role === "SUPER_ADMIN"
-  ).length
+export interface TableStatsProps {
+  items: TableStatItem[]
+  className?: string
+}
 
-  const stats = [
-    {
-      label: "Total de Administradores",
-      value: totalAdmins.toString(),
-      subtext: "Contas com acesso ao painel",
-      icon: UserGear,
-    },
-    {
-      label: "Administradores Ativos",
-      value: `${activeAdmins} (${Math.round((activeAdmins / (totalAdmins || 1)) * 100)}%)`,
-      subtext: "Acessos operacionais liberados",
-      icon: ShieldCheck,
-    },
-    {
-      label: "2FA Habilitado",
-      value: `${twoFactorAdmins} (${Math.round((twoFactorAdmins / (totalAdmins || 1)) * 100)}%)`,
-      subtext: "Autenticação em 2 etapas",
-      icon: LockKey,
-    },
-    {
-      label: "Super Admins",
-      value: `${superAdmins} contas`,
-      subtext: "Acesso irrestrito de gestão",
-      icon: UserCheck,
-    },
-  ]
-
-  const renderCard = (stat: (typeof stats)[0]) => {
+export function TableStats({
+  items = [],
+  className,
+}: TableStatsProps): React.JSX.Element {
+  const renderCard = (stat: TableStatItem) => {
     const Icon = stat.icon
     return (
       <div className="relative overflow-hidden rounded-xl border border-zinc-200/80 dark:border-zinc-800 bg-white dark:bg-[#141416] p-4.5 sm:p-5 flex flex-col justify-between gap-3 h-full shadow-2xs">
@@ -81,17 +59,12 @@ export function AdministratorsStats({
   }
 
   return (
-    <div className="w-full">
+    <div className={cn("w-full", className)}>
       <div className="block sm:hidden w-full">
-        <Carousel
-          autoplay
-          autoplayDelay={4000}
-          loop
-          className="w-full"
-        >
+        <Carousel autoplay autoplayDelay={4000} loop className="w-full">
           <CarouselContent className="-ml-3">
-            {stats.map((stat) => (
-              <CarouselItem key={stat.label} className="pl-3 basis-full">
+            {items.map((stat, idx) => (
+              <CarouselItem key={idx} className="pl-3 basis-full">
                 {renderCard(stat)}
               </CarouselItem>
             ))}
@@ -108,8 +81,8 @@ export function AdministratorsStats({
       </div>
 
       <div className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {stats.map((stat) => (
-          <div key={stat.label}>{renderCard(stat)}</div>
+        {items.map((stat, idx) => (
+          <div key={idx}>{renderCard(stat)}</div>
         ))}
       </div>
     </div>

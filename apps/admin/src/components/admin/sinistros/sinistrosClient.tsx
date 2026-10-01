@@ -8,7 +8,14 @@ import {
   MOCK_POLICY_DOCUMENTS,
 } from "@/src/data/mocks/sinistros.data"
 import type { AdminClaim } from "@clubkey/types"
-import { toast } from "@clubkey/ui"
+import { TableStats, type TableStatItem, toast } from "@clubkey/ui"
+import { formatCurrency } from "@clubkey/utils"
+import {
+  CheckCircle,
+  ClockCountdown,
+  CurrencyDollar,
+  WarningCircle,
+} from "@phosphor-icons/react"
 import { parseAsString, useQueryState } from "nuqs"
 
 import { Container } from "@/src/components/common/container"
@@ -17,7 +24,6 @@ import { AdminHero } from "../common/adminHero"
 import { SinistrosCoveragesSection } from "./sinistrosCoveragesSection"
 import { SinistrosDocumentsSection } from "./sinistrosDocumentsSection"
 import { SinistrosFilterBar } from "./sinistrosFilterBar"
-import { SinistrosStats } from "./sinistrosStats"
 import { SinistrosTable } from "./sinistrosTable"
 
 export function SinistrosClient(): React.JSX.Element {
@@ -79,6 +85,49 @@ export function SinistrosClient(): React.JSX.Element {
     })
   }, [claims, searchQuery, statusFilter, typeFilter])
 
+  const statsItems: TableStatItem[] = React.useMemo(() => {
+    const totalClaims = claims.length
+    const inAnalysisCount = claims.filter(
+      (c) => c.status === "EM_ANALISE" || c.status === "ABERTO"
+    ).length
+    const paidClaims = claims.filter((c) => c.status === "PAGO")
+    const paidCount = paidClaims.length
+    const totalIndemnified = paidClaims.reduce(
+      (acc, curr) => acc + (curr.approvedAmount || curr.estimatedAmount || 0),
+      0
+    )
+
+    return [
+      {
+        label: "Total de Sinistros",
+        value: `${totalClaims} ${totalClaims === 1 ? "Sinistro" : "Sinistros"}`,
+        subtext: "Ocorrências patrimoniais registradas",
+        icon: WarningCircle,
+      },
+      {
+        label: "Em Regulação / Abertos",
+        value: `${inAnalysisCount} ${inAnalysisCount === 1 ? "Ocorrência" : "Ocorrências"}`,
+        subtext:
+          inAnalysisCount > 0
+            ? "Exigem análise pericial ou despacho"
+            : "Sem ocorrências em aberto",
+        icon: ClockCountdown,
+      },
+      {
+        label: "Sinistros Indenizados",
+        value: `${paidCount} ${paidCount === 1 ? "Liquidado" : "Liquidados"}`,
+        subtext: "Indenizações pagas aos segurados",
+        icon: CheckCircle,
+      },
+      {
+        label: "Total Pago em Indenizações",
+        value: formatCurrency(totalIndemnified),
+        subtext: "Liquidação financeira da Proteção Key",
+        icon: CurrencyDollar,
+      },
+    ]
+  }, [claims])
+
   const handleResetFilters = () => {
     void setSearchQuery(null)
     void setStatusFilter("ALL")
@@ -119,7 +168,7 @@ export function SinistrosClient(): React.JSX.Element {
       </AdminHero>
 
       <Container className="space-y-8 -mt-3 sm:-mt-8">
-        <SinistrosStats claims={claims} />
+        <TableStats items={statsItems} />
 
         <div className="space-y-4">
           <SinistrosTable claims={filteredClaims} />

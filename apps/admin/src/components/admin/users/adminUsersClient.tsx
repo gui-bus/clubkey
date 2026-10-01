@@ -2,9 +2,17 @@
 
 import * as React from "react"
 
+import Image from "next/image"
+
 import { MOCK_ADMIN_USERS } from "@/src/data/mocks/adminUsers.data"
 import type { AdminUser } from "@clubkey/types"
-import { TableTitle } from "@clubkey/ui"
+import { TableStats, type TableStatItem, TableTitle } from "@clubkey/ui"
+import {
+  ArrowsLeftRight,
+  ShieldCheck,
+  Users,
+  Wallet,
+} from "@phosphor-icons/react"
 import { parseAsString, parseAsStringLiteral, useQueryState } from "nuqs"
 
 import { Container } from "@/src/components/common/container"
@@ -14,7 +22,6 @@ import {
   type AdminUserSearchField,
   AdminUsersFilterBar,
 } from "./adminUsersFilterBar"
-import { AdminUsersStats } from "./adminUsersStats"
 import { AdminUsersTable } from "./adminUsersTable"
 
 const SEARCH_FIELDS = [
@@ -204,6 +211,62 @@ export function AdminUsersClient(): React.JSX.Element {
     void setBirthDateTo(null)
   }
 
+  const statsItems: TableStatItem[] = React.useMemo(() => {
+    const totalUsers = users.length
+    const confirmedUsers = users.filter(
+      (u) => u.accountStatus === "CONFIRMADO"
+    ).length
+    const p2pActiveUsers = users.filter((u) => u.p2pStatus === "ON").length
+    const totalRibTokens = users.reduce(
+      (acc, u) => acc + (u.balances?.total || 0),
+      0
+    )
+
+    return [
+      {
+        label: "Total de Usuários",
+        value: totalUsers.toString(),
+        subtext: "Cadastrados no sistema",
+        icon: Users,
+      },
+      {
+        label: "Usuários Confirmados",
+        value: `${confirmedUsers} (${Math.round((confirmedUsers / (totalUsers || 1)) * 100)}%)`,
+        subtext: "Documentação aprovada",
+        icon: ShieldCheck,
+      },
+      {
+        label: "P2P Habilitado",
+        value: `${p2pActiveUsers} ativos`,
+        subtext: "Transferências ativas",
+        icon: ArrowsLeftRight,
+      },
+      {
+        label: "Tokens em Custódia",
+        value: (
+          <div className="flex items-center gap-1.5">
+            <span>
+              {totalRibTokens.toLocaleString("pt-BR", {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 2,
+              })}
+            </span>
+            <div className="relative w-4 h-4 shrink-0 inline-block">
+              <Image
+                src="/utils/gamification/utils/RIB.svg"
+                alt="RIB"
+                fill
+                className="object-contain"
+              />
+            </div>
+          </div>
+        ),
+        subtext: "Total Fireblocks wallets",
+        icon: Wallet,
+      },
+    ]
+  }, [users])
+
   return (
     <div className="w-full flex flex-col">
       <AdminHero
@@ -237,7 +300,7 @@ export function AdminUsersClient(): React.JSX.Element {
       </AdminHero>
 
       <Container className="space-y-6 -mt-3 sm:-mt-8">
-        <AdminUsersStats users={users} />
+        <TableStats items={statsItems} />
 
         <TableTitle
           title="Lista de Usuários"
