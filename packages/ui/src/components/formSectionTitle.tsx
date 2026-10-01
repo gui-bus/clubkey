@@ -1,8 +1,11 @@
 import * as React from "react"
+
 import { cn } from "../lib/utils"
 
-export interface FormSectionTitleProps
-  extends React.HTMLAttributes<HTMLDivElement> {
+export interface FormSectionTitleProps extends Omit<
+  React.HTMLAttributes<HTMLDivElement>,
+  "title"
+> {
   title: React.ReactNode
   description?: React.ReactNode
   badge?: React.ReactNode
@@ -43,9 +46,7 @@ export function FormSectionTitle({
       </div>
 
       {action && (
-        <div className="flex items-center gap-2 shrink-0">
-          {action}
-        </div>
+        <div className="flex items-center gap-2 shrink-0">{action}</div>
       )}
     </div>
   )

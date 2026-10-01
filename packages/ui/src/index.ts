@@ -1,4 +1,3 @@
-
 export * from "./lib/designSystem"
 export * from "./lib/utils"
 
@@ -14,6 +13,7 @@ export * from "./components/ui/buttonGroup/buttonGroup"
 export * from "./components/ui/card/card"
 export * from "./components/ui/carousel/carousel"
 export * from "./components/ui/checkbox/checkbox"
+export * from "./components/ui/circularProgress/circularProgress"
 export * from "./components/ui/datePicker/datePicker"
 export * from "./components/ui/dialog/dialog"
 export * from "./components/ui/drawer/drawer"

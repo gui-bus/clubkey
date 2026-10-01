@@ -1,7 +1,11 @@
 import * as React from "react"
+
 import { cn } from "../lib/utils"
 
-export interface TableTitleProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface TableTitleProps extends Omit<
+  React.HTMLAttributes<HTMLDivElement>,
+  "title"
+> {
   title: React.ReactNode
   description?: React.ReactNode
   badge?: React.ReactNode
