@@ -2,15 +2,6 @@
 
 import * as React from "react"
 
-import { CtaButton } from "./ctaButton"
-import { DatePicker } from "./ui/datePicker/datePicker"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "./ui/popover/popover"
-import { Select } from "./ui/select/select"
-import { cn } from "../lib/utils"
 import {
   ArrowClockwise,
   CaretDown,
@@ -18,6 +9,12 @@ import {
   MagnifyingGlass,
   X,
 } from "@phosphor-icons/react"
+
+import { cn } from "../lib/utils"
+import { CtaButton } from "./ctaButton"
+import { DatePicker } from "./ui/datePicker/datePicker"
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover/popover"
+import { Select } from "./ui/select/select"
 
 export interface TableSearchFieldOption {
   value: string
@@ -142,10 +139,16 @@ export function TableFilterBar({
   actionLabel = "BUSCAR",
   className,
 }: TableFilterBarProps): React.JSX.Element {
-  const [searchFieldOpenDesktop, setSearchFieldOpenDesktop] = React.useState(false)
-  const [searchFieldOpenMobile, setSearchFieldOpenMobile] = React.useState(false)
-  const [openSectionsDesktop, setOpenSectionsDesktop] = React.useState<Record<string, boolean>>({})
-  const [openSectionsMobile, setOpenSectionsMobile] = React.useState<Record<string, boolean>>({})
+  const [searchFieldOpenDesktop, setSearchFieldOpenDesktop] =
+    React.useState(false)
+  const [searchFieldOpenMobile, setSearchFieldOpenMobile] =
+    React.useState(false)
+  const [openSectionsDesktop, setOpenSectionsDesktop] = React.useState<
+    Record<string, boolean>
+  >({})
+  const [openSectionsMobile, setOpenSectionsMobile] = React.useState<
+    Record<string, boolean>
+  >({})
 
   const currentFieldConfig = React.useMemo(() => {
     if (!searchFields || searchFields.length === 0) return null
@@ -158,10 +161,9 @@ export function TableFilterBar({
   const effectiveSearchPlaceholder =
     currentFieldConfig?.placeholder || searchPlaceholder || "Buscar..."
 
-  const effectiveSearchLabel =
-    currentFieldConfig?.short || searchLabel
+  const effectiveSearchLabel = currentFieldConfig?.short || searchLabel
 
-  const ActionIcon = actionIcon || (onRefresh ? ArrowClockwise : MagnifyingGlass)
+  const ActionIcon = actionIcon || MagnifyingGlass
 
   const activeChips = React.useMemo(() => {
     const chips: {
@@ -210,7 +212,11 @@ export function TableFilterBar({
             const from = formatDisplayDate(field.dateFrom)
             const to = formatDisplayDate(field.dateTo)
             const dateText =
-              from && to ? `${from} a ${to}` : from ? `A partir de ${from}` : `Até ${to}`
+              from && to
+                ? `${from} a ${to}`
+                : from
+                  ? `A partir de ${from}`
+                  : `Até ${to}`
             chips.push({
               id: field.id,
               label: field.chipLabel || field.label,
@@ -417,7 +423,9 @@ export function TableFilterBar({
                     showCloseButton={false}
                     className="w-64 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white/95 dark:bg-[#141416]/95 backdrop-blur-xl shadow-2xl p-1.5 z-50"
                   >
-                    {renderSearchFieldList(() => setSearchFieldOpenMobile(false))}
+                    {renderSearchFieldList(() =>
+                      setSearchFieldOpenMobile(false)
+                    )}
                   </PopoverContent>
                 </Popover>
               </div>
@@ -680,7 +688,9 @@ export function TableFilterBar({
                     showCloseButton={false}
                     className="w-64 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white/95 dark:bg-[#141416]/95 backdrop-blur-xl shadow-2xl p-1.5 z-50"
                   >
-                    {renderSearchFieldList(() => setSearchFieldOpenDesktop(false))}
+                    {renderSearchFieldList(() =>
+                      setSearchFieldOpenDesktop(false)
+                    )}
                   </PopoverContent>
                 </Popover>
               </div>

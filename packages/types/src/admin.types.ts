@@ -149,7 +149,8 @@ export interface ReportExecutionLog {
   filterSummary?: string
 }
 
-export type InsuranceGroupStatus = "ATIVO" | "CANCELADO" | "SUSPENSO" | "EM_ATRASO"
+export type InsuranceGroupStatus =
+  "ATIVO" | "CANCELADO" | "SUSPENSO" | "EM_ATRASO"
 
 export type InsuranceInvoiceStatus =
   | "RASCUNHO"
@@ -330,3 +331,84 @@ export interface AdminCreditRequest {
   analyzedAt?: string
 }
 
+export type AdminEventStatus =
+  | "PUBLICADO"
+  | "CONFIRMADO"
+  | "EM_BREVE"
+  | "ESGOTADO"
+  | "CONCLUIDO"
+  | "CANCELADO"
+
+export interface AdminEventHighlight {
+  title: string
+  desc: string
+  icon?: string
+}
+
+export interface AdminEvent {
+  id: number
+  code: string
+  title: string
+  slug: string
+  day: string
+  month: string
+  weekday: string
+  time: string
+  date: string
+  place: string
+  city: string
+  organizerId: number
+  capacity: number
+  initialConfirmed: number
+  desc: string
+  participants: number[]
+  category: string
+  format: string
+  dressCode?: string
+  price: number
+  xp: number
+  status: AdminEventStatus
+  image: string
+  highlights?: AdminEventHighlight[]
+  inclusions?: string[]
+  host?: {
+    firstName: string
+    lastName: string
+    role: string
+    avatar?: string
+  }
+  tierRequired?: string
+  createdAt?: string
+  updatedAt?: string
+}
+
+export type AdminExperienceStatus =
+  "DISPONIVEL" | "ULTIMAS_VAGAS" | "ESGOTADO" | "CONCLUIDO" | "CANCELADO"
+
+export interface AdminExperience {
+  id: number
+  code: string
+  title: string
+  slug: string
+  sub: string
+  category: string
+  date: string
+  day?: string
+  month?: string
+  weekday?: string
+  time?: string
+  place: string
+  city: string
+  price: number
+  capacity: number
+  confirmed: number
+  desc: string
+  includes: string[]
+  participants: number[]
+  image: string
+  xp: number
+  status: AdminExperienceStatus
+  tierRequired?: string
+  createdAt?: string
+  updatedAt?: string
+}

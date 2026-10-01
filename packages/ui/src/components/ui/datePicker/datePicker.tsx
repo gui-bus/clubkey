@@ -5,28 +5,29 @@ import * as React from "react"
 import { Icon } from "@iconify/react"
 import { cva } from "class-variance-authority"
 
+import { designRadius } from "../../../lib/designSystem"
 import { useKeyboardClick } from "../../../lib/hooks"
 import { cn } from "../../../lib/utils"
 
 export const datePickerTriggerVariants = cva(
-  "h-10 w-full flex items-center justify-between px-3 py-2 text-sm text-zinc-900 dark:text-zinc-100 shadow-xs outline-none focus:outline-none focus-visible:outline-none focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary focus-visible:ring-2 focus-visible:ring-brand-primary/20 focus-visible:border-brand-primary transition-all cursor-pointer select-none",
+  "h-11 w-full flex items-center justify-between px-3.5 py-2 text-sm text-zinc-900 dark:text-zinc-100 shadow-xs outline-none focus:outline-none focus-visible:outline-none focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary focus-visible:ring-2 focus-visible:ring-brand-primary/20 focus-visible:border-brand-primary transition-all cursor-pointer select-none rounded-lg",
   {
     variants: {
       variant: {
         default:
-          "bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-xs focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20 text-zinc-900 dark:text-zinc-100 rounded-xl",
+          "bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-xs focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20 text-zinc-900 dark:text-zinc-100 rounded-lg",
         bordered:
-          "bg-transparent border-2 border-zinc-200 dark:border-zinc-800 focus:border-brand-primary text-zinc-900 dark:text-zinc-100 rounded-xl",
-        flat: "bg-zinc-100 dark:bg-zinc-800/60 border-transparent hover:bg-zinc-200/70 dark:hover:bg-zinc-800 focus:bg-white dark:focus:bg-zinc-900 focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20 border text-zinc-900 dark:text-zinc-100 rounded-xl",
+          "bg-transparent border-2 border-zinc-200 dark:border-zinc-800 focus:border-brand-primary text-zinc-900 dark:text-zinc-100 rounded-lg",
+        flat: "bg-zinc-100 dark:bg-zinc-800/60 border-transparent hover:bg-zinc-200/70 dark:hover:bg-zinc-800 focus:bg-white dark:focus:bg-zinc-900 focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20 border text-zinc-900 dark:text-zinc-100 rounded-lg",
         underlined:
           "bg-transparent border-b-2 border-zinc-200 dark:border-zinc-800 px-0 focus:border-brand-primary text-zinc-900 dark:text-zinc-100 rounded-none",
         filled:
-          "bg-zinc-100 dark:bg-zinc-800/80 border border-transparent focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20 text-zinc-900 dark:text-zinc-100 rounded-xl",
+          "bg-zinc-100 dark:bg-zinc-800/80 border border-transparent focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20 text-zinc-900 dark:text-zinc-100 rounded-lg",
         glassmorphism:
-          "backdrop-blur-md bg-white/10 dark:bg-black/10 border border-white/20 dark:border-white/10 focus:border-brand-primary shadow-lg text-zinc-900 dark:text-zinc-100 rounded-xl",
+          "backdrop-blur-md bg-white/10 dark:bg-black/10 border border-white/20 dark:border-white/10 focus:border-brand-primary shadow-lg text-zinc-900 dark:text-zinc-100 rounded-lg",
         "gradient-border":
-          "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 relative [background-clip:padding-box] border border-transparent focus:ring-2 focus:ring-brand-primary/30 rounded-xl",
-        glow: "bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-xs focus:border-brand-primary focus:shadow-[0_0_12px_rgba(255,107,0,0.35)] text-zinc-900 dark:text-zinc-100 rounded-xl",
+          "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 relative [background-clip:padding-box] border border-transparent focus:ring-2 focus:ring-brand-primary/30 rounded-lg",
+        glow: "bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-xs focus:border-brand-primary focus:shadow-[0_0_12px_rgba(255,107,0,0.35)] text-zinc-900 dark:text-zinc-100 rounded-lg",
       },
     },
     defaultVariants: {
@@ -75,6 +76,7 @@ export interface DatePickerProps {
     | "glassmorphism"
     | "gradient-border"
     | "glow"
+  radius?: keyof typeof designRadius
   isRequired?: boolean
   align?: "start" | "end"
   onOpenChange?: (open: boolean) => void
@@ -203,6 +205,7 @@ export function DatePicker({
   locale = "pt-BR",
   timeZone,
   variant = "default",
+  radius = "lg",
   isRequired = false,
   align = "start",
   onOpenChange,
@@ -474,7 +477,7 @@ export function DatePicker({
     <div
       ref={containerRef}
       className={cn(
-        "relative w-full flex flex-col gap-1.5 max-w-xs",
+        "relative w-full flex flex-col gap-1.5",
         isOpen && "z-50",
         className
       )}
@@ -490,6 +493,7 @@ export function DatePicker({
         onClick={() => !disabled && setIsOpen((prev) => !prev)}
         className={cn(
           datePickerTriggerVariants({ variant }),
+          variant !== "underlined" && designRadius[radius],
           isOpen && "border-brand-primary ring-2 ring-brand-primary/20",
           isInvalid && "border-rose-500 dark:border-rose-500 text-rose-500",
           disabled && "opacity-50 cursor-not-allowed pointer-events-none"
@@ -599,7 +603,9 @@ export function DatePicker({
                       )}
                     >
                       <span>Q{q}</span>
-                      <span className="text-[9px] opacity-80">Trimestre {q}</span>
+                      <span className="text-[9px] opacity-80">
+                        Trimestre {q}
+                      </span>
                     </button>
                   )
                 })}

@@ -8,6 +8,7 @@ import { ScrollArea, ThemeToggle, TooltipProvider } from "@clubkey/ui"
 import { cn } from "@clubkey/utils"
 import {
   Buildings,
+  CalendarCheck,
   CaretLeft,
   CaretRight,
   ChartBar,
@@ -15,10 +16,11 @@ import {
   CreditCard,
   Key,
   ShieldWarning,
+  Sparkle,
   UserGear,
   Users,
 } from "@phosphor-icons/react"
-import { AnimatePresence, motion } from "framer-motion"
+import { motion } from "framer-motion"
 
 import { AdminMobileHeader } from "./adminMobileHeader"
 import { AdminSidebarItem } from "./adminSidebarItem"
@@ -70,6 +72,16 @@ export const ADMIN_NAV_SECTIONS: AdminNavSection[] = [
         label: "Proteção Key",
         href: "/protecao-key",
         icon: Key,
+      },
+      {
+        label: "Eventos",
+        href: "/eventos",
+        icon: CalendarCheck,
+      },
+      {
+        label: "Experiências",
+        href: "/experiencias",
+        icon: Sparkle,
       },
     ],
   },
