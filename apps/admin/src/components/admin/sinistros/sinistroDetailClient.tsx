@@ -76,7 +76,7 @@ export function SinistroDetailClient({
 
   if (!claim) {
     return (
-      <Container className="space-y-6">
+      <Container className="space-y-6 py-6 sm:py-8">
         <div className="flex items-center gap-2">
           <Link
             href="/sinistros"
@@ -210,7 +210,7 @@ export function SinistroDetailClient({
   }
 
   return (
-    <Container className="space-y-6">
+    <Container className="space-y-6 py-6 sm:py-8">
       <div className="flex items-center gap-2 text-xs font-semibold text-zinc-400 dark:text-zinc-500">
         <Link
           href="/sinistros"

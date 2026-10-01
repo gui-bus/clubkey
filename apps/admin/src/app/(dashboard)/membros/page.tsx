@@ -97,7 +97,7 @@ export default function AdminMembersPage() {
   })
 
   return (
-    <Container className="space-y-6">
+    <Container className="space-y-6 py-6 sm:py-8">
       <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">

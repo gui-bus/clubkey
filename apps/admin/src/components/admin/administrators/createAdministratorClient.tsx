@@ -190,7 +190,7 @@ export function CreateAdministratorClient(): React.JSX.Element {
   const currentRoleConfig = ROLES.find((r) => r.value === role) || ROLES[0]
 
   return (
-    <Container className="space-y-6">
+    <Container className="space-y-6 py-6 sm:py-8">
       <div className="flex items-center gap-2 text-xs font-semibold text-zinc-400 dark:text-zinc-500">
         <Link
           href="/administradores"

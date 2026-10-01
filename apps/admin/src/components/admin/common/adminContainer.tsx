@@ -15,7 +15,7 @@ export const AdminContainer = React.forwardRef<
   return (
     <Component
       ref={ref}
-      className={cn("w-full p-4 sm:p-6 lg:p-8", className)}
+      className={cn("w-full px-4 sm:px-6 lg:px-8", className)}
       {...props}
     >
       {children}

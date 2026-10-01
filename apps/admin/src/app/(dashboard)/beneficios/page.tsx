@@ -42,7 +42,7 @@ const mockBenefits = [
 
 export default function AdminBenefitsPage() {
   return (
-    <Container className="space-y-6">
+    <Container className="space-y-6 py-6 sm:py-8">
       
       <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
         <div>
