@@ -14,7 +14,11 @@ import {
   CheckCircle,
   Clock,
   ClockCountdown,
+  FileText,
+  Hourglass,
   Receipt,
+  ShieldWarning,
+  WarningCircle,
   XCircle,
 } from "@phosphor-icons/react"
 
@@ -49,12 +53,20 @@ export function ProtecaoKeyInvoicesTable({
             icon={<Clock size={36} weight="fill" />}
           />
         )
-      case "CANCELADA":
+      case "EM_CARENCIA":
         return (
           <TableStatusBadge
-            variant="danger"
-            label="Cancelada"
-            icon={<XCircle size={36} weight="fill" />}
+            variant="warning"
+            label="Em Carência"
+            icon={<Hourglass size={36} weight="fill" />}
+          />
+        )
+      case "RASCUNHO":
+        return (
+          <TableStatusBadge
+            variant="neutral"
+            label="Rascunho"
+            icon={<FileText size={36} weight="bold" />}
           />
         )
       case "ATRASADA":
@@ -65,6 +77,30 @@ export function ProtecaoKeyInvoicesTable({
             icon={<ClockCountdown size={36} weight="bold" />}
           />
         )
+      case "SUSPENSA":
+        return (
+          <TableStatusBadge
+            variant="warning"
+            label="Suspensa"
+            icon={<ShieldWarning size={36} weight="fill" />}
+          />
+        )
+      case "CANCELADA":
+        return (
+          <TableStatusBadge
+            variant="danger"
+            label="Cancelada"
+            icon={<XCircle size={36} weight="fill" />}
+          />
+        )
+      case "FALHA":
+        return (
+          <TableStatusBadge
+            variant="danger"
+            label="Falha"
+            icon={<WarningCircle size={36} weight="fill" />}
+          />
+        )
       case "EM_ANALISE":
         return (
           <TableStatusBadge
@@ -73,6 +109,8 @@ export function ProtecaoKeyInvoicesTable({
             icon={<ArrowsClockwise size={36} weight="bold" />}
           />
         )
+      default:
+        return null
     }
   }
 

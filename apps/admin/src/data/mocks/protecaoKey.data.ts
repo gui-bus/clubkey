@@ -178,20 +178,22 @@ export const MOCK_INSURANCE_VARIABLES: InsuranceCycleVariables = {
 }
 
 export const MOCK_INSURANCE_GROUP_STATUS_OPTIONS: SelectOption[] = [
-  { value: "ALL", label: "Status do grupo: Todos" },
-  { value: "ATIVO", label: "Ativo" },
-  { value: "CANCELADO", label: "Cancelado" },
-  { value: "SUSPENSO", label: "Suspenso" },
-  { value: "EM_ATRASO", label: "Em atraso" },
+  { value: "ALL", label: "Todos os grupos" },
+  { value: "ATIVO", label: "Ativos" },
+  { value: "CANCELADO", label: "Cancelados" },
+  { value: "SUSPENSO", label: "Suspensos" },
 ]
 
 export const MOCK_INSURANCE_INVOICE_STATUS_OPTIONS: SelectOption[] = [
-  { value: "ALL", label: "Status da fatura: Todas" },
-  { value: "PAGA", label: "Paga" },
-  { value: "PENDENTE", label: "Pendente" },
-  { value: "CANCELADA", label: "Cancelada" },
-  { value: "ATRASADA", label: "Atrasada" },
-  { value: "EM_ANALISE", label: "Em análise" },
+  { value: "ALL", label: "Todas as faturas" },
+  { value: "RASCUNHO", label: "Rascunho" },
+  { value: "PENDENTE", label: "Pendentes" },
+  { value: "EM_CARENCIA", label: "Em carência" },
+  { value: "PAGA", label: "Pagas" },
+  { value: "ATRASADA", label: "Atrasadas" },
+  { value: "SUSPENSA", label: "Suspensas" },
+  { value: "CANCELADA", label: "Canceladas" },
+  { value: "FALHA", label: "Falhas" },
 ]
 
 export const MOCK_INSURANCE_WORKSPACE_OPTIONS: SelectOption[] = [
