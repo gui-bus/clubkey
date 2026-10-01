@@ -110,3 +110,111 @@ export interface AdminProperty {
   createdAt: string
   updatedAt: string
 }
+
+export type ReportCategory = "OPERACIONAIS" | "FISCAL_DECRIPTO"
+
+export type ReportBlock = "PLATAFORMA" | "WORKSPACE" | "FISCAL"
+
+export interface ReportColumnOption {
+  id: string
+  label: string
+  defaultSelected?: boolean
+}
+
+export interface AdminReportItem {
+  id: string
+  block: ReportBlock
+  category: ReportCategory
+  badge: string
+  title: string
+  description: string
+  source: string
+  iconName: string
+  supportsDateRange?: boolean
+  supportsColumns?: boolean
+  columns?: ReportColumnOption[]
+  requiresWorkspace?: boolean
+  requiresProperty?: boolean
+}
+
+export interface ReportExecutionLog {
+  id: string
+  reportId: string
+  reportTitle: string
+  format?: string
+  status: "COMPLETED" | "PROCESSING" | "FAILED"
+  generatedAt: string
+  fileSize: string
+  downloadUrl: string
+  filterSummary?: string
+}
+
+export type InsuranceGroupStatus = "ATIVO" | "CANCELADO" | "SUSPENSO" | "EM_ATRASO"
+
+export type InsuranceInvoiceStatus =
+  | "PAGA"
+  | "PENDENTE"
+  | "CANCELADA"
+  | "ATRASADA"
+  | "EM_ANALISE"
+
+export interface InsuranceGroup {
+  id: string
+  name: string
+  workspaceId: string
+  workspaceName: string
+  hostId: string
+  status: InsuranceGroupStatus
+  monthlyAmount: number
+  propertiesCount: number
+  invoicesCount: number
+  updatedAt: string
+  createdAt: string
+  propertiesList?: string[]
+  coverageDetails?: string
+}
+
+export interface InsuranceInvoice {
+  id: string
+  groupId: string
+  groupName: string
+  workspaceId: string
+  workspaceName: string
+  amount: number
+  dueDate: string
+  paidAt?: string
+  status: InsuranceInvoiceStatus
+  ageHoursText?: string
+  opportunityRecoverable?: boolean
+  invoiceUrl?: string
+}
+
+export type InsuranceQueueType =
+  | "PENDING_SLA"
+  | "COMMERCIAL_CONTACT"
+  | "CANCELLED_24H"
+  | "DIVERGENT_PAYMENT"
+  | "OVERDUE_SUSPENDED"
+  | "WEBHOOK_DELAYED"
+
+export interface InsuranceQueueItem {
+  id: string
+  queueType: InsuranceQueueType
+  title: string
+  subtitle?: string
+  workspace: string
+  invoiceId?: string
+  groupId?: string
+  amount?: number
+  ageText?: string
+  status: string
+}
+
+export interface InsuranceCycleVariables {
+  reminderDaysBefore: number
+  graceDaysBeforeCancel: number
+  autoRecurringGeneration: boolean
+  webhookTimeoutMinutes: number
+  maxRetryAttempts: number
+  superAdminOnly: boolean
+}
