@@ -3,7 +3,7 @@
 import * as React from "react"
 
 import type { PolicyDocument } from "@clubkey/types"
-import { CtaButton, TableTitle, toast } from "@clubkey/ui"
+import { CtaButton, TableTitle } from "@clubkey/ui"
 import { DownloadSimple, FilePdf } from "@phosphor-icons/react"
 
 export interface SinistrosDocumentsSectionProps {
@@ -13,11 +13,6 @@ export interface SinistrosDocumentsSectionProps {
 export function SinistrosDocumentsSection({
   documents,
 }: SinistrosDocumentsSectionProps): React.JSX.Element {
-  const handleDownload = (doc: PolicyDocument) => {
-    toast.success(`Download iniciado: ${doc.title}`, {
-      description: "O arquivo PDF está sendo baixado.",
-    })
-  }
 
   return (
     <section className="space-y-4">
@@ -46,10 +41,11 @@ export function SinistrosDocumentsSection({
             </div>
 
             <CtaButton
-              type="button"
+              href={doc.fileUrl}
+              target="_blank"
+              rel="noopener noreferrer"
               variant="outline"
               size="sm"
-              onClick={() => handleDownload(doc)}
               className="mt-1"
             >
               <DownloadSimple size={14} weight="bold" className="mr-1.5" />

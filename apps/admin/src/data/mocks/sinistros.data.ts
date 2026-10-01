@@ -61,15 +61,15 @@ export const MOCK_POLICY_DOCUMENTS: PolicyDocument[] = [
     id: "doc-manual",
     title: "Manual do Segurado",
     description: "Guia completo com orientações e procedimentos para acionamento.",
-    fileUrl: "#",
-    fileSize: "1.8 MB",
+    fileUrl: "/utils/pdf/Manual_do_Segurado_Ribus.pdf",
+    fileSize: "5.4 MB",
   },
   {
     id: "doc-condicoes",
     title: "Condições Gerais",
     description: "Termos, coberturas e exclusões da apólice contratada.",
-    fileUrl: "#",
-    fileSize: "2.4 MB",
+    fileUrl: "/utils/pdf/Protecao_Ribus_Condicoes_Gerais.pdf",
+    fileSize: "1.2 MB",
   },
 ]
 
