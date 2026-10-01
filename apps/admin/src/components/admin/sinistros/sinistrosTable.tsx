@@ -284,14 +284,9 @@ export function SinistrosTable({
                     className="transition-colors hover:bg-zinc-50/60 dark:hover:bg-zinc-800/30 group/row cursor-pointer select-none"
                   >
                     <td className="py-4 px-4 align-middle text-left w-px whitespace-nowrap">
-                      <div className="flex flex-col">
-                        <span className="font-bold text-zinc-900 dark:text-white text-xs">
-                          {claim.occurredDate}
-                        </span>
-                        <span className="text-[10px] font-mono text-zinc-400 dark:text-zinc-500 font-semibold">
-                          {claim.code}
-                        </span>
-                      </div>
+                      <span className="font-bold text-zinc-900 dark:text-white text-xs">
+                        {claim.occurredDate}
+                      </span>
                     </td>
 
                     <td className="py-4 px-4 align-middle text-left min-w-[150px] whitespace-nowrap">
