@@ -83,11 +83,11 @@ export interface DatePickerProps {
 
 const DEFAULT_PRESETS: DatePickerPreset[] = [
   {
-    label: "Today",
+    label: "Hoje",
     getValue: () => new Date(),
   },
   {
-    label: "Yesterday",
+    label: "Ontem",
     getValue: () => {
       const d = new Date()
       d.setDate(d.getDate() - 1)
@@ -95,7 +95,7 @@ const DEFAULT_PRESETS: DatePickerPreset[] = [
     },
   },
   {
-    label: "Last 7 Days",
+    label: "Últimos 7 dias",
     getValue: () => {
       const end = new Date()
       const start = new Date()
@@ -104,7 +104,7 @@ const DEFAULT_PRESETS: DatePickerPreset[] = [
     },
   },
   {
-    label: "This Month",
+    label: "Este mês",
     getValue: () => {
       const now = new Date()
       const start = new Date(now.getFullYear(), now.getMonth(), 1)
@@ -191,7 +191,7 @@ export function DatePicker({
   multipleValue,
   onMultipleChange,
   label,
-  placeholder = "Select date...",
+  placeholder = "Selecione uma data...",
   disabled = false,
   isInvalid = false,
   isClearable = false,
@@ -200,7 +200,7 @@ export function DatePicker({
   showPresets = false,
   customPresets,
   showDoubleMonth = false,
-  locale = "en-US",
+  locale = "pt-BR",
   timeZone,
   variant = "default",
   isRequired = false,
@@ -421,16 +421,16 @@ export function DatePicker({
   const formatDate = (date: Date) => {
     if (viewMode === "fiscalQuarter") {
       const f = getFiscalQuarter(date, fiscalYearStartMonth)
-      return `Q${f.quarter} FY${f.fiscalYear}`
+      return `T${f.quarter} AF${f.fiscalYear}`
     }
     if (viewMode === "fiscalYear") {
       const f = getFiscalQuarter(date, fiscalYearStartMonth)
-      return `FY${f.fiscalYear}`
+      return `AF${f.fiscalYear}`
     }
 
     const dateStr = new Intl.DateTimeFormat(locale, {
-      month: "short",
-      day: "numeric",
+      day: "2-digit",
+      month: "2-digit",
       year: "numeric",
       timeZone: timeZone,
     }).format(date)
@@ -458,7 +458,7 @@ export function DatePicker({
     if (mode === "multiple") {
       if (multipleDates.length === 0) return placeholder
       if (multipleDates.length === 1) return formatDate(multipleDates[0])
-      return `${multipleDates.length} dates selected`
+      return `${multipleDates.length} datas selecionadas`
     }
     return placeholder
   }
@@ -541,7 +541,7 @@ export function DatePicker({
           {showPresets && viewMode === "date" && (
             <div className="flex flex-col gap-1 border-b md:border-b-0 md:border-r border-zinc-200 dark:border-zinc-800 pb-2 md:pb-0 md:pr-3 min-w-[110px]">
               <span className="text-[10px] font-bold tracking-wider text-zinc-400 uppercase mb-1">
-                Presets
+                Predefinições
               </span>
               {presets.map((preset) => (
                 <button
@@ -567,7 +567,7 @@ export function DatePicker({
                   <Icon icon="hugeicons:arrow-left-01" className="size-4" />
                 </button>
                 <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100">
-                  Fiscal Year {fiscalYearView}
+                  Ano Fiscal {fiscalYearView}
                 </span>
                 <button
                   type="button"
@@ -599,7 +599,7 @@ export function DatePicker({
                       )}
                     >
                       <span>Q{q}</span>
-                      <span className="text-[9px] opacity-80">Quarter {q}</span>
+                      <span className="text-[9px] opacity-80">Trimestre {q}</span>
                     </button>
                   )
                 })}
@@ -610,7 +610,7 @@ export function DatePicker({
           {viewMode === "fiscalYear" && (
             <div className="w-60 flex flex-col gap-3">
               <span className="text-xs font-bold text-center text-zinc-900 dark:text-zinc-100 h-7 flex items-center justify-center">
-                Select Fiscal Year
+                Selecionar Ano Fiscal
               </span>
               <div className="grid grid-cols-2 gap-2 max-h-48 overflow-y-auto">
                 {Array.from(
@@ -689,7 +689,7 @@ export function DatePicker({
                       icon="hugeicons:clock-01"
                       className="size-4 text-brand-primary"
                     />
-                    <span>Time</span>
+                    <span>Horário</span>
                   </div>
                   <div className="flex items-center gap-1.5">
                     <select
