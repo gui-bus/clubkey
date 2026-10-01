@@ -295,3 +295,38 @@ export interface PolicyDocument {
   fileUrl: string
   fileSize?: string
 }
+
+export type CreditRequestStatus =
+  | "PENDENTE"
+  | "EM_ANALISE"
+  | "APROVADO"
+  | "LIQUIDADO"
+  | "RECUSADO"
+  | "CANCELADO"
+
+export type CreditLineType =
+  | "ANTECIPACAO_RECEBIVEIS"
+  | "CAPITAL_GIRO"
+  | "CREDITO_IMOBILIARIO"
+  | "FINANCIAMENTO_REFORMA"
+
+export interface AdminCreditRequest {
+  id: string
+  code: string
+  applicantName: string
+  applicantEmail: string
+  applicantDocument?: string
+  workspaceName?: string
+  propertyTitle?: string
+  lineType: CreditLineType
+  lineTypeLabel: string
+  requestedAmount: number
+  approvedAmount?: number
+  interestRate?: string
+  installments?: number
+  status: CreditRequestStatus
+  statusLabel: string
+  requestedAt: string
+  analyzedAt?: string
+}
+
