@@ -24,7 +24,7 @@ flowchart TD
 
 ## 🗺️ Localização & Escopo
 
-- **Componente**: `src/components/portal/notificationsDropdown.tsx`
+- **Componente**: `apps/web/src/components/portal/notificationsDropdown.tsx`
 - **Exibição**: Barra de navegação superior global (`header.tsx`), ao lado do perfil e do switch de tema.
 - **Acesso**: Privado (requer autenticação JWT).
 

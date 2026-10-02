@@ -10,7 +10,7 @@ As rotas `/perfil` e `/perfil/minha-assinatura` são classificadas como **Rotas 
 
 ```mermaid
 flowchart TD
-    Req["Usuário acessa /perfil ou /perfil/minha-assinatura"] --> Proxy["Edge Proxy src/proxy.ts"]
+    Req["Usuário acessa /perfil ou /perfil/minha-assinatura"] --> Proxy["Edge Proxy apps/web/src/proxy.ts"]
     Proxy -- "Rota Universal Isenta" --> Page["Renderiza Perfil / Assinatura"]
     Page --> Theme["Aplica Tokens da Marca Ativa brandConfig"]
     Page --> Sub["Exibe Planos e Links Específicos do Tenant"]

@@ -6,11 +6,11 @@ O módulo de **Benefícios & Parcerias** concentra as vantagens exclusivas negoc
 
 ## 🛡️ Controle de Acesso Modular & White-Label
 
-O módulo de Benefícios é governado pela flag `modules.benefits` em [`src/config/brand.config.ts`](file:///c:/Users/Guilherme/Desktop/ID/clubkey/src/config/brand.config.ts).
+O módulo de Benefícios é governado pela flag `modules.benefits` em [`apps/web/src/config/brand.config.ts`](file:///c:/Users/Guilherme/Desktop/ID/clubkey/apps/web/src/config/brand.config.ts).
 
 ```mermaid
 flowchart TD
-    Req["Usuário acessa /beneficios"] --> Proxy["Edge Proxy src/proxy.ts"]
+    Req["Usuário acessa /beneficios"] --> Proxy["Edge Proxy apps/web/src/proxy.ts"]
     Proxy -- "isRouteAllowed: false (módulo desabilitado)" --> 404["Rewrite para /not-found"]
     Proxy -- "isRouteAllowed: true (módulo habilitado)" --> Layout["Server Component Layout"]
     Layout --> Guard["assertModule('benefits')"]

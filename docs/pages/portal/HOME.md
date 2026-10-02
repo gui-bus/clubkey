@@ -17,7 +17,7 @@ Por meio da **Arquitetura White-Label e Modular**, a página inicial adapta suas
 
 ## 🏛️ Composição Modular & White-Label no Painel Inicial
 
-A página inicial utiliza o componente declarativo [`<ModuleGate>`](file:///c:/Users/Guilherme/Desktop/ID/clubkey/src/components/common/moduleGate.tsx) e o hook [`useBrandModules()`](file:///c:/Users/Guilherme/Desktop/ID/clubkey/src/hooks/useBrandModules.ts) para renderizar ou omitir seções com base na configuração do tenant ativo.
+A página inicial utiliza o componente declarativo [`<ModuleGate>`](file:///c:/Users/Guilherme/Desktop/ID/clubkey/apps/web/src/components/common/moduleGate.tsx) e o hook [`useBrandModules()`](file:///c:/Users/Guilherme/Desktop/ID/clubkey/apps/web/src/hooks/useBrandModules.ts) para renderizar ou omitir seções com base na configuração do tenant ativo.
 
 ```mermaid
 flowchart TD

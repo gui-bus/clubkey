@@ -6,11 +6,11 @@ O módulo de **Conexões & Networking** é o ecossistema relacional e profission
 
 ## 🛡️ Controle de Acesso Modular & White-Label
 
-O módulo de Conexões é governado pela flag `modules.networking` em [`src/config/brand.config.ts`](file:///c:/Users/Guilherme/Desktop/ID/clubkey/src/config/brand.config.ts).
+O módulo de Conexões é governado pela flag `modules.networking` em [`apps/web/src/config/brand.config.ts`](file:///c:/Users/Guilherme/Desktop/ID/clubkey/apps/web/src/config/brand.config.ts).
 
 ```mermaid
 flowchart TD
-    Req["Usuário acessa /conexoes ou /pessoas"] --> Proxy["Edge Proxy src/proxy.ts"]
+    Req["Usuário acessa /conexoes ou /pessoas"] --> Proxy["Edge Proxy apps/web/src/proxy.ts"]
     Proxy -- "isRouteAllowed: false (módulo desabilitado)" --> 404["Rewrite para /not-found"]
     Proxy -- "isRouteAllowed: true (módulo habilitado)" --> Layout["Server Component Layout"]
     Layout --> Guard["assertModule('networking')"]
@@ -78,7 +78,7 @@ sequenceDiagram
   - Botão de Ação de Conexão com 4 estados reativos: `none` (*"Conectar"*), `pending` (*"Pendente"*), `received` (*"Aceitar Convite"*), `connected` (*"Conectado"*).
 
 ### 2. Perfil Público do Associado (`/conexoes/[id]/[slug]`)
-- **`memberProfileDetailClient.tsx`** (subcomponentes modulares em `src/components/portal/memberProfile/`):
+- **`memberProfileDetailClient.tsx`** (subcomponentes modulares em `apps/web/src/components/portal/memberProfile/`):
   - `backButton.tsx`: Retorna à listagem anterior.
   - `shareButton.tsx`: Link compartilhável do perfil.
   - **Banner de Capa & Foto (`memberProfileHero.tsx`)**: Imagem panorâmica de fundo (`coverImage`), avatar em alta resolução e badge de tier.

@@ -6,11 +6,11 @@ O módulo de **Eventos** gerencia toda a programação presencial exclusiva do c
 
 ## 🛡️ Controle de Acesso Modular & White-Label
 
-O módulo de Eventos é governado pela flag `modules.events` do preset ativo em [`src/config/brand.config.ts`](file:///c:/Users/Guilherme/Desktop/ID/clubkey/src/config/brand.config.ts).
+O módulo de Eventos é governado pela flag `modules.events` do preset ativo em [`apps/web/src/config/brand.config.ts`](file:///c:/Users/Guilherme/Desktop/ID/clubkey/apps/web/src/config/brand.config.ts).
 
 ```mermaid
 flowchart TD
-    Req["Usuário acessa /eventos ou /agenda"] --> Proxy["Edge Proxy src/proxy.ts"]
+    Req["Usuário acessa /eventos ou /agenda"] --> Proxy["Edge Proxy apps/web/src/proxy.ts"]
     Proxy -- "isRouteAllowed: false (módulo desabilitado)" --> 404["Rewrite para /not-found"]
     Proxy -- "isRouteAllowed: true (módulo habilitado)" --> Layout["Server Component Layout"]
     Layout --> Guard["assertModule('events')"]

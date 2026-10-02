@@ -8,11 +8,11 @@ O **KeyPass** é o ecossistema de progressão executiva, reconhecimento de engaj
 
 ## 🛡️ Controle de Acesso Modular & White-Label
 
-O módulo KeyPass é governado pela flag `modules.keypass` em [`src/config/brand.config.ts`](file:///c:/Users/Guilherme/Desktop/ID/clubkey/src/config/brand.config.ts).
+O módulo KeyPass é governado pela flag `modules.keypass` em [`apps/web/src/config/brand.config.ts`](file:///c:/Users/Guilherme/Desktop/ID/clubkey/apps/web/src/config/brand.config.ts).
 
 ```mermaid
 flowchart TD
-    Req["Usuário acessa /keypass ou sub-rotas"] --> Proxy["Edge Proxy src/proxy.ts"]
+    Req["Usuário acessa /keypass ou sub-rotas"] --> Proxy["Edge Proxy apps/web/src/proxy.ts"]
     Proxy -- "isRouteAllowed: false (módulo desabilitado)" --> 404["Rewrite para /not-found"]
     Proxy -- "isRouteAllowed: true (módulo habilitado)" --> Layout["Server Component Layout"]
     Layout --> Guard["assertModule('keypass')"]

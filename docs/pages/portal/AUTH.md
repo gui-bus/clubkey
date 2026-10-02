@@ -10,7 +10,7 @@ As rotas de autenticação são classificadas como **Rotas Universais Isentas** 
 
 ```mermaid
 flowchart TD
-    Req["Visitante acessa /entrar ou /cadastro"] --> Proxy["Edge Proxy src/proxy.ts"]
+    Req["Visitante acessa /entrar ou /cadastro"] --> Proxy["Edge Proxy apps/web/src/proxy.ts"]
     Proxy -- "Rota Universal Isenta" --> Page["Renderiza Formulário de Auth"]
     Page --> Brand["Carrega Logos brandConfig.assets e Cores brandConfig.colors"]
     Page --> Tenant["Exibe Nome e Termos do Tenant Ativo"]

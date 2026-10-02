@@ -6,11 +6,11 @@ O módulo de **Experiências** gerencia vivências exclusivas, jantares sensoria
 
 ## 🛡️ Controle de Acesso Modular & White-Label
 
-O módulo de Experiências é governado pela flag `modules.experiences` no preset ativo em [`src/config/brand.config.ts`](file:///c:/Users/Guilherme/Desktop/ID/clubkey/src/config/brand.config.ts).
+O módulo de Experiências é governado pela flag `modules.experiences` no preset ativo em [`apps/web/src/config/brand.config.ts`](file:///c:/Users/Guilherme/Desktop/ID/clubkey/apps/web/src/config/brand.config.ts).
 
 ```mermaid
 flowchart TD
-    Req["Usuário acessa /experiencias"] --> Proxy["Edge Proxy src/proxy.ts"]
+    Req["Usuário acessa /experiencias"] --> Proxy["Edge Proxy apps/web/src/proxy.ts"]
     Proxy -- "isRouteAllowed: false (módulo desabilitado)" --> 404["Rewrite para /not-found"]
     Proxy -- "isRouteAllowed: true (módulo habilitado)" --> Layout["Server Component Layout"]
     Layout --> Guard["assertModule('experiences')"]
