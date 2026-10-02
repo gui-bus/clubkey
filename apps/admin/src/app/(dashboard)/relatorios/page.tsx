@@ -5,7 +5,7 @@ import type { Metadata } from "next"
 import { ReportsClient } from "@/src/components/admin/reports/reportsClient"
 
 export const metadata: Metadata = {
-  title: "Central de Relatórios Admin — ClubKey Admin",
+  title: "Relatórios",
   description:
     "Gestão e exportação de relatórios analíticos, auditoria técnica, transações e métricas por workspace.",
 }

@@ -5,7 +5,7 @@ import type { Metadata } from "next"
 import { CreditoClient } from "@/src/components/admin/credito/creditoClient"
 
 export const metadata: Metadata = {
-  title: "Crédito • ClubKey Admin",
+  title: "Crédito",
   description: "Gestão operacional de linhas de crédito e solicitações de antecipação.",
 }
 

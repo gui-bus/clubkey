@@ -3,7 +3,7 @@ import type { Metadata } from "next"
 import { EventDetailClient } from "@/src/components/admin/events/eventDetailClient"
 
 export const metadata: Metadata = {
-  title: "Detalhes do Evento | Painel Admin ClubKey",
+  title: "Detalhes do Evento",
   description: "Edição de dados, participantes e lotação do evento.",
 }
 

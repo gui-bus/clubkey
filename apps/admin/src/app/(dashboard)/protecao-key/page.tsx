@@ -5,7 +5,7 @@ import type { Metadata } from "next"
 import { ProtecaoKeyClient } from "@/src/components/admin/protecaoKey/protecaoKeyClient"
 
 export const metadata: Metadata = {
-  title: "Proteção Key | ClubKey Admin",
+  title: "Proteção Key",
   description: "Administração de seguros, apólices, grupos de proteção e faturas auditáveis.",
 }
 

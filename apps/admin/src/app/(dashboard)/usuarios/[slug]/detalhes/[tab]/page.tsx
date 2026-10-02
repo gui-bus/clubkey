@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import { AdminUserDetailClient } from "@/src/components/admin/users/adminUserDetailClient"
 
 export const metadata: Metadata = {
-  title: "Detalhes do Usuário — ClubKey Admin",
+  title: "Detalhes do Usuário",
   description: "Visualização e edição dos parâmetros, documentos e permissões do usuário.",
 }
 

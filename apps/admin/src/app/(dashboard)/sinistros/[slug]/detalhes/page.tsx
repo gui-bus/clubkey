@@ -3,7 +3,7 @@ import type { Metadata } from "next"
 import { SinistroDetailClient } from "@/src/components/admin/sinistros/sinistroDetailClient"
 
 export const metadata: Metadata = {
-  title: "Detalhes do Sinistro — ClubKey Admin",
+  title: "Detalhes do Sinistro",
   description: "Informações detalhadas, laudos periciais e regulação do sinistro.",
 }
 

@@ -3,7 +3,7 @@ import type { Metadata } from "next"
 import { ExperienceDetailClient } from "@/src/components/admin/experiences/experienceDetailClient"
 
 export const metadata: Metadata = {
-  title: "Detalhes da Experiência | Painel Admin ClubKey",
+  title: "Detalhes da Experiência",
   description: "Edição de dados, participantes e vagas da experiência.",
 }
 

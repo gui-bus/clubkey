@@ -5,7 +5,7 @@ import type { Metadata } from "next"
 import { SinistrosClient } from "@/src/components/admin/sinistros/sinistrosClient"
 
 export const metadata: Metadata = {
-  title: "Sinistros | ClubKey Admin",
+  title: "Sinistros",
   description: "Abertura, regulação pericial e liquidação financeira de sinistros e indenizações.",
 }
 

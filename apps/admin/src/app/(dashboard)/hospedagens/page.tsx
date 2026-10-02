@@ -5,7 +5,7 @@ import type { Metadata } from "next"
 import { PropertiesClient } from "@/src/components/admin/properties/propertiesClient"
 
 export const metadata: Metadata = {
-  title: "Imóveis & Hospedagens — ClubKey Admin",
+  title: "Imóveis & Hospedagens",
   description:
     "Gestão consolidada de inventário, ocupação, faturamento mensal e integração com plataformas.",
 }

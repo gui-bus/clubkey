@@ -4,7 +4,7 @@ import type { Metadata } from "next"
 import { CreateAdministratorClient } from "@/src/components/admin/administrators/createAdministratorClient"
 
 export const metadata: Metadata = {
-  title: "Novo Administrador — ClubKey Admin",
+  title: "Novo Administrador",
   description:
     "Cadastre um novo administrador com credenciais de acesso e nível de permissão.",
 }

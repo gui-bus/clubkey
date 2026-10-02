@@ -5,7 +5,7 @@ import type { Metadata } from "next"
 import { AdministratorsClient } from "@/src/components/admin/administrators/administratorsClient"
 
 export const metadata: Metadata = {
-  title: "Administradores — ClubKey Admin",
+  title: "Administradores",
   description:
     "Gestão de administradores, permissões, autenticação em duas etapas (2FA) e credenciais de acesso.",
 }
