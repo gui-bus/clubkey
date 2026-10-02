@@ -1,0 +1,102 @@
+import withBundleAnalyzer from "@next/bundle-analyzer"
+
+const analyzer = withBundleAnalyzer({
+  enabled: process.env.ANALYZE === "true",
+})
+
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  output: "standalone",
+  transpilePackages: [
+    "@clubkey/ui",
+    "@clubkey/types",
+    "@clubkey/schemas",
+    "@clubkey/utils",
+  ],
+  experimental: {
+    turbopackUseSystemTlsCerts: true,
+  },
+  async redirects() {
+    return [
+      {
+        source: "/home",
+        destination: "/",
+        permanent: false,
+      },
+    ]
+  },
+  async headers() {
+    return [
+      {
+        source: "/(.*)",
+        headers: [
+          {
+            key: "Content-Security-Policy",
+            value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' blob: data: https: http:; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://www.google-analytics.com; frame-src 'self' https://maps.google.com https://www.google.com https://*.google.com https://www.openstreetmap.org https://*.openstreetmap.org; object-src 'none';",
+          },
+          {
+            key: "X-Content-Type-Options",
+            value: "nosniff",
+          },
+          {
+            key: "X-Frame-Options",
+            value: "DENY",
+          },
+          {
+            key: "X-XSS-Protection",
+            value: "1; mode=block",
+          },
+          {
+            key: "Referrer-Policy",
+            value: "strict-origin-when-cross-origin",
+          },
+          {
+            key: "Permissions-Policy",
+            value: "camera=(), microphone=(), geolocation=()",
+          },
+        ],
+      },
+    ]
+  },
+  images: {
+    unoptimized: true,
+    dangerouslyAllowSVG: true,
+    contentDispositionType: "attachment",
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+      },
+      {
+        protocol: "https",
+        hostname: "plus.unsplash.com",
+      },
+      {
+        protocol: "https",
+        hostname: "img.freepik.com",
+      },
+      {
+        protocol: "https",
+        hostname: "images.pexels.com",
+      },
+      {
+        protocol: "https",
+        hostname: "raw.githubusercontent.com",
+      },
+      {
+        protocol: "https",
+        hostname: "d2m6h3qnuwjcmy.cloudfront.net",
+      },
+      {
+        protocol: "https",
+        hostname: "sra.stays.com.br",
+      },
+      {
+        protocol: "https",
+        hostname: "credlab.stays.net",
+      },
+    ],
+  },
+}
+
+export default analyzer(nextConfig)

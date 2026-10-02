@@ -1,48 +1,71 @@
 # ClubKey — Documentação Técnica & Especificações do Sistema
 
-Bem-vindo à documentação técnica oficial do ecossistema **ClubKey & White-Label Multi-Tenant**.
+Bem-vindo à documentação técnica oficial do ecossistema **ClubKey Monorepo & White-Label Multi-Tenant**.
 
-Este diretório foi projetado especificamente para que desenvolvedores, arquitetos de software e agentes de inteligência artificial (IAs) possam compreender integralmente o funcionamento da plataforma, estender funcionalidades e construir integrações e backends de forma precisa, padronizada e sem ambiguidades.
+Este diretório está organizado em três pilares principais para que desenvolvedores, arquitetos de software e agentes de inteligência artificial (IAs) possam compreender integralmente a plataforma, estender funcionalidades e construir integrações com máxima padronização.
 
 ---
 
-## 📚 Índice Geral da Documentação
+## 🏛️ Os Três Pilares da Documentação
 
-### 1. Arquitetura, Estado & Design System
-- **[`ARCHITECTURE.md`](./ARCHITECTURE.md)**: Arquitetura técnica global do Frontend, Next.js 16 (App Router), Server/Client Components, Edge Proxy e decisões de tecnologia.
-- **[`WHITE_LABEL.md`](./WHITE_LABEL.md)**: Especificação completa do Sistema White-Label & Arquitetura Modular (`brandPresets`, matriz `modules`, defesa em profundidade em 4 camadas, guards de rota e desacoplamento visual).
-- **[`STATE_MANAGEMENT.md`](./STATE_MANAGEMENT.md)**: Arquitetura de Gerenciamento de Estado com Zustand 5, Slice Pattern por domínio, persistência isolada por tenant e atualizações otimistas.
-- **[`DESIGN_SYSTEM.md`](./DESIGN_SYSTEM.md)**: Diretrizes do Design System Bloom UI, política de tema neutro (cards brancos/zinco), tokens CVA, injeção dinâmica de CSS variables, formatadores e máscaras.
-- **[`TESTING.md`](./TESTING.md)**: Estratégia de testes automatizados, suítes unitárias com Vitest (83 testes), suítes E2E com Playwright (19 testes) e Git Hooks com Husky.
+```
+docs/
+├── 1. Arquitetura Global & Engenharia (Monorepo, Design System, White Label, DB & APIs)
+├── 2. Portal do Cliente (apps/web — Hospedagens, Eventos, Benefícios, KeyPass)
+└── 3. Painel Administrativo (apps/admin — Backoffice, Gestão de Membros, Dashboard, Stays)
+```
 
-### 2. Especificações de Dados & Backend
-- **[`DATABASE_MODELS.md`](./DATABASE_MODELS.md)**: Modelagem relacional de banco de dados sugerida (PostgreSQL ERD, tabelas, chaves primárias/estrangeiras e isolamento multi-tenant por `tenantId`).
-- **[`API_SPECIFICATIONS.md`](./API_SPECIFICATIONS.md)**: Especificação completa de todas as rotas RESTful, parâmetros, payloads JSON, autenticação e códigos de resposta HTTP.
-- **[`ENUMS.md`](./ENUMS.md)**: Dicionário central de todos os tipos enumerados (`Enums`) e constantes em inglês padronizados em `lowercase`/`snake_case`.
-- **[`GAMIFICATION_RULES.md`](./GAMIFICATION_RULES.md)**: Manual de regras de negócio do KeyPass, algoritmos de cálculo de XP, subida de tier, bônus de RIB tokens, marcos e política de retenção.
-- **[`SEED_DATA.md`](./SEED_DATA.md)**: Datasets iniciais prontos em JSON para seeders de banco de dados (Tiers, Badges, Missões, Drops e Benefícios).
+---
 
-### 3. Especificações por Página / Módulo (`docs/pages/`)
-Cada documento descreve as funcionalidades da tela, componentes visuais, interações, dados consumidos e rotas de API:
-- **[`pages/HOME.md`](./pages/HOME.md)**: Página Inicial / Feed Principal (Boas-vindas, indicadores rápidos, agenda, matchmaking de conexões e experiências).
-- **[`pages/HOSPEDAGENS.md`](./pages/HOSPEDAGENS.md)**: Catálogo de Hospedagens, Detalhes da Acomodação, Minhas Hospedagens, Voucher com QR Code e Cancelamento.
-- **[`pages/EVENTOS.md`](./pages/EVENTOS.md)**: Catálogo de Eventos, Detalhes, Confirmação de Presença (RSVP), Lista de Participantes ("Quem Vai") e Meus Eventos.
-- **[`pages/EXPERIENCIAS.md`](./pages/EXPERIENCIAS.md)**: Experiências Gastronômicas & Lifestyle, Detalhes, Checkout com Abatimento em Tokens RIB e Lista "Quem Vai".
-- **[`pages/BENEFICIOS.md`](./pages/BENEFICIOS.md)**: Parcerias Exclusivas de Luxo, Categorias e Resgate de Cupons.
-- **[`pages/CONEXOES.md`](./pages/CONEXOES.md)**: Diretório de Membros, Filtros de Matchmaking (Seeking/Offering), Perfil Público do Associado e Chat em Tempo Real.
-- **[`pages/KEYPASS.md`](./pages/KEYPASS.md)**: Sistema KeyPass — Tiers Executivos, Progresso de XP, Tokens RIB, Missões Qualificadoras, Conquistas, Drops Semanais e Ranking Global.
-- **[`pages/PERFIL.md`](./pages/PERFIL.md)**: Perfil do Membro Logado, Edição Cadastral, Tags de Negócios, Segurança 2FA e Gestão de Assinatura.
-- **[`pages/NOTIFICACOES.md`](./pages/NOTIFICACOES.md)**: Central de Notificações Global (Dropdown de avisos, convites de networking pendentes e mensagens não lidas).
-- **[`pages/AUTH.md`](./pages/AUTH.md)**: Fluxos de Autenticação (Login, Solicitação de Adesão, Recuperação e Redefinição de Senha).
+## 📚 1. Arquitetura Global & Engenharia
+
+* **[`MONOREPO.md`](./MONOREPO.md)**: Guia completo da arquitetura Monorepo (pnpm workspaces + Turborepo), estrutura de pacotes compartilhados (`@clubkey/ui`, `@clubkey/types`, `@clubkey/schemas`, `@clubkey/utils`) e pipelines de deploy independente.
+* **[`ARCHITECTURE.md`](./ARCHITECTURE.md)**: Arquitetura técnica global do Frontend, Next.js 16 (App Router), Server/Client Components, Edge Proxy e decisões de tecnologia.
+* **[`DESIGN_SYSTEM.md`](./DESIGN_SYSTEM.md)**: Diretrizes do Design System Bloom UI em `@clubkey/ui`, política de tema neutro (cards brancos/zinco), tokens CVA, injeção dinâmica de CSS variables e fontes.
+* **[`WHITE_LABEL.md`](./WHITE_LABEL.md)**: Especificação do Sistema White-Label & Arquitetura Modular (`brandPresets`, matriz `modules`, defesa em profundidade em 4 camadas e guards de rota).
+* **[`STATE_MANAGEMENT.md`](./STATE_MANAGEMENT.md)**: Gerenciamento de Estado com Zustand 5, Slice Pattern por domínio e atualizações otimistas.
+* **[`TESTING.md`](./TESTING.md)**: Estratégia de testes automatizados com Vitest, Playwright e Git Hooks com Husky.
+* **[`DATABASE_MODELS.md`](./DATABASE_MODELS.md)**: Modelagem relacional de banco de dados (PostgreSQL ERD, tabelas e isolamento multi-tenant por `tenantId`).
+* **[`API_SPECIFICATIONS.md`](./API_SPECIFICATIONS.md)**: Especificação completa de todas as rotas RESTful, parâmetros, payloads JSON e autenticação.
+* **[`ENUMS.md`](./ENUMS.md)**: Dicionário central de todos os tipos enumerados (`Enums`) padronizados em inglês.
+* **[`GAMIFICATION_RULES.md`](./GAMIFICATION_RULES.md)**: Manual de regras de negócio do KeyPass, cálculo de XP, subida de tier e bônus de RIB tokens.
+* **[`SEED_DATA.md`](./SEED_DATA.md)**: Datasets iniciais prontos em JSON para seeders de banco de dados.
+
+---
+
+## 🌐 2. Especificações do Portal do Cliente (`apps/web`)
+
+👉 **[Índice Completo do Portal do Cliente (`docs/pages/portal/README.md`)](./pages/portal/README.md)**
+
+* **[`pages/portal/HOME.md`](./pages/portal/HOME.md)**: Feed Principal, indicadores rápidos, agenda de eventos e matchmaking.
+* **[`pages/portal/HOSPEDAGENS.md`](./pages/portal/HOSPEDAGENS.md)**: Catálogo de Hospedagens, Filtros, Detalhes da Villa, Voucher com QR Code.
+* **[`pages/portal/EVENTOS.md`](./pages/portal/EVENTOS.md)**: Catálogo de Eventos, RSVP, Lista "Quem Vai" e Meus Eventos.
+* **[`pages/portal/EXPERIENCIAS.md`](./pages/portal/EXPERIENCIAS.md)**: Experiências Gastronômicas & Lifestyle sob medida.
+* **[`pages/portal/BENEFICIOS.md`](./pages/portal/BENEFICIOS.md)**: Clube de Vantagens e Resgate de Cupons de Parceiros.
+* **[`pages/portal/KEYPASS.md`](./pages/portal/KEYPASS.md)**: Tiers Executivos, Progresso de XP, Tokens RIB, Missões e Ranking Global.
+* **[`pages/portal/CONEXOES.md`](./pages/portal/CONEXOES.md)**: Diretório de Membros, Matchmaking e Chat Privativo.
+* **[`pages/portal/PERFIL.md`](./pages/portal/PERFIL.md)**: Perfil do Membro, Edição Cadastral e Gestão de Assinatura.
+* **[`pages/portal/NOTIFICACOES.md`](./pages/portal/NOTIFICACOES.md)**: Central de Notificações Global e Alertas.
+* **[`pages/portal/AUTH.md`](./pages/portal/AUTH.md)**: Fluxos de Login, Cadastro, Recuperação e Redefinição de Senha.
+
+---
+
+## ⚙️ 3. Especificações do Painel Administrativo (`apps/admin`)
+
+👉 **[Índice Completo do Painel Administrativo (`docs/pages/admin/README.md`)](./pages/admin/README.md)**
+
+* **[`pages/admin/DASHBOARD.md`](./pages/admin/DASHBOARD.md)**: Indicadores de desempenho (KPIs), MRR, taxa de ocupação e saúde das APIs.
+* **[`pages/admin/MEMBROS.md`](./pages/admin/MEMBROS.md)**: Gestão de associados, esteira de aprovação manual e exportação CSV.
+* **[`pages/admin/HOSPEDAGENS.md`](./pages/admin/HOSPEDAGENS.md)**: Gestão de inventário de acomodações, tarifas e disponibilidade.
+* **[`pages/admin/EVENTOS.md`](./pages/admin/EVENTOS.md)**: Criação de eventos, lotes de ingressos, regras KeyPass e lista de presença.
+* **[`pages/admin/BENEFICIOS.md`](./pages/admin/BENEFICIOS.md)**: Gestão de marcas parceiras, cupons de desconto e controle de resgates.
+* **[`pages/admin/CONFIGURACOES.md`](./pages/admin/CONFIGURACOES.md)**: Feature flags de módulos, políticas de segurança (2FA) e White Label.
 
 ---
 
 ## 🤖 Guia para Desenvolvedores & Agentes de IA
 
-Para estender ou integrar o ecossistema:
-1. **Consulte [`WHITE_LABEL.md`](./WHITE_LABEL.md)** para entender como o sistema ativa/desativa módulos e isola rotas no Edge Proxy e nos componentes.
-2. **Consulte [`ENUMS.md`](./ENUMS.md)** para garantir que novos campos utilizem os identificadores canônicos corretos.
-3. **Leia [`DATABASE_MODELS.md`](./DATABASE_MODELS.md)** e **[`API_SPECIFICATIONS.md`](./API_SPECIFICATIONS.md)** ao modelar tabelas e construir endpoints de backend.
-4. **Consulte [`DESIGN_SYSTEM.md`](./DESIGN_SYSTEM.md)** ao criar novas interfaces para manter a conformidade com o Bloom UI e a política de temas neutros.
-5. **Consulte [`STATE_MANAGEMENT.md`](./STATE_MANAGEMENT.md)** para entender o fluxo de dados reativo e as fatias do Zustand.
-6. **Execute `pnpm test:all`** (conforme detalhado em **[`TESTING.md`](./TESTING.md)**) para validar a integridade de qualquer nova alteração antes de submeter commits.
+1. Para adicionar ou modificar componentes visuais, edite em `packages/ui` seguindo as diretrizes do **[`DESIGN_SYSTEM.md`](./DESIGN_SYSTEM.md)**.
+2. Para alterar regras ou tipagens de domínio, modifique `packages/types` e `packages/schemas`.
+3. Para rodar ambas as aplicações localmente: `pnpm dev`.
+4. Para validar a integridade antes de commits: `pnpm validate` ou `pnpm test`.

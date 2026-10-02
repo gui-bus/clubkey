@@ -1,11 +1,19 @@
-import { readFileSync, writeFileSync, readdirSync, statSync } from 'fs';
+import { existsSync, readFileSync, writeFileSync, readdirSync, statSync } from 'fs';
 import { join, extname } from 'path';
 
-const targetDirs = [join(process.cwd(), 'src')];
+const candidateDirs = [
+  join(process.cwd(), 'apps'),
+  join(process.cwd(), 'packages'),
+  join(process.cwd(), 'src'),
+];
+
+const targetDirs = candidateDirs.filter((dir) => existsSync(dir));
+const ignoredFolders = new Set(['node_modules', '.next', 'dist', '.turbo', 'build', '.git']);
 
 function getFiles(dir, files = []) {
   const list = readdirSync(dir);
   for (const file of list) {
+    if (ignoredFolders.has(file)) continue;
     const fullPath = join(dir, file);
     if (statSync(fullPath).isDirectory()) {
       getFiles(fullPath, files);

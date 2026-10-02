@@ -1,0 +1,32 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./*", "./src/*"],
+      "@/src/components/ui/*": ["../../packages/ui/src/components/ui/*"],
+      "@/src/types/*": ["../../packages/types/src/*"],
+      "@/src/types": ["../../packages/types/src/index.ts"],
+      "@/src/schemas/*": ["../../packages/schemas/src/*"],
+      "@/src/schemas": ["../../packages/schemas/src/index.ts"],
+      "@clubkey/ui": ["../../packages/ui/src/index.ts"],
+      "@clubkey/ui/*": ["../../packages/ui/src/*"],
+      "@clubkey/types": ["../../packages/types/src/index.ts"],
+      "@clubkey/schemas": ["../../packages/schemas/src/index.ts"],
+      "@clubkey/utils": ["../../packages/utils/src/index.ts"]
+    },
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts"
+  ],
+  "exclude": ["node_modules"]
+}

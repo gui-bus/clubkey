@@ -14,11 +14,14 @@ node_modules
 /test-results
 
 # next.js
-/.next/
+.next/
 /out/
 
 # production
 /build
+
+# turbo
+.turbo
 
 # misc
 .DS_Store
