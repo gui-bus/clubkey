@@ -1,12 +1,12 @@
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Login",
+  title: "Recuperar Senha",
   description:
-    "Painel administrativo para gestão e controle da plataforma ClubKey.",
+    "Recuperação de acesso e redefinição de credenciais administrativas.",
 }
 
-export default function AdminLoginLayout({
+export default function ForgotPasswordLayout({
   children,
 }: {
   children: React.ReactNode
