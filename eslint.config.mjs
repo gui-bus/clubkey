@@ -9,6 +9,12 @@ const eslintConfig = defineConfig([
     rules: {
       "react-hooks/set-state-in-effect": "off",
       "@next/next/no-img-element": "off",
+      "@next/next/no-html-link-for-pages": "off",
+    },
+    settings: {
+      next: {
+        rootDir: ["apps/web/", "apps/admin/"],
+      },
     },
   },
   globalIgnores([

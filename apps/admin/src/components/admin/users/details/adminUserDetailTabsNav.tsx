@@ -1,34 +1,30 @@
 "use client"
 
 import * as React from "react"
+
 import Link from "next/link"
-import {
-  User,
-  Wallet,
-  ArrowsLeftRight,
-  LockKey,
-  ShieldCheck,
-  Key,
-  DiamondsFour,
-  CreditCard,
-  CalendarCheck,
-  ChartLineUp,
-  type Icon as PhosphorIcon,
-} from "@phosphor-icons/react"
+
 import { ScrollArea } from "@clubkey/ui"
 import { cn } from "@clubkey/utils"
+import {
+  ArrowsLeftRight,
+  CalendarCheck,
+  CreditCard,
+  Key,
+  LockKey,
+  type Icon as PhosphorIcon,
+  User,
+  Wallet,
+} from "@phosphor-icons/react"
 
 export type AdminUserDetailTabId =
   | "perfil"
   | "wallets"
   | "transacoes"
   | "bloqueios"
-  | "enderecos-whitelist"
   | "auth"
-  | "nfts"
   | "assinaturas"
   | "reservas"
-  | "relatorios"
 
 export interface TabConfig {
   id: AdminUserDetailTabId
@@ -42,7 +38,8 @@ export const USER_DETAIL_TABS: TabConfig[] = [
     id: "perfil",
     label: "Perfil",
     icon: User,
-    description: "Informações cadastrais, parâmetros de conta e custódia Fireblocks",
+    description:
+      "Informações cadastrais, parâmetros de conta e custódia Fireblocks",
   },
   {
     id: "wallets",
@@ -54,49 +51,35 @@ export const USER_DETAIL_TABS: TabConfig[] = [
     id: "transacoes",
     label: "Transações",
     icon: ArrowsLeftRight,
-    description: "Histórico de movimentações, depósitos, saques e transferências P2P",
+    description:
+      "Histórico de movimentações, depósitos, saques e transferências P2P",
   },
   {
     id: "bloqueios",
     label: "Bloqueios",
     icon: LockKey,
-    description: "Restrições de saldo, travas de conformidade e limites operacionais",
-  },
-  {
-    id: "enderecos-whitelist",
-    label: "Endereços Whitelist",
-    icon: ShieldCheck,
-    description: "Carteiras externas pré-autorizadas para liquidação e resgates",
+    description:
+      "Restrições de saldo, travas de conformidade e limites operacionais",
   },
   {
     id: "auth",
     label: "Auth",
     icon: Key,
-    description: "Segurança de acesso, 2FA, dispositivos conectados e sessões ativas",
-  },
-  {
-    id: "nfts",
-    label: "NFTs",
-    icon: DiamondsFour,
-    description: "Passaportes digitais, colecionáveis e chaves de acesso emitidas",
+    description:
+      "Segurança de acesso, 2FA, dispositivos conectados e sessões ativas",
   },
   {
     id: "assinaturas",
     label: "Assinaturas",
     icon: CreditCard,
-    description: "Planos de associação, faturas, recorrência e histórico de cobrança",
+    description:
+      "Planos de associação, faturas, recorrência e histórico de cobrança",
   },
   {
     id: "reservas",
     label: "Reservas",
     icon: CalendarCheck,
     description: "Histórico de locações, estadias e experiências reservadas",
-  },
-  {
-    id: "relatorios",
-    label: "Relatórios",
-    icon: ChartLineUp,
-    description: "Demonstrativos consolidados, extratos para IR e relatórios fiscais",
   },
 ]
 
