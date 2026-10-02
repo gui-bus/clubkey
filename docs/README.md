@@ -54,6 +54,8 @@ docs/
 
 👉 **[Índice Completo do Painel Administrativo (`docs/pages/admin/README.md`)](./pages/admin/README.md)**
 
+* **[`pages/admin/AUTH.md`](./pages/admin/AUTH.md)**: Autenticação split screen, desafio de 2FA TOTP e proxy de sessão `clubkey_admin_session`.
+* **[`pages/admin/PERFIL.md`](./pages/admin/PERFIL.md)**: Perfil do operador, edição cadastral com `ImageCropper`, badges de governança e gestão de 2FA.
 * **[`pages/admin/DASHBOARD.md`](./pages/admin/DASHBOARD.md)**: Indicadores de desempenho (KPIs), MRR, taxa de ocupação e saúde das APIs.
 * **[`pages/admin/MEMBROS.md`](./pages/admin/MEMBROS.md)**: Gestão de associados, esteira de aprovação manual e exportação CSV.
 * **[`pages/admin/HOSPEDAGENS.md`](./pages/admin/HOSPEDAGENS.md)**: Gestão de inventário de acomodações, tarifas e disponibilidade.

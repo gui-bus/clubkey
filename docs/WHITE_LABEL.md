@@ -23,7 +23,7 @@ Em plataformas SaaS multi-tenant voltadas a comunidades, clubes e ecossistemas d
 
 ## ⚙️ Configuração dos Presets de Marca (`brandPresets`)
 
-O núcleo do sistema White-Label fica centralizado em [`src/config/brand.config.ts`](file:///c:/Users/Guilherme/Desktop/ID/clubkey/src/config/brand.config.ts).
+O núcleo do sistema White-Label fica centralizado em [`apps/web/src/config/brand.config.ts`](file:///c:/Users/Guilherme/Desktop/ID/clubkey/apps/web/src/config/brand.config.ts).
 
 ### 1. Resolução do Tenant Ativo
 A marca ativa em tempo de execução/build é definida pela variável de ambiente `NEXT_PUBLIC_TENANT`. Caso não seja informada, o sistema aplica fallback seguro para o preset padrão (`"clubkey"`):
@@ -209,7 +209,7 @@ export const brandPresets: Record<string, BrandConfig> = {
 
 ## 🎨 Injeção Dinâmica de Variáveis CSS
 
-Para que os tokens de cores da marca alimentem o Tailwind CSS e o Bloom UI sem recarregar stylesheets externos, a função `generateBrandCssVariables` gera variáveis CSS customizadas injetadas no `<head>` do `src/app/layout.tsx`:
+Para que os tokens de cores da marca alimentem o Tailwind CSS e o Bloom UI sem recarregar stylesheets externos, a função `generateBrandCssVariables` gera variáveis CSS customizadas injetadas no `<head>` do `apps/web/src/app/layout.tsx`:
 
 ```css
 :root {
@@ -227,7 +227,7 @@ Para que os tokens de cores da marca alimentem o Tailwind CSS e o Bloom UI sem r
 
 ## 📋 Registro Canônico de Módulos (`SYSTEM_MODULE_REGISTRY`)
 
-Centralizado em [`src/config/modules.config.ts`](file:///c:/Users/Guilherme/Desktop/ID/clubkey/src/config/modules.config.ts):
+Centralizado em [`apps/web/src/config/modules.config.ts`](file:///c:/Users/Guilherme/Desktop/ID/clubkey/apps/web/src/config/modules.config.ts):
 
 | ID do Módulo | Rótulo | Prefixos de Rota (`routePrefixes`) | Rota Padrão | Requer Auth |
 | :--- | :--- | :--- | :--- | :---: |
@@ -253,7 +253,7 @@ O sistema implementa **4 camadas coordenadas** para garantir isolamento absoluto
 
 ```mermaid
 flowchart TD
-    Req["Requisição do Usuário"] --> L1["Camada 1: Edge Proxy src/proxy.ts"]
+    Req["Requisição do Usuário"] --> L1["Camada 1: Edge Proxy apps/web/src/proxy.ts"]
     L1 -- "Rota de módulo desabilitado" --> 404A["Rewrite para /not-found"]
     L1 -- "Rota permitida" --> L2["Camada 2: Server Component Guard assertModule"]
     L2 -- "Módulo inativo no Layout/Page" --> 404B["Dispara NEXT_HTTP_ERROR_FALLBACK 404"]
@@ -266,14 +266,14 @@ flowchart TD
 
 ---
 
-### Camada 1: Edge Proxy (`src/proxy.ts`)
+### Camada 1: Edge Proxy (`apps/web/src/proxy.ts`)
 Executado na borda (Edge Runtime do Next.js 16) antes de qualquer processamento de rota:
 - Examina `pathname` contra `isPathAllowed(pathname, brandConfig.modules)`.
 - Se o usuário tentar acessar diretamente uma rota desativada pelo preset, o proxy reescreve a resposta para `/not-found` com status 404.
 - Faz bypass automático para arquivos estáticos (`/_next/*`, `/utils/*`, `/logos/*`, `favicon.ico`).
 
 ```typescript
-// src/proxy.ts
+// apps/web/src/proxy.ts
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
 
@@ -304,7 +304,7 @@ Implementada em `layout.tsx` e `page.tsx` de rotas sensíveis:
 - Caso `assertModule(module)` seja chamada para um módulo inativo, emite o erro HTTP 404 canônico do Next.js (`NEXT_HTTP_ERROR_FALLBACK;404`), renderizando `not-found.tsx`.
 
 ```typescript
-// Exemplo: src/app/(portal)/eventos/layout.tsx
+// Exemplo: apps/web/src/app/(portal)/eventos/layout.tsx
 import { assertModule, brandConfig } from "@/src/config/brand.config"
 
 export default function EventosLayout({ children }: { children: React.ReactNode }) {
@@ -317,7 +317,7 @@ export default function EventosLayout({ children }: { children: React.ReactNode 
 ---
 
 ### Camada 3: Componente Declarativo `<ModuleGate>`
-Localizado em [`src/components/common/moduleGate.tsx`](file:///c:/Users/Guilherme/Desktop/ID/clubkey/src/components/common/moduleGate.tsx):
+Localizado em [`apps/web/src/components/common/moduleGate.tsx`](file:///c:/Users/Guilherme/Desktop/ID/clubkey/apps/web/src/components/common/moduleGate.tsx):
 - Envelopa blocos JSX e widgets no feed, páginas e dashboards.
 - Se o módulo estiver habilitado, renderiza os filhos normais. Se estiver desabilitado, renderiza `fallback` ou `null`.
 
@@ -336,7 +336,7 @@ Localizado em [`src/components/common/moduleGate.tsx`](file:///c:/Users/Guilherm
 ---
 
 ### Camada 4: Custom Hook Reativo `useBrandModules()`
-Localizado em [`src/hooks/useBrandModules.ts`](file:///c:/Users/Guilherme/Desktop/ID/clubkey/src/hooks/useBrandModules.ts):
+Localizado em [`apps/web/src/hooks/useBrandModules.ts`](file:///c:/Users/Guilherme/Desktop/ID/clubkey/apps/web/src/hooks/useBrandModules.ts):
 - Fornece aos componentes de cliente (`use client`) acesso seguro e reativo às configurações da marca:
 
 ```typescript
@@ -355,18 +355,20 @@ const {
 
 Todos os componentes visuais do portal consultam `brandConfig.modules` e `brandConfig.assets`:
 
-1. **Header & Menu Superior (`src/components/portal/header.tsx`)**:
+1. **Header & Menu Superior (`apps/web/src/components/portal/header.tsx`)**:
    - As abas de navegação são filtradas em tempo de renderização com base nos módulos ativos.
    - O logotipo é carregado dinamicamente de `brandConfig.assets.logoMain` / `logoDark` / `logoLight`.
-2. **Rodapé & Links Institucionais (`src/components/portal/footer.tsx`)**:
+2. **Rodapé & Links Institucionais (`apps/web/src/components/portal/footer.tsx`)**:
    - As colunas de links removem automaticamente as rotas de módulos desativados.
    - O copyright, slogan e links sociais exibem os dados do tenant ativo.
-3. **Dropdown de Usuário (`src/components/portal/userDropdownMenu.tsx`)**:
+3. **Dropdown de Usuário (`apps/web/src/components/portal/userDropdownMenu.tsx`)**:
    - Atalhos para *Minhas Hospedagens*, *Meus Eventos* e *KeyPass* só são adicionados se o respectivo módulo estiver ativo.
-4. **Página Inicial & Painel do Associado (`src/app/(portal)/page.tsx`)**:
+4. **Página Inicial & Painel do Associado (`apps/web/src/app/(portal)/page.tsx`)**:
    - Adapta automaticamente os blocos do feed: seções de módulos desativados são suprimidas de forma transparente.
 5. **Cards de Membros & Diretório**:
    - No perfil público (`memberProfileHero.tsx`), badges de nível de KeyPass e pontuações de XP são exibidas exclusivamente se `isModuleEnabled("keypass") === true`.
+6. **Governança no Painel Administrativo**:
+   - No Backoffice (`apps/admin/src/app/(dashboard)/configuracoes`), administradores visualizam as feature flags de módulos do sistema e parâmetros White Label.
 
 ---
 
@@ -374,7 +376,7 @@ Todos os componentes visuais do portal consultam `brandConfig.modules` e `brandC
 
 Para adicionar uma nova marca parceira:
 
-1. Abra [`src/config/brand.config.ts`](file:///c:/Users/Guilherme/Desktop/ID/clubkey/src/config/brand.config.ts) e adicione o novo objeto no `brandPresets`:
+1. Abra [`apps/web/src/config/brand.config.ts`](file:///c:/Users/Guilherme/Desktop/ID/clubkey/apps/web/src/config/brand.config.ts) e adicione o novo objeto no `brandPresets`:
    ```typescript
    novamarca: {
      id: "novamarca",
@@ -444,7 +446,7 @@ Para adicionar uma nova marca parceira:
 
 3. Valide a integridade através da suíte de testes:
    ```bash
-   pnpm test:all
+   pnpm validate
    ```
 
 ---
@@ -453,15 +455,15 @@ Para adicionar uma nova marca parceira:
 
 A robustez da arquitetura White-Label é garantida por testes unitários e end-to-end:
 
-### Testes Unitários (Vitest — 83 testes)
-- [`src/__tests__/modules.test.ts`](file:///c:/Users/Guilherme/Desktop/ID/clubkey/src/__tests__/modules.test.ts): Validação de registro de módulos, caminhos e função `assertModuleEnabled`.
-- [`src/__tests__/brandConfig.test.ts`](file:///c:/Users/Guilherme/Desktop/ID/clubkey/src/__tests__/brandConfig.test.ts): Presets de marca, fallback de tenant e gerador de variáveis CSS.
-- [`src/__tests__/moduleGate.test.tsx`](file:///c:/Users/Guilherme/Desktop/ID/clubkey/src/__tests__/moduleGate.test.tsx): Renderização declarativa e ocultação via `<ModuleGate>`.
-- [`src/__tests__/useBrandModules.test.ts`](file:///c:/Users/Guilherme/Desktop/ID/clubkey/src/__tests__/useBrandModules.test.ts): Reatividade e helpers do custom hook.
-- [`src/__tests__/proxy.test.ts`](file:///c:/Users/Guilherme/Desktop/ID/clubkey/src/__tests__/proxy.test.ts): Comportamento do Edge Proxy para rotas autorizadas, rotas bloqueadas e bypass de assets.
-- [`src/__tests__/headerNavigation.test.tsx`](file:///c:/Users/Guilherme/Desktop/ID/clubkey/src/__tests__/headerNavigation.test.tsx) & [`src/__tests__/footerNavigation.test.tsx`](file:///c:/Users/Guilherme/Desktop/ID/clubkey/src/__tests__/footerNavigation.test.tsx): Isolamento de menus e rodapés.
-- [`src/__tests__/gamificationIsolation.test.tsx`](file:///c:/Users/Guilherme/Desktop/ID/clubkey/src/__tests__/gamificationIsolation.test.tsx) & [`src/__tests__/crossModuleDecoupling.test.tsx`](file:///c:/Users/Guilherme/Desktop/ID/clubkey/src/__tests__/crossModuleDecoupling.test.tsx): Validação de desacoplamento cruzado.
+### Testes Unitários (Vitest — apps/web)
+- [`apps/web/src/__tests__/modules.test.ts`](file:///c:/Users/Guilherme/Desktop/ID/clubkey/apps/web/src/__tests__/modules.test.ts): Validação de registro de módulos, caminhos e função `assertModuleEnabled`.
+- [`apps/web/src/__tests__/brandConfig.test.ts`](file:///c:/Users/Guilherme/Desktop/ID/clubkey/apps/web/src/__tests__/brandConfig.test.ts): Presets de marca, fallback de tenant e gerador de variáveis CSS.
+- [`apps/web/src/__tests__/moduleGate.test.tsx`](file:///c:/Users/Guilherme/Desktop/ID/clubkey/apps/web/src/__tests__/moduleGate.test.tsx): Renderização declarativa e ocultação via `<ModuleGate>`.
+- [`apps/web/src/__tests__/useBrandModules.test.ts`](file:///c:/Users/Guilherme/Desktop/ID/clubkey/apps/web/src/__tests__/useBrandModules.test.ts): Reatividade e helpers do custom hook.
+- [`apps/web/src/__tests__/proxy.test.ts`](file:///c:/Users/Guilherme/Desktop/ID/clubkey/apps/web/src/__tests__/proxy.test.ts): Comportamento do Edge Proxy para rotas autorizadas, rotas bloqueadas e bypass de assets.
+- [`apps/web/src/__tests__/headerNavigation.test.tsx`](file:///c:/Users/Guilherme/Desktop/ID/clubkey/apps/web/src/__tests__/headerNavigation.test.tsx) & [`apps/web/src/__tests__/footerNavigation.test.tsx`](file:///c:/Users/Guilherme/Desktop/ID/clubkey/apps/web/src/__tests__/footerNavigation.test.tsx): Isolamento de menus e rodapés.
+- [`apps/web/src/__tests__/gamificationIsolation.test.tsx`](file:///c:/Users/Guilherme/Desktop/ID/clubkey/apps/web/src/__tests__/gamificationIsolation.test.tsx) & [`apps/web/src/__tests__/crossModuleDecoupling.test.tsx`](file:///c:/Users/Guilherme/Desktop/ID/clubkey/apps/web/src/__tests__/crossModuleDecoupling.test.tsx): Validação de desacoplamento cruzado.
 
 ### Testes Ponta a Ponta (Playwright E2E — 19 testes)
-- [`src/__tests__/e2e/moduleSecurity.spec.ts`](file:///c:/Users/Guilherme/Desktop/ID/clubkey/src/__tests__/e2e/moduleSecurity.spec.ts): Valida que rotas permitidas retornam 200 OK e rotas bloqueadas resultam em tela 404 no navegador real.
-- [`src/__tests__/e2e/navigationWhiteLabel.spec.ts`](file:///c:/Users/Guilherme/Desktop/ID/clubkey/src/__tests__/e2e/navigationWhiteLabel.spec.ts): Valida logotipos, links, rodapé e visual white-label.
+- [`apps/web/src/__tests__/e2e/moduleSecurity.spec.ts`](file:///c:/Users/Guilherme/Desktop/ID/clubkey/apps/web/src/__tests__/e2e/moduleSecurity.spec.ts): Valida que rotas permitidas retornam 200 OK e rotas bloqueadas resultam em tela 404 no navegador real.
+- [`apps/web/src/__tests__/e2e/navigationWhiteLabel.spec.ts`](file:///c:/Users/Guilherme/Desktop/ID/clubkey/apps/web/src/__tests__/e2e/navigationWhiteLabel.spec.ts): Valida logotipos, links, rodapé e visual white-label.

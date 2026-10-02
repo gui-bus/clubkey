@@ -1,6 +1,6 @@
 # Especificação do Design System & Diretrizes Visuais (Bloom UI)
 
-Este documento detalha o sistema de design, convenções de interface, tokens visuais, tipografia e diretrizes de estilização adotadas em toda a plataforma, baseadas no **Bloom UI**, **Tailwind CSS v4**, **Radix UI Primitives** e **CVA (Class Variance Authority)**.
+Este documento detalha o sistema de design, convenções de interface, tokens visuais, tipografia e diretrizes de estilização adotadas em todo o ecossistema **ClubKey Monorepo**, centralizadas no pacote compartilhado **`@clubkey/ui`** (`packages/ui/`) e utilitários em **`@clubkey/utils`** (`packages/utils/`).
 
 ---
 
@@ -10,17 +10,47 @@ A identidade visual da plataforma segue um padrão **executivo, sóbrio e minima
 
 1. **Superfícies de Cards & Contêineres**:
    - **Modo Claro (Light Mode)**: Deve ser **estritamente branco puro** (`bg-white`), com bordas sutis em cinza neutro (`border-zinc-200`).
-   - **Modo Escuro (Dark Mode)**: Deve ser **estritamente cinza neutro profundo** (`bg-zinc-900`, `dark:bg-zinc-900`, bordas `dark:border-zinc-800`).
+   - **Modo Escuro (Dark Mode)**: Deve ser **estritamente cinza neutro profundo** (`bg-zinc-900`, `dark:bg-zinc-900`, bordas `border-zinc-200`, `dark:border-zinc-800`).
 2. **Proscrição de Contêineres Azulados ou Coloridos**:
    - É **proibido** utilizar contêineres, painéis ou cards com fundos azulados, azuis-petróleo ou tingidos.
 3. **Aplicação das Cores de Destaque**:
-   - A cor primária da marca (injetada dinamicamente via variáveis CSS por preset) e cores semânticas (`emerald`, `amber`, `red`) devem ser aplicadas **exclusivamente** em tipografia/títulos, ícones de status, badges, tags e acentos.
+   - A cor primária da marca (injetada dinamicamente via variáveis CSS por preset) e cores semânticas (`emerald`, `amber`, `red`) devem ser aplicadas **exclusivamente** em tipografia/títulos, ícones de status, badges, tags e acentos. As superfícies permanecem rigorosamente neutras.
+
+---
+
+## 📦 Arquitetura de Pacotes do Design System
+
+```mermaid
+graph LR
+    subgraph UI ["@clubkey/ui (packages/ui/)"]
+        Bloom["Componentes Bloom UI (Button, Card, Modal, etc.)"]
+        CVA["Tokens & CVA Scales (designSystem.ts)"]
+        DomainComp["Componentes de Domínio (TableStatusBadge)"]
+    end
+
+    subgraph Utils ["@clubkey/utils (packages/utils/)"]
+        Cn["cn (Tailwind Merge + Clsx)"]
+        Formatters["formatters.ts (Moeda, Datas)"]
+        Masks["masks.ts (CPF, CNPJ, Cartão)"]
+    end
+
+    subgraph Apps ["Consumidores"]
+        Web["apps/web"]
+        Admin["apps/admin"]
+    end
+
+    UI --> Utils
+    Web --> UI
+    Web --> Utils
+    Admin --> UI
+    Admin --> Utils
+```
 
 ---
 
 ## 📐 Escalas de Tokens de Design (CVA Scale)
 
-Centralizado em [`src/lib/designSystem.ts`](file:///c:/Users/Guilherme/Desktop/ID/clubkey/src/lib/designSystem.ts):
+Centralizado em [`packages/ui/src/lib/designSystem.ts`](file:///c:/Users/Guilherme/Desktop/ID/clubkey/packages/ui/src/lib/designSystem.ts):
 
 ### 1. Escala de Tamanhos (`BloomSize`)
 | Token | Padding & Altura | Tipografia | Uso Recomendado |
@@ -42,7 +72,7 @@ Centralizado em [`src/lib/designSystem.ts`](file:///c:/Users/Guilherme/Desktop/I
 - `"xl"`: `rounded-xl`
 - `"2xl"`: `rounded-2xl`
 - `"3xl"`: `rounded-3xl`
-- `"full"`: `rounded-full` *(Pílulas de status e avatares)*
+- `"full"`: `rounded-full` *(Pílulas de status, tags e avatares)*
 
 ### 3. Paleta de Cores Semânticas (`BloomColor`)
 - `"default"`: Zinco neutro (`zinc-900` / `zinc-100`)
@@ -64,6 +94,43 @@ Centralizado em [`src/lib/designSystem.ts`](file:///c:/Users/Guilherme/Desktop/I
 
 ---
 
+## 🏷️ Componente `TableStatusBadge` (`@clubkey/ui`)
+
+O componente `TableStatusBadge` ([`packages/ui/src/components/tableStatusBadge.tsx`](file:///c:/Users/Guilherme/Desktop/ID/clubkey/packages/ui/src/components/tableStatusBadge.tsx)) é o padrão institucional para exibição de status, cargos de governança e indicadores de segurança:
+
+- **Dot Indicator**: Ponto circular de cor saturada correspondente à variante.
+- **Marca D'água Opcional (`watermarkIcon`)**: Ícone temático renderizado com opacidade reduzida ao fundo da badge (ex: ícone `Crown` para `SUPER ADMIN`, ícone `ShieldCheck` para `2FA Ativo`).
+- **Variantes Semânticas**:
+  - `"emerald"`: Status ativo, aprovado, 2FA habilitado.
+  - `"amber"`: Pendente, em análise, moderação.
+  - `"rose"`: Cancelado, bloqueado, inativo.
+  - `"blue"`: Informativo, processando.
+  - `"zinc"`: Neutro, arquivado, padrão.
+  - `"purple"`: Especial, Super Admin, VIP.
+
+### Exemplo de Uso:
+
+```tsx
+import { TableStatusBadge } from "@clubkey/ui"
+import { Crown, ShieldCheck } from "@phosphor-icons/react"
+
+// Badge de Cargo Executivo com Marca D'água
+<TableStatusBadge
+  variant="purple"
+  label="SUPER ADMIN"
+  watermarkIcon={Crown}
+/>
+
+// Badge de Segurança 2FA com Marca D'água
+<TableStatusBadge
+  variant="emerald"
+  label="2FA Ativo"
+  watermarkIcon={ShieldCheck}
+/>
+```
+
+---
+
 ## 🎨 Injeção Dinâmica de Variáveis CSS por Marca
 
 Para garantir que o Design System reaja instantaneamente ao preset da marca ativa em tempo de execução sem recarregar bundles externos:
@@ -82,28 +149,19 @@ Para garantir que o Design System reaja instantaneamente ao preset da marca ativ
 
 ---
 
-## 🛠️ Utilitários de Interface, Formatação & Máscaras
+## 🛠️ Utilitários de Interface, Formatação & Máscaras (`@clubkey/utils`)
 
-### 1. `src/lib/formatters.ts`
+### 1. Formatadores (`packages/utils/src/formatters.ts`)
 - `formatCurrency(value, options)`: Formata valores monetários no padrão brasileiro (`R$ 1.850,00`).
 - `formatBRL(amount)`: Formata inteiros em moeda sem centavos (`R$ 1.850`).
 - `formatShortDate(date, options)`: Formata datas abreviadas (`24 Out 2026`).
 - `formatDateRange(start, end)`: Formata intervalos de datas para reservas (`14 Nov — 18 Nov`).
 - `formatNumber(value)`: Formata números com separador de milhar (`16.850`).
 
-### 2. `src/lib/masks.ts`
+### 2. Máscaras (`packages/utils/src/masks.ts`)
 - `maskCpf(value)`: Aplica máscara de CPF (`000.000.000-00`).
 - `maskCnpj(value)`: Aplica máscara de CNPJ (`00.000.000/0000-00`).
 - `maskDate(value)`: Aplica máscara de data (`DD/MM/AAAA`).
 - `maskCardNumber(value)`: Agrupa dígitos do cartão em blocos de 4 (`0000 0000 0000 0000`).
 - `maskCardExpiry(value)`: Formata validade do cartão (`MM/AA`).
 - `maskCvv(value)`: Limita CVV a 3 ou 4 dígitos numéricos.
-- `maskPhone(value)`: Formata telefones fixos e celulares (`(11) 98765-4321`).
-
----
-
-## ♿ Acessibilidade (a11y) & Feedback Visual
-
-1. **Radix UI Primitives**: Todos os modais (`Dialog`), menus (`DropdownMenu`), seletores (`Select`), abas (`Tabs`) e popovers (`Popover`) contam com armadilha de foco (*focus trap*), navegação por teclado (`Tab`, `Escape`, setas) e atributos ARIA completos.
-2. **Notificações Flutuantes (Sonner)**: Notificações com feedback sonoro/visual acessível, posicionadas no canto superior/inferior direito via `<Toaster />`.
-3. **Alto Contraste & WCAG 2.1 AA**: Todos os pares de texto e fundo atendem à taxa mínima de contraste de 4.5:1.

@@ -1,6 +1,6 @@
 # Arquitetura Técnica do Frontend & Decisões de Tecnologia
 
-Este documento detalha a arquitetura, convenções e tecnologias adotadas no desenvolvimento do frontend da plataforma **White-Label Multi-Tenant**.
+Este documento detalha a arquitetura, convenções e tecnologias adotadas no desenvolvimento do frontend do ecossistema **ClubKey Monorepo & White-Label Multi-Tenant**.
 
 ---
 
@@ -8,166 +8,201 @@ Este documento detalha a arquitetura, convenções e tecnologias adotadas no des
 
 | Camada | Tecnologia | Justificativa / Uso |
 | :--- | :--- | :--- |
-| **Framework** | Next.js 16.1.7 (App Router & Turbopack) | Suporte nativo a React 19, Server Components, SSR/SSG dinâmico, SEO otimizado (`generateMetadata`) e performance de ponta. |
+| **Monorepo & Orquestração** | Turborepo + pnpm workspaces | Gerenciamento unificado de dependências com linking inteligente, isolamento de escopo e cache de builds. |
+| **Framework Web** | Next.js 16.1.7 (App Router & Turbopack) | Suporte nativo a React 19, Server Components, SSR dinâmico, SEO otimizado (`generateMetadata`) e performance de ponta. |
 | **Linguagem** | TypeScript 5+ | Tipagem estrita de todas as entidades de domínio, props de componentes e payloads de estado. |
 | **Estilização** | Tailwind CSS v4 | Utility-first styling moderno, variáveis CSS nativas, alta performance e zero runtime overhead. |
-| **Design System** | Bloom UI + Radix UI Primitives | Sistema de componentes acessíveis, consistentes e baseados no Radix UI com CVA (Class Variance Authority). |
-| **Gerenciamento de Estado** | Zustand 5.x (`persist` middleware) | Estado global performático, reativo, com sincronização em `localStorage` e tipagem completa. |
-| **Ícones** | Phosphor Icons (`@phosphor-icons/react`) | Pacote de ícones consistente, leve e com múltiplos pesos (`bold`, `regular`, `fill`). |
-| **Formulários & Validação** | React Hook Form + Zod | Validação robusta de schemas, controle de erros e feedback em tempo real. |
+| **Design System** | Bloom UI + Radix UI Primitives (`@clubkey/ui`) | Sistema de componentes acessíveis e consistentes baseados no Radix UI com CVA (Class Variance Authority). |
+| **Gerenciamento de Estado** | Zustand 5.x (`persist` middleware) | Estado global reativo com sincronização local, isolado por tenant no portal e com store dedicada no admin. |
+| **Ícones** | Phosphor Icons (`@phosphor-icons/react`) | Pacote de ícones leve e consistente com múltiplos pesos (`bold`, `regular`, `fill`). |
+| **Formulários & Validação** | React Hook Form + Zod (`@clubkey/schemas`) | Validação robusta de schemas com tipagem inferida e feedback instantâneo. |
 | **Feedback Visual** | Sonner (`toast`) | Notificações flutuantes elegantes e reativas para ações de sucesso, erro e alertas. |
-| **Testes Unitários** | Vitest + React Testing Library | Validação ágil de formatação, componentes, stores, hooks e matriz de módulos (83 testes). |
+| **Testes Unitários & Integração** | Vitest + React Testing Library | Validação ágil de componentes, formatadores, stores, proxies e isolamento modular (94 testes). |
 | **Testes E2E** | Playwright Test | Validação ponta a ponta no navegador de fluxos de login, segurança de rotas e white-label (19 testes). |
 
 ---
 
-## 🏛️ Padrões de Arquitetura do Frontend
+## 🏛️ Padrões de Arquitetura do Monorepo
 
-### 1. Separação entre Server Components e Client Components
-Para garantir SEO impecável e máxima performance:
-- **Server Components (`page.tsx` e `layout.tsx`)**:
-  - Responsáveis por receber os parâmetros da rota (ex: `params: Promise<{ id: string; slug: string }>`).
-  - Executam a função `generateMetadata` para gerar tags de `title`, `description`, `openGraph` e `twitter` dinâmicas.
-  - Executam guards de segurança no servidor com `assertModule("module_name")` para barrar rotas de módulos desativados.
-- **Client Components (`...Client.tsx` / `use client`)**:
-  - Responsáveis pela interatividade, leitura/escrita no store Zustand, animações, modais e formulários.
-  - Todos os nomes de arquivos e componentes seguem estritamente a convenção `camelCase` em **inglês** (ex: `eventDetailClient.tsx`, `experienceDetailClient.tsx`, `leaderboardTable.tsx`, `memberProfileDetailClient.tsx`).
+O repositório é particionado em duas aplicações autônomas (`apps/`) e quatro pacotes compartilhados (`packages/`):
 
-### 2. Gerenciamento de Estado Modular (Zustand Slices Pattern)
-Para manter o princípio de Responsabilidade Única (SRP) e segregação de interfaces:
-- O store global (`src/store/usePortalStore.ts`) compõe fatias modulares por domínio localizadas em `src/store/slices/`:
-  - `authSlice.ts`: Sessão, credenciais e dados do usuário ativo.
-  - `networkingSlice.ts`: Conexões, convites pendentes e rede de membros.
-  - `chatSlice.ts`: Conversas ativas, mensagens não lidas e histórico de chat.
-  - `eventsSlice.ts`: RSVPs de eventos e agenda do associado.
-  - `staysSlice.ts`: Reservas ativas, vouchers e histórico de estadias.
-  - `gamificationSlice.ts`: Tiers do KeyPass, saldo de XP, tokens RIB, missões e conquistas.
-  - `profileSlice.ts`: Dados cadastrais, tags de busca/oferta e configurações de segurança.
-- Os componentes UI consomem seletores atômicos para evitar re-renderizações desnecessárias.
+```mermaid
+graph TB
+    subgraph Apps ["🌐 Aplicações (apps/)"]
+        Web["apps/web (Porta 3000)<br/>Portal do Membro / Cliente<br/>White-Label & 7 Módulos"]
+        Admin["apps/admin (Porta 3001)<br/>Painel Administrativo / Backoffice<br/>RBAC, Governança & 2FA"]
+    end
 
-### 3. Tipos Centralizados & Schemas de Validação
-- **Tipos de Domínio (`src/types/`)**: Interfaces centralizadas por entidade (`member.types.ts`, `event.types.ts`, `stay.types.ts`, `gamification.types.ts`, `chat.types.ts`, `benefit.types.ts`, `experience.types.ts`) exportadas via barrel `index.ts`.
-- **Validação com Zod (`src/schemas/`)**: Schemas de validação de formulários tipados (`auth.schema.ts`, `subscription.schema.ts`).
-- **Utilitários e Formatadores (`src/lib/formatters.ts`)**: Funções centralizadas de formatação (moeda BRL, datas, tempo relativo e números) com suite de testes unitários em Vitest (`src/__tests__/`).
+    subgraph Packages ["📦 Pacotes Compartilhados (packages/)"]
+        UI["@clubkey/ui<br/>Bloom UI, CVA Tokens, TableStatusBadge"]
+        Types["@clubkey/types<br/>Contratos TypeScript de Domínio"]
+        Schemas["@clubkey/schemas<br/>Schemas de Validação Zod"]
+        Utils["@clubkey/utils<br/>cn, formatters, masks"]
+    end
 
-### 4. Diretrizes de Tema Neutro (Bloom UI)
-- **Superfícies de Cards & Contêineres**: Fundo estritamente branco puro (`bg-white`) no modo claro e cinza neutro profundo (`bg-zinc-900`, `dark:bg-zinc-900`, bordas `border-zinc-200`, `dark:border-zinc-800`) no modo escuro.
-- **Sem Contêineres Coloridos/Azulados**: Apenas superfícies limpas e neutras.
-- **Cores de Destaque**: A cor primária da marca (injetada dinamicamente via variáveis CSS por preset) e cores semânticas (`emerald`, `amber`, `red`) são reservadas exclusivamente para tipografia, ícones de status, badges, tags e acentos.
+    Web --> UI
+    Web --> Types
+    Web --> Schemas
+    Web --> Utils
 
-### 5. Arquitetura White-Label & Sistema Modular
-A plataforma opera em regime single-codebase multi-tenant controlado por `NEXT_PUBLIC_TENANT`:
-- **Presets de Marca (`src/config/brand.config.ts`)**: Matriz de ativação dos 7 módulos do sistema (`home`, `stays`, `networking`, `events`, `experiences`, `benefits`, `keypass`), tokens de cores com injeção dinâmica de variáveis CSS e assets de logotipo.
-- **Defesa em Profundidade (4 Camadas)**:
-  1. **Edge Proxy (`src/proxy.ts`)**: Intercepta requisições HTTP antes da renderização e reescreve acessos a módulos desativados para `/not-found`.
-  2. **Server Route Guards (`assertModule`)**: Executados em Server Components (`layout.tsx` e `page.tsx`), emitindo digest 404 caso o módulo esteja desligado no tenant.
-  3. **Componente `<ModuleGate>` (`src/components/common/moduleGate.tsx`)**: Oculta condicionalmente blocos visuais, widgets de dashboard e seções do feed.
-  4. **Hook Reativo `useBrandModules()` (`src/hooks/useBrandModules.ts`)**: Expõe o estado reativo de módulos para componentes clientes.
-- Para a especificação completa, consulte o documento [`docs/WHITE_LABEL.md`](./WHITE_LABEL.md).
+    Admin --> UI
+    Admin --> Types
+    Admin --> Schemas
+    Admin --> Utils
+
+    UI --> Utils
+    Schemas --> Types
+```
 
 ---
 
-## 📁 Estrutura de Diretórios
+## 📱 Aplicações do Monorepo
+
+### 1. Portal do Membro (`apps/web` — Porta 3000)
+- **Foco do Usuário**: Experiência premium para o membro associado (busca e reserva de estadias, confirmação em eventos, matchmaking de networking, vivências gastronômicas, resgate de cupons de parceiros e gamificação KeyPass).
+- **White-Label & Multi-Tenant**: Configurado dinamicamente via `NEXT_PUBLIC_TENANT`. Suporta matriz booleana de 7 módulos (`home`, `stays`, `networking`, `events`, `experiences`, `benefits`, `keypass`).
+- **Segurança & Route Guards**:
+  - `apps/web/src/proxy.ts`: Edge Proxy que intercepta rotas de módulos inativos e reescreve requisições não autorizadas para `/not-found`.
+  - Server Route Guards (`assertModule`): Garante defesa em profundidade no nível do servidor Next.js.
+  - Componente `<ModuleGate>`: Ocultação condicional de blocos e cards no cliente.
+- **Gerenciamento de Estado**: Store central `usePortalStore` composta por 7 fatias modulares (Slice Pattern) com persistência isolada por tenant (`${tenant}-portal-storage-v9`).
+
+### 2. Painel Administrativo (`apps/admin` — Porta 3001)
+- **Foco do Usuário**: Backoffice de gestão operacional, diretoria e concierges.
+- **Módulos Principais**: Dashboard executivo com KPIs, gestão de usuários/membros com esteira de aprovação, catálogo de hospedagens, eventos com lotes e listas de presença, parceiros/benefícios, sinistros e configurações de White Label.
+- **Autenticação & Controle de Sessão**:
+  - Telas de autenticação split screen em `apps/admin/src/app/(auth)/login` e `(auth)/esqueci-minha-senha`.
+  - Suporte a segundo fator de autenticação (2FA TOTP) via componente `inputOtp`.
+  - Edge Proxy em `apps/admin/src/proxy.ts` que valida a presença do cookie de sessão `clubkey_admin_session`, protegendo todas as rotas de `(dashboard)/*` e redirecionando usuários não autenticados para `/login`.
+- **Perfil do Administrador (`/perfil`)**:
+  - Tela alinhada à visualização de detalhes de usuário, com avatar destacado, upload e recorte via `ImageCropper`.
+  - Badges semânticas com `TableStatusBadge` para o nível de permissão (`SUPER ADMIN` com watermark Crown) e status de segurança (`2FA Ativo` com watermark ShieldCheck).
+  - Metadados inline protegidos e restrições de governança (cargo e departamento somente leitura).
+  - Gerenciamento de 2FA TOTP com geração de QR Code e confirmação por código.
+- **Gerenciamento de Estado**: Store dedicada `useAdminStore` com persistência local em `clubkey-admin-storage-v1`.
+
+---
+
+## 📦 Pacotes Compartilhados (`packages/`)
+
+### 1. `@clubkey/ui` (`packages/ui/`)
+Centraliza o Design System institucional:
+- Componentes do **Bloom UI** construídos sobre primitivas do **Radix UI** e **Tailwind CSS v4**.
+- Componentes de domínio reutilizáveis de alta frequência, como `TableStatusBadge` (com suporte a variantes semânticas, bordas finas e watermarks sutis como `Crown` e `ShieldCheck`).
+- Tokens de design CVA (`BloomSize`, `BloomRadius`, `BloomColor`, `BloomVariant`).
+- Política rigorosa de **Tema Neutro**: cards brancos puros (`bg-white`) no tema claro e cinza neutro (`bg-zinc-900`) no tema escuro.
+
+### 2. `@clubkey/types` (`packages/types/`)
+Centraliza as interfaces e tipos TypeScript compartilhados:
+- Domínio do Membro (`Member`, `UserProfile`, `MemberConnectionStatus`).
+- Domínio de Hospedagens (`StayProperty`, `StayReservation`, `RoomType`).
+- Domínio de Eventos (`EventItem`, `EventTicketBatch`, `EventRsvp`).
+- Domínio de Gamificação (`Tier`, `Mission`, `WeeklyDrop`, `XpTransaction`).
+- Domínio Administrativo (`AdminProfile`, `AdminUser`, `AdminAuditLog`).
+- Exportação unificada através de `packages/types/src/index.ts`.
+
+### 3. `@clubkey/schemas` (`packages/schemas/`)
+Centraliza as regras de validação via **Zod**:
+- Schemas de login e cadastro de membros (`signInSchema`, `signUpSchema`).
+- Schemas de autenticação administrativa (`adminLoginSchema`, `adminForgotPasswordSchema`, `adminTwoFactorSchema`).
+- Schemas de reservas, pagamentos e atualizações cadastrais.
+
+### 4. `@clubkey/utils` (`packages/utils/`)
+Centraliza funções auxiliares puras e testáveis:
+- Fusão de classes CSS com Tailwind: `cn(...)`.
+- Formatadores monetários: `formatCurrency(val)`, `formatBRL(val)`.
+- Formatadores de data e tempo: `formatShortDate(d)`, `formatDateRange(start, end)`.
+- Máscaras de formulário: `maskCpf(v)`, `maskCnpj(v)`, `maskDate(v)`, `maskCardNumber(v)`, `maskCardExpiry(v)`, `maskCvv(v)`.
+
+---
+
+## 📁 Estrutura de Diretórios do Monorepo
 
 ```
 clubkey/
-├── docs/                        # Documentação técnica e especificações para o time e IA de backend
-│   ├── ARCHITECTURE.md          # Arquitetura global, padrões SOLID e stack
-│   ├── WHITE_LABEL.md           # Sistema White-Label e matriz modular
-│   ├── DATABASE_MODELS.md       # Modelagem relacional e schemas PostgreSQL
-│   ├── API_SPECIFICATIONS.md    # Especificações RESTful e OpenAPI
-│   ├── ENUMS.md                 # Dicionário de Enums canônicos
-│   ├── GAMIFICATION_RULES.md    # Regras de negócio do KeyPass e XP
-│   ├── SEED_DATA.md             # Datasets prontos para seeders
-│   └── pages/                   # Documentação funcional por módulo/tela
-├── public/                      # Assets estáticos (imagens, logotipos, ilustrações, favicons)
-│   ├── utils/
-│   │   ├── banners/
-│   │   └── gamification/        # Insígnias, tiers, tokens e ícones de XP
-│   └── logos/                   # Logotipos oficiais dos presets de marca
-├── src/
-│   ├── __tests__/               # Testes unitários com Vitest e E2E com Playwright
-│   │   ├── modules.test.ts
-│   │   ├── brandConfig.test.ts
-│   │   ├── moduleGate.test.tsx
-│   │   ├── proxy.test.ts
-│   │   └── e2e/                 # Testes ponta a ponta com Playwright
-│   ├── app/                     # Next.js App Router (Rotas do sistema)
-│   │   ├── (portal)/            # Grupo de rotas autenticadas do portal de membros
-│   │   │   ├── layout.tsx       # Layout principal (Header, Sidebar, Messenger, ToastProvider)
-│   │   │   ├── page.tsx         # Página Inicial e Painel do Associado
-│   │   │   ├── eventos/         # Módulo de Eventos (protegido por assertModule)
-│   │   │   ├── experiencias/    # Módulo de Experiências (protegido por assertModule)
-│   │   │   ├── hospedagens/     # Módulo de Hospedagens (protegido por assertModule)
-│   │   │   ├── conexoes/        # Módulo de Conexões e Networking (protegido por assertModule)
-│   │   │   ├── beneficios/      # Módulo de Benefícios (protegido por assertModule)
-│   │   │   ├── keypass/         # Módulo KeyPass (protegido por assertModule)
-│   │   │   └── perfil/          # Módulo de Perfil e Assinatura
-│   │   ├── entrar/              # Login
-│   │   ├── cadastro/            # Cadastro e adesão
-│   │   ├── esqueci-minha-senha/ # Recuperação de senha
-│   │   └── redefinir-senha/     # Redefinição de senha
-│   ├── config/                  # Configurações multi-tenant, presets de marca e módulos
-│   │   ├── brand.config.ts      # Presets de marcas e gerador de variáveis CSS
-│   │   ├── modules.config.ts    # Registro canônico dos 7 módulos e validação de rotas
-│   │   ├── site.ts              # Metadados globais e links
-│   │   └── env.ts               # Validação de variáveis de ambiente
-│   ├── proxy.ts                 # Edge Proxy do Next.js 16 para segurança de rotas e bypass de assets
-│   ├── components/
-│   │   ├── auth/                # Formulários de autenticação (signInForm.tsx, signUpForm.tsx)
-│   │   ├── common/              # Componentes universais (container.tsx, moduleGate.tsx, ctaButton.tsx)
-│   │   ├── portal/              # Componentes de negócio do portal
-│   │   └── ui/                  # Componentes do Design System Bloom UI
-│   ├── hooks/                   # Custom Hooks reutilizáveis (useBrandModules, useItemPagination, useScrollSpy)
-│   ├── lib/
-│   │   ├── designSystem.ts      # Configuração de tokens de design Bloom UI
-│   │   ├── formatters.ts        # Utilitários de formatação (moeda, datas, tempo relativo)
-│   │   └── utils.ts             # Utilitários auxiliares (cn)
-│   ├── schemas/                 # Schemas de validação Zod (auth.schema.ts, subscription.schema.ts)
-│   ├── store/
-│   │   ├── slices/              # Fatias de estado Zustand por domínio
-│   │   └── usePortalStore.ts    # Store global Zustand composto com persistência
-│   └── types/                   # Tipos e interfaces TypeScript centralizados por domínio
+├── apps/
+│   ├── web/                              # Portal do Membro (Next.js 16)
+│   │   ├── src/
+│   │   │   ├── app/                      # App Router
+│   │   │   │   ├── (auth)/               # Rotas públicas de autenticação (/entrar, /cadastro)
+│   │   │   │   └── (portal)/             # Rotas autenticadas do membro (/hospedagens, /eventos, etc.)
+│   │   │   ├── components/               # Componentes específicos do portal (portal/, common/)
+│   │   │   ├── config/                   # Presets de White-Label (brand.config.ts, modules.config.ts)
+│   │   │   ├── hooks/                    # Hooks reutilizáveis (useBrandModules, useItemPagination)
+│   │   │   ├── proxy.ts                  # Edge Proxy de proteção modular multi-tenant
+│   │   │   ├── store/                    # usePortalStore + slices/ (auth, stays, events, etc.)
+│   │   │   └── __tests__/                # Suíte de testes unitários do portal (89 testes)
+│   │   ├── package.json
+│   │   └── tsconfig.json
+│   │
+│   └── admin/                            # Painel de Gestão Administrativa (Next.js 16)
+│       ├── src/
+│       │   ├── app/                      # App Router
+│       │   │   ├── (auth)/               # Rotas de acesso administrativo (/login, /esqueci-minha-senha)
+│       │   │   └── (dashboard)/          # Rotas administrativas (/dashboard, /usuarios, /perfil, etc.)
+│       │   ├── components/               # Componentes administrativos (admin/, auth/)
+│       │   ├── proxy.ts                  # Edge Proxy de proteção por cookie clubkey_admin_session
+│       │   ├── store/                    # useAdminStore (perfil, 2FA, preferências)
+│       │   └── __tests__/                # Testes unitários do admin (proxy e autenticação - 5 testes)
+│       ├── package.json
+│       └── tsconfig.json
+│
+├── packages/
+│   ├── ui/                               # @clubkey/ui (Bloom UI + CVA + TableStatusBadge)
+│   ├── types/                            # @clubkey/types (Tipagens TypeScript de domínio)
+│   ├── schemas/                          # @clubkey/schemas (Schemas Zod)
+│   └── utils/                            # @clubkey/utils (cn, formatters, masks)
+│
+├── docs/                                 # Documentação Técnica e Especificações
+│   ├── pages/
+│   │   ├── portal/                       # Especificação funcional das telas do Portal
+│   │   └── admin/                        # Especificação funcional das telas do Admin
+│   ├── ARCHITECTURE.md
+│   ├── MONOREPO.md
+│   ├── DESIGN_SYSTEM.md
+│   ├── WHITE_LABEL.md
+│   ├── STATE_MANAGEMENT.md
+│   ├── TESTING.md
+│   ├── DATABASE_MODELS.md
+│   ├── API_SPECIFICATIONS.md
+│   ├── ENUMS.md
+│   ├── GAMIFICATION_RULES.md
+│   └── SEED_DATA.md
+│
+├── pnpm-workspace.yaml                   # Orquestração de workspaces do pnpm
+├── turbo.json                            # Pipelines e cache do Turborepo
+└── package.json                          # Scripts raiz e Husky
 ```
 
 ---
 
-## 🔄 Estratégia & Pipeline de Integração com o Backend
+## 🔄 Pipeline de Integração com o Backend
 
-Quando o backend RESTful estiver implementado, a camada de dados do frontend será conectada através de uma pipeline moderna e 100% automatizada e type-safe:
+A camada de dados do frontend é preparada para conexão type-safe com o backend RESTful:
 
-### 1. Stack de Integração no Frontend
-- **HTTP Client**: `Axios` com interceptors globais para injeção do header `Authorization: Bearer <token>`, `X-Tenant-ID: <tenant>`, refresh token transparente e tratamento padronizado de erros.
-- **Gerenciamento de Estado do Servidor**: `TanStack React Query v5` (`@tanstack/react-query`) para cache assíncrono, revalidação em background, optimistic updates e controle de mutações.
-- **Diagnóstico & Debug**: `React Query Devtools` (`@tanstack/react-query-devtools`) integrado em ambiente de desenvolvimento.
-- **Geração Automática de Código**: `Orval` (`orval`) para ler a especificação OpenAPI (Swagger/JSON) gerada pelo backend e gerar automaticamente:
-  - Todas as interfaces e tipos TypeScript de requisições e respostas.
-  - Hooks do React Query (`useQuery`, `useMutation`) tipados e prontos para uso.
-  - Funções de chamada HTTP vinculadas à instância customizada do Axios.
+### 1. Stack de Integração
+- **HTTP Client**: `Axios` com interceptors globais para injeção de tokens `Authorization: Bearer <token>`, cabeçalhos `X-Tenant-ID: <tenant>`, refresh tokens e tratamento padronizado de erros.
+- **Gerenciamento de Estado do Servidor**: `TanStack React Query v5` (`@tanstack/react-query`) para cache inteligente, revalidação em segundo plano e mutações otimistas.
+- **Geração Automática de Código**: `Orval` (`orval`) para leitura da especificação OpenAPI 3.x exposta pelo backend, gerando tipos TypeScript e hooks do React Query de forma 100% automatizada.
 
-### 2. Sugestão para o Backend (PHP / Laravel / Symfony): Documentação com Scalar
-Recomenda-se fortemente que o backend em **PHP** exponha a especificação **OpenAPI 3.0 / 3.1** e utilize o **[Scalar](https://scalar.com/)** como interface visual de documentação interativa de API (ex: acessível em `/docs` ou `/api/documentation`):
-
-- **Vantagens do Scalar**: Interface moderna, pesquisa rápida, modo claro/escuro integrado e cliente HTTP embutido para testes de rota.
-- **Pacotes recomendados no ecossistema PHP/Laravel**:
-  - `dedoc/scramble`: Gera a especificação OpenAPI automaticamente a partir dos FormRequests e rotas do Laravel, sem necessidade de escrever anotações manuais complexas.
-  - `scalar/laravel` ou `@scalar/api-reference`: Renderiza o visual do Scalar consumindo o JSON da OpenAPI (`/docs/api.json`).
-  - `l5-swagger` / `zircote/swagger-php`: Para controle explícito de anotações OpenAPI se preferir Swagger clássico com visual Scalar.
+### 2. Padrões de API & Documentação Interativa
+- **Scalar**: Interface recomendada para visualização interativa da API OpenAPI no backend (PHP / Laravel com `dedoc/scramble` e `scalar/laravel`).
+- **CORS Permissões**: Autorização configurada para origens locais `http://localhost:3000` (Portal) e `http://localhost:3001` (Admin).
 
 ---
 
 ## 🛡️ Padrões de Qualidade, SOLID & Pipeline Automatizada
 
 ### 1. Princípios SOLID Aplicados
-- **Single Responsibility Principle (SRP)**: Componentes mantidos abaixo do threshold de 250–300 linhas. Componentes complexos (como `memberProfileDetailClient.tsx`) são decompostos em subcomponentes atômicos na pasta da funcionalidade.
-- **Don't Repeat Yourself (DRY)**: Lógicas recorrentes (como paginação, scroll spy e verificação de módulos) são isoladas em custom hooks (`src/hooks/`).
-- **Interface Segregation Principle (ISP)**: Tipos de domínio desacoplados e centralizados por entidade em `src/types/`.
-- **Dependency Inversion / Slice Pattern (DIP)**: O estado global do Zustand é modularizado em fatias autônomas em `src/store/slices/`.
+- **Single Responsibility Principle (SRP)**: Componentes mantidos estritamente abaixo do threshold de 250–300 linhas, decompostos em subcomponentes atômicos.
+- **Don't Repeat Yourself (DRY)**: Reutilização compulsória de utilitários em `@clubkey/utils` e componentes visuais em `@clubkey/ui`.
+- **Interface Segregation Principle (ISP)**: Interfaces desacopladas e agrupadas em arquivos específicos por domínio em `@clubkey/types`.
+- **Dependency Inversion / Slice Pattern (DIP)**: Stores modulares via Zustand Slice Pattern isolando regras de negócio da camada de apresentação.
 
-### 2. Automação de Qualidade & Pipeline de Build
-- **Prebuild Hook (`npm run build`)**: Dispara automaticamente a sequência de linters e formatação.
-- **Git Hooks com Husky & Commitlint**: Força commits padronizados pelo **Conventional Commits** exclusivamente em **inglês**.
-- **Suite de Testes Completa**:
-  - `pnpm test`: Executa os testes unitários via **Vitest** (83 testes).
-  - `pnpm test:e2e`: Executa os testes ponta a ponta via **Playwright** (19 testes).
-  - `pnpm test:all`: Executa ambas as suítes em sequência garantindo 100% de integridade.
+### 2. Automação de Qualidade & Pipeline de CI
+- **Validação Completa Pré-Push (`pnpm validate`)**:
+  - `pnpm typecheck`: Verificação estrita de tipagem TypeScript em todos os workspaces.
+  - `pnpm lint`: Execução do ESLint configurado para o monorepo.
+  - `pnpm test:secrets`: Verificação estrita contra vazamento de credenciais via Secretlint.
+  - `pnpm test`: Execução da suíte completa de 94 testes unitários e de integração via **Vitest**.
+- **Git Hooks com Husky & Commitlint**: Validação automática de commits convencionais exclusivamente em inglês.
