@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
-@source "../node_modules/@bloomui-react/components";
+@source "../../../../packages/ui/src";
+@source "..";
 @custom-variant dark (&:is(.dark *));
 
 :root {

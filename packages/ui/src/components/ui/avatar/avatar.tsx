@@ -149,7 +149,7 @@ const Avatar = React.forwardRef<
               "cursor-pointer hover:scale-105 active:scale-95 hover:opacity-90 transition-all duration-200 ease-in-out will-change-transform focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-ring outline-none",
             isEffectivelyDisabled &&
               "opacity-50 grayscale cursor-not-allowed pointer-events-none",
-            !title && !description && className
+            (isInGroup || (!title && !description)) && className
           )}
           {...keyboardProps}
           {...(tabIndex !== undefined ? { tabIndex } : {})}
