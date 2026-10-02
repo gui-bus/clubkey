@@ -4,6 +4,7 @@ import * as React from "react"
 
 import { useRouter } from "next/navigation"
 
+import { useAdminStore } from "@/src/store/useAdminStore"
 import {
   Avatar,
   AvatarFallback,
@@ -13,9 +14,10 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  toast,
 } from "@clubkey/ui"
 import { cn } from "@clubkey/utils"
-import { CaretDown, SignOut } from "@phosphor-icons/react"
+import { CaretDown, SignOut, UserCircle } from "@phosphor-icons/react"
 import { AnimatePresence, motion } from "framer-motion"
 
 export interface AdminUserDropdownProps {
@@ -29,15 +31,30 @@ export function AdminUserDropdown({
 }: AdminUserDropdownProps): React.JSX.Element {
   const router = useRouter()
   const [dropdownOpen, setDropdownOpen] = React.useState(false)
+  const { adminUser, syncFromStorage } = useAdminStore()
 
-  const adminName = "William Tabata"
-  const adminRole = "SUPER ADMIN"
-  const adminInitials = "WT"
-  const adminAvatar =
-    "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&auto=format&fit=crop&q=80"
+  React.useEffect(() => {
+    syncFromStorage()
+  }, [syncFromStorage])
+
+  const adminName = adminUser.name || "William Tabata"
+  const adminRole = adminUser.role || "SUPER ADMIN"
+  const adminAvatar = adminUser.avatar
+  const adminInitials = adminUser.name
+    ? adminUser.name
+        .split(" ")
+        .map((n) => n[0])
+        .slice(0, 2)
+        .join("")
+        .toUpperCase()
+    : "WT"
 
   const handleLogout = () => {
+    document.cookie =
+      "clubkey_admin_session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax"
+    toast.info("Sessão encerrada com sucesso.")
     router.push("/login")
+    router.refresh()
   }
 
   const triggerButton = (
@@ -111,7 +128,6 @@ export function AdminUserDropdown({
         sideOffset={isCollapsed ? 12 : 8}
         className="w-60 bg-white/95 dark:bg-[#141416]/95 backdrop-blur-xl border border-zinc-200 dark:border-zinc-800 p-2 rounded-sm shadow-2xl space-y-1 z-50"
       >
-        
         <div className="px-3 py-2 flex items-center gap-3">
           <Avatar
             size="sm"
@@ -134,7 +150,19 @@ export function AdminUserDropdown({
 
         <DropdownMenuSeparator className="mx-0 my-1 h-0 bg-transparent border-t border-zinc-200 dark:border-zinc-800" />
 
-        
+        <DropdownMenuItem
+          onClick={() => {
+            setDropdownOpen(false)
+            router.push("/perfil")
+          }}
+          className="flex items-center gap-2.5 px-3 py-2 rounded-sm text-xs font-semibold text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800/80 cursor-pointer transition-colors"
+        >
+          <UserCircle className="w-4 h-4 text-zinc-500" />
+          <span>Meu Perfil</span>
+        </DropdownMenuItem>
+
+        <DropdownMenuSeparator className="mx-0 my-1 h-0 bg-transparent border-t border-zinc-200 dark:border-zinc-800" />
+
         <DropdownMenuItem
           onClick={handleLogout}
           className="flex items-center gap-2.5 px-3 py-2 rounded-sm text-xs font-semibold text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30 cursor-pointer transition-colors"
